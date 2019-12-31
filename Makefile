@@ -35,11 +35,13 @@ all: libduktape.$(SO_REALNAME_SUFFIX) libduktaped.$(SO_REALNAME_SUFFIX) examples
 clean:
 	rm -rf libduktaped.205.20500.so.dSYM/
 	rm -f libduktape.205.20500.so libduktaped.205.20500.so
+	rm -rf examples/cmdline/build examples/hello/build examples/sandbox/build
 
 .PHONY: examples
 examples:
 	make -C examples/hello
 	make -C examples/sandbox
+	make -C examples/cmdline
 
 libduktape.$(SO_REALNAME_SUFFIX):
 	$(CC) -shared -fPIC -Wall -Wextra -Os -Wl,$(LD_SONAME_ARG),libduktape.$(SO_SONAME_SUFFIX) -o $@ $(DUKTAPE_SOURCES)
