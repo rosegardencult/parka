@@ -29,12 +29,16 @@ DUKTAPE_SOURCES = src/duk/*.c
 CC = gcc
 
 .PHONY: all
-all: libduktape.$(SO_REALNAME_SUFFIX) libduktaped.$(SO_REALNAME_SUFFIX)
+all: libduktape.$(SO_REALNAME_SUFFIX) libduktaped.$(SO_REALNAME_SUFFIX) examples
 
 .PHONY: clean
 clean:
 	rm -rf libduktaped.205.20500.so.dSYM/
 	rm -f libduktape.205.20500.so libduktaped.205.20500.so
+
+.PHONY: examples
+examples:
+	make -C examples/hello
 
 libduktape.$(SO_REALNAME_SUFFIX):
 	$(CC) -shared -fPIC -Wall -Wextra -Os -Wl,$(LD_SONAME_ARG),libduktape.$(SO_SONAME_SUFFIX) -o $@ $(DUKTAPE_SOURCES)
