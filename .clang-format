@@ -1,0 +1,6 @@
+BasedOnStyle: Google
+
+SortIncludes: false
+IndentPPDirectives: AfterHash
+DerivePointerAlignment: false
+PointerAlignment: Left

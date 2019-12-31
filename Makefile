@@ -37,6 +37,7 @@ all: $(OBJDIR) libduktape.$(SO_REALNAME_SUFFIX) libduktaped.$(SO_REALNAME_SUFFIX
 clean:
 	rm -rf build
 	rm -rf examples/cmdline/build examples/hello/build examples/sandbox/build
+	cargo clean
 
 .PHONY: examples
 examples:
@@ -44,9 +45,25 @@ examples:
 	make -C examples/sandbox
 	make -C examples/cmdline
 
+.PHONY: format
+format:
+	clang-format --verbose -i src/duk/*.c src/duk/*.h
+
 .PHONY: database
 database:
 	bear -v -o $(OBJDIR)/compile_commands.json make all
+
+.PHONY: issues
+issues:
+	@echo "FIXME:     `grep FIXME: src/duk/*.c src/duk/*.h | wc -l | tr -d ' '`"
+	@echo "XXX:       `grep XXX: src/duk/*.c src/duk/*.h | wc -l | tr -d ' '`"
+	@echo "TODO:      `grep TODO: src/duk/*.c src/duk/*.h | wc -l | tr -d ' '`"
+	@echo "NOTE:      `grep NOTE: src/duk/*.c src/duk/*.h | wc -l | tr -d ' '`"
+	@echo "SCANBUILD: `grep SCANBUILD: src/duk/*.c src/duk/*.h | wc -l | tr -d ' '`"
+
+.PHONY: lines
+lines:
+	@echo "Line Count: `cloc --quiet src/duk/*.c src/duk/*.h`"
 
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
