@@ -1,0 +1,67 @@
+# macOS
+.DS_Store
+
+# Sourcetrail database
+*.srctrlbm
+*.srctrldb
+*.srctrlprj
+
+# Duktape debugger
+/debugger/jquery-ui-1.11.2.zip
+/debugger/jquery-ui-1.11.2/
+/debugger/node_modules/
+/debugger/static/images/
+/debugger/static/jquery-1.11.1.min.js
+/debugger/static/jquery-ui.min.css
+/debugger/static/jquery-ui.min.js
+/debugger/static/reset.css
+/debugger/static/socket.io-1.2.0.js
+
+# Rust
+/target
+**/*.rs.bk
+
+# C
+## Prerequisites
+*.d
+
+## Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+## Linker output
+*.ilk
+*.map
+*.exp
+
+## Precompiled Headers
+*.gch
+*.pch
+
+## Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+## Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+## Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+## Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
