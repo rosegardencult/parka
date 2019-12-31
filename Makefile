@@ -39,6 +39,7 @@ clean:
 .PHONY: examples
 examples:
 	make -C examples/hello
+	make -C examples/sandbox
 
 libduktape.$(SO_REALNAME_SUFFIX):
 	$(CC) -shared -fPIC -Wall -Wextra -Os -Wl,$(LD_SONAME_ARG),libduktape.$(SO_SONAME_SUFFIX) -o $@ $(DUKTAPE_SOURCES)

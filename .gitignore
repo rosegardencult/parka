@@ -17,6 +17,9 @@
 /debugger/static/reset.css
 /debugger/static/socket.io-1.2.0.js
 
+# Output directory
+build/
+
 # Rust
 /target
 **/*.rs.bk
