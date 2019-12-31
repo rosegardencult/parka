@@ -1,6 +1,9 @@
 # macOS
 .DS_Store
 
+# bear output
+compile_commands.json
+
 # Sourcetrail database
 *.srctrlbm
 *.srctrldb

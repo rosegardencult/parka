@@ -28,13 +28,14 @@ DUKTAPE_SOURCES = src/duk/*.c
 
 CC = clang
 
+OBJDIR = build
+
 .PHONY: all
-all: libduktape.$(SO_REALNAME_SUFFIX) libduktaped.$(SO_REALNAME_SUFFIX) examples
+all: $(OBJDIR) libduktape.$(SO_REALNAME_SUFFIX) libduktaped.$(SO_REALNAME_SUFFIX) examples
 
 .PHONY: clean
 clean:
-	rm -rf libduktaped.205.20500.so.dSYM/
-	rm -f libduktape.205.20500.so libduktaped.205.20500.so
+	rm -rf build
 	rm -rf examples/cmdline/build examples/hello/build examples/sandbox/build
 
 .PHONY: examples
@@ -43,8 +44,15 @@ examples:
 	make -C examples/sandbox
 	make -C examples/cmdline
 
+.PHONY: database
+database:
+	bear -v -o $(OBJDIR)/compile_commands.json make all
+
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
+
 libduktape.$(SO_REALNAME_SUFFIX):
-	$(CC) -shared -fPIC -Wall -Wextra -Os -Wl,$(LD_SONAME_ARG),libduktape.$(SO_SONAME_SUFFIX) -o $@ $(DUKTAPE_SOURCES)
+	$(CC) -shared -fPIC -Wall -Wextra -Os -Wl,$(LD_SONAME_ARG),libduktape.$(SO_SONAME_SUFFIX) -o $(OBJDIR)/$@ $(DUKTAPE_SOURCES)
 
 libduktaped.$(SO_REALNAME_SUFFIX):
-	$(CC) -shared -fPIC -g -Wall -Wextra -Os -Wl,$(LD_SONAME_ARG),libduktaped.$(SO_SONAME_SUFFIX) -o $@ $(DUKTAPE_SOURCES)
+	$(CC) -shared -fPIC -g -Wall -Wextra -Os -Wl,$(LD_SONAME_ARG),libduktaped.$(SO_SONAME_SUFFIX) -o $(OBJDIR)/$@ $(DUKTAPE_SOURCES)
