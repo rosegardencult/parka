@@ -4,7 +4,7 @@
 
 DUKTAPE_SOURCES = ../../src/duk/*.c
 
-CC = gcc
+CC = clang
 
 OBJDIR = build
 

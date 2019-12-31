@@ -26,7 +26,7 @@ endif
 
 DUKTAPE_SOURCES = src/duk/*.c
 
-CC = gcc
+CC = clang
 
 .PHONY: all
 all: libduktape.$(SO_REALNAME_SUFFIX) libduktaped.$(SO_REALNAME_SUFFIX) examples
