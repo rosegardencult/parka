@@ -3,17 +3,17 @@
  */
 
 #if !defined(DUK_FORWDECL_H_INCLUDED)
-#define DUK_FORWDECL_H_INCLUDED
+#  define DUK_FORWDECL_H_INCLUDED
 
 /*
  *  Forward declarations
  */
 
-#if defined(DUK_USE_CPP_EXCEPTIONS)
+#  if defined(DUK_USE_CPP_EXCEPTIONS)
 class duk_internal_exception;
-#else
+#  else
 struct duk_jmpbuf;
-#endif
+#  endif
 
 /* duk_tval intentionally skipped */
 struct duk_heaphdr;
@@ -49,9 +49,9 @@ struct duk_strcache_entry;
 struct duk_litcache_entry;
 struct duk_strtab_entry;
 
-#if defined(DUK_USE_DEBUG)
+#  if defined(DUK_USE_DEBUG)
 struct duk_fixedbuffer;
-#endif
+#  endif
 
 struct duk_bitdecoder_ctx;
 struct duk_bitencoder_ctx;
@@ -70,11 +70,11 @@ struct duk_compiler_ctx;
 struct duk_re_matcher_ctx;
 struct duk_re_compiler_ctx;
 
-#if defined(DUK_USE_CPP_EXCEPTIONS)
+#  if defined(DUK_USE_CPP_EXCEPTIONS)
 /* no typedef */
-#else
+#  else
 typedef struct duk_jmpbuf duk_jmpbuf;
-#endif
+#  endif
 
 /* duk_tval intentionally skipped */
 typedef struct duk_heaphdr duk_heaphdr;
@@ -110,9 +110,9 @@ typedef struct duk_strcache_entry duk_strcache_entry;
 typedef struct duk_litcache_entry duk_litcache_entry;
 typedef struct duk_strtab_entry duk_strtab_entry;
 
-#if defined(DUK_USE_DEBUG)
+#  if defined(DUK_USE_DEBUG)
 typedef struct duk_fixedbuffer duk_fixedbuffer;
-#endif
+#  endif
 
 typedef struct duk_bitdecoder_ctx duk_bitdecoder_ctx;
 typedef struct duk_bitencoder_ctx duk_bitencoder_ctx;
@@ -131,4 +131,4 @@ typedef struct duk_compiler_ctx duk_compiler_ctx;
 typedef struct duk_re_matcher_ctx duk_re_matcher_ctx;
 typedef struct duk_re_compiler_ctx duk_re_compiler_ctx;
 
-#endif  /* DUK_FORWDECL_H_INCLUDED */
+#endif /* DUK_FORWDECL_H_INCLUDED */

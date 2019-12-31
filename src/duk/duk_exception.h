@@ -4,16 +4,16 @@
  */
 
 #if !defined(DUK_EXCEPTION_H_INCLUDED)
-#define DUK_EXCEPTION_H_INCLUDED
+#  define DUK_EXCEPTION_H_INCLUDED
 
-#if defined(DUK_USE_CPP_EXCEPTIONS)
+#  if defined(DUK_USE_CPP_EXCEPTIONS)
 /* Internal exception used as a setjmp-longjmp replacement.  User code should
  * NEVER see or catch this exception, so it doesn't inherit from any base
  * class which should minimize the chance of user code accidentally catching
  * the exception.
  */
 class duk_internal_exception {
-	/* intentionally empty */
+  /* intentionally empty */
 };
 
 /* Fatal error, thrown as a specific C++ exception with C++ exceptions
@@ -23,8 +23,8 @@ class duk_internal_exception {
  */
 class duk_fatal_exception : public virtual std::runtime_error {
  public:
-	duk_fatal_exception(const char *message) : std::runtime_error(message) {}
+  duk_fatal_exception(const char* message) : std::runtime_error(message) {}
 };
-#endif
+#  endif
 
-#endif  /* DUK_EXCEPTION_H_INCLUDED */
+#endif /* DUK_EXCEPTION_H_INCLUDED */

@@ -9,16 +9,16 @@
  */
 
 #if !defined(DUK_JMPBUF_H_INCLUDED)
-#define DUK_JMPBUF_H_INCLUDED
+#  define DUK_JMPBUF_H_INCLUDED
 
-#if defined(DUK_USE_CPP_EXCEPTIONS)
+#  if defined(DUK_USE_CPP_EXCEPTIONS)
 struct duk_jmpbuf {
-	duk_small_int_t dummy;  /* unused */
+  duk_small_int_t dummy; /* unused */
 };
-#else
+#  else
 struct duk_jmpbuf {
-	DUK_JMPBUF_TYPE jb;
+  DUK_JMPBUF_TYPE jb;
 };
-#endif
+#  endif
 
-#endif  /* DUK_JMPBUF_H_INCLUDED */
+#endif /* DUK_JMPBUF_H_INCLUDED */
