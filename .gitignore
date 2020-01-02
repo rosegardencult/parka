@@ -27,6 +27,10 @@ build/
 /target
 **/*.rs.bk
 
+# Javascript
+node_modules/
+npm-debug.log*
+
 # C
 ## Prerequisites
 *.d
