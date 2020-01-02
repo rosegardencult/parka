@@ -6,15 +6,17 @@
  *  See: https://github.com/svaarala/duktape/pull/390.
  */
 
-(function () {
-    var err = new Error('test');
-    err.fileName = 999;
-    if (err.fileName !== 999) { return; }  // already non-writable
+(function() {
+  var err = new Error("test");
+  err.fileName = 999;
+  if (err.fileName !== 999) {
+    return;
+  } // already non-writable
 
-    var fn = new Function('');  // nop
-    Object.defineProperties(Error.prototype, {
-        fileName: { set: fn },
-        lineNumber: { set: fn },
-        stack: { set: fn }
-    });
+  var fn = new Function(""); // nop
+  Object.defineProperties(Error.prototype, {
+    fileName: { set: fn },
+    lineNumber: { set: fn },
+    stack: { set: fn }
+  });
 })();
