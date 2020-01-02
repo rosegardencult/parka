@@ -1774,6 +1774,7 @@ duk_components_to_time(duk_context* ctx, duk_time_components* comp);
  *
  * Must be in-sync with genbuiltins.py.
  */
+// clang-format off
 #  define DUK_DATE_IDX_YEAR 0  /* year */
 #  define DUK_DATE_IDX_MONTH 1 /* month: 0 to 11 */
 #  define DUK_DATE_IDX_DAY 2   /* day within month: 0 to 30 */
@@ -1781,8 +1782,7 @@ duk_components_to_time(duk_context* ctx, duk_time_components* comp);
 #  define DUK_DATE_IDX_MINUTE 4
 #  define DUK_DATE_IDX_SECOND 5
 #  define DUK_DATE_IDX_MILLISECOND 6
-#  define DUK_DATE_IDX_WEEKDAY 7 /* weekday: 0 to 6, 0=sunday, 1=monday, etc \
-                                  */
+#  define DUK_DATE_IDX_WEEKDAY 7 /* weekday: 0 to 6, 0=sunday, 1=monday, etc */
 #  define DUK_DATE_IDX_NUM_PARTS 8
 
 /* Internal API call flags, used for various functions in duk_bi_date.c.

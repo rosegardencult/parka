@@ -83,6 +83,7 @@
 
 typedef duk_uint32_t duk_instr_t;
 
+// clang-format off
 #  define DUK_BC_SHIFT_OP 0
 #  define DUK_BC_SHIFT_A 8
 #  define DUK_BC_SHIFT_B 16
@@ -301,16 +302,14 @@ typedef duk_uint32_t duk_instr_t;
 #  define DUK_OP_DELPROP_RC 118
 #  define DUK_OP_DELPROP_CC_UNUSED 119 /* unused now */
 #  define DUK_OP_PREINCR 120 /* pre/post opcode values have constraints, */
-#  define DUK_OP_PREDECR 121 /* see duk_js_executor.c and duk_js_compiler.c. \
-                              */
+#  define DUK_OP_PREDECR 121 /* see duk_js_executor.c and duk_js_compiler.c. */
 #  define DUK_OP_POSTINCR 122
 #  define DUK_OP_POSTDECR 123
 #  define DUK_OP_PREINCV 124
 #  define DUK_OP_PREDECV 125
 #  define DUK_OP_POSTINCV 126
 #  define DUK_OP_POSTDECV 127
-#  define DUK_OP_PREINCP \
-    128 /* pre/post inc/dec prop opcodes have constraints */
+#  define DUK_OP_PREINCP 128 /* pre/post inc/dec prop opcodes have constraints */
 #  define DUK_OP_PREINCP_RR 128
 #  define DUK_OP_PREINCP_CR 129
 #  define DUK_OP_PREINCP_RC 130
@@ -446,8 +445,7 @@ typedef duk_uint32_t duk_instr_t;
 #  define DUK_OP_UNUSED253 253
 #  define DUK_OP_UNUSED254 254
 #  define DUK_OP_UNUSED255 255
-#  define DUK_OP_NONE \
-    256 /* dummy value used as marker (doesn't fit in 8-bit field) */
+#  define DUK_OP_NONE 256 /* dummy value used as marker (doesn't fit in 8-bit field) */
 
 /* XXX: Allocate flags from opcode field?  Would take 16 opcode slots
  * but avoids shuffling in more cases.  Maybe not worth it.
@@ -475,5 +473,6 @@ typedef duk_uint32_t duk_instr_t;
 #  define DUK_BC_LDINT_BIAS (1L << 15)
 #  define DUK_BC_LDINTX_SHIFT 16
 #  define DUK_BC_JUMP_BIAS (1L << 23)
+// clang-format on
 
 #endif /* DUK_JS_BYTECODE_H_INCLUDED */

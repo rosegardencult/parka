@@ -149,10 +149,11 @@
 
 #    else /* DUK_USE_VARIADIC_MACROS */
 
-#      define DUK_DPRINT 0 &&  /* args go here as a comma expression in parens \
-                                */
+// clang-format off
+#      define DUK_DPRINT 0 && /* args go here as a comma expression in parens */
 #      define DUK_DDPRINT 0 && /* args */
 #      define DUK_DDDPRINT 0 && /* args */
+// clang-format on
 
 #    endif /* DUK_USE_VARIADIC_MACROS */
 

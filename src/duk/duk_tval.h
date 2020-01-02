@@ -271,8 +271,9 @@ typedef struct {
         } while (0)
 #    endif /* DUK_USE_FASTINT */
 
-#    define DUK_TVAL_SET_FASTINT(tv, i) DUK_TVAL_SET_I48((tv), (i)) /* alias \
-                                                                     */
+// clang-format off
+#    define DUK_TVAL_SET_FASTINT(tv, i) DUK_TVAL_SET_I48((tv), (i)) /* alias */
+// clang-format on
 
 #    define DUK_TVAL_SET_LIGHTFUNC(tv, fp, flags) \
       DUK__TVAL_SET_LIGHTFUNC((tv), (fp), (flags))
@@ -553,8 +554,9 @@ typedef struct {
         } while (0)
 #    endif /* DUK_USE_FASTINT */
 
-#    define DUK_TVAL_SET_FASTINT(tv, i) DUK_TVAL_SET_I48((tv), (i)) /* alias \
-                                                                     */
+// clang-format off
+#    define DUK_TVAL_SET_FASTINT(tv, i) DUK_TVAL_SET_I48((tv), (i)) /* alias */
+// clang-format on
 
 #    define DUK_TVAL_SET_POINTER(tv, hptr) \
       do {                                 \

@@ -615,9 +615,10 @@ struct duk_heap {
                                     on line change, function entry/exit) */
   duk_uint32_t dbg_pause_startline; /* starting line number for line change
                                        related pause behavior */
-  duk_breakpoint dbg_breakpoints[DUK_HEAP_MAX_BREAKPOINTS]; /* breakpoints:
-                                                               [0,breakpoint_count[
-                                                               gc reachable */
+  duk_breakpoint
+      dbg_breakpoints[DUK_HEAP_MAX_BREAKPOINTS]; /* breakpoints:
+                                                    [0,breakpoint_count[
+                                                    gc reachable */
   duk_small_uint_t dbg_breakpoint_count;
   duk_breakpoint* dbg_breakpoints_active[DUK_HEAP_MAX_BREAKPOINTS +
                                          1]; /* currently active breakpoints:
