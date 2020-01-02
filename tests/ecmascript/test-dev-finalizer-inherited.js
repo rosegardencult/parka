@@ -21,45 +21,45 @@ finalizer for prototype
 ===*/
 
 function Example(name) {
-  this.name = name;
+    this.name = name;
 }
-Duktape.fin(Example.prototype, function(obj) {
-  // Note: this also gets called for the prototype object when it is
-  // collected.
-  if (obj === Example.prototype) {
-    print("finalizer for prototype");
-  } else {
-    print("finalizer for name: " + obj.name);
-  }
+Duktape.fin(Example.prototype, function (obj) {
+    // Note: this also gets called for the prototype object when it is
+    // collected.
+    if (obj === Example.prototype) {
+        print('finalizer for prototype');
+    } else {
+        print('finalizer for name: ' + obj.name);
+    }
 });
-Example.prototype.printName = function() {
-  print("name: " + this.name);
-};
+Example.prototype.printName = function () {
+    print('name: ' + this.name);
+}
 
 function test() {
-  var ex1, ex2, ex3;
+    var ex1, ex2, ex3;
 
-  ex1 = new Example("example1");
-  ex2 = new Example("example2");
-  ex3 = new Example("example3");
+    ex1 = new Example('example1');
+    ex2 = new Example('example2');
+    ex3 = new Example('example3');
 
-  // A finalizer found earlier in the prototype chain overrides another
-  // higher in the chain (as usual).
-  Duktape.fin(ex3, function(obj) {
-    print("ex3 finalizer");
-  });
+    // A finalizer found earlier in the prototype chain overrides another
+    // higher in the chain (as usual).
+    Duktape.fin(ex3, function (obj) {
+        print('ex3 finalizer');
+    });
 
-  ex1.printName();
-  ex2.printName();
-  ex3.printName();
+    ex1.printName();
+    ex2.printName();
+    ex3.printName();
 
-  ex1 = null;
-  ex3 = null;
-  ex2 = null;
+    ex1 = null;
+    ex3 = null;
+    ex2 = null;
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

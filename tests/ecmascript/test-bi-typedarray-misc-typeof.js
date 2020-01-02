@@ -20,15 +20,15 @@ typeof test
 ===*/
 
 function typeofTest() {
-  var objs = getBufferTestObjectList();
-  objs.forEach(function(b) {
-    print(Object.prototype.toString.call(b), typeof b);
-  });
+    var objs = getBufferTestObjectList();
+    objs.forEach(function (b) {
+        print(Object.prototype.toString.call(b), typeof b);
+    });
 }
 
 try {
-  print("typeof test");
-  typeofTest();
+    print('typeof test');
+    typeofTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

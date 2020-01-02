@@ -149037,234 +149037,168 @@ TypeError
 ===*/
 
 function shorten(v) {
-  if (v === undefined) {
-    return "u";
-  }
-  if (v === null) {
-    return "n";
-  }
-  if (v === true) {
-    return "t";
-  }
-  if (v === false) {
-    return "f";
-  }
-  if (v === "function") {
-    return "fun";
-  }
-  return String(v);
+    if (v === undefined) { return 'u'; }
+    if (v === null) { return 'n'; }
+    if (v === true) { return 't'; }
+    if (v === false) { return 'f'; }
+    if (v === 'function') { return 'fun'; }
+    return String(v);
 }
 
 function getDescString(obj, prop) {
-  var pd = Object.getOwnPropertyDescriptor(obj, prop);
-  if (pd === undefined) {
-    return "und";
-  }
+    var pd = Object.getOwnPropertyDescriptor(obj, prop);
+    if (pd === undefined) {
+        return 'und';
+    }
 
-  // strip property name, attribute names to minimize output bytes
-  return (
-    "" +
-    shorten(pd.value) +
-    " " +
-    shorten(pd.writable) +
-    " " +
-    shorten(pd.enumerable) +
-    " " +
-    shorten(pd.configurable) +
-    " " +
-    (pd.get === undefined
-      ? shorten(undefined)
-      : pd.get.getterName !== undefined
-      ? pd.get.getterName
-      : shorten(pd.get)) +
-    " " +
-    (pd.set === undefined
-      ? shorten(undefined)
-      : pd.set.setterName !== undefined
-      ? pd.set.setterName
-      : shorten(pd.set))
-  );
+    // strip property name, attribute names to minimize output bytes
+    return '' + shorten(pd.value) +
+           ' ' + shorten(pd.writable) +
+           ' ' + shorten(pd.enumerable) +
+           ' ' + shorten(pd.configurable) +
+           ' ' + (pd.get === undefined ? shorten(undefined) :
+                     (pd.get.getterName !== undefined ? pd.get.getterName : shorten(pd.get))) +
+           ' ' + (pd.set === undefined ? shorten(undefined) :
+                     (pd.set.setterName !== undefined ? pd.set.setterName : shorten(pd.set)));
 }
 
 function runTestCases() {
-  var tests = [];
-  var getterCount = 0;
-  var setterCount = 0;
-  var ext, w, e, c, v, g, s, unk;
-  var i, j, t;
-  var num_comb;
-  var obj, desc;
+    var tests = [];
+    var getterCount = 0;
+    var setterCount = 0;
+    var ext, w, e, c, v, g, s, unk;
+    var i, j, t;
+    var num_comb;
+    var obj, desc;
 
-  function mkGet() {
-    var res = function() {};
-    getterCount++;
-    res.getterName = "get-" + getterCount;
-    return res;
-  }
-
-  function mkSet() {
-    var res = function() {};
-    setterCount++;
-    res.setterName = "set-" + setterCount;
-    return res;
-  }
-
-  function mkCreator(props) {
-    return function() {
-      return Object.create(Object.prototype, props);
-    };
-  }
-
-  // list of functions, which will create a fresh object when called
-  var objs = [
-    mkCreator({}),
-
-    mkCreator({
-      foo: { value: 1, writable: true, enumerable: true, configurable: true }
-    }),
-    mkCreator({
-      foo: { value: 1, writable: false, enumerable: true, configurable: true }
-    }),
-    mkCreator({
-      foo: { value: 1, writable: true, enumerable: false, configurable: true }
-    }),
-    mkCreator({
-      foo: { value: 1, writable: false, enumerable: false, configurable: true }
-    }),
-    mkCreator({
-      foo: { value: 1, writable: true, enumerable: true, configurable: false }
-    }),
-    mkCreator({
-      foo: { value: 1, writable: false, enumerable: true, configurable: false }
-    }),
-    mkCreator({
-      foo: { value: 1, writable: true, enumerable: false, configurable: false }
-    }),
-    mkCreator({
-      foo: { value: 1, writable: false, enumerable: false, configurable: false }
-    }),
-
-    mkCreator({
-      foo: { get: mkGet(), set: mkSet(), enumerable: true, configurable: true }
-    }),
-    mkCreator({
-      foo: { get: mkGet(), set: mkSet(), enumerable: false, configurable: true }
-    }),
-    mkCreator({
-      foo: { get: mkGet(), set: mkSet(), enumerable: true, configurable: false }
-    }),
-    mkCreator({
-      foo: {
-        get: mkGet(),
-        set: mkSet(),
-        enumerable: false,
-        configurable: false
-      }
-    })
-  ];
-
-  var descs = [];
-
-  num_comb =
-    2 /*ext*/ *
-    3 /*w*/ *
-    3 /*e*/ *
-    3 /*c*/ *
-    4 /*v*/ *
-    3 /*g*/ *
-    3 /*s*/ *
-    2 /*unk*/;
-
-  print("testing " + objs.length * num_comb + " combinations");
-
-  for (i = 0; i < objs.length; i++) {
-    // for each possible object state, generate each possible descriptor state
-    // (including invalid combinations).
-
-    for (j = 0; j < num_comb; j++) {
-      t = j;
-      ext = t % 2;
-      t = Math.floor(t / 2);
-      w = t % 3;
-      t = Math.floor(t / 3);
-      e = t % 3;
-      t = Math.floor(t / 3);
-      c = t % 3;
-      t = Math.floor(t / 3);
-      v = t % 4;
-      t = Math.floor(t / 4);
-      g = t % 3;
-      t = Math.floor(t / 3);
-      s = t % 3;
-      t = Math.floor(t / 3);
-      unk = t % 2;
-      t = Math.floor(t / 2);
-
-      //print(i, ext, w, e, c, v, g, s, unk);
-
-      obj = objs[i]();
-
-      if (ext === 0) {
-        Object.seal(obj);
-      }
-
-      desc = {};
-
-      if (w === 0) {
-        desc.writable = false;
-      } else if (w === 1) {
-        desc.writable = true;
-      }
-
-      if (e === 0) {
-        desc.enumerable = false;
-      } else if (e === 1) {
-        desc.enumerable = true;
-      }
-
-      if (c === 0) {
-        desc.configurable = false;
-      } else if (c === 1) {
-        desc.configurable = true;
-      }
-
-      if (v === 0) {
-        desc.value = undefined;
-      } else if (v === 1) {
-        desc.value = 2;
-      } else if (v === 2) {
-        desc.value = "foo";
-      }
-
-      if (g === 0) {
-        desc.get = "invalid";
-      } else if (g === 1) {
-        desc.get = mkGet();
-      }
-
-      if (s === 0) {
-        desc.set = "invalid";
-      } else if (s === 1) {
-        desc.set = mkSet();
-      }
-
-      if (unk === 0) {
-        desc.unknown = "unknown property";
-      }
-
-      print(i, j, getDescString(obj, "foo"));
-      try {
-        Object.defineProperty(obj, "foo", desc);
-      } catch (e) {
-        print(e.name);
-      }
-      print(i, j, getDescString(obj, "foo"));
+    function mkGet() {
+        var res = function() {};
+        getterCount++;
+        res.getterName = 'get-' + getterCount;
+        return res;
     }
-  }
+
+    function mkSet() {
+        var res = function() {};
+        setterCount++;
+        res.setterName = 'set-' + setterCount;
+        return res;
+    }
+
+    function mkCreator(props) {
+        return function() {
+            return Object.create(Object.prototype, props);
+        };
+    }
+
+    // list of functions, which will create a fresh object when called
+    var objs = [
+        mkCreator({
+        }),
+
+        mkCreator({
+            foo: { value: 1, writable: true, enumerable: true, configurable: true }
+        }),
+        mkCreator({
+            foo: { value: 1, writable: false, enumerable: true, configurable: true }
+        }),
+        mkCreator({
+            foo: { value: 1, writable: true, enumerable: false, configurable: true }
+        }),
+        mkCreator({
+            foo: { value: 1, writable: false, enumerable: false, configurable: true }
+        }),
+        mkCreator({
+            foo: { value: 1, writable: true, enumerable: true, configurable: false }
+        }),
+        mkCreator({
+            foo: { value: 1, writable: false, enumerable: true, configurable: false }
+        }),
+        mkCreator({
+            foo: { value: 1, writable: true, enumerable: false, configurable: false }
+        }),
+        mkCreator({
+            foo: { value: 1, writable: false, enumerable: false, configurable: false }
+        }),
+
+        mkCreator({
+            foo: { get: mkGet(), set: mkSet(), enumerable: true, configurable: true }
+        }),
+        mkCreator({
+            foo: { get: mkGet(), set: mkSet(), enumerable: false, configurable: true }
+        }),
+        mkCreator({
+            foo: { get: mkGet(), set: mkSet(), enumerable: true, configurable: false }
+        }),
+        mkCreator({
+            foo: { get: mkGet(), set: mkSet(), enumerable: false, configurable: false }
+        }),
+    ];
+
+    var descs = [];
+
+    num_comb = 2 /*ext*/ * 3 /*w*/ * 3 /*e*/ * 3 /*c*/ *
+               4 /*v*/ * 3 /*g*/ * 3 /*s*/ * 2 /*unk*/;
+
+    print('testing ' + (objs.length * num_comb) + ' combinations');
+
+    for (i = 0; i < objs.length; i++) {
+        // for each possible object state, generate each possible descriptor state
+        // (including invalid combinations).
+
+        for (j = 0; j < num_comb; j++) {
+            t = j;
+            ext = t % 2; t = Math.floor(t / 2);
+            w = t % 3; t = Math.floor(t / 3);
+            e = t % 3; t = Math.floor(t / 3);
+            c = t % 3; t = Math.floor(t / 3);
+            v = t % 4; t = Math.floor(t / 4);
+            g = t % 3; t = Math.floor(t / 3);
+            s = t % 3; t = Math.floor(t / 3);
+            unk = t % 2; t = Math.floor(t / 2);
+
+            //print(i, ext, w, e, c, v, g, s, unk);
+
+            obj = objs[i]();
+
+            if (ext === 0) { Object.seal(obj); }
+
+            desc = {};
+
+            if (w === 0) { desc.writable = false; }
+            else if (w === 1) { desc.writable = true; }
+
+            if (e === 0) { desc.enumerable = false; }
+            else if (e === 1) { desc.enumerable = true; }
+
+            if (c === 0) { desc.configurable = false; }
+            else if (c === 1) { desc.configurable = true; }
+
+            if (v === 0) { desc.value = undefined; }
+            else if (v === 1) { desc.value = 2; }
+            else if (v === 2) { desc.value = 'foo'; }
+
+            if (g === 0) { desc.get = 'invalid'; }
+            else if (g === 1) { desc.get = mkGet(); }
+
+            if (s === 0) { desc.set = 'invalid'; }
+            else if (s === 1) { desc.set = mkSet(); }
+
+            if (unk === 0) { desc.unknown = 'unknown property'; }
+
+            print(i, j, getDescString(obj, 'foo'));
+            try {
+                Object.defineProperty(obj, 'foo', desc);
+            } catch (e) {
+                print(e.name);
+            }
+            print(i, j, getDescString(obj, 'foo'));
+        }
+    }
 }
 
 try {
-  runTestCases();
+    runTestCases();
 } catch (e) {
-  print(e);
+    print(e);
 }

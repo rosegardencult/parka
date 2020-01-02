@@ -112,119 +112,104 @@ TypeError
 ===*/
 
 function argPolicyTest() {
-  [
-    { foo: "bar" },
-    [8, 1, 2], // Note: Arrays are objects.
-    function() {}, // As are functions.
-    9000.5,
-    "Oozaru",
-    null,
-    undefined
-  ].forEach(function(value) {
-    print(Object.prototype.toString.call(value));
-    try {
-      print(Reflect.apply(value, {}, []));
-    } catch (e) {
-      print(e.name);
-    }
-    try {
-      print(Reflect.construct(value, []));
-    } catch (e) {
-      print(e.name);
-    }
-    try {
-      print(Reflect.defineProperty(value, "test", { value: 812 }));
-    } catch (e) {
-      print(e.name);
-    }
-    try {
-      print(Reflect.deleteProperty(value, "foo"));
-    } catch (e) {
-      print(e.name);
-    }
-    try {
-      print(Reflect.get(value, "test"));
-    } catch (e) {
-      print(e.name);
-    }
-    try {
-      print(Reflect.getOwnPropertyDescriptor(value, "test"));
-    } catch (e) {
-      print(e.name);
-    }
-    try {
-      print(Reflect.getPrototypeOf(value));
-    } catch (e) {
-      print(e.name);
-    }
-    try {
-      print(Reflect.has(value, "foo"));
-    } catch (e) {
-      print(e.name);
-    }
-    try {
-      print(Reflect.isExtensible(value));
-    } catch (e) {
-      print(e.name);
-    }
-    try {
-      print(Reflect.ownKeys(value));
-    } catch (e) {
-      print(e.name);
-    }
-    try {
-      print(Reflect.preventExtensions(value));
-    } catch (e) {
-      print(e.name);
-    }
-    try {
-      print(Reflect.set(value, "fail", "epic fail"));
-    } catch (e) {
-      print(e.name);
-    }
-    try {
-      print(Reflect.setPrototypeOf(value, null));
-    } catch (e) {
-      print(e.name);
-    }
-  });
-
-  // Construct must check that first argument is constructable before
-  // processing the arguments object.
-  var nonConstructable = Math.cos; // built-in which is callable but not constructable
-  try {
-    var argObject = {};
-    Object.defineProperties(argObject, {
-      length: { value: 3 },
-      0: {
-        get: function() {
-          print("get 0");
-          return "foo";
+    [
+        { foo: "bar" },
+        [ 8, 1, 2 ],   // Note: Arrays are objects.
+        function(){},  // As are functions.
+        9000.5,
+        "Oozaru",
+        null,
+        undefined
+    ].forEach(function(value) {
+        print(Object.prototype.toString.call(value));
+        try {
+            print(Reflect.apply(value, {}, []));
+        } catch (e) {
+            print(e.name);
         }
-      },
-      1: {
-        get: function() {
-          print("get 1");
-          return "bar";
+        try {
+            print(Reflect.construct(value, []));
+        } catch (e) {
+            print(e.name);
         }
-      },
-      2: {
-        get: function() {
-          print("get 2");
-          return "quux";
+        try {
+            print(Reflect.defineProperty(value, 'test', { value: 812 }));
+        } catch (e) {
+            print(e.name);
         }
-      }
+        try {
+            print(Reflect.deleteProperty(value, 'foo'));
+        } catch (e) {
+            print(e.name);
+        }
+        try {
+            print(Reflect.get(value, 'test'));
+        } catch (e) {
+            print(e.name);
+        }
+        try {
+            print(Reflect.getOwnPropertyDescriptor(value, 'test'));
+        } catch (e) {
+            print(e.name);
+        }
+        try {
+            print(Reflect.getPrototypeOf(value));
+        } catch (e) {
+            print(e.name);
+        }
+        try {
+            print(Reflect.has(value, 'foo'));
+        } catch (e) {
+            print(e.name);
+        }
+        try {
+            print(Reflect.isExtensible(value));
+        } catch (e) {
+            print(e.name);
+        }
+        try {
+            print(Reflect.ownKeys(value));
+        } catch (e) {
+            print(e.name);
+        }
+        try {
+            print(Reflect.preventExtensions(value));
+        } catch (e) {
+            print(e.name);
+        }
+        try {
+            print(Reflect.set(value, 'fail', "epic fail"));
+        } catch (e) {
+            print(e.name);
+        }
+        try {
+            print(Reflect.setPrototypeOf(value, null));
+        } catch (e) {
+            print(e.name);
+        }
     });
-    Reflect.construct(nonConstructable, argObject);
-    print("never here");
-  } catch (e) {
-    //print(e.stack);
-    print(e.name);
-  }
+
+    // Construct must check that first argument is constructable before
+    // processing the arguments object.
+    var nonConstructable = Math.cos;  // built-in which is callable but not constructable
+    try {
+        var argObject = {};
+        Object.defineProperties(argObject, {
+            length: { value: 3 },
+            0: { get: function () { print('get 0'); return 'foo'; } },
+            1: { get: function () { print('get 1'); return 'bar'; } },
+            2: { get: function () { print('get 2'); return 'quux'; } }
+        })
+        Reflect.construct(nonConstructable, argObject);
+        print('never here');
+    } catch (e) {
+        //print(e.stack);
+        print(e.name);
+    }
 }
 
 try {
-  argPolicyTest();
+    argPolicyTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

@@ -15,15 +15,15 @@
 /* Normal intended use. */
 
 function constBasicTest() {
-  const x = 123;
-  var y = 234;
-  print(x, y, x + y);
+    const x = 123;
+    var y = 234;
+    print(x, y, x + y);
 }
 
 try {
-  constBasicTest();
+    constBasicTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -35,16 +35,16 @@ try {
  */
 
 function constWriteTest() {
-  const x = 123;
-  var y = 234;
-  x = 1000;
-  print(x, y, x + y);
+    const x = 123;
+    var y = 234;
+    x = 1000;
+    print(x, y, x + y);
 }
 
 try {
-  constWriteTest();
+    constWriteTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -56,17 +56,17 @@ SyntaxError
  */
 
 function noConstInitializerTest() {
-  try {
-    eval("(function test() { const x; print(x); })")();
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        eval('(function test() { const x; print(x); })')();
+    } catch (e) {
+        print(e.name);
+    }
 }
 
 try {
-  noConstInitializerTest();
+    noConstInitializerTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -78,15 +78,15 @@ try {
  */
 
 function redeclareConstAsVarTest() {
-  try {
-    eval("(function test() { const x = 123; var x = 234; print(x); })")();
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        eval('(function test() { const x = 123; var x = 234; print(x); })')();
+    } catch (e) {
+        print(e.name);
+    }
 }
 
 try {
-  redeclareConstAsVarTest();
+    redeclareConstAsVarTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

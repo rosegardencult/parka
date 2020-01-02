@@ -23,9 +23,9 @@ printExact(Math.max(123));
 printExact(Math.max(+0));
 printExact(Math.max(-0));
 
-printExact(Math.max()); // -> -Infinity (!)
-printExact(Math.max(1, 2, NaN, 4));
+printExact(Math.max());  // -> -Infinity (!)
+printExact(Math.max(1,2,NaN,4));
 
-printExact(Math.max(+0, -0)); // -> +0
+printExact(Math.max(+0, -0));  // -> +0
 
-printExact(Math.max(-0, +0)); // -> +0
+printExact(Math.max(-0, +0));  // -> +0

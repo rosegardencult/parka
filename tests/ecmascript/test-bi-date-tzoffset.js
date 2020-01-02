@@ -13,66 +13,44 @@ no output expected
  */
 
 function test(tv) {
-  var d = new Date(tv);
-  var t;
+    var d = new Date(tv);
+    var t;
 
-  t = d.getTimezoneOffset();
+    t = d.getTimezoneOffset();
 
-  function err(msg) {
-    print(
-      "timevalue " +
-        tv +
-        ": " +
-        msg +
-        " (typeof t=" +
-        typeof t +
-        ", t=" +
-        t +
-        ")"
-    );
-  }
+    function err(msg) {
+        print('timevalue ' + tv + ': ' + msg +
+              ' (typeof t=' + typeof t + ', t=' + t + ')');
+    }
 
-  if (typeof t !== "number") {
-    return err("invalid return type");
-  }
-  if (t !== Math.floor(t)) {
-    return err("offset not a whole number");
-  }
-  if (!(t >= -12 * 60 && t <= 12 * 60)) {
-    return err("offset not within expected +/- 12h range");
-  }
+    if (typeof t !== 'number') {
+        return err('invalid return type');
+    }
+    if (t !== Math.floor(t)) {
+        return err('offset not a whole number');
+    }
+    if (!(t >= -12 * 60 && t <= 12 * 60)) {
+        return err('offset not within expected +/- 12h range');
+    }
 }
 
 var years = [
-  1969,
-  1970,
-  1980,
-  1990,
-  2000,
-  2010,
-  2020,
-  2030,
-  2037,
-  2038,
-  2039,
-  -250000,
-  -100000,
-  100000,
-  250000
+    1969, 1970, 1980, 1990, 2000, 2010, 2020, 2030, 2037, 2038, 2039,
+    -250000, -100000, 100000, 250000
 ];
 
 var i;
 
-print("no output expected");
+print('no output expected');
 
 try {
-  test(Date.now());
+    test(Date.now());
 
-  for (i = 0; i < years.length; i++) {
-    // Test January and July to get any DST effects
-    test(Date.UTC(years[i], 0, 1, 0, 0, 0, 0));
-    test(Date.UTC(years[i], 6, 1, 0, 0, 0, 0));
-  }
+    for (i = 0; i < years.length; i++) {
+        // Test January and July to get any DST effects
+        test(Date.UTC(years[i], 0, 1, 0, 0, 0, 0));
+        test(Date.UTC(years[i], 6, 1, 0, 0, 0, 0));
+    }
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

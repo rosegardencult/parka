@@ -15,12 +15,12 @@ barfoo
  */
 
 try {
-  print("foo\
+    print("foo\
 bar");
-  print("bar\
-foo");
+    print('bar\
+foo');
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -41,30 +41,11 @@ should not be modified
  * ignored in non-strict mode and a TypeError in strict mode.)
  */
 
-var func = "should not be modified";
-var immutable1 = function func() {
-  print("imm1");
-  print(typeof func);
-  func = 123;
-  print(typeof func);
-};
-var immutable2 = function func() {
-  "use strict";
-  print("imm2");
-  print(typeof func);
-  func = 123;
-  print(typeof func);
-};
-try {
-  immutable1();
-} catch (e) {
-  print(e);
-}
-try {
-  immutable2();
-} catch (e) {
-  print(e.name);
-}
+var func = 'should not be modified';
+var immutable1 = function func() { print('imm1'); print(typeof func); func = 123; print(typeof func); }
+var immutable2 = function func() { 'use strict'; print('imm2'); print(typeof func); func = 123; print(typeof func); }
+try { immutable1(); } catch(e) { print(e); }
+try { immutable2(); } catch(e) { print(e.name); }
 print(func);
 
 /*===
@@ -104,26 +85,26 @@ for 2nd
  */
 
 function forToBooleanTest() {
-  var i;
+    var i;
 
-  // 0 is 'falsy' and terminates loop
-  print("for 1st");
-  for (i = 0; 0; i++) {
-    print("never here");
-    break; // in case we are, break out
-  }
+    // 0 is 'falsy' and terminates loop
+    print('for 1st');
+    for (i = 0; 0; i++) {
+        print('never here');
+        break;  // in case we are, break out
+    }
 
-  print("for 2nd");
-  for (var j = 0; 0; j++) {
-    print("never here");
-    break;
-  }
+    print('for 2nd');
+    for (var j = 0; 0; j++) {
+        print('never here');
+        break;
+    }
 }
 
 try {
-  forToBooleanTest();
+    forToBooleanTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -155,27 +136,27 @@ undefined
 
 /* break/continue tests are simply syntax tests */
 try {
-  print("switch-break");
-  print(eval("(function() { switch(123) { case 123: break\n; }; })()"));
+    print('switch-break');
+    print(eval('(function() { switch(123) { case 123: break\n; }; })()'));
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 try {
-  print("for-continue");
-  print(eval("(function() { for (;;) { break; continue\n; } })()"));
+    print('for-continue');
+   print(eval('(function() { for (;;) { break; continue\n; } })()'));
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 try {
-  /* if 'return\n;' is parsed as 'return; ;' it would make the if-statement
-   * invalid, so this is a more useful test.
-   */
-  print("function-return");
-  print(eval("(function() { if (true) return\n;else return 234 })()"));
+    /* if 'return\n;' is parsed as 'return; ;' it would make the if-statement
+     * invalid, so this is a more useful test.
+     */
+    print('function-return');
+    print(eval('(function() { if (true) return\n;else return 234 })()'));
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -198,10 +179,10 @@ NaN
  */
 
 try {
-  print(parseInt(""));
-  print(parseInt("    "));
+    print(parseInt(''));
+    print(parseInt('    '));
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -216,10 +197,10 @@ NaN
  */
 
 try {
-  print(parseFloat(""));
-  print(parseFloat("    "));
+    print(parseFloat(''));
+    print(parseFloat('    '));
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -238,10 +219,10 @@ try {
  */
 
 try {
-  print(decodeURI("%23%5B%5D%21%27%28%29%2A"));
-  print(encodeURI("#[]!'()*"));
+    print(decodeURI("%23%5B%5D%21%27%28%29%2A"));
+    print(encodeURI("#[]!'()*"));
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -261,16 +242,8 @@ try {
  * modified to maintain compatibility with such code. New steps 1 and 2 added to the algorithm.
  */
 
-try {
-  print(Object.prototype.toString.call(undefined));
-} catch (e) {
-  print(e);
-}
-try {
-  print(Object.prototype.toString.call(null));
-} catch (e) {
-  print(e);
-}
+try { print(Object.prototype.toString.call(undefined)); } catch (e) { print(e); }
+try { print(Object.prototype.toString.call(null)); } catch (e) { print(e); }
 
 /*===
 apply: mythis foo bar quux
@@ -290,66 +263,20 @@ apply: mythis foo undefined undefined
  * 0 instead of causing a TypeError.)
  */
 
-function applyTest(x, y, z) {
-  print("apply:", this, x, y, z);
-}
+function applyTest(x,y,z) { print('apply:', this, x, y, z); }
 
-try {
-  applyTest.apply("mythis", ["foo", "bar", "quux"]);
-} catch (e) {
-  print(e);
-}
+try { applyTest.apply('mythis', [ 'foo', 'bar', 'quux' ]) } catch (e) { print(e); }
 
 // no length -> 0
-try {
-  applyTest.apply("mythis", { "0": "foo", "1": "bar", "2": "quux" });
-} catch (e) {
-  print(e);
-}
+try { applyTest.apply('mythis', { "0": 'foo', "1": 'bar', "2": 'quux' }) } catch (e) { print(e); }
 
 // undefined or null length -> 0
-try {
-  applyTest.apply("mythis", {
-    "0": "foo",
-    "1": "bar",
-    "2": "quux",
-    length: undefined
-  });
-} catch (e) {
-  print(e);
-}
-try {
-  applyTest.apply("mythis", {
-    "0": "foo",
-    "1": "bar",
-    "2": "quux",
-    length: null
-  });
-} catch (e) {
-  print(e);
-}
+try { applyTest.apply('mythis', { "0": 'foo', "1": 'bar', "2": 'quux', "length": undefined }) } catch (e) { print(e); }
+try { applyTest.apply('mythis', { "0": 'foo', "1": 'bar', "2": 'quux', "length": null }) } catch (e) { print(e); }
 
 // already required by E5, false->0, true->1
-try {
-  applyTest.apply("mythis", {
-    "0": "foo",
-    "1": "bar",
-    "2": "quux",
-    length: false
-  });
-} catch (e) {
-  print(e);
-}
-try {
-  applyTest.apply("mythis", {
-    "0": "foo",
-    "1": "bar",
-    "2": "quux",
-    length: true
-  });
-} catch (e) {
-  print(e);
-}
+try { applyTest.apply('mythis', { "0": 'foo', "1": 'bar', "2": 'quux', "length": false }) } catch (e) { print(e); }
+try { applyTest.apply('mythis', { "0": 'foo', "1": 'bar', "2": 'quux', "length": true }) } catch (e) { print(e); }
 
 /*===
 ===*/
@@ -379,13 +306,10 @@ undefined
 /* 15.4.4.18: In step 9 of the algorithm, undefined is now the specified return value. */
 
 try {
-  print(
-    [1, 2, 3].forEach(function(x) {
-      print("forEach:", x);
-    })
-  );
+    print([1,2,3].forEach(function(x) { print('forEach:', x); }));
+
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -408,29 +332,25 @@ reduceRight this: undefined undefined
  */
 
 try {
-  print(
-    [1, 2, 3].reduce(function(accumulator, kValue, k, O) {
-      "use strict";
-      print("reduce:", accumulator, kValue, k, O);
-      print("reduce this:", typeof this, this);
-      return accumulator + kValue; // sum
-    })
-  );
+    print([1,2,3].reduce(function(accumulator, kValue, k, O) {
+        'use strict';
+        print('reduce:', accumulator, kValue, k, O);
+        print('reduce this:', typeof this, this);
+        return accumulator + kValue;  // sum
+    }));
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 try {
-  print(
-    [1, 2, 3].reduceRight(function(accumulator, kValue, k, O) {
-      "use strict";
-      print("reduceRight:", accumulator, kValue, k, O);
-      print("reduceRight this:", typeof this, this);
-      return accumulator + kValue; // sum
-    })
-  );
+    print([1,2,3].reduceRight(function(accumulator, kValue, k, O) {
+        'use strict';
+        print('reduceRight:', accumulator, kValue, k, O);
+        print('reduceRight this:', typeof this, this);
+        return accumulator + kValue;  // sum
+    }));
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -532,19 +452,19 @@ undefined
  */
 
 function errMessageTest1() {
-  var e1 = new Error("foo");
-  var e2 = new Error("");
-  var e3 = new Error();
-  print(typeof Object.getOwnPropertyDescriptor(e1, "message"));
-  print(typeof Object.getOwnPropertyDescriptor(e2, "message"));
-  print(typeof Object.getOwnPropertyDescriptor(e3, "message"));
-  print(JSON.stringify(e3.message));
+    var e1 = new Error('foo');
+    var e2 = new Error('');
+    var e3 = new Error();
+    print(typeof Object.getOwnPropertyDescriptor(e1, 'message'));
+    print(typeof Object.getOwnPropertyDescriptor(e2, 'message'));
+    print(typeof Object.getOwnPropertyDescriptor(e3, 'message'));
+    print(JSON.stringify(e3.message));
 }
 
 try {
-  errMessageTest1();
+    errMessageTest1();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -555,16 +475,16 @@ try {
 /* 15.11.4.4: Steps 6-10 modified/added to correctly deal with missing or empty message property value. */
 
 function errMessageTest2() {
-  var e1 = new Error();
-  var e2 = new Error("");
-  print(JSON.stringify(e1.toString()));
-  print(JSON.stringify(e2.toString()));
+    var e1 = new Error();
+    var e2 = new Error('');
+    print(JSON.stringify(e1.toString()));
+    print(JSON.stringify(e2.toString()));
 }
 
 try {
-  errMessageTest2();
+    errMessageTest2();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===

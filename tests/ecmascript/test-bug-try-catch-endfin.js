@@ -35,79 +35,77 @@ finally
  */
 
 function test1a() {
-  try {
-    print("try");
-    return 123;
-  } catch (e) {
-    print("catch");
-  } finally {
-    print("finally");
-  }
+    try {
+        print('try');
+        return 123;
+    } catch (e) {
+        print('catch');
+    } finally {
+        print('finally');
+    }
 }
 
 function test1b() {
-  try {
-    print("try");
-    throw new Error("error");
-  } catch (e) {
-    print("catch");
-  } finally {
-    print("finally");
-  }
+    try {
+        print('try');
+        throw new Error('error');
+    } catch (e) {
+        print('catch');
+    } finally {
+        print('finally');
+    }
 }
 
 function test2a() {
-  try {
-    print("try");
-  } catch (e) {
-    print("catch");
-    return 234;
-  } finally {
-    print("finally");
-  }
+    try {
+        print('try');
+    } catch (e) {
+        print('catch');
+        return 234;
+    } finally {
+        print('finally');
+    }
 }
 
 function test2b() {
-  try {
-    print("try");
-    throw new Error("error");
-  } catch (e) {
-    print("catch");
-    return 234;
-  } finally {
-    print("finally");
-  }
+    try {
+        print('try');
+        throw new Error('error');
+    } catch (e) {
+        print('catch');
+        return 234;
+    } finally {
+        print('finally');
+    }
 }
 
 function test3a() {
-  try {
-    print("try");
-  } catch (e) {
-    print("catch");
-  } finally {
-    print("finally");
-    return 345;
-  }
+    try {
+        print('try');
+    } catch (e) {
+        print('catch');
+    } finally {
+        print('finally');
+        return 345;
+    }
 }
 
 function test3b() {
-  try {
-    print("try");
-  } catch (e) {
-    print("catch");
-  } finally {
-    print("finally");
-    return 345;
-  }
+    try {
+        print('try');
+    } catch (e) {
+        print('catch');
+    } finally {
+        print('finally');
+        return 345;
+    }
 }
 
-["test1a", "test1b", "test2a", "test2b", "test3a", "test3b"].forEach(function(
-  name
-) {
-  print(name);
-  try {
-    print(this[name]());
-  } catch (e) {
-    print(e);
-  }
+[ 'test1a', 'test1b', 'test2a', 'test2b', 'test3a', 'test3b' ].forEach(function (name) {
+    print(name);
+    try {
+        print(this[name]());
+    } catch (e) {
+        print(e);
+    }
 });

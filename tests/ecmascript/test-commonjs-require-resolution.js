@@ -72,121 +72,117 @@ Duktape.modSearch www
 ===*/
 
 function basicResolutionTest() {
-  function globalTest(id) {
-    var mod;
+    function globalTest(id) {
+        var mod;
 
-    try {
-      mod = require(id);
-      print("global require: " + id + " -> " + mod.name);
-    } catch (e) {
-      print("global require: " + id + " -> " + e.name);
+        try {
+            mod = require(id);
+            print('global require: ' + id + ' -> ' + mod.name);
+        } catch (e) {
+            print('global require: ' + id + ' -> ' + e.name);
+        }
     }
-  }
 
-  var moduleSources = {
-    "foo/mod1": "exports.name='foo/mod1';",
-    "foo/mod2": "exports.name='foo/mod2';",
-    "bar/mod1": "exports.name='bar/mod1';",
-    "bar/a": "exports.name='bar/a';",
-    "bar/a/b": "exports.name='bar/a/b';",
-    quux: "exports.name='quux';"
-  };
-  Duktape.modSearch = function(id) {
-    var ret;
+    var moduleSources = {
+        "foo/mod1": "exports.name='foo/mod1';",
+        "foo/mod2": "exports.name='foo/mod2';",
+        "bar/mod1": "exports.name='bar/mod1';",
+        "bar/a": "exports.name='bar/a';",
+        "bar/a/b": "exports.name='bar/a/b';",
+        "quux": "exports.name='quux';",
+    };
+    Duktape.modSearch = function (id) {
+        var ret;
 
-    // The identifier given to modSearch() is a resolved absolute identifier
-    print("Duktape.modSearch", id);
-    ret = moduleSources[id];
-    if (ret) {
-      return ret;
+        // The identifier given to modSearch() is a resolved absolute identifier
+        print('Duktape.modSearch', id);
+        ret = moduleSources[id];
+        if (ret) { return ret; }
+        throw new Error('cannot find module: ' + id);
     }
-    throw new Error("cannot find module: " + id);
-  };
 
-  /*
-   *  Global require() tests - because of the internal implementation
-   *  this also covers most of the relative module resolution cases.
-   */
+    /*
+     *  Global require() tests - because of the internal implementation
+     *  this also covers most of the relative module resolution cases.
+     */
 
-  // all of these resolve to 'foo/mod1'
-  globalTest("foo/mod1");
-  globalTest("foo//mod1");
-  globalTest("foo/./mod1");
-  globalTest("foo//.//mod1");
-  globalTest("./foo/./mod1");
-  globalTest("./foo/././/.///./////////////mod1");
-  globalTest("./foo/../foo/mod1");
+    // all of these resolve to 'foo/mod1'
+    globalTest('foo/mod1');
+    globalTest('foo//mod1');
+    globalTest('foo/./mod1');
+    globalTest('foo//.//mod1');
+    globalTest('./foo/./mod1');
+    globalTest('./foo/././/.///./////////////mod1');
+    globalTest('./foo/../foo/mod1');
 
-  // 'a' is both a module name and a "directory"
-  globalTest("bar/a");
-  globalTest("bar/a/"); // error: trailing slash
-  globalTest("bar/a/b");
+    // 'a' is both a module name and a "directory"
+    globalTest('bar/a');
+    globalTest('bar/a/');  // error: trailing slash
+    globalTest('bar/a/b');
 
-  // error when '..' cannot backtrack terms
-  globalTest("../bar");
-  globalTest("foo/../../bar");
-  globalTest("..");
+    // error when '..' cannot backtrack terms
+    globalTest('../bar');
+    globalTest('foo/../../bar');
+    globalTest('..');
 
-  // error when id begins with a slash (empty initial term)
-  globalTest("/foo/mod1");
+    // error when id begins with a slash (empty initial term)
+    globalTest('/foo/mod1');
 
-  // error when id ends with a slash (empty final term)
-  globalTest("foo/mod1/");
+    // error when id ends with a slash (empty final term)
+    globalTest('foo/mod1/');
 
-  // error when a term begins with a period (this is Duktape specific
-  // but CommonJS modules is even more strict)
-  globalTest("foo/.bar");
-  globalTest("foo/.../bar");
+    // error when a term begins with a period (this is Duktape specific
+    // but CommonJS modules is even more strict)
+    globalTest('foo/.bar');
+    globalTest('foo/.../bar');
 
-  // error when an ID ends with a '.' or '..' term
-  globalTest("foo/mod1/.");
-  globalTest("foo/mod1/..");
+    // error when an ID ends with a '.' or '..' term
+    globalTest('foo/mod1/.');
+    globalTest('foo/mod1/..');
 
-  /*
-   *  Require from inside a module, both relative and absolute paths.
-   */
+    /*
+     *  Require from inside a module, both relative and absolute paths.
+     */
 
-  Duktape.modSearch = function(id) {
-    print("Duktape.modSearch", id);
-    if (id === "baz") {
-      return (
-        'require("xxx");\n' + // absolute
-        'require("./xxy");\n' + // relative
-        'require("./xxx/yyy");\n' // relative
-      );
-    }
-    return ""; // return a fake empty module
-  };
+    Duktape.modSearch = function (id) {
+        print('Duktape.modSearch', id);
+        if (id === 'baz') {
+            return 'require("xxx");\n' +           // absolute
+                   'require("./xxy");\n' +         // relative
+                   'require("./xxx/yyy");\n'       // relative
+                   ;
+        }
+        return '';   // return a fake empty module
+    };
 
-  void require("baz");
+    void require('baz');
 
-  /*
-   *  Require from inside a module with a few more path components.
-   */
+    /*
+     *  Require from inside a module with a few more path components.
+     */
 
-  Duktape.modSearch = function(id) {
-    print("Duktape.modSearch", id);
-    if (id === "quux/foo") {
-      return (
-        'require("xxz");\n' + // absolute
-        'require("./xxw");\n' + // relative
-        'require("./xxw/yyy");\n' + // relative
-        'require("../zzz");\n' + // relative
-        'require("././../www");\n'
-      );
-    }
-    return ""; // return a fake empty module
-  };
+    Duktape.modSearch = function (id) {
+        print('Duktape.modSearch', id);
+        if (id === 'quux/foo') {
+            return 'require("xxz");\n' +           // absolute
+                   'require("./xxw");\n' +         // relative
+                   'require("./xxw/yyy");\n' +     // relative
+                   'require("../zzz");\n' +        // relative
+                   'require("././../www");\n'
+                   ;
+        }
+        return '';   // return a fake empty module
+    };
 
-  void require("quux/foo");
+    void require('quux/foo');
 }
 
-print("basic resolution");
+print('basic resolution');
 
 try {
-  basicResolutionTest();
+    basicResolutionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -207,36 +203,38 @@ Duktape.modSearch: "foo\u1234\x01/\u1234"
  */
 
 function nonAsciiTest() {
-  Duktape.modSearch = function(id) {
-    print("Duktape.modSearch:", Duktape.enc("jx", id));
-    throw Error("module not found");
-  };
+    Duktape.modSearch = function (id) {
+        print('Duktape.modSearch:', Duktape.enc('jx', id));
+        throw Error('module not found');
+    };
 
-  function test(id) {
-    try {
-      void require(id);
-      print("never here");
-    } catch (e) {}
-  }
+    function test(id) {
+        try {
+            void require(id);
+            print('never here');
+        } catch (e) {
+            ;
+        }
+    }
 
-  // a few basics
-  test("foo");
-  test("foo\u1234");
-  test("foo\u1234\u0001/\udead\ubeef");
+    // a few basics
+    test('foo');
+    test('foo\u1234');
+    test('foo\u1234\u0001/\udead\ubeef');
 
-  // check that '..' works over non-ascii
-  test("foo\u1234\u0001/\udead\ubeef/../\u1234");
+    // check that '..' works over non-ascii
+    test('foo\u1234\u0001/\udead\ubeef/../\u1234');
 
-  // document the fact that U+0000 terminates resolution
-  test("foo\u1234\u0001/\udead\ubeef/../\u1234\u0000neverseen");
+    // document the fact that U+0000 terminates resolution
+    test('foo\u1234\u0001/\udead\ubeef/../\u1234\u0000neverseen');
 }
 
-print("non-ascii");
+print('non-ascii');
 
 try {
-  nonAsciiTest();
+    nonAsciiTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -331,81 +329,77 @@ Duktape.modSearch foo/bar
  */
 
 function lengthTest() {
-  var i;
-  var mod;
+    var i;
+    var mod;
 
-  function buildFooBarId(n) {
-    var tmp = "";
-    while (tmp.length < n - 6) {
-      tmp += "/";
+    function buildFooBarId(n) {
+        var tmp = '';
+        while (tmp.length < n - 6) {
+            tmp += '/';
+        }
+        return 'foo' + tmp + 'bar';
     }
-    return "foo" + tmp + "bar";
-  }
 
-  function buildNumberedId(n, num) {
-    var tmp = "foo/num-" + num + "-";
-    while (tmp.length < n) {
-      tmp += "x";
+    function buildNumberedId(n, num) {
+        var tmp = 'foo/num-' + num + '-';
+        while (tmp.length < n) {
+            tmp += 'x';
+        }
+        return tmp;  // foo/num-123-xxxxxx... to 'n' chars
     }
-    return tmp; // foo/num-123-xxxxxx... to 'n' chars
-  }
 
-  /*
-   *  Test the limit for the current global require() id
-   */
+    /*
+     *  Test the limit for the current global require() id
+     */
 
-  Duktape.modSearch = function(id) {
-    print("Duktape.modSearch", id);
-    return 'exports.name="' + id + '"';
-  };
-
-  for (i = 230; i <= 270; i++) {
-    try {
-      mod = require(buildFooBarId(i));
-      print(i + ":", mod.name);
-    } catch (e) {
-      print(i + ":", e.name);
+    Duktape.modSearch = function (id) {
+        print('Duktape.modSearch', id);
+        return 'exports.name="' + id + '"';
     }
-  }
 
-  /*
-   *  Test the limit for a relative require() id from inside a
-   *  module; length restriction is applied against an intermediate
-   *  identifier constructed by joining the module's require.id
-   *  with the requested relative ID with a slash.
-   */
-
-  Duktape.modSearch = function(id) {
-    // Disable to avoid spam; each id is dynamic and long
-    //print('Duktape.modSearch', id);
-    if (id == "bar") {
-      return 'exports.name = "' + id + '";';
-    } else {
-      /* submodule will request '../bar' relative to its own path */
-      return (
-        'var mod = require(".././././././bar");\n' +
-        'exports.name = "' +
-        id +
-        '";\n' +
-        "exports.mod_name = mod.name;\n"
-      );
+    for (i = 230; i <= 270; i++) {
+        try {
+            mod = require(buildFooBarId(i));
+            print(i + ':', mod.name);
+        } catch (e) {
+            print(i + ':', e.name);
+        }
     }
-  };
 
-  for (i = 230; i <= 270; i++) {
-    try {
-      mod = require(buildNumberedId(i, i));
-      print(i + ":", mod.mod_name);
-    } catch (e) {
-      print(i + ":", e.name);
+    /*
+     *  Test the limit for a relative require() id from inside a
+     *  module; length restriction is applied against an intermediate
+     *  identifier constructed by joining the module's require.id
+     *  with the requested relative ID with a slash.
+     */
+
+    Duktape.modSearch = function (id) {
+        // Disable to avoid spam; each id is dynamic and long
+        //print('Duktape.modSearch', id);
+        if (id == 'bar') {
+            return 'exports.name = "' + id + '";';
+        } else {
+            /* submodule will request '../bar' relative to its own path */
+            return 'var mod = require(".././././././bar");\n' +
+                   'exports.name = "' + id + '";\n' +
+                   'exports.mod_name = mod.name;\n';
+        }
     }
-  }
+
+     for (i = 230; i <= 270; i++) {
+        try {
+            mod = require(buildNumberedId(i, i));
+            print(i + ':', mod.mod_name);
+        } catch (e) {
+            print(i + ':', e.name);
+        }
+    }
 }
 
-print("length");
+print('length');
 
 try {
-  lengthTest();
+    lengthTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

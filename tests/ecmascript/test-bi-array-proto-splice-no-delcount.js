@@ -25,30 +25,30 @@
 ===*/
 
 function test() {
-  var arr;
-  var res;
+    var arr;
+    var res;
 
-  // Standard: splice 'baz' and 'quuux'.
-  arr = ["foo", "bar", "quux", "baz", "quuux"];
-  res = arr.splice(3, 2);
-  print(JSON.stringify(arr), JSON.stringify(res));
+    // Standard: splice 'baz' and 'quuux'.
+    arr = [ 'foo', 'bar', 'quux', 'baz', 'quuux' ];
+    res = arr.splice(3, 2);
+    print(JSON.stringify(arr), JSON.stringify(res));
 
-  // Non-standard: same behavior if second argument omitted.
-  // Standard behavior seems to mandate same behavior as
-  // arr.splice(3, 0);
-  arr = ["foo", "bar", "quux", "baz", "quuux"];
-  res = arr.splice(3);
-  print(JSON.stringify(arr), JSON.stringify(res));
+    // Non-standard: same behavior if second argument omitted.
+    // Standard behavior seems to mandate same behavior as
+    // arr.splice(3, 0);
+    arr = [ 'foo', 'bar', 'quux', 'baz', 'quuux' ];
+    res = arr.splice(3);
+    print(JSON.stringify(arr), JSON.stringify(res));
 
-  // When given as 'undefined', Rhino and V8 both behave like
-  // the standard mandates, e.g. same as arr.splice(3, 0);
-  arr = ["foo", "bar", "quux", "baz", "quuux"];
-  res = arr.splice(3, undefined);
-  print(JSON.stringify(arr), JSON.stringify(res));
+    // When given as 'undefined', Rhino and V8 both behave like
+    // the standard mandates, e.g. same as arr.splice(3, 0);
+    arr = [ 'foo', 'bar', 'quux', 'baz', 'quuux' ];
+    res = arr.splice(3, undefined);
+    print(JSON.stringify(arr), JSON.stringify(res));
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

@@ -7,7 +7,7 @@ DUK_VERSION = 20500
 SONAME_VERSION = 205
 REAL_VERSION = $(SONAME_VERSION).$(DUK_VERSION)
 
-TEST_OPTS = --prep-test-path tests/prep_test.py --util-include-path tests/ecmascript --known-issues tests/known_issues.yaml
+TEST_OPTS = --prep-test-path tests/prep_test.py --minify-uglifyjs2 tests/node_modules/.bin/uglifyjs --util-include-path tests/ecmascript --known-issues tests/known_issues.yaml
 
 # Mac has an unusual .so naming convention
 ifeq ($(OS),Windows_NT)

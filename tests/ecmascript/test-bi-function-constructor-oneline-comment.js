@@ -8,7 +8,7 @@ foo
 ===*/
 
 try {
-  print(new Function('return "foo" //lastline')());
+    print(new Function('return "foo" //lastline')());
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

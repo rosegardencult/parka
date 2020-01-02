@@ -11,12 +11,12 @@
  * The release build would return undefined.
  */
 
-function f(n, v) {
-  return v;
+function f(n,v) {
+    return v;
 }
 
 try {
-  print(f(1, 2));
+    print(f(1,2));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

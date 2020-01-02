@@ -15,14 +15,11 @@ fulfill, values match true
 var P = Promise.resolve();
 var Q = Promise.resolve(void 0);
 
-Promise.all([P, Q]).then(
-  function(v) {
-    print("fulfill, values match", v[0] === v[1]);
+Promise.all([ P, Q ]).then(function (v) {
+    print('fulfill, values match', v[0] === v[1]);
     print(v.length, v[0], v[1]);
-  },
-  function(e) {
-    print("reject:", e);
-  }
-);
+}, function (e) {
+    print('reject:', e);
+});
 
-print("done");
+print('done');

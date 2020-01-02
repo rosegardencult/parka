@@ -10,9 +10,9 @@ done
 
 print(typeof Number.parseFloat);
 print(Number.parseFloat === parseFloat);
-var pd = Object.getOwnPropertyDescriptor(Number, "parseFloat");
+var pd = Object.getOwnPropertyDescriptor(Number, 'parseFloat');
 print(typeof pd);
 print(pd.writable);
 print(pd.enumerable);
 print(pd.configurable);
-print("done");
+print('done');

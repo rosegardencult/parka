@@ -3,8 +3,8 @@ NaN
 ===*/
 
 try {
-  var d = new Date(NaN);
-  print(d.getTimezoneOffset());
+    var d = new Date(NaN);
+    print(d.getTimezoneOffset());
 } catch (e) {
-  print(e);
+    print(e);
 }

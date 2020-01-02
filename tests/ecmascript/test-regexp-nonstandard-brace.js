@@ -59,7 +59,7 @@ print(t[0]);
 
 // Do not fail on digits before , or }.
 
-t = /{1111111111111111111111111/.exec("{1111111111111111111111111");
+t = /{1111111111111111111111111/.exec('{1111111111111111111111111');
 print(t[0]);
 
 /*===
@@ -70,13 +70,13 @@ a{1,2,3}
 
 // On any quantifier parsing failure, treat as a literal brace.
 
-t = /a{}/.exec("a{}");
+t = /a{}/.exec('a{}');
 print(t[0]);
 
-t = /a{,}/.exec("a{,}");
+t = /a{,}/.exec('a{,}');
 print(t[0]);
 
-t = /a{1,2,3}/.exec("a{1,2,3}");
+t = /a{1,2,3}/.exec('a{1,2,3}');
 print(t[0]);
 
 /*===
@@ -91,17 +91,15 @@ xxxxxxxxxxx
 // rejected and the curly brace is then parsed as a literal.  At the moment
 // the maximum number of digits allowed for quantifier min/max value is 9.
 
-t = /{1111111111111111111111111,}/.exec("{1111111111111111111111111,}foo");
+t = /{1111111111111111111111111,}/.exec('{1111111111111111111111111,}foo');
 print(t[0]);
 
-t = /{1111111111111111111111111,2222222222222222222222222222}/.exec(
-  "{1111111111111111111111111,2222222222222222222222222222}"
-);
+t = /{1111111111111111111111111,2222222222222222222222222222}/.exec('{1111111111111111111111111,2222222222222222222222222222}');
 print(t[0]);
 
-t = /{1111,1111111111}/.exec("{1111,1111111111}foo");
+t = /{1111,1111111111}/.exec('{1111,1111111111}foo');
 print(t[0]);
 
 // Here the max limit is exactly 9 digits so it's treated as a valid quantifier.
-t = /x{11,111111111}/.exec("xxxxxxxxxxx");
+t = /x{11,111111111}/.exec('xxxxxxxxxxx');
 print(t[0]);

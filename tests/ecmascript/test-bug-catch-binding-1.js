@@ -13,35 +13,35 @@ throw
  */
 
 function f(e) {
-  try {
-    throw "throw";
-  } catch (e) {
-    print(e);
-  }
+    try {
+        throw 'throw';
+    } catch (e) {
+        print(e);
+    }
 }
 
 function g() {
-  var e = "var";
+    var e = 'var';
 
-  try {
-    throw "throw";
-  } catch (e) {
-    print(e);
-  }
+    try {
+        throw 'throw';
+    } catch (e) {
+        print(e);
+    }
 }
 
 function h() {
-  var e = "var";
+    var e = 'var';
 
-  with ({}) {
-    try {
-      throw "throw";
-    } catch (e) {
-      print(e);
+    with ({}) {
+        try {
+            throw 'throw';
+        } catch (e) {
+            print(e);
+        }
     }
-  }
 }
 
-f("arg");
+f('arg');
 g();
 h();

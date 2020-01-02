@@ -56,48 +56,35 @@
 ===*/
 
 function test() {
-  var x =
-    "foo" +
-    "\ucafe" + // simple non-surrogate
-    "\uD83D\uDCA9" + // valid U+1F4A9 in surrogate pair encoding
-    "\ubeef" + // simple non-surrogate
-    "bar" +
-    "\ud83d\ud83d" + // invalid surrogate pair
-    "\ud83dx" + // -""-
-    "\udca9\ud83d" + // -""-
-    "baz" +
-    "\ud83d"; // invalid surrogate pair, string ends before pair
-  for (i = -3; i < x.length + 3; i++) {
-    print(i, x.charCodeAt(i), x.codePointAt(i));
-  }
+    var x = 'foo' +
+            '\ucafe' +  // simple non-surrogate
+            '\uD83D\uDCA9' +  // valid U+1F4A9 in surrogate pair encoding
+            '\ubeef' +  // simple non-surrogate
+            'bar' +
+            '\ud83d\ud83d' +  // invalid surrogate pair
+            '\ud83dx' +       // -""-
+            '\udca9\ud83d' +  // -""-
+            'baz' +
+            '\ud83d';         // invalid surrogate pair, string ends before pair
+    for (i = -3; i < x.length + 3; i++) {
+        print(i, x.charCodeAt(i), x.codePointAt(i));
+    }
 
-  // .codePointAt() is generic like .charCodeAt(), but they simply String() coerce
-  // their argument first so this is coerced to [object Object] and the char lookup
-  // is then applied.  Codepoints won't be looked up from the object properties.
-  var obj = {
-    0: "f",
-    1: "o",
-    2: "o",
-    3: "\ud83d",
-    4: "\udca9",
-    5: "b",
-    6: "a",
-    7: "r",
-    length: 8
-  };
-  print(String(obj));
+    // .codePointAt() is generic like .charCodeAt(), but they simply String() coerce
+    // their argument first so this is coerced to [object Object] and the char lookup
+    // is then applied.  Codepoints won't be looked up from the object properties.
+    var obj = { 0: 'f', 1: 'o', 2: 'o',
+                3: '\ud83d', 4: '\udca9',
+                5: 'b', 6: 'a', 7: 'r', length: 8 };
+    print(String(obj));
 
-  for (i = -3; i < 20; i++) {
-    print(
-      i,
-      String.prototype.charCodeAt.call(obj, i),
-      String.prototype.codePointAt.call(obj, i)
-    );
-  }
+    for (i = -3; i < 20; i++) {
+        print(i, String.prototype.charCodeAt.call(obj, i), String.prototype.codePointAt.call(obj, i));
+    }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

@@ -10,17 +10,17 @@ TypeError
 ===*/
 
 var funcs = [
-  RegExp.prototype.exec,
-  RegExp.prototype.test,
-  RegExp.prototype.toString
+    RegExp.prototype.exec,
+    RegExp.prototype.test,
+    RegExp.prototype.toString,
 ];
 
 for (var i = 0; i < funcs.length; i++) {
-  var f = funcs[i];
-  try {
-    f("foo");
-    print("no error");
-  } catch (e) {
-    print(e.name);
-  }
+    var f = funcs[i];
+    try {
+        f('foo');
+        print('no error');
+    } catch (e) {
+        print(e.name);
+    }
 }

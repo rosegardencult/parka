@@ -9,21 +9,21 @@ ReferenceError
 ===*/
 
 try {
-  new Object() = 1;
+    new Object() = 1;
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 function test() {
-  try {
-    new Object() = 1;
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        new Object() = 1;
+    } catch (e) {
+        print(e.name);
+    }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

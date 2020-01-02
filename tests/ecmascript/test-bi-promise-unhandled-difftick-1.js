@@ -31,46 +31,43 @@ tick 4
 var P, Q, R;
 var calls = [];
 
-setupPromiseUnhandledCallbacks(
-  function(p) {
-    print("unhandled/reject:", p.name);
-  },
-  function(p) {
-    print("unhandled/handle:", p.name);
-  }
-);
-
-function nop() {
-  print("nop called");
-}
-var T = Promise.resolve();
-T.name = "T";
-
-T.then(function() {
-  print("tick 1");
-  P = Promise.reject(123);
-  P.name = "P";
-  Q = Promise.reject(234);
-  Q.name = "Q";
-  R = Promise.reject(345);
-  R.name = "R";
+setupPromiseUnhandledCallbacks(function (p) {
+    print('unhandled/reject:', p.name);
+}, function (p) {
+    print('unhandled/handle:', p.name);
 });
 
-promiseNextTick(function() {
-  print("tick 2");
-  P.catch(nop);
-  Q.catch(nop);
+function nop() {
+    print('nop called');
+}
+var T = Promise.resolve();
+T.name = 'T';
 
-  // Here R has already had its 'reject' event and it gets handled by
-  // forwarding the rejection to R2.  So, R gets a 'handle' event, but
-  // R2 is unhandled and gets a 'reject' event.
-  var R2 = R.catch(123);
-  R2.name = "R2";
+T.then(function () {
+    print('tick 1');
+    P = Promise.reject(123);
+    P.name = 'P';
+    Q = Promise.reject(234);
+    Q.name = 'Q';
+    R = Promise.reject(345);
+    R.name = 'R';
+});
 
-  promiseNextTick(function() {
-    print("tick 3");
-    promiseNextTick(function() {
-      print("tick 4");
+promiseNextTick(function () {
+    print('tick 2');
+    P.catch(nop);
+    Q.catch(nop);
+
+    // Here R has already had its 'reject' event and it gets handled by
+    // forwarding the rejection to R2.  So, R gets a 'handle' event, but
+    // R2 is unhandled and gets a 'reject' event.
+    var R2 = R.catch(123);
+    R2.name = 'R2';
+
+    promiseNextTick(function () {
+        print('tick 3');
+        promiseNextTick(function () {
+            print('tick 4');
+        });
     });
-  });
 });

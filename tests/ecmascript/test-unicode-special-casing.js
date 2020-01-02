@@ -122,168 +122,159 @@ done
 ===*/
 
 function formatCodepoints(v) {
-  var tmp = [];
-  for (var i = 0; i < v.length; i++) {
-    tmp.push(v.charCodeAt(i));
-  }
-  return tmp
-    .map(function(v) {
-      return v.toString(16).toUpperCase();
-    })
-    .join("-");
+    var tmp = [];
+    for (var i = 0; i < v.length; i++) {
+        tmp.push(v.charCodeAt(i));
+    }
+    return tmp.map(function (v) { return v.toString(16).toUpperCase(); }).join('-');
 }
 
 function test(v) {
-  print(
-    "IN: " +
-      formatCodepoints(v) +
-      ", UC: " +
-      formatCodepoints(v.toUpperCase()) +
-      ", LC: " +
-      formatCodepoints(v.toLowerCase())
-  );
+    print('IN: ' + formatCodepoints(v) +
+          ', UC: ' + formatCodepoints(v.toUpperCase()) +
+          ', LC: ' + formatCodepoints(v.toLowerCase()));
 }
 
 // Unconditional mappings.
 
-test("\u00DF");
-test("\u0130");
+test('\u00DF');
+test('\u0130');
 
-test("\uFB00");
-test("\uFB01");
-test("\uFB02");
-test("\uFB03");
-test("\uFB04");
-test("\uFB05");
-test("\uFB06");
+test('\uFB00');
+test('\uFB01');
+test('\uFB02');
+test('\uFB03');
+test('\uFB04');
+test('\uFB05');
+test('\uFB06');
 
-test("\u0587");
-test("\uFB13");
-test("\uFB14");
-test("\uFB15");
-test("\uFB16");
-test("\uFB17");
+test('\u0587');
+test('\uFB13');
+test('\uFB14');
+test('\uFB15');
+test('\uFB16');
+test('\uFB17');
 
-test("\u0149");
-test("\u0390");
-test("\u03B0");
-test("\u01F0");
-test("\u1E96");
-test("\u1E97");
-test("\u1E98");
-test("\u1E99");
-test("\u1E9A");
-test("\u1F50");
-test("\u1F52");
-test("\u1F54");
-test("\u1F56");
-test("\u1FB6");
-test("\u1FC6");
-test("\u1FD2");
-test("\u1FD3");
-test("\u1FD6");
-test("\u1FD7");
-test("\u1FE2");
-test("\u1FE3");
-test("\u1FE4");
-test("\u1FE6");
-test("\u1FE7");
-test("\u1FF6");
+test('\u0149');
+test('\u0390');
+test('\u03B0');
+test('\u01F0');
+test('\u1E96');
+test('\u1E97');
+test('\u1E98');
+test('\u1E99');
+test('\u1E9A');
+test('\u1F50');
+test('\u1F52');
+test('\u1F54');
+test('\u1F56');
+test('\u1FB6');
+test('\u1FC6');
+test('\u1FD2');
+test('\u1FD3');
+test('\u1FD6');
+test('\u1FD7');
+test('\u1FE2');
+test('\u1FE3');
+test('\u1FE4');
+test('\u1FE6');
+test('\u1FE7');
+test('\u1FF6');
 
-test("\u0345");
+test('\u0345');
 
-test("\u1F80");
-test("\u1F81");
-test("\u1F82");
-test("\u1F83");
-test("\u1F84");
-test("\u1F85");
-test("\u1F86");
-test("\u1F87");
-test("\u1F88");
-test("\u1F89");
-test("\u1F8A");
-test("\u1F8B");
-test("\u1F8C");
-test("\u1F8D");
-test("\u1F8E");
-test("\u1F8F");
-test("\u1F90");
-test("\u1F91");
-test("\u1F92");
-test("\u1F93");
-test("\u1F94");
-test("\u1F95");
-test("\u1F96");
-test("\u1F97");
-test("\u1F98");
-test("\u1F99");
-test("\u1F9A");
-test("\u1F9B");
-test("\u1F9C");
-test("\u1F9D");
-test("\u1F9E");
-test("\u1F9F");
-test("\u1FA0");
-test("\u1FA1");
-test("\u1FA2");
-test("\u1FA3");
-test("\u1FA4");
-test("\u1FA5");
-test("\u1FA6");
-test("\u1FA7");
-test("\u1FA8");
-test("\u1FA9");
-test("\u1FAA");
-test("\u1FAB");
-test("\u1FAC");
-test("\u1FAD");
-test("\u1FAE");
-test("\u1FAF");
-test("\u1FB3");
-test("\u1FBC");
-test("\u1FC3");
-test("\u1FCC");
-test("\u1FF3");
-test("\u1FFC");
+test('\u1F80');
+test('\u1F81');
+test('\u1F82');
+test('\u1F83');
+test('\u1F84');
+test('\u1F85');
+test('\u1F86');
+test('\u1F87');
+test('\u1F88');
+test('\u1F89');
+test('\u1F8A');
+test('\u1F8B');
+test('\u1F8C');
+test('\u1F8D');
+test('\u1F8E');
+test('\u1F8F');
+test('\u1F90');
+test('\u1F91');
+test('\u1F92');
+test('\u1F93');
+test('\u1F94');
+test('\u1F95');
+test('\u1F96');
+test('\u1F97');
+test('\u1F98');
+test('\u1F99');
+test('\u1F9A');
+test('\u1F9B');
+test('\u1F9C');
+test('\u1F9D');
+test('\u1F9E');
+test('\u1F9F');
+test('\u1FA0');
+test('\u1FA1');
+test('\u1FA2');
+test('\u1FA3');
+test('\u1FA4');
+test('\u1FA5');
+test('\u1FA6');
+test('\u1FA7');
+test('\u1FA8');
+test('\u1FA9');
+test('\u1FAA');
+test('\u1FAB');
+test('\u1FAC');
+test('\u1FAD');
+test('\u1FAE');
+test('\u1FAF');
+test('\u1FB3');
+test('\u1FBC');
+test('\u1FC3');
+test('\u1FCC');
+test('\u1FF3');
+test('\u1FFC');
 
-test("\u1FB2");
-test("\u1FB4");
-test("\u1FC2");
-test("\u1FC4");
-test("\u1FF2");
-test("\u1FF4");
+test('\u1FB2');
+test('\u1FB4');
+test('\u1FC2');
+test('\u1FC4');
+test('\u1FF2');
+test('\u1FF4');
 
-test("\u1FB7");
-test("\u1FC7");
-test("\u1FF7");
+test('\u1FB7');
+test('\u1FC7');
+test('\u1FF7');
 
 // Conditional mappings.  Behavior depends on context.  Here just test for
 // what happens for the individual codepoints.
 
-test("\u03A3");
-test("\u03C3");
-test("\u03C2");
+test('\u03A3');
+test('\u03C3');
+test('\u03C2');
 
 // Language specific.  Cover what happens for individual codepoints.
 
-test("\u0307");
+test('\u0307');
 
-test("\u0049");
-test("\u004A");
-test("\u012E");
-test("\u00CC");
-test("\u00CD");
-test("\u0128");
+test('\u0049');
+test('\u004A');
+test('\u012E');
+test('\u00CC');
+test('\u00CD');
+test('\u0128');
 
-test("\u0130");
+test('\u0130');
 
-test("\u0307");
+test('\u0307');
 
-test("\u0049");
+test('\u0049');
 
-test("\u0069");
+test('\u0069');
 
-test("\u0131");
+test('\u0131');
 
-print("done");
+print('done');

@@ -12,25 +12,19 @@ propdesc MIN_SAFE_INTEGER: value=-9007199254740991, writable=false, enumerable=f
 /*@include util-base.js@*/
 
 function valueTest() {
-  var names = [
-    "MAX_VALUE",
-    "MIN_VALUE",
-    "NaN",
-    "POSITIVE_INFINITY",
-    "NEGATIVE_INFINITY",
-    "EPSILON",
-    "MAX_SAFE_INTEGER",
-    "MIN_SAFE_INTEGER"
-  ];
-  var i;
+   var names = [
+       'MAX_VALUE', 'MIN_VALUE', 'NaN', 'POSITIVE_INFINITY', 'NEGATIVE_INFINITY',
+       'EPSILON', 'MAX_SAFE_INTEGER', 'MIN_SAFE_INTEGER'
+   ];
+   var i;
 
-  for (i = 0; i < names.length; i++) {
-    print(Test.getPropDescString(Number, names[i]));
-  }
+   for (i = 0; i < names.length; i++) {
+       print(Test.getPropDescString(Number, names[i]));
+   }
 }
 
 try {
-  valueTest();
+    valueTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

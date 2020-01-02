@@ -129,235 +129,134 @@ toString called
 ===*/
 
 function test() {
-  var obj = {};
+    var obj = {};
 
-  Object.setPrototypeOf(obj, null); // object with no prototype
+    Object.setPrototypeOf(obj, null);  // object with no prototype
 
-  // NOTE: in tests where valueOf/toString is nominally missing,
-  // a function is inherited from Object.prototype unless the object
-  // is explicitly created without a prototype.
+    // NOTE: in tests where valueOf/toString is nominally missing,
+    // a function is inherited from Object.prototype unless the object
+    // is explicitly created without a prototype.
 
-  var testValues = [
-    undefined,
-    null,
-    true,
-    false,
-    123.0,
-    "foo",
+    var testValues = [
+        undefined, null, true, false, 123.0, 'foo',
 
-    // object with neither valueOf nor toString, but inherited
-    {},
+        // object with neither valueOf nor toString, but inherited
+        {},
 
-    // object with neither valueOf nor toString, and not inherited
-    obj,
+        // object with neither valueOf nor toString, and not inherited
+        obj,
 
-    // object with valueOf only
-    {
-      valueOf: function() {
-        print("valueOf", arguments.length, typeof this);
-        return 123;
-      }
-    },
+        // object with valueOf only
+        { valueOf: function () { print('valueOf', arguments.length, typeof this); return 123; } },
 
-    // object with toString only
-    {
-      toString: function() {
-        print("toString", arguments.length, typeof this);
-        return "234";
-      }
-    },
+        // object with toString only
+        { toString: function () { print('toString', arguments.length, typeof this); return '234'; } },
 
-    // object with valueOf only, valueOf returns primitive but not number
-    {
-      valueOf: function() {
-        print("valueOf", arguments.length, typeof this);
-        return true;
-      }
-    },
+        // object with valueOf only, valueOf returns primitive but not number
+        { valueOf: function () { print('valueOf', arguments.length, typeof this); return true; } },
 
-    // object with toString only, toString returns primitive but not string
-    {
-      toString: function() {
-        print("toString", arguments.length, typeof this);
-        return 345;
-      }
-    },
+        // object with toString only, toString returns primitive but not string
+        { toString: function () { print('toString', arguments.length, typeof this); return 345; } },
 
-    // object with valueOf only, valueOf returns non-primitive
-    {
-      valueOf: function() {
-        print("valueOf", arguments.length, typeof this);
-        return {};
-      }
-    },
+        // object with valueOf only, valueOf returns non-primitive
+        { valueOf: function () { print('valueOf', arguments.length, typeof this); return {}; } },
 
-    // object with toString only, toString returns non-primitive
-    {
-      toString: function() {
-        print("toString", arguments.length, typeof this);
-        return {};
-      }
-    },
+        // object with toString only, toString returns non-primitive
+        { toString: function () { print('toString', arguments.length, typeof this); return {}; } },
 
-    // object with both valueOf and toString, both return primitive
-    {
-      valueOf: function() {
-        print("valueOf");
-        return 123;
-      },
-      toString: function() {
-        print("toString");
-        return "234";
-      }
-    },
+        // object with both valueOf and toString, both return primitive
+        { valueOf: function () { print('valueOf'); return 123; },
+          toString: function () { print('toString'); return '234'; } },
 
-    // object with both valueOf and toString, valueOf returns non-primitive
-    {
-      valueOf: function() {
-        print("valueOf");
-        return {};
-      },
-      toString: function() {
-        print("toString");
-        return "234";
-      }
-    },
+        // object with both valueOf and toString, valueOf returns non-primitive
+        { valueOf: function () { print('valueOf'); return {}; },
+          toString: function () { print('toString'); return '234'; } },
 
-    // object with both valueOf and toString, toString returns non-primitive
-    {
-      valueOf: function() {
-        print("valueOf");
-        return 123;
-      },
-      toString: function() {
-        print("toString");
-        return {};
-      }
-    },
+        // object with both valueOf and toString, toString returns non-primitive
+        { valueOf: function () { print('valueOf'); return 123; },
+          toString: function () { print('toString'); return {}; } },
 
-    // object with valueOf non-callable, toString returns a
-    // primitive (but non-string which is accepted)
-    {
-      valueOf: 123,
-      toString: function() {
-        print("toString");
-        return true;
-      }
-    },
+        // object with valueOf non-callable, toString returns a
+        // primitive (but non-string which is accepted)
+        { valueOf: 123,
+          toString: function () { print('toString'); return true; } },
 
-    // object with toString non-callable, valueOf returns a
-    // primitive
-    {
-      valueOf: function() {
-        print("valueOf");
-        return false;
-      },
-      toString: 234
-    },
+        // object with toString non-callable, valueOf returns a
+        // primitive
+        { valueOf: function () { print('valueOf'); return false; },
+          toString: 234 },
 
-    // object with valueOf callable but throws error
-    {
-      valueOf: function() {
-        print("valueOf");
-        throw new Error("valueOf throw");
-      },
-      toString: function() {
-        print("toString");
-        return "234";
-      }
-    },
+        // object with valueOf callable but throws error
+        { valueOf: function () { print('valueOf'); throw new Error('valueOf throw'); },
+          toString: function () { print('toString'); return '234'; } },
 
-    // object with toString callable but throws error
-    {
-      valueOf: function() {
-        print("valueOf");
-        return 123;
-      },
-      toString: function() {
-        print("toString");
-        throw new Error("toString throw");
-      }
-    },
+        // object with toString callable but throws error
+        { valueOf: function () { print('valueOf'); return 123; },
+          toString: function () { print('toString'); throw new Error('toString throw'); } },
 
-    // object with both valueOf and toString callable but both throw an error
-    {
-      valueOf: function() {
-        print("valueOf");
-        throw new Error("valueOf throw");
-      },
-      toString: function() {
-        print("toString");
-        throw new Error("toString throw");
-      }
-    },
+        // object with both valueOf and toString callable but both throw an error
+        { valueOf: function () { print('valueOf'); throw new Error('valueOf throw'); },
+          toString: function () { print('toString'); throw new Error('toString throw'); } },
 
-    // neither valueOf nor toString is callable
-    { valueOf: 123, toString: 234 },
+        // neither valueOf nor toString is callable
+        { valueOf: 123, toString: 234 },
 
-    // both valueOf and toString are callable but return non-primitive
-    {
-      valueOf: function() {
-        print("valueOf called");
-        return {};
-      },
-      toString: function() {
-        print("toString called");
-        return {};
-      }
-    }
-  ];
+        // both valueOf and toString are callable but return non-primitive
+        { valueOf: function () { print('valueOf called'); return {} },
+          toString: function () { print('toString called'); return {} } },
+    ];
 
-  // ToPrimitive() with hint "number":
-  // - valueOf is called if callable, otherwise skipped; if result is
-  //   primitive return that, otherwise continue
-  // - toString is called if callable, otherwise skipped; if result is
-  //   primitive return that, otherwise continue
-  // - TypeError
+    // ToPrimitive() with hint "number":
+    // - valueOf is called if callable, otherwise skipped; if result is
+    //   primitive return that, otherwise continue
+    // - toString is called if callable, otherwise skipped; if result is
+    //   primitive return that, otherwise continue
+    // - TypeError
 
-  print('ToPrimitive() with hint "number"');
-  testValues.forEach(function(v, i) {
-    try {
-      // ToNumber() calls ToPrimitive() with hint number when value is object,
-      // and then coerces the primitive result using ToNumber() which always
-      // succeeds.
-      var t = +v;
-      print(i, typeof t, t);
-    } catch (e) {
-      print(i, e.name);
-    }
-  });
+    print('ToPrimitive() with hint "number"');
+    testValues.forEach(function (v, i) {
+        try {
+            // ToNumber() calls ToPrimitive() with hint number when value is object,
+            // and then coerces the primitive result using ToNumber() which always
+            // succeeds.
+            var t = +v;
+            print(i, typeof t, t);
+        } catch (e) {
+            print(i, e.name);
+        }
+    });
 
-  // ToPrimitive() with hint "string": same but with order reversed
-  // for valueOf and toString calls.
+    // ToPrimitive() with hint "string": same but with order reversed
+    // for valueOf and toString calls.
 
-  print('ToPrimitive() with hint "string"');
-  testValues.forEach(function(v, i) {
-    try {
-      // ToString calls ToPrimitive() with hint string when value is object,
-      // and then coerces the primitive result using ToString() which always
-      // succeeds.
-      var t = String(v);
-      print(i, typeof t, t);
-    } catch (e) {
-      print(i, e.name);
-    }
-  });
+    print('ToPrimitive() with hint "string"');
+    testValues.forEach(function (v, i) {
+        try {
+            // ToString calls ToPrimitive() with hint string when value is object,
+            // and then coerces the primitive result using ToString() which always
+            // succeeds.
+            var t = String(v);
+            print(i, typeof t, t);
+        } catch (e) {
+            print(i, e.name);
+        }
+    });
 
-  print("ToPrimitive() with no hint");
-  testValues.forEach(function(v, i) {
-    try {
-      // Addition calls ToPrimitive() on each argument (with no prechecks)
-      // and then coerces them both to string if either is a string.
-      var t = "" + v;
-      print(i, typeof t, t);
-    } catch (e) {
-      print(i, e.name);
-    }
-  });
+    print('ToPrimitive() with no hint');
+    testValues.forEach(function (v, i) {
+        try {
+            // Addition calls ToPrimitive() on each argument (with no prechecks)
+            // and then coerces them both to string if either is a string.
+            var t = "" + v;
+            print(i, typeof t, t);
+        } catch (e) {
+            print(i, e.name);
+        }
+    });
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

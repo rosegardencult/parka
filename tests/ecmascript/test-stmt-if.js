@@ -13,12 +13,12 @@
  */
 
 function mklogged(name, val) {
-  return {
-    valueOf: function() {
-      print("coerced " + name);
-      return val;
+    return {
+        valueOf: function () {
+            print('coerced ' + name);
+            return val;
+        }
     }
-  };
 }
 
 /*===
@@ -64,57 +64,57 @@ d
 /* Test basic if-then-else and if-then control flow structures. */
 
 function testIfElse(v) {
-  if (+v) {
-    print("then");
-  } else {
-    print("else");
-  }
+    if (+v) {
+        print('then');
+    } else {
+        print('else');
+    }
 }
 
 function testIf(v) {
-  if (+v) {
-    print("then");
-  }
+    if (+v) {
+        print('then');
+    }
 }
 
 /* Test binding of 'else' in a multiple if-else case. */
 function testIfLadder(a, b, c, d) {
-  if (+a) {
-    print("a");
-  } else if (+b) {
-    print("b");
-  } else if (+c) {
-    print("c");
-  } else {
-    print("d");
-  }
+    if (+a) {
+        print('a');
+    } else if (+b) {
+        print('b');
+    } else if (+c) {
+        print('c');
+    } else {
+        print('d');
+    }
 }
 
 try {
-  testIfElse(mklogged("argtrue", true));
-  testIfElse(mklogged("argfalse", false));
+    testIfElse(mklogged('argtrue', true));
+    testIfElse(mklogged('argfalse', false));
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 try {
-  testIf(mklogged("argtrue", true));
-  testIf(mklogged("argfalse", false));
+    testIf(mklogged('argtrue', true));
+    testIf(mklogged('argfalse', false));
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 try {
-  [mklogged("atrue", true), mklogged("afalse", false)].forEach(function(a) {
-    [mklogged("btrue", true), mklogged("bfalse", false)].forEach(function(b) {
-      [mklogged("ctrue", true), mklogged("cfalse", false)].forEach(function(c) {
-        print("---");
-        testIfLadder(a, b, c);
-      });
+    [ mklogged('atrue', true), mklogged('afalse', false) ].forEach(function (a) {
+        [ mklogged('btrue', true), mklogged('bfalse', false) ].forEach(function (b) {
+            [ mklogged('ctrue', true), mklogged('cfalse', false) ].forEach(function (c) {
+                print('---');
+                testIfLadder(a, b, c);
+            });
+        });
     });
-  });
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -141,34 +141,19 @@ try {
  */
 
 function testIfCoercion() {
-  [
-    undefined,
-    null,
-    true,
-    false,
-    Number.NEGATIVE_INFINITY,
-    -123,
-    -0,
-    0,
-    123,
-    Number.POSITIVE_INFINITY,
-    Number.NaN,
-    {},
-    [],
-    function() {},
-    mklogged("nevercoerced", true),
-    mklogged("nevercoerced", false)
-  ].forEach(function(v, i) {
-    if (v) {
-      print(i, "then");
-    } else {
-      print(i, "else");
-    }
-  });
+    [ undefined, null, true, false, Number.NEGATIVE_INFINITY, -123, -0, 0, 123,
+      Number.POSITIVE_INFINITY, Number.NaN, {}, [], function () {},
+      mklogged('nevercoerced', true), mklogged('nevercoerced', false) ].forEach(function (v, i) {
+        if (v) {
+            print(i, 'then');
+        } else {
+            print(i, 'else');
+        }
+    });
 }
 
 try {
-  testIfCoercion();
+    testIfCoercion();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

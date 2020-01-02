@@ -12,12 +12,12 @@
 /*@include util-buffer.js@*/
 
 function testSlowBuffer() {
-  var buffer = require("buffer");
-  print(buffer.SlowBuffer);
+    var buffer = require('buffer');
+    print(buffer.SlowBuffer);
 }
 
 try {
-  testSlowBuffer();
+    testSlowBuffer();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

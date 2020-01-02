@@ -10,8 +10,8 @@ still here
  * any constants and the try-finally must not have a catch clause.
  */
 try {
-  eval("try {} finally {}");
+    eval('try {} finally {}');
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
-print("still here");
+print('still here');

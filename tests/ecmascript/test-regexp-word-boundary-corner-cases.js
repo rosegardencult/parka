@@ -24,28 +24,28 @@ null
 
 /* normal cases */
 
-t = /.\b./.exec("ab"); /* IsWordChar: true -> true */
+t = /.\b./.exec('ab');   /* IsWordChar: true -> true */
 print(t);
 
-t = /.\b./.exec("a="); /* IsWordChar: true -> false */
+t = /.\b./.exec('a=');   /* IsWordChar: true -> false */
 print(t[0]);
 
-t = /.\b./.exec("=a"); /* IsWordChar: false -> true */
+t = /.\b./.exec('=a');   /* IsWordChar: false -> true */
 print(t[0]);
 
-t = /.\b./.exec("=="); /* IsWordChar: false -> false */
+t = /.\b./.exec('==');   /* IsWordChar: false -> false */
 print(t);
 
-t = /.\B./.exec("ab"); /* IsWordChar: true -> true */
+t = /.\B./.exec('ab');   /* IsWordChar: true -> true */
 print(t[0]);
 
-t = /.\B./.exec("a="); /* IsWordChar: true -> false */
+t = /.\B./.exec('a=');   /* IsWordChar: true -> false */
 print(t);
 
-t = /.\B./.exec("=a"); /* IsWordChar: false -> true */
+t = /.\B./.exec('=a');   /* IsWordChar: false -> true */
 print(t);
 
-t = /.\B./.exec("=="); /* IsWordChar: false -> false */
+t = /.\B./.exec('==');   /* IsWordChar: false -> false */
 print(t[0]);
 
 /*===
@@ -57,16 +57,16 @@ null
 
 /* \b or \B at start of input */
 
-t = /\b./.exec("a"); /* IsWordChar: false -> true */
+t = /\b./.exec('a');   /* IsWordChar: false -> true */
 print(t[0]);
 
-t = /\b./.exec("="); /* IsWordChar: false -> false */
+t = /\b./.exec('=');   /* IsWordChar: false -> false */
 print(t);
 
-t = /\B./.exec("a"); /* IsWordChar: false -> true */
+t = /\B./.exec('a');   /* IsWordChar: false -> true */
 print(t);
 
-t = /\B./.exec("="); /* IsWordChar: false -> false */
+t = /\B./.exec('=');   /* IsWordChar: false -> false */
 print(t[0]);
 
 /*===
@@ -78,16 +78,16 @@ null
 
 /* \b or \B at end of input */
 
-t = /.\b/.exec("a"); /* IsWordChar: true -> false */
+t = /.\b/.exec('a');   /* IsWordChar: true -> false */
 print(t[0]);
 
-t = /.\b/.exec("="); /* IsWordChar: false -> false */
+t = /.\b/.exec('=');   /* IsWordChar: false -> false */
 print(t);
 
-t = /.\B/.exec("a"); /* IsWordChar: true -> false */
+t = /.\B/.exec('a');   /* IsWordChar: true -> false */
 print(t);
 
-t = /.\B/.exec("="); /* IsWordChar: false -> false */
+t = /.\B/.exec('=');   /* IsWordChar: false -> false */
 print(t[0]);
 
 /*===
@@ -97,8 +97,8 @@ null
 
 /* \b or \B for empty string */
 
-t = /\b/.exec(""); /* IsWordChar: false -> false */
+t = /\b/.exec('');   /* IsWordChar: false -> false */
 print(t);
 
-t = /\B/.exec(""); /* IsWordChar: false -> false */
+t = /\B/.exec('');   /* IsWordChar: false -> false */
 print(t[0]);

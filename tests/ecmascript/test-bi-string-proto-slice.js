@@ -334,52 +334,36 @@ NaN Infinity string 6 foobar
 NaN NaN string 0 
 ===*/
 
-print("basic");
+print('basic');
 
 function basicTest() {
-  var str = "foobar";
-  var numbers = [
-    Number.NEGATIVE_INFINITY,
-    -7,
-    -6,
-    -5,
-    -4,
-    -3,
-    -2 - 1,
-    -0,
-    +0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    Number.POSITIVE_INFINITY,
-    Number.NaN
-  ];
-  var t;
+    var str = 'foobar';
+    var numbers = [
+        Number.NEGATIVE_INFINITY, -7, -6, -5, -4, -3, -2 -1,
+        -0, +0, 1, 2, 3, 4, 5, 6, 7, Number.POSITIVE_INFINITY, Number.NaN
+    ];
+    var t;
 
-  function test(s, e) {
-    var x = str.slice(s, e);
-    print(s, e, typeof x, x.length, x);
-  }
-
-  t = str.slice();
-  print("noargs", typeof t, t.length, t);
-
-  // all combinations of 'numbers'
-  for (i = 0; i < numbers.length; i++) {
-    for (j = 0; j < numbers.length; j++) {
-      test(numbers[i], numbers[j]);
+    function test(s, e) {
+        var x = str.slice(s, e);
+        print(s, e, typeof x, x.length, x);
     }
-  }
+
+    t = str.slice();
+    print('noargs', typeof t, t.length, t);
+
+    // all combinations of 'numbers'
+    for (i = 0; i < numbers.length; i++) {
+        for (j = 0; j < numbers.length; j++) {
+            test(numbers[i], numbers[j]);
+        }
+    }
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -962,62 +946,40 @@ NaN Infinity string 10 102 111 111 128 2047 4660 65535 98 97 114
 NaN NaN string 0 
 ===*/
 
-print("non-bmp");
+print('non-bmp');
 
 function nonBmpTest() {
-  var str = "foo\u0080\u07ff\u1234\uffffbar";
+    var str = 'foo\u0080\u07ff\u1234\uffffbar';
 
-  var numbers = [
-    Number.NEGATIVE_INFINITY,
-    -10,
-    -9,
-    -8,
-    -7,
-    -6,
-    -5,
-    -4 - 3,
-    -2,
-    -1,
-    -0,
-    +0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    Number.POSITIVE_INFINITY,
-    Number.NaN
-  ];
-  var t;
+    var numbers = [
+        Number.NEGATIVE_INFINITY, -10, -9, -8, -7, -6, -5, -4 -3, -2, -1,
+        -0, +0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, Number.POSITIVE_INFINITY, Number.NaN
+    ];
+    var t;
 
-  function test(s, e) {
-    var x = str.slice(s, e);
-    var tmp = [];
-    var i;
+    function test(s, e) {
+        var x = str.slice(s, e);
+        var tmp = [];
+        var i;
 
-    for (i = 0; i < x.length; i++) {
-      tmp.push(x.charCodeAt(i));
+        for (i = 0; i < x.length; i++) {
+            tmp.push(x.charCodeAt(i));
+        }
+
+        print(s, e, typeof x, x.length, tmp.join(' '));
     }
 
-    print(s, e, typeof x, x.length, tmp.join(" "));
-  }
-
-  for (i = 0; i < numbers.length; i++) {
-    for (j = 0; j < numbers.length; j++) {
-      test(numbers[i], numbers[j]);
+    for (i = 0; i < numbers.length; i++) {
+        for (j = 0; j < numbers.length; j++) {
+            test(numbers[i], numbers[j]);
+        }
     }
-  }
 }
 
 try {
-  nonBmpTest();
+    nonBmpTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -1032,30 +994,30 @@ object string 2 2,
 object string 2 bj
 ===*/
 
-print("coercion");
+print('coercion');
 
 function coercionTest() {
-  function test(str, s, e) {
-    try {
-      t = String.prototype.slice.call(str, s, e);
-      print(typeof str, typeof t, t.length, t);
-    } catch (e) {
-      print(e.name);
+    function test(str, s, e) {
+        try {
+            t = String.prototype.slice.call(str, s, e);
+            print(typeof str, typeof t, t.length, t);
+        } catch (e) {
+            print(e.name);
+        }
     }
-  }
 
-  test(undefined, 2, 4);
-  test(null, 2, 4);
-  test(true, 2, 4);
-  test(false, 2, 4);
-  test(12345, 2, 4);
-  test("abcdef", 2, 4);
-  test([1, 2, 3], 2, 4);
-  test({ foo: 1, bar: 1 }, 2, 4);
+    test(undefined, 2, 4);
+    test(null, 2, 4);
+    test(true, 2, 4);
+    test(false, 2, 4);
+    test(12345, 2, 4);
+    test('abcdef', 2, 4);
+    test([1,2,3], 2, 4);
+    test({ foo: 1, bar: 1 }, 2, 4);
 }
 
 try {
-  coercionTest();
+    coercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

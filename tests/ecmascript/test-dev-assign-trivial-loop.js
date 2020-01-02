@@ -24,9 +24,9 @@
 /* Simple tests for assignment */
 
 for (i = 10; i; i -= 1) {
-  print(i);
+    print(i);
 }
 
 for (i = 10; i; i = i - 1) {
-  print(i);
+    print(i);
 }

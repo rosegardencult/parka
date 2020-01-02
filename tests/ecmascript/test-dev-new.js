@@ -21,68 +21,65 @@ Basic4 arg1 arg2
 
 /* Basic cases where constructor is from a MemberExpression (but not another 'new') */
 
-function Basic1() {}
-Basic1.prototype = { name: "Basic1" };
-
-function Basic2(x, y) {
-  this.x = x;
-  this.y = y;
+function Basic1() {
 }
-Basic2.prototype = { name: "Basic2" };
+Basic1.prototype = { 'name': 'Basic1' };
 
-basic3 = {
-  constructor: function(x, y) {
+function Basic2(x,y) {
     this.x = x;
     this.y = y;
-  }
+}
+Basic2.prototype = { 'name': 'Basic2' };
+
+basic3 = {
+    'constructor': function(x,y) {
+                      this.x = x;
+                      this.y = y;
+                   }
 };
-basic3.constructor.prototype = { name: "Basic3" };
+basic3.constructor.prototype = { 'name': 'Basic3' };
 
 try {
-  // without parenthesis (arguments)
-  eval("t = new Basic1; print(t.name);");
+    // without parenthesis (arguments)
+    eval("t = new Basic1; print(t.name);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  // with no arguments (semantically same as above)
-  eval("t = new Basic1(); print(t.name);");
+    // with no arguments (semantically same as above)
+    eval("t = new Basic1(); print(t.name);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  // with arguments
-  eval("t = new Basic2('arg1', 'arg2'); print(t.name, t.x, t.y);");
+    // with arguments
+    eval("t = new Basic2('arg1', 'arg2'); print(t.name, t.x, t.y);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  // constructor from a property access (MemberExpression)
-  eval("t = new basic3.constructor ('arg1', 'arg2'); print(t.name, t.x, t.y);");
+    // constructor from a property access (MemberExpression)
+    eval("t = new basic3.constructor ('arg1', 'arg2'); print(t.name, t.x, t.y);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  // constructor from a property access (MemberExpression), bracket syntax
-  eval(
-    "t = new basic3['constructor'] ('arg1', 'arg2'); print(t.name, t.x, t.y);"
-  );
+    // constructor from a property access (MemberExpression), bracket syntax
+    eval("t = new basic3['constructor'] ('arg1', 'arg2'); print(t.name, t.x, t.y);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  // constructor from a function expression (from MemberExpression)
-  // Note: here the 'name' property is not inherited from prototype
-  eval(
-    "t = new function(x,y) {this.x=x;this.y=y;this.name='Basic4';} ('arg1', 'arg2'); print(t.name, t.x, t.y);"
-  );
+    // constructor from a function expression (from MemberExpression)
+    // Note: here the 'name' property is not inherited from prototype
+    eval("t = new function(x,y) {this.x=x;this.y=y;this.name='Basic4';} ('arg1', 'arg2'); print(t.name, t.x, t.y);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -102,25 +99,26 @@ getTarget/f
  */
 
 function getTarget() {
-  var f = function() {};
-  f.prototype = { name: "getTarget/f" };
-  return f;
+    var f = function() {
+    }
+    f.prototype = { 'name': 'getTarget/f' };
+    return f;
 }
 
 try {
-  // this will evaluate "new getTarget ()" and then attempt to call the
-  // instance, which is not callable -> TypeError
-  eval("t = new getTarget() (); print(t.name);");
+    // this will evaluate "new getTarget ()" and then attempt to call the
+    // instance, which is not callable -> TypeError
+    eval("t = new getTarget() (); print(t.name);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  // this will first evaluate "getTarget()" to get the constructor,
-  // and then call the constructor
-  eval("t = new (getTarget()) (); print(t.name);");
+    // this will first evaluate "getTarget()" to get the constructor,
+    // and then call the constructor
+    eval("t = new (getTarget()) (); print(t.name);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -145,19 +143,19 @@ NewNew2 arg1
  */
 
 function NewNew1(x) {
-  function f() {
-    // snatch 'x' from closure
-    this.x = x;
-  }
-  f.prototype = { name: "NewNew2" };
-  return f;
+    function f() {
+        // snatch 'x' from closure
+        this.x = x;
+    }
+    f.prototype = { 'name': 'NewNew2' };
+    return f;
 }
-NewNew1.prototype = { name: "NewNew1" };
+NewNew1.prototype = { 'name': 'NewNew1' };
 
 try {
-  eval("t = new new NewNew1 ('arg1'); print(t.name, t.x);");
+    eval("t = new new NewNew1 ('arg1'); print(t.name, t.x);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -184,78 +182,69 @@ Bal1C/f/g return value
  */
 
 function Bal1A() {
-  // printing out this.name indicates whether we're being
-  // called as a constructor or as a function
-  print("Bal1A called, this.name=" + this.name);
+    // printing out this.name indicates whether we're being
+    // called as a constructor or as a function
+    print("Bal1A called, this.name=" + this.name);
 }
-Bal1A.prototype = { name: "Bal1A" };
+Bal1A.prototype = { 'name': 'Bal1A' };
 
 function Bal1B() {
-  print("Bal1B called, this.name=" + this.name);
+    print("Bal1B called, this.name=" + this.name);
 
-  function f() {
-    // f() is called as a normal function, this is bound to the
-    // global object; printing out a specific value accessible
-    // through the global object proves the point.
+    function f() {
+        // f() is called as a normal function, this is bound to the
+        // global object; printing out a specific value accessible
+        // through the global object proves the point.
 
-    print(
-      "Bal1B/f called, this.Number.POSITIVE_INFINITY=" +
-        this.Number.POSITIVE_INFINITY
-    );
-    return "Bal1B/f return value";
-  }
-  f.name = "Bal1B/f"; // not inherited
+        print("Bal1B/f called, this.Number.POSITIVE_INFINITY=" + this.Number.POSITIVE_INFINITY);
+        return "Bal1B/f return value";
+    }
+    f.name = "Bal1B/f";  // not inherited
 
-  // Returned value replaces default constructed object; this return
-  // value does not have Bal1B.prototype as its internal prototype.
-  return f;
+    // Returned value replaces default constructed object; this return
+    // value does not have Bal1B.prototype as its internal prototype.
+    return f;
 }
-Bal1B.prototype = { name: "Bal1B" }; // has no effect
+Bal1B.prototype = { 'name': 'Bal1B' };  // has no effect
 
 function Bal1C() {
-  print("Bal1C called, this.name=" + this.name);
+    print("Bal1C called, this.name=" + this.name);
 
-  function f() {
-    print(
-      "Bal1C/f called, this.Number.POSITIVE_INFINITY=" +
-        this.Number.POSITIVE_INFINITY
-    );
-    function g() {
-      print(
-        "Bal1C/f/g called, this.Number.POSITIVE_INFINITY=" +
-          this.Number.POSITIVE_INFINITY
-      );
-      return "Bal1C/f/g return value";
+    function f() {
+        print("Bal1C/f called, this.Number.POSITIVE_INFINITY=" + this.Number.POSITIVE_INFINITY);
+        function g() {
+            print("Bal1C/f/g called, this.Number.POSITIVE_INFINITY=" + this.Number.POSITIVE_INFINITY);
+            return "Bal1C/f/g return value";
+        }
+        return g;
     }
-    return g;
-  }
-  f.name = "Bal1C/f"; // not inherited
-  return f;
+    f.name = "Bal1C/f";  // not inherited
+    return f;
 }
-Bal1C.prototype = { name: "Bal1C" }; // has no effect
+Bal1C.prototype = { 'name': 'Bal1C' };  // has no effect
 
 try {
-  eval("var t = new Bal1A; print(t.name);");
+    eval("var t = new Bal1A; print(t.name);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("var t = new Bal1A (); print(t.name);");
+    eval("var t = new Bal1A (); print(t.name);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("var t = new Bal1B () (); print(t);"); // here 't' is return value from Bal1B/f
+    eval("var t = new Bal1B () (); print(t);");     // here 't' is return value from Bal1B/f
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("var t = new Bal1C () () (); print(t);");
+    eval("var t = new Bal1C () () (); print(t);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -297,101 +286,98 @@ Bal2C/f/g/h return value
  */
 
 function Bal2A() {
-  print("Bal2A called, this.name=" + this.name);
+    print('Bal2A called, this.name=' + this.name);
 
-  function f() {
-    print("Bal2A/f called, this.name=" + this.name);
-  }
-  f.prototype = { name: "Bal2A/f" };
+    function f() {
+        print("Bal2A/f called, this.name=" + this.name);
+    }
+    f.prototype = { 'name': 'Bal2A/f' };
 
-  // return value (instance) of inner ("new Bal2A") is used as the
-  // constructor for the outer "new" call.
-  return f;
+    // return value (instance) of inner ("new Bal2A") is used as the
+    // constructor for the outer "new" call.
+    return f;
 }
-Bal2A.prototype = { name: "Bal2A" };
+Bal2A.prototype = { 'name': 'Bal2A' };
 
 function Bal2B() {
-  print("Bal2B called, this.name=" + this.name);
+    print('Bal2B called, this.name=' + this.name);
 
-  function f() {
-    print("Bal2B/f called, this.name=" + this.name);
+    function f() {
+        print('Bal2B/f called, this.name=' + this.name);
 
-    function g() {
-      print("Bal2B/f/g called, this.name=" + this.name);
+        function g() {
+            print('Bal2B/f/g called, this.name=' + this.name);
+        }
+        g.prototype = { 'name': 'Bal2B/f/g' };
+
+        return g;
     }
-    g.prototype = { name: "Bal2B/f/g" };
+    f.prototype = { 'name': 'Bal2B/f' };
 
-    return g;
-  }
-  f.prototype = { name: "Bal2B/f" };
-
-  return f;
+    return f;
 }
-Bal2B.prototype = { name: "Bal2B" };
+Bal2B.prototype = { 'name': 'Bal2B' };
 
 function Bal2C() {
-  print("Bal2C called, this.name=" + this.name);
+    print('Bal2C called, this.name=' + this.name);
 
-  function f() {
-    print("Bal2C/f called, this.name=" + this.name);
+    function f() {
+        print('Bal2C/f called, this.name=' + this.name);
 
-    function g() {
-      print("Bal2C/f/g called, this.name=" + this.name);
+        function g() {
+            print('Bal2C/f/g called, this.name=' + this.name);
 
-      function h() {
-        print(
-          "Bal2C/f/g/h called, this.Number.POSITIVE_INFINITY=" +
-            this.Number.POSITIVE_INFINITY
-        );
-        return "Bal2C/f/g/h return value";
-      }
+            function h() {
+                print('Bal2C/f/g/h called, this.Number.POSITIVE_INFINITY=' + this.Number.POSITIVE_INFINITY);
+                return 'Bal2C/f/g/h return value';
+            }
 
-      return h;
+            return h;
+        }
+        g.prototype = { 'name': 'Bal2C/f/g' };
+
+        return g;
     }
-    g.prototype = { name: "Bal2C/f/g" };
+    f.prototype = { 'name': 'Bal2C/f' };
 
-    return g;
-  }
-  f.prototype = { name: "Bal2C/f" };
-
-  return f;
+    return f;
 }
-Bal2C.prototype = { name: "Bal2C" };
+Bal2C.prototype = { 'name': 'Bal2C' };
 
 try {
-  eval("t = new new Bal2A; print(t.name);");
+    eval("t = new new Bal2A; print(t.name);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("t = new new new Bal2B; print(t.name);");
+    eval("t = new new new Bal2B; print(t.name);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("t = new new new Bal2B (); print(t.name);");
+    eval("t = new new new Bal2B (); print(t.name);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("t = new new new Bal2B () (); print(t.name);");
+    eval("t = new new new Bal2B () (); print(t.name);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("t = new new new Bal2B () () (); print(t.name);");
+    eval("t = new new new Bal2B () () (); print(t.name);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("t = new new new Bal2C () () () (); print(t);");
+    eval("t = new new new Bal2C () () () (); print(t);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -408,57 +394,37 @@ Bal3A/f/g return value
  * new new Foo (1,2,3) (4,5) (6,7)    last parens are a call
  */
 
-function Bal3A(x, y, z) {
-  print(
-    "Bal3A called, this.name=" +
-      this.name +
-      ", x=" +
-      x +
-      ", y=" +
-      y +
-      ", z=" +
-      z
-  );
+function Bal3A(x,y,z) {
+    print("Bal3A called, this.name=" + this.name +
+          ", x=" + x + ", y=" + y + ", z=" + z);
 
-  function f(x, y) {
-    print("Bal3A/f called, this.name=" + this.name + ", x=" + x + ", y=" + y);
-    print("z is from outer scope: z=" + z);
+    function f(x,y) {
+        print("Bal3A/f called, this.name=" + this.name +
+              ", x=" + x + ", y=" + y);
+        print("z is from outer scope: z=" + z);
 
-    function g(a, b) {
-      print(
-        "Bal3A/f/g called, this.Number.POSITIVE_INFINITY=" +
-          this.Number.POSITIVE_INFINITY +
-          ", a=" +
-          a +
-          ", b=" +
-          b
-      );
-      print(
-        "the following are from outer scope: " +
-          "x=" +
-          x +
-          ", y=" +
-          y +
-          ", z=" +
-          z
-      );
+        function g(a,b) {
+            print("Bal3A/f/g called, this.Number.POSITIVE_INFINITY=" + this.Number.POSITIVE_INFINITY +
+                  ", a=" + a + ", b=" + b);
+            print("the following are from outer scope: " +
+                  "x=" + x + ", y=" + y + ", z=" + z);
 
-      return "Bal3A/f/g return value";
+            return "Bal3A/f/g return value";
+        }
+
+        // replace created object with function g
+        return g;
     }
+    f.prototype = { 'name': 'Bal3A/f' };
 
-    // replace created object with function g
-    return g;
-  }
-  f.prototype = { name: "Bal3A/f" };
-
-  return f;
+    return f;
 }
-Bal3A.prototype = { name: "Bal3A" };
+Bal3A.prototype = { 'name': 'Bal3A' };
 
 try {
-  eval("t = new new Bal3A (1,2,3) (4,5) (6,7); print(t);");
+    eval("t = new new Bal3A (1,2,3) (4,5) (6,7); print(t);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -514,61 +480,52 @@ Misc2/f
  */
 
 function Misc1() {
-  print("Misc1 called, this.name=" + this.name);
+    print('Misc1 called, this.name=' + this.name);
 
-  function f() {
-    print("Misc1/f called, this.name=" + this.name);
-  }
-  f.prototype = { name: "Misc1/f" };
-
-  // return an object whose 'foo' property is read by the caller
-  // and used as the next constructor
-  return {
-    get foo() {
-      print("foo getter called");
-      return f;
+    function f() {
+        print('Misc1/f called, this.name=' + this.name);
     }
-  };
+    f.prototype = { 'name': 'Misc1/f' };
+
+    // return an object whose 'foo' property is read by the caller
+    // and used as the next constructor
+    return { get foo() { print ('foo getter called'); return f } };
 }
-Misc1.prototype = { name: "Misc1" };
+Misc1.prototype = { 'name': 'Misc1' };
 
 function Misc2() {
-  print("Misc2 called, this.name=" + this.name);
+    print('Misc2 called, this.name=' + this.name);
 
-  function f(x, y) {
-    print("Misc2/f called, this.name=" + this.name + ", x=" + x + ", y=" + y);
-  }
-  f.prototype = { name: "Misc2/f" };
-
-  // return an object whose 'foo' property is read by the caller
-  // and used as the next constructor
-  return {
-    get foo() {
-      print("foo getter called");
-      return f;
+    function f(x,y) {
+        print('Misc2/f called, this.name=' + this.name +
+              ', x=' + x + ', y=' + y);
     }
-  };
+    f.prototype = { 'name': 'Misc2/f' };
+
+    // return an object whose 'foo' property is read by the caller
+    // and used as the next constructor
+    return { get foo() { print ('foo getter called'); return f } };
 }
-Misc2.prototype = { name: "Misc2" };
+Misc2.prototype = { 'name': 'Misc2' };
 
 try {
-  eval("t = new new Misc1 () . foo; print(t.name);");
+    eval("t = new new Misc1 () . foo; print(t.name);");
 } catch (e) {
-  print(e.name);
-}
-
-try {
-  // exactly same, explicit parens
-  eval("t = new ((new Misc1 ()) . foo); print(t.name);");
-} catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  // add arguments to outer 'new'
-  eval("t = new new Misc2 () . foo (1,2); print(t.name);");
+    // exactly same, explicit parens
+    eval("t = new ((new Misc1 ()) . foo); print(t.name);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
+}
+
+try {
+    // add arguments to outer 'new'
+    eval("t = new new Misc2 () . foo (1,2); print(t.name);");
+} catch (e) {
+    print(e.name);
 }
 
 /*===
@@ -581,26 +538,26 @@ true
  * of that object will not be set by the 'new' call.
  */
 function Cons1() {
-  this.foo = 1;
-  this.bar = 2;
+    this.foo = 1;
+    this.bar = 2;
 }
 Cons1.prototype = { quux: 3, baz: 4 };
 
 function Cons2() {
-  return { foo: 1, bar: 2 };
+    return { foo: 1, bar: 2 };
 }
 Cons2.prototype = { quux: 3, baz: 4 };
 
 try {
-  t = new Cons1();
-  print(t.foo, t.bar, t.quux, t.baz);
+    t = new Cons1();
+    print(t.foo, t.bar, t.quux, t.baz);
 
-  // the internal prototype of 't' will be Object.prototype here
-  t = new Cons2();
-  print(t.foo, t.bar, t.quux, t.baz);
-  print(Object.getPrototypeOf(t) === Object.prototype);
+    // the internal prototype of 't' will be Object.prototype here
+    t = new Cons2();
+    print(t.foo, t.bar, t.quux, t.baz);
+    print(Object.getPrototypeOf(t) === Object.prototype);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -610,17 +567,17 @@ bar
 ===*/
 
 function TargetCons(x, y) {
-  print(typeof this, this, x, y);
+    print(typeof this, this, x, y);
 }
-TargetCons.prototype = { foo: "bar" };
-var BoundCons = TargetCons.bind("bound-this", 123, 234);
+TargetCons.prototype = { foo: 'bar' };
+var BoundCons = TargetCons.bind('bound-this', 123, 234);
 try {
-  // For a normal call the 'bound-this' binding is in force.
-  t = BoundCons();
+    // For a normal call the 'bound-this' binding is in force.
+    t = BoundCons();
 
-  // For a constructor call the 'bound-this' binding is ignored.
-  t = new BoundCons();
-  print(t.foo);
+    // For a constructor call the 'bound-this' binding is ignored.
+    t = new BoundCons();
+    print(t.foo);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

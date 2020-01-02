@@ -13,19 +13,19 @@ arguments true
 ===*/
 
 function test(obj, prop) {
-  print(prop, prop in obj);
+    print(prop, prop in obj);
 }
 
 try {
-  f = function() {};
-  test(f, "length");
-  test(f, "prototype");
+    f = function() {};
+    test(f, 'length');
+    test(f, 'prototype');
 
-  // bound function does not have a 'prototype'
-  g = f.bind(null);
-  test(g, "length");
-  test(g, "caller");
-  test(g, "arguments");
+    // bound function does not have a 'prototype'
+    g = f.bind(null);
+    test(g, 'length');
+    test(g, 'caller');
+    test(g, 'arguments');
 } catch (e) {
-  print(e);
+    print(e);
 }

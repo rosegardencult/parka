@@ -29,21 +29,21 @@
 ===*/
 
 function test() {
-  var b;
+    var b;
 
-  // Here 0xdeadbeef incorrectly casts to 0x7fffffff on the exotic target.
-  b = new Buffer("ABCDEFGH");
-  b.writeUInt32BE(0xdeadbeef, 3);
-  print(Duktape.enc("jx", createPlainBuffer(b)));
+    // Here 0xdeadbeef incorrectly casts to 0x7fffffff on the exotic target.
+    b = new Buffer('ABCDEFGH');
+    b.writeUInt32BE(0xdeadbeef, 3);
+    print(Duktape.enc('jx', createPlainBuffer(b)));
 
-  // But 0x7fedcba9 works correctly.
-  b = new Buffer("ABCDEFGH");
-  b.writeUInt32BE(0x7fedcba9, 3);
-  print(Duktape.enc("jx", createPlainBuffer(b)));
+    // But 0x7fedcba9 works correctly.
+    b = new Buffer('ABCDEFGH');
+    b.writeUInt32BE(0x7fedcba9, 3);
+    print(Duktape.enc('jx', createPlainBuffer(b)));
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

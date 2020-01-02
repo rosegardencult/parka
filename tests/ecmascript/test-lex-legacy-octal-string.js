@@ -3,13 +3,11 @@
  */
 
 function safeString(v) {
-  return v.replace(/[^\u0020-u007e]/g, function(c) {
-    return "<" + c.charCodeAt(0).toString(16) + ">";
-  });
+    return v.replace(/[^\u0020-u007e]/g, function (c) { return '<' + c.charCodeAt(0).toString(16) + '>'; });
 }
 
 function safePrint(v) {
-  print(safeString(v));
+    print(safeString(v));
 }
 
 /*===
@@ -18,9 +16,9 @@ fooAbar
 
 // Basic case.
 try {
-  safePrint("foo\101bar");
+    safePrint('foo\101bar');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -138,75 +136,75 @@ try {
 // For 3-digit form the range is \000 to \377, first digit
 // cannot be 4.
 [
-  '"foo\\0bar"',
-  '"foo\\1bar"',
-  '"foo\\2bar"',
-  '"foo\\3bar"',
-  '"foo\\4bar"',
-  '"foo\\5bar"',
-  '"foo\\6bar"',
-  '"foo\\7bar"',
-  '"foo\\8bar"',
-  '"foo\\80bar"',
-  '"foo\\9bar"',
-  '"foo\\90bar"',
+    '"foo\\0bar"',
+    '"foo\\1bar"',
+    '"foo\\2bar"',
+    '"foo\\3bar"',
+    '"foo\\4bar"',
+    '"foo\\5bar"',
+    '"foo\\6bar"',
+    '"foo\\7bar"',
+    '"foo\\8bar"',
+    '"foo\\80bar"',
+    '"foo\\9bar"',
+    '"foo\\90bar"',
 
-  '"foo\\00bar"',
-  '"foo\\01bar"',
-  '"foo\\02bar"',
-  '"foo\\03bar"',
-  '"foo\\04bar"',
-  '"foo\\05bar"',
-  '"foo\\06bar"',
-  '"foo\\07bar"',
-  '"foo\\08bar"',
-  '"foo\\09bar"',
-  '"foo\\70bar"',
-  '"foo\\71bar"',
-  '"foo\\72bar"',
-  '"foo\\73bar"',
-  '"foo\\74bar"',
-  '"foo\\75bar"',
-  '"foo\\76bar"',
-  '"foo\\77bar"',
-  '"foo\\78bar"',
-  '"foo\\79bar"',
+    '"foo\\00bar"',
+    '"foo\\01bar"',
+    '"foo\\02bar"',
+    '"foo\\03bar"',
+    '"foo\\04bar"',
+    '"foo\\05bar"',
+    '"foo\\06bar"',
+    '"foo\\07bar"',
+    '"foo\\08bar"',
+    '"foo\\09bar"',
+    '"foo\\70bar"',
+    '"foo\\71bar"',
+    '"foo\\72bar"',
+    '"foo\\73bar"',
+    '"foo\\74bar"',
+    '"foo\\75bar"',
+    '"foo\\76bar"',
+    '"foo\\77bar"',
+    '"foo\\78bar"',
+    '"foo\\79bar"',
 
-  '"foo\\070bar"',
-  '"foo\\071bar"',
-  '"foo\\072bar"',
-  '"foo\\073bar"',
-  '"foo\\074bar"',
-  '"foo\\075bar"',
-  '"foo\\076bar"',
-  '"foo\\077bar"',
-  '"foo\\078bar"',
-  '"foo\\079bar"',
-  '"foo\\370bar"',
-  '"foo\\371bar"',
-  '"foo\\372bar"',
-  '"foo\\373bar"',
-  '"foo\\374bar"',
-  '"foo\\375bar"',
-  '"foo\\376bar"',
-  '"foo\\377bar"',
-  '"foo\\378bar"',
-  '"foo\\379bar"',
+    '"foo\\070bar"',
+    '"foo\\071bar"',
+    '"foo\\072bar"',
+    '"foo\\073bar"',
+    '"foo\\074bar"',
+    '"foo\\075bar"',
+    '"foo\\076bar"',
+    '"foo\\077bar"',
+    '"foo\\078bar"',
+    '"foo\\079bar"',
+    '"foo\\370bar"',
+    '"foo\\371bar"',
+    '"foo\\372bar"',
+    '"foo\\373bar"',
+    '"foo\\374bar"',
+    '"foo\\375bar"',
+    '"foo\\376bar"',
+    '"foo\\377bar"',
+    '"foo\\378bar"',
+    '"foo\\379bar"',
 
-  '"foo\\400bar"',
+    '"foo\\400bar"',
 
-  '"foo\\3771bar"'
-].forEach(function(v, i) {
-  try {
-    print(i, v, safeString(eval(v)));
-  } catch (e) {
-    print(i, v, e.name);
-  }
-  try {
-    print(i, v, safeString(eval('"use strict"; ' + v)));
-  } catch (e) {
-    print(i, v, e.name);
-  }
+    '"foo\\3771bar"',
+].forEach(function (v, i) {
+    try {
+        print(i, v, safeString(eval(v)));
+    } catch (e) {
+        print(i, v, e.name);
+    }
+    try {
+        print(i, v, safeString(eval('"use strict"; ' + v)));
+    } catch (e) {
+        print(i, v, e.name);
+    }
 });
 
 /*===
@@ -216,14 +214,14 @@ foo<0>bar
 
 // Not allowed in strict mode.  However, '\0' is allowed in strict mode.
 try {
-  safePrint(eval('(function () { "use strict"; return "foo\\101bar"; })()'));
+    safePrint(eval('(function () { "use strict"; return "foo\\101bar"; })()'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 try {
-  safePrint(eval('(function () { "use strict"; return "foo\0bar"; })()'));
+    safePrint(eval('(function () { "use strict"; return "foo\0bar"; })()'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -240,24 +238,24 @@ try {
 // '8' and '9', even in strict mode.  Test for that behavior.
 
 try {
-  safePrint(eval('(function () { return "\\8"; })()'));
+    safePrint(eval('(function () { return "\\8"; })()'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 try {
-  safePrint(eval('(function () { "use strict"; return "\\8"; })()'));
+    safePrint(eval('(function () { "use strict"; return "\\8"; })()'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 try {
-  safePrint(eval('(function () { return "\\9"; })()'));
+    safePrint(eval('(function () { return "\\9"; })()'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 try {
-  safePrint(eval('(function () { "use strict"; return "\\9"; })()'));
+    safePrint(eval('(function () { "use strict"; return "\\9"; })()'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -275,46 +273,46 @@ SyntaxError
 // as a single octal escape.  Four zero digits are treated as a single \000
 // followed by a literal 0.
 try {
-  safePrint(eval('"foo\\0bar"'));
+    safePrint(eval('"foo\\0bar"'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 try {
-  safePrint(eval('"foo\\00bar"'));
+    safePrint(eval('"foo\\00bar"'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 try {
-  safePrint(eval('"foo\\000bar"'));
+    safePrint(eval('"foo\\000bar"'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 try {
-  safePrint(eval('"foo\\0000bar"'));
+    safePrint(eval('"foo\\0000bar"'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 // Strict mode rejects all of these except for a single \0.
 try {
-  safePrint(eval('(function () { "use strict"; return "foo\\0bar"; })()'));
+    safePrint(eval('(function () { "use strict"; return "foo\\0bar"; })()'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 try {
-  safePrint(eval('(function () { "use strict"; return "foo\\00bar"; })()'));
+    safePrint(eval('(function () { "use strict"; return "foo\\00bar"; })()'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 try {
-  safePrint(eval('(function () { "use strict"; return "foo\\000bar"; })()'));
+    safePrint(eval('(function () { "use strict"; return "foo\\000bar"; })()'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 try {
-  safePrint(eval('(function () { "use strict"; return "foo\\0000bar"; })()'));
+    safePrint(eval('(function () { "use strict"; return "foo\\0000bar"; })()'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -323,7 +321,7 @@ foo<0>8bar
 
 // Another octal test.
 try {
-  safePrint(eval('"foo\\008bar"'));
+    safePrint(eval('"foo\\008bar"'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

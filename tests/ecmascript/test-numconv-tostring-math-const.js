@@ -10,16 +10,16 @@
 ===*/
 
 function mathConstTest() {
-  var names = ["E", "LN10", "LN2", "LOG2E", "LOG10E", "PI", "SQRT1_2", "SQRT2"];
-  var i;
+    var names = [ 'E', 'LN10', 'LN2', 'LOG2E', 'LOG10E', 'PI', 'SQRT1_2', 'SQRT2' ];
+    var i;
 
-  for (i = 0; i < names.length; i++) {
-    print(Math[names[i]]);
-  }
+    for (i = 0; i < names.length; i++) {
+        print(Math[names[i]]);
+    }
 }
 
 try {
-  mathConstTest();
+    mathConstTest()
 } catch (e) {
-  print(e);
+    print(e);
 }

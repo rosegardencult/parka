@@ -31,40 +31,40 @@ RangeError
  */
 
 function test(exp_val) {
-  t = "1e" + exp_val;
+    t = '1e' + exp_val;
 
-  try {
-    num = Number(t);
-    print(t, typeof num, num);
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        num = Number(t);
+        print(t, typeof num, num);
+    } catch (e) {
+        print(e.name);
+    }
 }
 
 function expLimitTest() {
-  // below the limit
-  test("1000000"); // net value is 1e1000000 -> Infinity
-  test("-1000000"); // net value is 1e-1000000 -> 0
+    // below the limit
+    test('1000000');        // net value is 1e1000000 -> Infinity
+    test('-1000000');       // net value is 1e-1000000 -> 0
 
-  // just at the current limit
-  test("10000000");
-  test("-10000000");
+    // just at the current limit
+    test('10000000');
+    test('-10000000');
 
-  // just over the current limit
-  test("10000001"); // net value should be 1e1000000001 -> Infinity; RangeError instead
-  test("-10000001"); // net value should be 1e-1000000001 -> 0; RangeError instead
+    // just over the current limit
+    test('10000001');    // net value should be 1e1000000001 -> Infinity; RangeError instead
+    test('-10000001');   // net value should be 1e-1000000001 -> 0; RangeError instead
 
-  // over the current limit
-  test("10000000000");
-  test("-10000000000");
-  test("100000000000000000000");
-  test("-100000000000000000000");
-  test("1000000000000000000000000000000");
-  test("-1000000000000000000000000000000");
+    // over the current limit
+    test('10000000000');
+    test('-10000000000');
+    test('100000000000000000000');
+    test('-100000000000000000000');
+    test('1000000000000000000000000000000');
+    test('-1000000000000000000000000000000');
 }
 
 try {
-  expLimitTest();
+    expLimitTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

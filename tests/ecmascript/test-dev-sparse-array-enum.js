@@ -12,10 +12,10 @@
 ---*/
 
 function enumArray(arr) {
-  print("array keys");
-  for (var i in arr) {
-    print(i);
-  }
+    print('array keys');
+    for (var i in arr) {
+        print(i);
+    }
 }
 
 /*===
@@ -53,8 +53,8 @@ foo
 var a;
 
 // initially dense
-a = [1, 2, 3];
-a.foo = "bar";
+a = [1,2,3];
+a.foo = 'bar';
 enumArray(a);
 
 // new keys, array order maintained (NOT insertion order)

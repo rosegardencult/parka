@@ -17,17 +17,17 @@ undefined
 obj = { x: 100 };
 
 function f_decl1() {
-  with (obj) {
-    eval("var foo = 10;"); /* created in function */
-  }
-  print(obj.foo); // -> undefined
-  print(foo); // 10
+    with (obj) {
+        eval("var foo = 10;");  /* created in function */
+    }
+    print(obj.foo);  // -> undefined
+    print(foo);      // 10
 }
 
 try {
-  f_decl1();
+    f_decl1();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -44,16 +44,16 @@ undefined
 obj = { x: 100 };
 
 function f_del1() {
-  var x = 200; /* should not affect anything */
-  print(obj.x);
-  with (obj) {
-    delete x;
-  }
-  print(obj.x);
+    var x = 200;  /* should not affect anything */
+    print(obj.x);
+    with (obj) {
+        delete x;
+    }
+    print(obj.x);
 }
 
 try {
-  f_del1();
+    f_del1();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

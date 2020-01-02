@@ -9,14 +9,14 @@ var arr;
 true false
 ===*/
 
-obj = { foo: 1 };
-print("foo" in obj, "bar" in obj);
+obj = {foo:1};
+print('foo' in obj, 'bar' in obj);
 
 /*===
 true true false
 ===*/
 
-arr = [1, 2];
-print("0" in arr, "1" in arr, "2" in arr);
+arr = [1,2];
+print('0' in arr, '1' in arr, '2' in arr);
 
 /* More coverage is provided by: test-expr-relop.js */

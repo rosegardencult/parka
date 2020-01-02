@@ -44,19 +44,19 @@ length 2
 ===*/
 
 function prototypeChainAndOwnPropertyTest() {
-  var objs = getBufferTestObjectList();
+    var objs = getBufferTestObjectList();
 
-  objs.forEach(function(b) {
-    printPrototypeChain(b);
-    dumpOwnNonIndexProperties(b, true);
-  });
+    objs.forEach(function (b) {
+        printPrototypeChain(b);
+        dumpOwnNonIndexProperties(b, true);
+    });
 }
 
 try {
-  print("prototype chain and own property test");
-  prototypeChainAndOwnPropertyTest();
+    print('prototype chain and own property test');
+    prototypeChainAndOwnPropertyTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*

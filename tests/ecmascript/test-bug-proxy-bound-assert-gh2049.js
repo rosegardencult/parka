@@ -7,13 +7,13 @@ still here
 ===*/
 
 try {
-  // Note: variable names don't make much sense.
-  var origEval = new Proxy(Function, {});
-  eval = origEval.bind();
-  eval();
-  print("still here");
+    // Note: variable names don't make much sense.
+    var origEval = new Proxy(Function, {});
+    eval = origEval.bind();
+    eval();
+    print('still here');
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -24,21 +24,21 @@ still here
 ===*/
 
 try {
-  // Extend original repro case, ensure target gets called.
-  var origEval = new Proxy(function(a, b, c, d, e) {
-    print("function called");
-    print("this:", this);
-    print("args:", a, b, c, d, e);
-  }, {});
-  eval = origEval.bind("mythis", 1);
-  eval(2, 3, 4);
-  print("still here");
+    // Extend original repro case, ensure target gets called.
+    var origEval = new Proxy(function (a, b, c, d, e) {
+        print('function called');
+        print('this:', this);
+        print('args:', a, b, c, d, e);
+    }, {});
+    eval = origEval.bind('mythis', 1);
+    eval(2, 3, 4);
+    print('still here');
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
 done
 ===*/
 
-print("done");
+print('done');

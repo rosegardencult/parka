@@ -25,53 +25,52 @@ tailcalled 1
  */
 
 function tailcalled(x) {
-  print("tailcalled", x);
-  return x * 100;
+    print('tailcalled', x);
+    return x * 100;
 }
 
 function test1(x) {
-  print("test1", x);
-  return tailcalled(x);
+    print('test1', x);
+    return tailcalled(x);
 }
 
 function test2(x) {
-  var t;
+    var t;
 
-  print("test2", x);
-  switch (x) {
+    print('test2', x);
+    switch (x) {
     case 1:
-      t = tailcalled(x);
-      return t;
+        t = tailcalled(x); return t;
     default:
-      t = tailcalled(x);
-      return t;
-  }
+        t = tailcalled(x); return t;
+    }
 }
 
 function test3(x) {
-  print("test3", x);
-  switch (x) {
+    print('test3', x);
+    switch (x) {
     case 1:
-      return tailcalled(x);
+        return tailcalled(x);
     default:
-      return tailcalled(x);
-  }
+        return tailcalled(x);
+    }
+}
+
+
+try {
+    print(test1(1));
+} catch (e) {
+    print(e);
 }
 
 try {
-  print(test1(1));
+    print(test2(1));
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 try {
-  print(test2(1));
+    print(test3(1));
 } catch (e) {
-  print(e);
-}
-
-try {
-  print(test3(1));
-} catch (e) {
-  print(e);
+    print(e);
 }

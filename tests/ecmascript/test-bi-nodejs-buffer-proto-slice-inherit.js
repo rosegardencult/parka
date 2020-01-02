@@ -25,40 +25,40 @@ undefined
 ===*/
 
 function nodejsBufferSlicePrototypeTest() {
-  var b = new Buffer("ABCDEFGH");
-  var c;
+    var b = new Buffer('ABCDEFGH');
+    var c;
 
-  print("original buffer");
-  print(Object.getPrototypeOf(b) === Buffer.prototype);
-  print(b instanceof Buffer);
+    print('original buffer');
+    print(Object.getPrototypeOf(b) === Buffer.prototype);
+    print(b instanceof Buffer);
 
-  print("slice of original buffer");
-  c = b.slice(2, 6);
-  print(Object.getPrototypeOf(c) === Buffer.prototype);
-  print(c instanceof Buffer);
+    print('slice of original buffer');
+    c = b.slice(2, 6);
+    print(Object.getPrototypeOf(c) === Buffer.prototype);
+    print(c instanceof Buffer);
 
-  var my_proto = {
-    name: "my_proto"
-  };
-  Object.setPrototypeOf(my_proto, Buffer.prototype);
-  Object.setPrototypeOf(b, my_proto);
+    var my_proto = {
+        name: 'my_proto'
+    };
+    Object.setPrototypeOf(my_proto, Buffer.prototype);
+    Object.setPrototypeOf(b, my_proto);
 
-  print("modified original buffer");
-  print(Object.getPrototypeOf(b) === my_proto);
-  print(Object.getPrototypeOf(b) === Buffer.prototype);
-  print(b instanceof Buffer);
-  print(b.name);
+    print('modified original buffer');
+    print(Object.getPrototypeOf(b) === my_proto);
+    print(Object.getPrototypeOf(b) === Buffer.prototype);
+    print(b instanceof Buffer);
+    print(b.name);
 
-  print("slice of modified original buffer");
-  c = b.slice(2, 6);
-  print(Object.getPrototypeOf(c) === my_proto);
-  print(Object.getPrototypeOf(c) === Buffer.prototype);
-  print(c instanceof Buffer);
-  print(c.name);
+    print('slice of modified original buffer');
+    c = b.slice(2, 6);
+    print(Object.getPrototypeOf(c) === my_proto);
+    print(Object.getPrototypeOf(c) === Buffer.prototype);
+    print(c instanceof Buffer);
+    print(c.name);
 }
 
 try {
-  nodejsBufferSlicePrototypeTest();
+    nodejsBufferSlicePrototypeTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

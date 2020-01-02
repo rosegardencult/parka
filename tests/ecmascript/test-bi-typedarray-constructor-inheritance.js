@@ -20,59 +20,41 @@ number 0 false false true
 ===*/
 
 function test() {
-  [
-    Int8Array,
-    Uint8Array,
-    Uint8ClampedArray,
-    Int16Array,
-    Uint16Array,
-    Int32Array,
-    Uint32Array,
-    Float32Array,
-    Float64Array
-  ].forEach(function(fn) {
-    print(
-      fn.name,
-      Object.getPrototypeOf(fn) === Function.prototype,
-      Object.getPrototypeOf(fn) === Object.getPrototypeOf(Int8Array)
-    );
-  });
+    [ Int8Array, Uint8Array, Uint8ClampedArray,
+      Int16Array, Uint16Array, Int32Array, Uint32Array,
+      Float32Array, Float64Array ].forEach(function (fn) {
+        print(fn.name, Object.getPrototypeOf(fn) === Function.prototype, Object.getPrototypeOf(fn) === Object.getPrototypeOf(Int8Array));
+    });
 
-  // The %TypedArray% rejects normal and constructor calls.
-  var TA = Object.getPrototypeOf(Int8Array);
-  try {
-    TA();
-  } catch (e) {
-    print(e.name);
-  }
-  try {
-    new TA();
-  } catch (e) {
-    print(e.name);
-  }
+    // The %TypedArray% rejects normal and constructor calls.
+    var TA = Object.getPrototypeOf(Int8Array);
+    try {
+        TA();
+    } catch (e) {
+        print(e.name);
+    }
+    try {
+        new TA();
+    } catch (e) {
+        print(e.name);
+    }
 
-  // %TypedArray%.prototype is %TypedArrayPrototype%.
-  var TAP = Object.getPrototypeOf(Object.getPrototypeOf(new Uint8Array(1)));
-  pd = Object.getOwnPropertyDescriptor(TA, "prototype");
-  print(
-    typeof pd.value,
-    pd.value === TAP,
-    pd.writable,
-    pd.enumerable,
-    pd.configurable
-  );
+    // %TypedArray%.prototype is %TypedArrayPrototype%.
+    var TAP = Object.getPrototypeOf(Object.getPrototypeOf(new Uint8Array(1)));
+    pd = Object.getOwnPropertyDescriptor(TA, 'prototype');
+    print(typeof pd.value, pd.value === TAP, pd.writable, pd.enumerable, pd.configurable);
 
-  // .name
-  pd = Object.getOwnPropertyDescriptor(TA, "name");
-  print(typeof pd.value, pd.value, pd.writable, pd.enumerable, pd.configurable);
+    // .name
+    pd = Object.getOwnPropertyDescriptor(TA, 'name');
+    print(typeof pd.value, pd.value, pd.writable, pd.enumerable, pd.configurable);
 
-  // .length
-  pd = Object.getOwnPropertyDescriptor(TA, "length");
-  print(typeof pd.value, pd.value, pd.writable, pd.enumerable, pd.configurable);
+    // .length
+    pd = Object.getOwnPropertyDescriptor(TA, 'length');
+    print(typeof pd.value, pd.value, pd.writable, pd.enumerable, pd.configurable);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

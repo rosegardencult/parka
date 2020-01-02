@@ -10,31 +10,28 @@ getter on line 35
  * that a simple replacement can provide the same functionality.
  */
 
-Duktape.line = function() {
-  "use duk notail";
+Duktape.line = function () {
+    'use duk notail';
 
-  /* Tail calls are prevented to ensure calling activation exists.
-   * Call stack indices: -1 = Duktape.act, -2 = getCurrentLine, -3 = caller
-   */
+    /* Tail calls are prevented to ensure calling activation exists.
+     * Call stack indices: -1 = Duktape.act, -2 = getCurrentLine, -3 = caller
+     */
 
-  return (Duktape.act(-3) || {}).lineNumber;
+    return (Duktape.act(-3) || {}).lineNumber;
 };
 
-print(Duktape.line());
+print(Duktape.line())
 
 if (true) {
-  print("true on line", Duktape.line());
+    print("true on line", Duktape.line())
 }
 
 function MyConstructor() {
-  print("constructor on line", Duktape.line());
+    print("constructor on line", Duktape.line());
 }
 new MyConstructor();
 
 var obj = {
-  get x() {
-    print("getter on line", Duktape.line());
-    return 123;
-  }
-};
+    get x() { print('getter on line', Duktape.line()); return 123; }
+}
 print(obj.x);

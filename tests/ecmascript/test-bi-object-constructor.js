@@ -1,10 +1,8 @@
 function dumpObject(o) {
-  print(
-    typeof o,
-    Object.prototype.toString.call(o),
-    Object.getPrototypeOf(o) === Object.prototype,
-    Object.isExtensible(o)
-  );
+    print(typeof o,
+          Object.prototype.toString.call(o),
+          Object.getPrototypeOf(o) === Object.prototype,
+          Object.isExtensible(o));
 }
 
 /*===
@@ -26,41 +24,41 @@ true
 
 /* Object constructor called as a function. */
 
-print("object constructor as function");
+print('object constructor as function');
 
 function constructorAsFunctionTest() {
-  var t1, t2;
+    var t1, t2;
 
-  dumpObject(Object());
-  dumpObject(Object(undefined));
-  dumpObject(Object(null));
-  dumpObject(Object(true));
-  dumpObject(Object(false));
-  dumpObject(Object(123.0));
-  dumpObject(Object("foo"));
+    dumpObject(Object());
+    dumpObject(Object(undefined));
+    dumpObject(Object(null));
+    dumpObject(Object(true));
+    dumpObject(Object(false));
+    dumpObject(Object(123.0));
+    dumpObject(Object('foo'));
 
-  // check that the same object comes back
+    // check that the same object comes back
 
-  t1 = [];
-  t2 = Object(t1);
-  dumpObject(t1);
-  print(t1 === t2);
+    t1 = [];
+    t2 = Object(t1);
+    dumpObject(t1);
+    print(t1 === t2);
 
-  t1 = {};
-  t2 = Object(t1);
-  dumpObject(t1);
-  print(t1 === t2);
+    t1 = {};
+    t2 = Object(t1);
+    dumpObject(t1);
+    print(t1 === t2);
 
-  t1 = function() {};
-  t2 = Object(t1);
-  dumpObject(t1);
-  print(t1 === t2);
+    t1 = function() {};
+    t2 = Object(t1);
+    dumpObject(t1);
+    print(t1 === t2);
 }
 
 try {
-  constructorAsFunctionTest();
+    constructorAsFunctionTest();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -83,43 +81,43 @@ object [object Number] false true
 
 /* Object constructor called as a constructor */
 
-print("object constructor as constructor");
+print('object constructor as constructor');
 
 function constructorTest() {
-  var t1, t2;
+    var t1, t2;
 
-  dumpObject(new Object());
-  dumpObject(new Object(undefined));
-  dumpObject(new Object(null));
-  dumpObject(new Object(true));
-  dumpObject(new Object(false));
-  dumpObject(new Object(123.0));
-  dumpObject(new Object("foo"));
+    dumpObject(new Object());
+    dumpObject(new Object(undefined));
+    dumpObject(new Object(null));
+    dumpObject(new Object(true));
+    dumpObject(new Object(false));
+    dumpObject(new Object(123.0));
+    dumpObject(new Object('foo'));
 
-  // check that the same object comes back
+    // check that the same object comes back
 
-  t1 = [];
-  t2 = new Object(t1);
-  dumpObject(t1);
-  print(t1 === t2);
+    t1 = [];
+    t2 = new Object(t1);
+    dumpObject(t1);
+    print(t1 === t2);
 
-  t1 = {};
-  t2 = new Object(t1);
-  dumpObject(t1);
-  print(t1 === t2);
+    t1 = {};
+    t2 = new Object(t1);
+    dumpObject(t1);
+    print(t1 === t2);
 
-  t1 = function() {};
-  t2 = new Object(t1);
-  dumpObject(t1);
-  print(t1 === t2);
+    t1 = function() {};
+    t2 = new Object(t1);
+    dumpObject(t1);
+    print(t1 === t2);
 
-  // arguments beyond first optional arg are ignored
-  t2 = new Object(123, "foo");
-  dumpObject(t2);
+    // arguments beyond first optional arg are ignored
+    t2 = new Object(123, 'foo');
+    dumpObject(t2);
 }
 
 try {
-  constructorTest();
+    constructorTest();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

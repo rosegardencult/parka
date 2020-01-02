@@ -11,7 +11,7 @@ object
 ===*/
 
 try {
-  print(typeof this);
+    print(typeof this);
 } catch (e) {
-  print(e);
+    print(e);
 }

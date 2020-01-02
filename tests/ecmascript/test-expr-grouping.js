@@ -15,12 +15,12 @@
 /* Parenthesis around an expression. */
 
 print(1);
-print(1);
-print(1 + 2);
-print(1 + 2);
-print(1 + 2);
-print(1 + 2 * 3 + 4);
-print((1 + 2) * (3 + 4));
+print((1));
+print(1+2);
+print((1)+(2));
+print((1+2));
+print(1+2*3+4);
+print((1+2)*(3+4));
 
 /*===
 number 123
@@ -32,6 +32,6 @@ undefined
  */
 
 this.foo = 123;
-print(typeof foo, foo);
-delete foo;
-print(typeof foo);
+print(typeof (foo), foo);
+delete (foo);
+print(typeof (foo));

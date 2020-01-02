@@ -18,41 +18,41 @@ done
 ===*/
 
 function test() {
-  var notEval = function myNotEval(count) {
-    if (count >= 1e6) {
-      print("Reached", count);
-      return "done";
-    } else {
-      return notEval(count + 1);
+    var notEval = function myNotEval(count) {
+        if (count >= 1e6) {
+            print('Reached', count);
+            return 'done';
+        } else {
+            return notEval(count + 1);
+        }
     }
-  };
 
-  var eval = function myFakeEval(count) {
-    if (count >= 1e6) {
-      print("Reached", count);
-      return "done";
-    } else {
-      return eval(count + 1);
+    var eval = function myFakeEval(count) {
+        if (count >= 1e6) {
+            print('Reached', count);
+            return 'done';
+        } else {
+            return eval(count + 1);
+        }
     }
-  };
 
-  // This will tail call properly.
-  try {
-    print(notEval(0));
-  } catch (e) {
-    print(e.name);
-  }
+    // This will tail call properly.
+    try {
+        print(notEval(0));
+    } catch (e) {
+        print(e.name);
+    }
 
-  // This won't in Duktape 2.0 and 2.1, but will in Duktape 2.2.
-  try {
-    print(eval(0));
-  } catch (e) {
-    print(e.name);
-  }
+    // This won't in Duktape 2.0 and 2.1, but will in Duktape 2.2.
+    try {
+        print(eval(0));
+    } catch (e) {
+        print(e.name);
+    }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

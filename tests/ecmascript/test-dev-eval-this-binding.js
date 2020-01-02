@@ -29,24 +29,20 @@ object
 ===*/
 
 function test() {
-  eval(
-    "print('non-strict eval code');\n" +
-      "try { dummy1 = 1; print('not an error in non-strict code'); } catch (e) { print(e.name); }\n" +
-      "print(typeof this);\n" +
-      "print(typeof (this || {}).Math);\n"
-  );
+    eval("print('non-strict eval code');\n" +
+         "try { dummy1 = 1; print('not an error in non-strict code'); } catch (e) { print(e.name); }\n" +
+         "print(typeof this);\n" +
+         "print(typeof (this || {}).Math);\n");
 
-  eval(
-    "'use strict';\n" +
-      "print('strict eval code');\n" +
-      "try { dummy2 = 1; print('error in non-strict code'); } catch (e) { print(e.name); }\n" +
-      "print(typeof this);\n" +
-      "print(typeof (this || {}).Math);\n"
-  );
+    eval("'use strict';\n" +
+         "print('strict eval code');\n" +
+         "try { dummy2 = 1; print('error in non-strict code'); } catch (e) { print(e.name); }\n" +
+         "print(typeof this);\n" +
+         "print(typeof (this || {}).Math);\n");
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

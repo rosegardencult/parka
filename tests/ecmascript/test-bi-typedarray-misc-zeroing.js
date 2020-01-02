@@ -23,20 +23,20 @@
 ===*/
 
 function test() {
-  var buf;
+    var buf;
 
-  buf = new ArrayBuffer(256);
-  print(Duktape.enc("jx", buf));
+    buf = new ArrayBuffer(256);
+    print(Duktape.enc('jx', buf));
 
-  buf = new Uint16Array(128);
-  print(Duktape.enc("jx", buf));
+    buf = new Uint16Array(128);
+    print(Duktape.enc('jx', buf));
 
-  buf = new Buffer(256);
-  print(Duktape.enc("jx", buf));
+    buf = new Buffer(256);
+    print(Duktape.enc('jx', buf));
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

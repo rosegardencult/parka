@@ -46,60 +46,60 @@ ABbbEFGH bb
 ===*/
 
 function nodejsBufferSliceTest() {
-  var b1, b2, b3;
-  var i;
+    var b1, b2, b3;
+    var i;
 
-  // Very basic case, no offsets; check that both refer to the same
-  // underlying buffer.
+    // Very basic case, no offsets; check that both refer to the same
+    // underlying buffer.
 
-  b1 = new Buffer("ABCDEFGH");
-  printNodejsBuffer(b1);
-  b2 = b1.slice();
-  printNodejsBuffer(b2);
-  b1[2] = 0x61;
-  print(String(b1), String(b2));
-  b2.writeUInt16BE(0x7071, 3);
-  b2[5] = 0x62;
-  print(String(b1), String(b2));
-
-  // Basic case with an offset and limit; check that can't overrun
-  // the parent buffer.
-
-  b1 = new Buffer("ABCDEFGH");
-  printNodejsBuffer(b1);
-  b2 = b1.slice(2, 4);
-  printNodejsBuffer(b2);
-  b1[3] = 0x61;
-  print(String(b1), String(b2));
-  for (i = 0; i < 8; i++) {
-    b2[i] = 0x62;
+    b1 = new Buffer('ABCDEFGH');
+    printNodejsBuffer(b1);
+    b2 = b1.slice();
+    printNodejsBuffer(b2);
+    b1[2] = 0x61;
     print(String(b1), String(b2));
-  }
+    b2.writeUInt16BE(0x7071, 3);
+    b2[5] = 0x62;
+    print(String(b1), String(b2));
 
-  // Slice of a slice
+    // Basic case with an offset and limit; check that can't overrun
+    // the parent buffer.
 
-  b1 = new Buffer(32);
-  b1.fill(0x11);
-  printNodejsBuffer(b1);
-  b2 = b1.slice(3, 20);
-  b2.fill(0x22);
-  printNodejsBuffer(b2);
-  b3 = b1.slice(2, 11);
-  b3.fill(0x33);
-  printNodejsBuffer(b3);
-  for (i = 0; i < 16; i++) {
-    b3[i] = 0x62;
+    b1 = new Buffer('ABCDEFGH');
+    printNodejsBuffer(b1);
+    b2 = b1.slice(2, 4);
+    printNodejsBuffer(b2);
+    b1[3] = 0x61;
+    print(String(b1), String(b2));
+    for (i = 0; i < 8; i++) {
+        b2[i] = 0x62;
+        print(String(b1), String(b2));
+    }
+
+    // Slice of a slice
+
+    b1 = new Buffer(32);
+    b1.fill(0x11);
+    printNodejsBuffer(b1);
+    b2 = b1.slice(3, 20);
+    b2.fill(0x22);
+    printNodejsBuffer(b2);
+    b3 = b1.slice(2, 11);
+    b3.fill(0x33);
     printNodejsBuffer(b3);
-  }
-  b3.writeUInt16BE(0x7071, 3);
-  printNodejsBuffer(b1);
-  printNodejsBuffer(b2);
-  printNodejsBuffer(b3);
+    for (i = 0; i < 16; i++) {
+        b3[i] = 0x62;
+        printNodejsBuffer(b3);
+    }
+    b3.writeUInt16BE(0x7071, 3);
+    printNodejsBuffer(b1);
+    printNodejsBuffer(b2);
+    printNodejsBuffer(b3);
 }
 
 try {
-  print("Node.js Buffer slice() test");
-  nodejsBufferSliceTest();
+    print('Node.js Buffer slice() test');
+    nodejsBufferSliceTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

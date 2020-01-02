@@ -23,33 +23,33 @@ true
 ===*/
 
 function test() {
-  var b = new ArrayBuffer(16);
-  print(Object.prototype.toString.call(b));
-  print(b.length, b.byteLength, b.byteOffset);
+    var b = new ArrayBuffer(16);
+    print(Object.prototype.toString.call(b));
+    print(b.length, b.byteLength, b.byteOffset);
 
-  var v = new Uint32Array(b);
-  print(Object.prototype.toString.call(v));
-  print(v.length, v.byteLength, v.byteOffset);
+    var v = new Uint32Array(b);
+    print(Object.prototype.toString.call(v));
+    print(v.length, v.byteLength, v.byteOffset);
 
-  var w = v.subarray(1);
-  print(Object.prototype.toString.call(w));
-  print(w.length, w.byteLength, w.byteOffset);
+    var w = v.subarray(1)
+    print(Object.prototype.toString.call(w));
+    print(w.length, w.byteLength, w.byteOffset);
 
-  print(ArrayBuffer.isView(b));
-  print(ArrayBuffer.isView(v));
-  print(ArrayBuffer.isView(w));
+    print(ArrayBuffer.isView(b));
+    print(ArrayBuffer.isView(v));
+    print(ArrayBuffer.isView(w));
 
-  v[0] = 0x01010101;
-  v[1] = 0x02020202;
-  v[2] = 0x03030303;
-  v[3] = 0x04040404;
+    v[0] = 0x01010101
+    v[1] = 0x02020202
+    v[2] = 0x03030303
+    v[3] = 0x04040404
 
-  print(Duktape.enc("jx", v));
-  print(Duktape.enc("jx", w));
+    print(Duktape.enc('jx', v));
+    print(Duktape.enc('jx', w));
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

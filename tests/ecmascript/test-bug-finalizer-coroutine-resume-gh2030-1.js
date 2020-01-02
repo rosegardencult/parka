@@ -6,11 +6,12 @@
 done
 ===*/
 
-Duktape.fin(Proxy, function() {
-  function f() {
-    performance("g called", isFinite(Error), TypeError(g));
-  }
-  Duktape.Thread.resume(new Duktape.Thread(f));
+Duktape.fin(
+    Proxy, function( ) {
+        function f( ) {
+            performance ('g called', isFinite(Error), TypeError(g));
+        }
+        Duktape.Thread.resume(new Duktape.Thread(f));
 });
 
-print("done");
+print('done');

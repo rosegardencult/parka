@@ -9,12 +9,12 @@
 
 /* Latter variant was broken at some point */
 
-var test = "Foo";
+var test = 'Foo';
 
 for (i in test) {
-  print(i);
+    print(i)
 }
 
 for (var i in test) {
-  print(i);
+    print(i)
 }

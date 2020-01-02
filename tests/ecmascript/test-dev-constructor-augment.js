@@ -16,19 +16,19 @@ true
 ===*/
 
 function test() {
-  var t;
+    var t;
 
-  t = new Error("aiee");
-  print(typeof t.stack);
-  print(t.lineNumber > 0);
+    t = new Error('aiee');
+    print(typeof t.stack);
+    print(t.lineNumber > 0);
 
-  t = Reflect.construct(Error, ["aiee"]);
-  print(typeof t.stack);
-  print(t.lineNumber > 0);
+    t = Reflect.construct(Error, [ 'aiee' ]);
+    print(typeof t.stack);
+    print(t.lineNumber > 0);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

@@ -26,34 +26,34 @@ foo boolean true
 
 /* Boolean constructor called as a function converts a value. */
 
-print("constructor as a function");
+print('constructor as a function');
 
 function constructorAsFunctionTest(x) {
-  var t = Boolean(x);
-  print(x, typeof t, t);
+    var t = Boolean(x);
+    print(x, typeof t, t);
 }
 
 try {
-  constructorAsFunctionTest();
-  constructorAsFunctionTest(undefined);
-  constructorAsFunctionTest(null);
-  constructorAsFunctionTest(true);
-  constructorAsFunctionTest(false);
-  constructorAsFunctionTest(Number.NEGATIVE_INFINITY);
-  constructorAsFunctionTest(-123.0);
-  constructorAsFunctionTest(-0.0);
-  constructorAsFunctionTest(+0.0);
-  constructorAsFunctionTest(123.0);
-  constructorAsFunctionTest(Number.POSITIVE_INFINITY);
-  constructorAsFunctionTest(Number.NaN);
-  constructorAsFunctionTest("");
-  constructorAsFunctionTest("foo");
-  constructorAsFunctionTest([]);
-  constructorAsFunctionTest([1, 2]);
-  constructorAsFunctionTest({});
-  constructorAsFunctionTest({ foo: 1, bar: 2 });
+    constructorAsFunctionTest();
+    constructorAsFunctionTest(undefined);
+    constructorAsFunctionTest(null);
+    constructorAsFunctionTest(true);
+    constructorAsFunctionTest(false);
+    constructorAsFunctionTest(Number.NEGATIVE_INFINITY);
+    constructorAsFunctionTest(-123.0);
+    constructorAsFunctionTest(-0.0);
+    constructorAsFunctionTest(+0.0);
+    constructorAsFunctionTest(123.0);
+    constructorAsFunctionTest(Number.POSITIVE_INFINITY);
+    constructorAsFunctionTest(Number.NaN);
+    constructorAsFunctionTest('');
+    constructorAsFunctionTest('foo');
+    constructorAsFunctionTest([]);
+    constructorAsFunctionTest([1,2]);
+    constructorAsFunctionTest({});
+    constructorAsFunctionTest({foo:1, bar:2});
 } catch (e) {
-  print(e.name, e);
+    print(e.name, e);
 }
 
 /*===
@@ -80,40 +80,40 @@ foo object true [object Boolean] true
 
 /* Constructor called with 'new'. */
 
-print("constructor");
+print('constructor');
 
 function constructorTest(x) {
-  var t = new Boolean(x);
-  var v;
+    var t = new Boolean(x);
+    var v;
 
-  if (Object.prototype.toString.call(t) === "[object Boolean]") {
-    v = t.valueOf();
-  }
+    if (Object.prototype.toString.call(t) === '[object Boolean]') {
+        v = t.valueOf();
+    }
 
-  print(x, typeof t, t, Object.prototype.toString.call(t), v);
+    print(x, typeof t, t, Object.prototype.toString.call(t), v);
 }
 
 try {
-  constructorTest();
-  constructorTest(undefined);
-  constructorTest(null);
-  constructorTest(true);
-  constructorTest(false);
-  constructorTest(Number.NEGATIVE_INFINITY);
-  constructorTest(-123.0);
-  constructorTest(-0.0);
-  constructorTest(+0.0);
-  constructorTest(123.0);
-  constructorTest(Number.POSITIVE_INFINITY);
-  constructorTest(Number.NaN);
-  constructorTest("");
-  constructorTest("foo");
-  constructorTest([]);
-  constructorTest([1, 2]);
-  constructorTest({});
-  constructorTest({ foo: 1, bar: 2 });
+    constructorTest();
+    constructorTest(undefined);
+    constructorTest(null);
+    constructorTest(true);
+    constructorTest(false);
+    constructorTest(Number.NEGATIVE_INFINITY);
+    constructorTest(-123.0);
+    constructorTest(-0.0);
+    constructorTest(+0.0);
+    constructorTest(123.0);
+    constructorTest(Number.POSITIVE_INFINITY);
+    constructorTest(Number.NaN);
+    constructorTest('');
+    constructorTest('foo');
+    constructorTest([]);
+    constructorTest([1,2]);
+    constructorTest({});
+    constructorTest({foo:1, bar:2});
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -122,23 +122,23 @@ true
 [object Boolean]
 ===*/
 
-print("instance");
+print('instance');
 
 function instanceTest() {
-  var x = new Boolean(true);
+    var x = new Boolean(true);
 
-  // prototype; cannot change because Boolean's "prototype" property
-  // is non-configurable and non-writable
-  print(Object.getPrototypeOf(x) === Boolean.prototype);
+    // prototype; cannot change because Boolean's "prototype" property
+    // is non-configurable and non-writable
+    print(Object.getPrototypeOf(x) === Boolean.prototype);
 
-  // class
-  print(Object.prototype.toString.call(x));
+    // class
+    print(Object.prototype.toString.call(x));
 }
 
 try {
-  instanceTest();
+    instanceTest();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -152,42 +152,42 @@ object false string false
 
 /* toString() */
 
-print("toString");
+print('toString');
 
 function toStringTest(x) {
-  var t = Boolean.prototype.toString.call(x);
-  print(typeof x, x, typeof t, t);
+    var t = Boolean.prototype.toString.call(x);
+    print(typeof x, x, typeof t, t);
 }
 
 try {
-  // 'this' binding must be a primitive boolean or a Boolean object
-  toStringTest("true");
+    // 'this' binding must be a primitive boolean or a Boolean object
+    toStringTest('true');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  toStringTest(true);
+    toStringTest(true);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  toStringTest(false);
+    toStringTest(false);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  toStringTest(new Boolean(true));
+    toStringTest(new Boolean(true));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  toStringTest(new Boolean(false));
+    toStringTest(new Boolean(false));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -201,39 +201,39 @@ object false boolean false
 
 /* valueOf() */
 
-print("valueOf");
+print('valueOf');
 
 function valueOfTest(x) {
-  var t = Boolean.prototype.valueOf.call(x);
-  print(typeof x, x, typeof t, t);
+    var t = Boolean.prototype.valueOf.call(x);
+    print(typeof x, x, typeof t, t);
 }
 
 try {
-  valueOfTest("true");
+    valueOfTest('true');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  valueOfTest(true);
+    valueOfTest(true);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  valueOfTest(false);
+    valueOfTest(false);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  valueOfTest(new Boolean(true));
+    valueOfTest(new Boolean(true));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  valueOfTest(new Boolean(false));
+    valueOfTest(new Boolean(false));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

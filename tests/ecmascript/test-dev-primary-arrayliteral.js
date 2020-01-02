@@ -45,13 +45,13 @@ array: 3 [1001,1002,1003]
 ===*/
 
 function dump(v) {
-  var i;
+    var i;
 
-  print("array:", v.length, JSON.stringify(v));
+    print('array:', v.length, JSON.stringify(v));
 
-  for (i = 0; i < v.length; i++) {
-    print(i, typeof v[i], String(v[i]));
-  }
+    for (i = 0; i < v.length; i++) {
+        print(i, typeof v[i], String(v[i]));
+    }
 }
 
 var t;
@@ -63,7 +63,7 @@ dump(t);
 // trailing commas after an empty list each increase length by one
 t = [,];
 dump(t);
-t = [, ,];
+t = [,,];
 dump(t);
 
 // one element
@@ -72,23 +72,25 @@ dump(t);
 
 // first trailing comma after an actual element is effectively ignored,
 // so [1,] is the same as [1].
-t = [1];
+t = [1,];
 dump(t);
 
 // this has length 2
-t = [1, ,];
+t = [1,,];
 dump(t);
 
 // leading elisions
-t = [, 1];
+t = [,1];
 dump(t);
-t = [, , , , 1];
+t = [,,,,1];
 dump(t);
 
 // mixed elisions
-t = [, , , 1, , , 2, , ,];
+t = [,,,1,,,2,,,];
 dump(t);
 
 // side effects of evaluation
-t = [(print("1st"), 1001), (print("2nd"), 1002), (print("3rd"), 1003)];
+t = [ (print('1st'), 1001),
+      (print('2nd'), 1002),
+      (print('3rd'), 1003) ];
 dump(t);

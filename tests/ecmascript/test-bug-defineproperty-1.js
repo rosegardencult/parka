@@ -15,23 +15,15 @@ TypeError
  */
 
 try {
-  var obj = Object.create(Object.prototype, {
-    foo: {
-      enumerable: true,
-      configurable: false,
-      get: function() {},
-      set: function() {}
-    }
-  });
+    var obj = Object.create(Object.prototype, {
+        foo: { enumerable: true, configurable: false, get: function(){}, set: function() {} }
+    });
 
-  Object.defineProperty(obj, "foo", {
-    writable: false,
-    enumerable: true,
-    configurable: false,
-    unknown: "should ignore"
-  });
+    Object.defineProperty(obj, 'foo', {
+        writable: false, enumerable: true, configurable: false, unknown: 'should ignore'
+    });
 
-  print("should not succeed");
+    print('should not succeed');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

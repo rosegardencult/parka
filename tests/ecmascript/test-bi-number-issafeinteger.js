@@ -32,43 +32,26 @@ false false
 /*@include util-base.js@*/
 
 print(typeof Number.isSafeInteger);
-print(Test.getPropDescString(Number, "isSafeInteger"));
-print(Test.getPropDescString(Number.isSafeInteger, "length"));
-print(Test.getPropDescString(Number.isSafeInteger, "name"));
+print(Test.getPropDescString(Number, 'isSafeInteger'));
+print(Test.getPropDescString(Number.isSafeInteger, 'length'));
+print(Test.getPropDescString(Number.isSafeInteger, 'name'));
 
 [
-  -1 / 0,
-  -1e100,
-  -1234567890.2,
-  -0x12345678,
-  -0,
-  +0,
-  0x12345678,
-  1234567890.2,
-  1e100,
-  1 / 0,
-  0 / 0,
+    -1 / 0, -1e100, -1234567890.2, -0x12345678, -0,
+    +0, 0x12345678, 1234567890.2, 1e100, 1 / 0,
+    0 / 0,
 
-  // Specific corner case values: note that fractions are not actually
-  // significant so it suffices to test for integers.
-  -9007199254740992.0,
-  -9007199254740991.0,
-  -9007199254740990.0,
-  9007199254740992.0,
-  9007199254740991.0,
-  9007199254740990.0,
+    // Specific corner case values: note that fractions are not actually
+    // significant so it suffices to test for integers.
+    -9007199254740992.0,
+    -9007199254740991.0,
+    -9007199254740990.0,
+    9007199254740992.0,
+    9007199254740991.0,
+    9007199254740990.0,
 
-  void 0,
-  null,
-  "",
-  "123",
-  true,
-  false,
-  {
-    valueOf: function() {
-      return 123.0;
-    }
-  }
-].forEach(function(v) {
-  print(Test.valueToString(v), Test.valueToString(Number.isSafeInteger(v)));
+    void 0, null, '', '123', true, false,
+    { valueOf: function () { return 123.0; } }
+].forEach(function (v) {
+    print(Test.valueToString(v), Test.valueToString(Number.isSafeInteger(v)));
 });

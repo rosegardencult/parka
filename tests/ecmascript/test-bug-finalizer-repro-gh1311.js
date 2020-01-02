@@ -8,15 +8,15 @@ done
 ===*/
 
 function Foo() {
-  throw new Error("a pig ate it");
+    throw new Error('a pig ate it');
 }
 
 Duktape.fin(Foo.prototype, function(o) {});
 
 try {
-  new Foo();
+    new Foo();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
-print("done");
+print('done');

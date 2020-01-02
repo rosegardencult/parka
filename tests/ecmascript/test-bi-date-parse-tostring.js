@@ -14,41 +14,31 @@ toString + parse test
 
 /* Test the conversion property of E5.1 Section 15.9.4.2 (paragraph 2). */
 
-print("toString + parse test");
+print('toString + parse test');
 
 function toStringParseTest() {
-  // all values have milliseconds as 0
-  var values = [
-    -123456789e3,
-    -1234567e3,
-    -12345e3,
-    -123e3,
-    -0,
-    +0,
-    +123456789e3,
-    +1234567e3,
-    +12345e3,
-    +123e3
-  ];
-  var i, x;
+    // all values have milliseconds as 0
+    var values = [
+        -123456789e3, -1234567e3, -12345e3, -123e3, -0, +0,
+        +123456789e3, +1234567e3, +12345e3, +123e3
+    ];
+    var i, x;
 
-  for (i = 0; i < values.length; i++) {
-    x = new Date(values[i]);
+    for (i = 0; i < values.length; i++) {
+        x = new Date(values[i]);
 
-    // E5.1 Section 15.9.4.2, 15.9.5.2
-    print(
-      x.valueOf(),
-      Date.parse(x.toString()),
-      Date.parse(x.toUTCString()),
-      Date.parse(x.toISOString())
-    );
-  }
+        // E5.1 Section 15.9.4.2, 15.9.5.2
+        print(x.valueOf(),
+              Date.parse(x.toString()),
+              Date.parse(x.toUTCString()),
+              Date.parse(x.toISOString()));
+    }
 
-  // XXX: add more comprehensive cases
+    // XXX: add more comprehensive cases
 }
 
 try {
-  toStringParseTest();
+    toStringParseTest();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

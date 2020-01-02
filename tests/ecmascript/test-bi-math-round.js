@@ -27,5 +27,5 @@ printExact(Math.round(0.400009));
 printExact(Math.round(0.5));
 printExact(Math.round(-0.5));
 printExact(Math.round(-0.500001));
-printExact(Math.round(3.5)); // tie break towards +Infinity -> 4
-printExact(Math.round(-3.5)); // tie break towards +Infinity -> -3
+printExact(Math.round(3.5));   // tie break towards +Infinity -> 4
+printExact(Math.round(-3.5));  // tie break towards +Infinity -> -3

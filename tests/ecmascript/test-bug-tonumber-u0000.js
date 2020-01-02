@@ -12,8 +12,8 @@ NaN
  */
 
 try {
-  print(+"", 1 / +"");
-  print(+"\u0000");
+    print(+'', 1/(+''));
+    print(+'\u0000');
 } catch (e) {
-  print(e);
+    print(e);
 }

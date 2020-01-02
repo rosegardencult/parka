@@ -16,25 +16,25 @@
 ===*/
 
 function test() {
-  // Spot check some types.
-  [
-    createPlainBuffer(4),
-    new ArrayBuffer(4),
-    new Uint8Array(16),
-    new Float32Array(16),
-    new Buffer(16)
-  ].forEach(function(v, i) {
-    try {
-      Object.freeze(v);
-      print(i, Object.prototype.toString.call(v), "OK");
-    } catch (e) {
-      print(i, Object.prototype.toString.call(v), e.name);
-    }
-  });
+    // Spot check some types.
+    [
+        createPlainBuffer(4),
+        new ArrayBuffer(4),
+        new Uint8Array(16),
+        new Float32Array(16),
+        new Buffer(16)
+     ].forEach(function (v, i) {
+        try {
+            Object.freeze(v);
+            print(i, Object.prototype.toString.call(v), 'OK');
+        } catch (e) {
+            print(i, Object.prototype.toString.call(v), e.name);
+        }
+    });
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

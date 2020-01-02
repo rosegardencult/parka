@@ -7,22 +7,22 @@ function
  * can be accessed from inside the function.
  */
 function foo() {
-  print(typeof foo);
+    print(typeof foo);
 }
 
 try {
-  foo();
+    foo();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
-var funcexpr = "not visible";
+var funcexpr = 'not visible';
 var temp = function funcexpr() {
-  print(typeof funcexpr);
+    print(typeof funcexpr);
 };
 
 try {
-  temp();
+    temp();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

@@ -4,16 +4,16 @@ SyntaxError
 ===*/
 
 function test() {
-  try {
-    print(eval("/[a-z]/"));
-    print(eval("/[z-a]/"));
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        print(eval('/[a-z]/'));
+        print(eval('/[z-a]/'));
+    } catch (e) {
+        print(e.name);
+    }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

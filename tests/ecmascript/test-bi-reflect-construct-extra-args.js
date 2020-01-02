@@ -10,18 +10,18 @@ object
 ===*/
 
 function test() {
-  var t = Reflect.construct(Date, [123], Date);
-  print(typeof t);
-  print(t.toISOString());
+    var t = Reflect.construct(Date, [ 123 ], Date);
+    print(typeof t);
+    print(t.toISOString());
 
-  // This should work like Reflect.construct(Date, [ 123 ], Date).
-  var t = Reflect.construct(Date, [123], Date, "extra");
-  print(typeof t);
-  print(t.toISOString());
+    // This should work like Reflect.construct(Date, [ 123 ], Date).
+    var t = Reflect.construct(Date, [ 123 ], Date, 'extra');
+    print(typeof t);
+    print(t.toISOString());
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

@@ -27,46 +27,35 @@ true
 ===*/
 
 function basicTest() {
-  var pd = Object.getOwnPropertyDescriptor(Object, "is");
-  print(typeof pd.value, pd.writable, pd.enumerable, pd.configurable);
-  print(Object.is.length);
+    var pd = Object.getOwnPropertyDescriptor(Object, 'is');
+    print(typeof pd.value, pd.writable, pd.enumerable, pd.configurable);
+    print(Object.is.length);
 
-  // SameValue speciality is to take zero sign into account and to compare
-  // NaNs are true.
-  print(Object.is(-0, -0));
-  print(Object.is(-0, +0));
-  print(Object.is(+0, -0));
-  print(Object.is(+0, +0));
-  print(Object.is(0 / 0, 0 / 0));
+    // SameValue speciality is to take zero sign into account and to compare
+    // NaNs are true.
+    print(Object.is(-0, -0));
+    print(Object.is(-0, +0));
+    print(Object.is(+0, -0));
+    print(Object.is(+0, +0));
+    print(Object.is(0/0, 0/0));
 
-  var values = [
-    undefined,
-    null,
-    true,
-    false,
-    -1 / 0,
-    -0,
-    0,
-    1 / 0,
-    123,
-    "",
-    "foo",
-    {},
-    []
-  ];
-  values.forEach(function(v1, i1) {
-    values.forEach(function(v2, i2) {
-      var res = Object.is(i1, i2);
-      if (res) {
-        print(i1, i2); // print true comparisons only
-      }
+    var values = [
+        undefined, null, true, false, -1/0, -0, 0, 1/0, 123,
+        '', 'foo', {}, []
+    ];
+    values.forEach(function (v1, i1) {
+        values.forEach(function (v2, i2) {
+            var res = Object.is(i1, i2);
+            if (res) {
+                print(i1, i2);  // print true comparisons only
+            }
+        });
     });
-  });
 }
 
 try {
-  print("basic test");
-  basicTest();
+    print('basic test');
+    basicTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

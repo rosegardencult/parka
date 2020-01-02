@@ -9,19 +9,19 @@ Error: myerror
 ===*/
 
 function f() {
-  print("f");
-  function g() {
-    print("g");
-    throw new Error("myerror");
-  }
-  g();
+    print('f');
+    function g() {
+        print('g');
+        throw new Error('myerror');
+    }
+    g();
 }
 
 try {
-  // Calling as f() does not trigger the error, but calling through
-  // apply() does.  The internal difference is that apply() goes through
-  // duk_handle_call().
-  f.apply();
+    // Calling as f() does not trigger the error, but calling through
+    // apply() does.  The internal difference is that apply() goes through
+    // duk_handle_call().
+    f.apply();
 } catch (e) {
-  print(e);
+    print(e);
 }

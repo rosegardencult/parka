@@ -18,43 +18,39 @@ Duktape.modSearch foo/quux
 ===*/
 
 function test() {
-  /*
-   *  Relative resolution from 'foo'
-   */
+    /*
+     *  Relative resolution from 'foo'
+     */
 
-  Duktape.modSearch = function(id) {
-    print("Duktape.modSearch", id);
-    if (id === "foo") {
-      return (
-        "var text = 'Hello world!';     // not visible outside the module\n" +
-        "var quux = require('./quux');  // loads quux\n" +
-        "exports.hello = function () { print(text); };"
-      );
-    }
-    return ""; // return a fake empty module
-  };
-  void require("foo");
+    Duktape.modSearch = function (id) {
+        print('Duktape.modSearch', id);
+        if (id === 'foo') {
+            return "var text = 'Hello world!';     // not visible outside the module\n" +
+                   "var quux = require('./quux');  // loads quux\n" +
+                   "exports.hello = function () { print(text); };";
+        }
+        return '';   // return a fake empty module
+    };
+    void require('foo');
 
-  /*
-   *  Relative resolution from 'foo/bar'
-   */
+    /*
+     *  Relative resolution from 'foo/bar'
+     */
 
-  Duktape.modSearch = function(id) {
-    print("Duktape.modSearch", id);
-    if (id === "foo/bar") {
-      return (
-        "var text = 'Hello world!';     // not visible outside the module\n" +
-        "var quux = require('./quux');  // loads foo/quux\n" +
-        "exports.hello = function () { print(text); };"
-      );
-    }
-    return ""; // return a fake empty module
-  };
-  void require("foo/bar");
+    Duktape.modSearch = function (id) {
+        print('Duktape.modSearch', id);
+        if (id === 'foo/bar') {
+            return "var text = 'Hello world!';     // not visible outside the module\n" +
+                   "var quux = require('./quux');  // loads foo/quux\n" +
+                   "exports.hello = function () { print(text); };";
+        }
+        return '';   // return a fake empty module
+    };
+    void require('foo/bar');
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

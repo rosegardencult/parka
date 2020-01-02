@@ -15,17 +15,17 @@ false false true
 ===*/
 
 function functionInstanceTest() {
-  var f = function test(a, b, c) {};
-  var pd;
+    var f = function test(a, b, c) {};
+    var pd;
 
-  print("fileName" in f, typeof f.fileName);
-  pd = Object.getOwnPropertyDescriptor(f, "fileName");
-  print(pd.writable, pd.enumerable, pd.configurable);
+    print('fileName' in f, typeof f.fileName);
+    pd = Object.getOwnPropertyDescriptor(f, 'fileName');
+    print(pd.writable, pd.enumerable, pd.configurable);
 }
 
 try {
-  print("instance");
-  functionInstanceTest();
+    print('instance');
+    functionInstanceTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

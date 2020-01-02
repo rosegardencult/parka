@@ -12,7 +12,7 @@ var t;
 ===*/
 
 print(1 || 2);
-print(1 || print("never")); /* short circuit */
+print(1 || print('never'));  /* short circuit */
 print(0 || 2);
 print(0 || 0 || 3);
 
@@ -35,8 +35,8 @@ undefined
 ===*/
 
 print(1 && 2);
-print(1 && print("always"));
-print(0 && print("never"));
+print(1 && print('always'));
+print(0 && print('never'));
 print(1 && 1 && 3);
 
 /*===
@@ -69,4 +69,4 @@ finished
 
 var p = print;
 
-print((p("A") && p("B")) || (true && 1 && print("E")) || (true && "finished"));
+print(p('A') && p('B') || true && 1 && print('E') || true && 'finished');

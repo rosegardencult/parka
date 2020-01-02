@@ -50,71 +50,71 @@ copy()
 ===*/
 
 function writeReturnValueTest() {
-  var buf = new Buffer(256);
+    var buf = new Buffer(256);
 
-  // The basic write field primitives return "next offset", i.e. input
-  // offset + number of bytes written.
+    // The basic write field primitives return "next offset", i.e. input
+    // offset + number of bytes written.
 
-  print("write field");
-  print(buf.writeUInt8(0x01, 50));
-  print(buf.writeInt8(0x01, 50));
-  print(buf.writeUInt16BE(0x01, 50));
-  print(buf.writeUInt16LE(0x01, 50));
-  print(buf.writeInt16BE(0x01, 50));
-  print(buf.writeInt16LE(0x01, 50));
-  print(buf.writeUInt32BE(0x01, 50));
-  print(buf.writeUInt32LE(0x01, 50));
-  print(buf.writeInt32BE(0x01, 50));
-  print(buf.writeInt32LE(0x01, 50));
-  print(buf.writeFloatBE(0x01, 50));
-  print(buf.writeFloatLE(0x01, 50));
-  print(buf.writeDoubleBE(0x01, 50));
-  print(buf.writeDoubleLE(0x01, 50));
+    print('write field');
+    print(buf.writeUInt8(0x01, 50));
+    print(buf.writeInt8(0x01, 50));
+    print(buf.writeUInt16BE(0x01, 50));
+    print(buf.writeUInt16LE(0x01, 50));
+    print(buf.writeInt16BE(0x01, 50));
+    print(buf.writeInt16LE(0x01, 50));
+    print(buf.writeUInt32BE(0x01, 50));
+    print(buf.writeUInt32LE(0x01, 50));
+    print(buf.writeInt32BE(0x01, 50));
+    print(buf.writeInt32LE(0x01, 50));
+    print(buf.writeFloatBE(0x01, 50));
+    print(buf.writeFloatLE(0x01, 50));
+    print(buf.writeDoubleBE(0x01, 50));
+    print(buf.writeDoubleLE(0x01, 50));
 
-  // Variable-sized integer write follows the same principle.
+    // Variable-sized integer write follows the same principle.
 
-  print("write varint");
-  print(buf.writeUIntBE(0x01, 50, 1));
-  print(buf.writeUIntBE(0x01, 50, 2));
-  print(buf.writeUIntBE(0x01, 50, 3));
-  print(buf.writeUIntBE(0x01, 50, 4));
-  print(buf.writeUIntBE(0x01, 50, 5));
-  print(buf.writeUIntBE(0x01, 50, 6));
-  print(buf.writeUIntLE(0x01, 50, 1));
-  print(buf.writeUIntLE(0x01, 50, 2));
-  print(buf.writeUIntLE(0x01, 50, 3));
-  print(buf.writeUIntLE(0x01, 50, 4));
-  print(buf.writeUIntLE(0x01, 50, 5));
-  print(buf.writeUIntLE(0x01, 50, 6));
-  print(buf.writeIntBE(0x01, 50, 1));
-  print(buf.writeIntBE(0x01, 50, 2));
-  print(buf.writeIntBE(0x01, 50, 3));
-  print(buf.writeIntBE(0x01, 50, 4));
-  print(buf.writeIntBE(0x01, 50, 5));
-  print(buf.writeIntBE(0x01, 50, 6));
-  print(buf.writeIntLE(0x01, 50, 1));
-  print(buf.writeIntLE(0x01, 50, 2));
-  print(buf.writeIntLE(0x01, 50, 3));
-  print(buf.writeIntLE(0x01, 50, 4));
-  print(buf.writeIntLE(0x01, 50, 5));
-  print(buf.writeIntLE(0x01, 50, 6));
+    print('write varint');
+    print(buf.writeUIntBE(0x01, 50, 1));
+    print(buf.writeUIntBE(0x01, 50, 2));
+    print(buf.writeUIntBE(0x01, 50, 3));
+    print(buf.writeUIntBE(0x01, 50, 4));
+    print(buf.writeUIntBE(0x01, 50, 5));
+    print(buf.writeUIntBE(0x01, 50, 6));
+    print(buf.writeUIntLE(0x01, 50, 1));
+    print(buf.writeUIntLE(0x01, 50, 2));
+    print(buf.writeUIntLE(0x01, 50, 3));
+    print(buf.writeUIntLE(0x01, 50, 4));
+    print(buf.writeUIntLE(0x01, 50, 5));
+    print(buf.writeUIntLE(0x01, 50, 6));
+    print(buf.writeIntBE(0x01, 50, 1));
+    print(buf.writeIntBE(0x01, 50, 2));
+    print(buf.writeIntBE(0x01, 50, 3));
+    print(buf.writeIntBE(0x01, 50, 4));
+    print(buf.writeIntBE(0x01, 50, 5));
+    print(buf.writeIntBE(0x01, 50, 6));
+    print(buf.writeIntLE(0x01, 50, 1));
+    print(buf.writeIntLE(0x01, 50, 2));
+    print(buf.writeIntLE(0x01, 50, 3));
+    print(buf.writeIntLE(0x01, 50, 4));
+    print(buf.writeIntLE(0x01, 50, 5));
+    print(buf.writeIntLE(0x01, 50, 6));
 
-  // The write() call is different: it returns number of bytes written,
-  // -not- an offset.
+    // The write() call is different: it returns number of bytes written,
+    // -not- an offset.
 
-  print("write()");
-  print(buf.write("foobar", 50));
+    print('write()');
+    print(buf.write('foobar', 50));
 
-  // The copy() call also return the number of bytes written (after
-  // clipping).
+    // The copy() call also return the number of bytes written (after
+    // clipping).
 
-  print("copy()");
-  var buf2 = new Buffer(160);
-  print(buf2.copy(buf, 233));
+    print('copy()');
+    var buf2 = new Buffer(160);
+    print(buf2.copy(buf, 233));
 }
 
 try {
-  writeReturnValueTest();
+    writeReturnValueTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

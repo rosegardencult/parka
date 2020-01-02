@@ -24,44 +24,35 @@ SlowBuffer: undefined
 /* Just a dummy existence test.  Actual testcases are in separate files. */
 
 function test() {
-  try {
-    print("Buffer:", typeof this.Buffer);
-    print("Buffer.name:", this.Buffer.name);
-    print("isExtensible(Buffer):", Object.isExtensible(this.Buffer));
-    print(
-      "Object.prototype.toString(Buffer):",
-      Object.prototype.toString.call(this.Buffer)
-    );
-  } catch (e) {
-    print(e.stack || e);
-  }
+    try {
+        print('Buffer:', typeof this.Buffer);
+        print('Buffer.name:', this.Buffer.name);
+        print('isExtensible(Buffer):', Object.isExtensible(this.Buffer));
+        print('Object.prototype.toString(Buffer):', Object.prototype.toString.call(this.Buffer));
+    } catch (e) {
+        print(e.stack || e);
+    }
 
-  try {
-    print("Buffer.prototype:", typeof this.Buffer.prototype);
-    print("Buffer.prototype.name:", this.Buffer.prototype.name);
-    print(
-      "isExtensible(Buffer.prototype):",
-      Object.isExtensible(this.Buffer.prototype)
-    );
-    print(
-      "Object.prototype.toString(Buffer.prototype):",
-      Object.prototype.toString.call(this.Buffer.prototype)
-    );
-  } catch (e) {
-    print(e.stack || e);
-  }
+    try {
+        print('Buffer.prototype:', typeof this.Buffer.prototype);
+        print('Buffer.prototype.name:', this.Buffer.prototype.name);
+        print('isExtensible(Buffer.prototype):', Object.isExtensible(this.Buffer.prototype));
+        print('Object.prototype.toString(Buffer.prototype):', Object.prototype.toString.call(this.Buffer.prototype));
+    } catch (e) {
+        print(e.stack || e);
+    }
 
-  try {
-    print("SlowBuffer:", typeof this.SlowBuffer);
-  } catch (e) {
-    print(e.stack || e);
-  }
+    try {
+        print('SlowBuffer:', typeof this.SlowBuffer);
+    } catch (e) {
+        print(e.stack || e);
+    }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*

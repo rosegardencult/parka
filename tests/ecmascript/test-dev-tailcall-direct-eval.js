@@ -19,50 +19,50 @@ f2s true
 ===*/
 
 function f0() {
-  var ret;
-  var my_eval = eval;
-  ret = my_eval("!this"); // indirect eval
-  return ret;
+    var ret;
+    var my_eval = eval;
+    ret = my_eval('!this');  // indirect eval
+    return ret;
 }
 
 function f0s() {
-  "use strict";
-  var ret;
-  var my_eval = eval;
-  ret = my_eval("!this"); // indirect eval
-  return ret;
+    'use strict';
+    var ret;
+    var my_eval = eval;
+    ret = my_eval('!this');  // indirect eval
+    return ret;
 }
 
 function f1() {
-  var ret;
-  ret = eval("!this");
-  return ret;
+    var ret;
+    ret = eval('!this');
+    return ret;
 }
 
 function f1s() {
-  "use strict";
-  var ret;
-  ret = eval("!this");
-  return ret;
+    'use strict';
+    var ret;
+    ret = eval('!this');
+    return ret;
 }
 
 function f2() {
-  return eval("!this");
+    return eval('!this');
 }
 
 function f2s() {
-  "use strict";
-  return eval("!this");
+    'use strict';
+    return eval('!this');
 }
 
 try {
-  print("eval", eval("!this"));
-  print("f0", f0());
-  print("f0s", f0s());
-  print("f1", f1());
-  print("f1s", f1s());
-  print("f2", f2());
-  print("f2s", f2s());
+    print('eval', eval('!this'));
+    print('f0', f0());
+    print('f0s', f0s());
+    print('f1', f1());
+    print('f1s', f1s());
+    print('f2', f2());
+    print('f2s', f2s());
 } catch (e) {
-  print(e);
+    print(e);
 }

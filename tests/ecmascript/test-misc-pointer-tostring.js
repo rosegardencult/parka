@@ -15,16 +15,16 @@ true
  */
 
 function pointerTostringTest() {
-  var ptr_null = Duktape.Pointer();
-  var ptr_nonnull = Duktape.Pointer("dummy");
-  var re_ptr_nonnull = /^[0-9a-fA-Fx:]+$/;
+    var ptr_null = Duktape.Pointer();
+    var ptr_nonnull = Duktape.Pointer('dummy');
+    var re_ptr_nonnull = /^[0-9a-fA-Fx:]+$/;
 
-  print(ptr_null.toString());
-  print(re_ptr_nonnull.test(ptr_nonnull.toString()));
+    print(ptr_null.toString());
+    print(re_ptr_nonnull.test(ptr_nonnull.toString()));
 }
 
 try {
-  pointerTostringTest();
+    pointerTostringTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

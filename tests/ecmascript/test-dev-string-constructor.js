@@ -1,11 +1,11 @@
 var obj;
 
 function prS(x) {
-  print(typeof x, x);
+    print(typeof x, x);
 }
 
 function prO(x) {
-  print(typeof x, x.toString());
+    print(typeof x, x.toString());
 }
 
 /*===
@@ -47,17 +47,15 @@ prS(String(+0));
 prS(String(+123));
 prS(String(Number.POSITIVE_INFINITY));
 
-prS(String(""));
-prS(String("foo"));
+prS(String(''));
+prS(String('foo'));
 
 obj = {
-  toString: function() {
-    return "obj.toString()";
-  }
-};
+    toString: function() { return 'obj.toString()' }
+}
 prS(String(obj));
 
-prS(String([1, 2, 3]));
+prS(String([1,2,3]));
 
 /*===
 object 
@@ -94,14 +92,12 @@ prS(new String(+0));
 prS(new String(+123));
 prS(new String(Number.POSITIVE_INFINITY));
 
-prS(new String(""));
-prS(new String("foo"));
+prS(new String(''));
+prS(new String('foo'));
 
 obj = {
-  toString: function() {
-    return "obj.toString()";
-  }
-};
+    toString: function() { return 'obj.toString()' }
+}
 prS(new String(obj));
 
-prS(new String([1, 2, 3]));
+prS(new String([1,2,3]));

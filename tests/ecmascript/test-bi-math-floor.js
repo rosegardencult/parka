@@ -24,7 +24,7 @@ printExact(Math.floor(122.999999));
 printExact(Math.floor(-123));
 printExact(Math.floor(-124));
 
-printExact(Math.floor(4294967306.5)); // value higher than 32 bits
+printExact(Math.floor(4294967306.5));  // value higher than 32 bits
 
 printExact(Math.floor(NaN));
 printExact(Math.floor(+0));

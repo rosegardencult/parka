@@ -30,43 +30,22 @@ Infinity 0
 ===*/
 
 function readWriteCoercionTest() {
-  var pb = createPlainBuffer("abcdefghijklmnop");
+    var pb = createPlainBuffer('abcdefghijklmnop');
 
-  [
-    -1234,
-    -256,
-    -255,
-    -1.6,
-    -1.4,
-    -1,
-    -0.6,
-    -0.4,
-    -0,
-    +0,
-    0.4,
-    0.6,
-    1,
-    1.4,
-    1.6,
-    255,
-    256,
-    1234,
-    0 / 0,
-    1 / 0,
-    -1 / 0,
-    "123",
-    "130",
-    "-123",
-    "-130"
-  ].forEach(function(v) {
-    pb[0] = v;
-    print(Duktape.enc("jx", v), Duktape.enc("jx", pb[0]));
-  });
+    [
+      -1234, -256, -255, -1.6, -1.4, -1, -0.6, -0.4, -0,
+      +0, 0.4, 0.6, 1, 1.4, 1.6, 255, 256, 1234,
+      0/0, 1/0, -1/0, '123', '130', '-123', '-130'
+    ].forEach(function (v) {
+        pb[0] = v;
+        print(Duktape.enc('jx', v), Duktape.enc('jx', pb[0]));
+    });
 }
 
 try {
-  print("read/write coercion test");
-  readWriteCoercionTest();
+    print('read/write coercion test');
+    readWriteCoercionTest();
+
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

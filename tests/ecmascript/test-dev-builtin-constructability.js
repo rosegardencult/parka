@@ -24,26 +24,26 @@ TypeError
 ===*/
 
 function testConstruct(fn) {
-  try {
-    new fn();
-    print("constructable");
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        new fn();
+        print('constructable');
+    } catch (e) {
+        print(e.name);
+    }
 }
 
 try {
-  testConstruct(this);
-  testConstruct(Number);
-  testConstruct(String);
-  testConstruct(Math);
-  testConstruct(JSON);
-  testConstruct(Math.cos);
-  testConstruct(String.prototype.toUpperCase);
+    testConstruct(this);
+    testConstruct(Number);
+    testConstruct(String);
+    testConstruct(Math);
+    testConstruct(JSON);
+    testConstruct(Math.cos);
+    testConstruct(String.prototype.toUpperCase);
 
-  // Duktape specific: stack getters are not constructable
-  testConstruct(Object.getOwnPropertyDescriptor(Error.prototype, "stack").get);
-  testConstruct(Object.getOwnPropertyDescriptor(Error.prototype, "stack").set);
+    // Duktape specific: stack getters are not constructable
+    testConstruct(Object.getOwnPropertyDescriptor(Error.prototype, 'stack').get);
+    testConstruct(Object.getOwnPropertyDescriptor(Error.prototype, 'stack').set);
 } catch (e) {
-  print(e);
+    print(e);
 }

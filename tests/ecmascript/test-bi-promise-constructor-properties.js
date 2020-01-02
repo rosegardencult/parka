@@ -27,25 +27,25 @@ done
 ===*/
 
 // General.
-var GLOBAL = new Function("return this")();
+var GLOBAL = new Function('return this')();
 
-print("- general");
+print('- general');
 print(typeof Promise);
 print(Promise.length);
 print(Promise.name);
-print("Promise" in GLOBAL);
+print('Promise' in GLOBAL);
 print(Object.getPrototypeOf(Promise) === Function.prototype);
-print(Test.getPropDescString(GLOBAL, "Promise"));
-print(Object.getPrototypeOf(new Promise(function() {})) === Promise.prototype);
+print(Test.getPropDescString(GLOBAL, 'Promise'));
+print(Object.getPrototypeOf(new Promise(function () {})) === Promise.prototype);
 
-print("- properties");
-print(Test.getPropDescString(Promise, "length"));
-print(Test.getPropDescString(Promise, "name"));
-print(Test.getPropDescString(Promise, "prototype"));
-print(Test.getPropDescString(Promise, "all"));
-print(Test.getPropDescString(Promise, "race"));
-print(Test.getPropDescString(Promise, "reject"));
-print(Test.getPropDescString(Promise, "resolve"));
+print('- properties');
+print(Test.getPropDescString(Promise, 'length'));
+print(Test.getPropDescString(Promise, 'name'));
+print(Test.getPropDescString(Promise, 'prototype'));
+print(Test.getPropDescString(Promise, 'all'));
+print(Test.getPropDescString(Promise, 'race'));
+print(Test.getPropDescString(Promise, 'reject'));
+print(Test.getPropDescString(Promise, 'resolve'));
 // @@species separately
 
-print("done");
+print('done');

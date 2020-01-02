@@ -15,11 +15,11 @@ false
    <=> true
 */
 
-print((1 == 2) === false);
+print( 1 == 2 === false );
 
 /*     1 == (2 === false)
    <=> 1 == false
    <=> false
 */
 
-print(1 == (2 === false));
+print( 1 == (2 === false) );

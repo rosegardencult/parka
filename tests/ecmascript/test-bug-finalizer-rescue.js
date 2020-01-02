@@ -12,13 +12,10 @@ object
 finalizer
 ===*/
 
-a = {};
+a={};
 
 // The finalizer rescues the reference (= makes it reachable again)
-Duktape.fin(a, function(x) {
-  print("finalizer");
-  a = x;
-});
+Duktape.fin(a, function(x) { print('finalizer'); a=x });
 
 a = null;
 print(typeof a);

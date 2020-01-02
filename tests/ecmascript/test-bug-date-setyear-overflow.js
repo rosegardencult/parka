@@ -13,18 +13,18 @@ done
 ===*/
 
 function test() {
-  var d = new Date(0);
-  d.setUTCFullYear(-200e6);
-  try {
-    print(d.toISOString());
-  } catch (e) {
-    print(e.name);
-  }
+    var d = new Date(0);
+    d.setUTCFullYear(-200e6);
+    try {
+        print(d.toISOString());
+    } catch (e) {
+        print(e.name);
+    }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
-print("done");
+print('done');

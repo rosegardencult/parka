@@ -18,24 +18,18 @@ true
 TypeError
 ===*/
 
-function f(x, y) {
-  "use strict";
-  return arguments;
-}
-function g(x, y) {
-  "use strict";
-  return arguments;
-}
+function f(x,y) { 'use strict'; return arguments; };
+function g(x,y) { 'use strict'; return arguments; };
 
-var a = f(1, 2, 3);
-var b = g(3, 2, 1);
+var a = f(1,2,3);
+var b = g(3,2,1);
 
 pd1 = Object.getOwnPropertyDescriptor(a, "caller");
 pd2 = Object.getOwnPropertyDescriptor(a, "callee");
 pd3 = Object.getOwnPropertyDescriptor(b, "caller");
 pd4 = Object.getOwnPropertyDescriptor(b, "callee");
 
-print("test get and set");
+print('test get and set')
 print(typeof pd1);
 print(typeof pd2);
 print(typeof pd3);
@@ -48,7 +42,7 @@ print(pd2.get === pd4.set);
 print(pd4.get === pd4.set);
 
 try {
-  pd2.get();
+    pd2.get();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

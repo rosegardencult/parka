@@ -11,25 +11,25 @@ undefined
  */
 
 function nonstrict_parent() {
-  eval("var x = 321"); // new declaration, goes to parent
-  print(x);
+    eval('var x = 321');   // new declaration, goes to parent
+    print(x);
 }
 
 function strict_parent() {
-  "use strict";
+    'use strict';
 
-  eval("var x = 321"); // new declaration, goes to fresh env
-  print(typeof x); // -> undefined
+    eval('var x = 321');   // new declaration, goes to fresh env
+    print(typeof x);       // -> undefined
 }
 
 try {
-  nonstrict_parent();
+    nonstrict_parent();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  strict_parent();
+    strict_parent();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

@@ -4,9 +4,9 @@ true
 ===*/
 
 try {
-  var P = new Proxy([1, 2, 3], {});
-  print(JSON.stringify(P));
-  print(Array.isArray(P));
+    var P = new Proxy([1, 2, 3], {});
+    print(JSON.stringify(P));
+    print(Array.isArray(P));
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

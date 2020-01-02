@@ -13,32 +13,32 @@ SyntaxError
 ===*/
 
 function test() {
-  var r;
+    var r;
 
-  function test(re, inp) {
-    try {
-      var res = new RegExp(re).exec(inp);
-      print(Duktape.enc("jx", res));
-    } catch (e) {
-      print(e.name);
+    function test(re, inp) {
+        try {
+            var res = new RegExp(re).exec(inp);
+            print(Duktape.enc('jx', res));
+        } catch (e) {
+            print(e.name);
+        }
     }
-  }
 
-  // literal curly braces
-  test("{", "abc{xyz");
-  test("}", "abc}xyz");
-  test("{\\d+}", "foo{1234}bar");
+    // literal curly braces
+    test('{', 'abc{xyz');
+    test('}', 'abc}xyz');
+    test('{\\d+}', 'foo{1234}bar');
 
-  // literal brackets
-  test("]", "foo]bar");
-  test("[", "foo[bar"); // left bracket not yet supported
+    // literal brackets
+    test(']', 'foo]bar');
+    test('[', 'foo[bar');  // left bracket not yet supported
 
-  // escaping dollar sign
-  test("\\$", "foo$bar");
+    // escaping dollar sign
+    test('\\$', 'foo$bar');
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

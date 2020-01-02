@@ -42,26 +42,26 @@
  */
 
 function sparsePropertyListTest1() {
-  var obj = { key1: 1, key2: 2, key3: 3, key4: 4, key5: 5 };
+    var obj = { key1: 1, key2: 2, key3: 3, key4: 4, key5: 5 };
 
-  var plist1 = [];
-  var plist2 = [];
+    var plist1 = [];
+    var plist2 = [];
 
-  // non-sparse array with gap
-  plist1[0] = "key3";
-  plist1[2] = "key1";
-  print(JSON.stringify(obj, plist1));
+    // non-sparse array with gap
+    plist1[0] = 'key3';
+    plist1[2] = 'key1';
+    print(JSON.stringify(obj, plist1));
 
-  // correct order: key4, key3, key2
-  // (don't make numbers very large, V8 spends a lot of time on this otherwise)
-  plist2[1] = "key4";
-  plist2[9999999] = "key2"; // this forces plist2 sparse
-  plist2[1000000] = "key3"; // this key now enumerates AFTER the previous one
-  print(JSON.stringify(obj, plist2));
+    // correct order: key4, key3, key2
+    // (don't make numbers very large, V8 spends a lot of time on this otherwise)
+    plist2[1] = 'key4';
+    plist2[9999999] = 'key2';   // this forces plist2 sparse
+    plist2[1000000] = 'key3';   // this key now enumerates AFTER the previous one
+    print(JSON.stringify(obj, plist2));
 }
 
 try {
-  sparsePropertyListTest1();
+    sparsePropertyListTest1();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

@@ -9,9 +9,9 @@ inside 2
 after
 ===*/
 
-print("before");
+print('before');
 {
-  print("inside 1");
-  print("inside 2");
+    print('inside 1');
+    print('inside 2');
 }
-print("after");
+print('after');

@@ -15,74 +15,49 @@ sealed: true, frozen: true, extensible: false
 ===*/
 
 function basicTest() {
-  var obj;
+    var obj;
 
-  function p(o) {
-    print(
-      "sealed: " +
-        Object.isSealed(o) +
-        ", frozen: " +
-        Object.isFrozen(o) +
-        ", extensible: " +
-        Object.isExtensible(o)
-    );
-  }
-
-  obj = { foo: 1, bar: 2 };
-  p(obj);
-  Object.seal(obj);
-  p(obj);
-
-  obj = { foo: 1, bar: 2 };
-  p(obj);
-  Object.freeze(obj);
-  p(obj);
-
-  // create objects which are already sealed/frozen(), without a
-  // seal() or freeze() call.
-
-  obj = Object.create(Object.prototype, {
-    prop1: {
-      value: 123,
-      writable: true,
-      enumerable: true,
-      configurable: false
-    },
-    prop2: {
-      get: function() {},
-      set: function() {},
-      enumerable: true,
-      configurable: false
+    function p(o) {
+        print('sealed: ' + Object.isSealed(o) +
+              ', frozen: ' + Object.isFrozen(o) +
+              ', extensible: ' + Object.isExtensible(o));
     }
-  });
-  p(obj); // extensible -> not sealed or frozen
-  Object.preventExtensions(obj); // now sealed, but not frozen (writable property exists)
-  p(obj);
 
-  // sealed and frozen
-  obj = Object.create(Object.prototype, {
-    prop1: {
-      value: 123,
-      writable: false,
-      enumerable: true,
-      configurable: false
-    },
-    prop2: {
-      get: function() {},
-      set: function() {},
-      enumerable: true,
-      configurable: false
-    }
-  });
-  p(obj); // extensible -> not sealed or frozen
-  Object.preventExtensions(obj); // now sealed and frozen: no writable properties, accessors are OK
-  p(obj);
+    obj = { foo: 1, bar: 2 };
+    p(obj);
+    Object.seal(obj);
+    p(obj);
+
+    obj = { foo: 1, bar: 2 };
+    p(obj);
+    Object.freeze(obj);
+    p(obj);
+
+    // create objects which are already sealed/frozen(), without a
+    // seal() or freeze() call.
+
+    obj = Object.create(Object.prototype, {
+        prop1: { value: 123, writable: true, enumerable: true, configurable: false },
+        prop2: { get: function(){}, set: function(){}, enumerable: true, configurable: false }
+    });
+    p(obj);  // extensible -> not sealed or frozen
+    Object.preventExtensions(obj);  // now sealed, but not frozen (writable property exists)
+    p(obj);
+
+    // sealed and frozen
+    obj = Object.create(Object.prototype, {
+        prop1: { value: 123, writable: false, enumerable: true, configurable: false },
+        prop2: { get: function(){}, set: function(){}, enumerable: true, configurable: false }
+    });
+    p(obj);  // extensible -> not sealed or frozen
+    Object.preventExtensions(obj);  // now sealed and frozen: no writable properties, accessors are OK
+    p(obj);
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -141,107 +116,41 @@ index: 11, name: acc4, value: undefined, writable: undefined, enumerable: false,
 ===*/
 
 function propertyAttributeTest() {
-  var obj;
-  var prop_names = [
-    "prop1",
-    "prop2",
-    "prop3",
-    "prop4",
-    "prop5",
-    "prop6",
-    "prop7",
-    "prop8",
-    "acc1",
-    "acc2",
-    "acc3",
-    "acc4"
-  ];
+    var obj;
+    var prop_names = [ 'prop1', 'prop2', 'prop3', 'prop4',
+                       'prop5', 'prop6', 'prop7', 'prop8',
+                       'acc1', 'acc2', 'acc3', 'acc4' ];
 
-  function mkGetter() {
-    return function getter() {
-      print("getter called");
-      throw new Error("unexpected getter call");
-    };
-  }
-  function mkSetter() {
-    return function getter() {
-      print("setter called");
-      throw new Error("unexpected setter call");
-    };
-  }
-  function mkObj() {
-    var obj = {};
-    Object.defineProperties(obj, {
-      prop1: { value: 1, writable: true, enumerable: true, configurable: true },
-      prop2: {
-        value: 2,
-        writable: false,
-        enumerable: true,
-        configurable: true
-      },
-      prop3: {
-        value: 3,
-        writable: true,
-        enumerable: false,
-        configurable: true
-      },
-      prop4: {
-        value: 4,
-        writable: false,
-        enumerable: false,
-        configurable: true
-      },
-      prop5: {
-        value: 5,
-        writable: true,
-        enumerable: true,
-        configurable: false
-      },
-      prop6: {
-        value: 6,
-        writable: false,
-        enumerable: true,
-        configurable: false
-      },
-      prop7: {
-        value: 7,
-        writable: true,
-        enumerable: false,
-        configurable: false
-      },
-      prop8: {
-        value: 8,
-        writable: false,
-        enumerable: false,
-        configurable: false
-      },
-      acc1: {
-        get: mkGetter(),
-        set: mkSetter(),
-        enumerable: true,
-        configurable: true
-      },
-      acc2: {
-        get: mkGetter(),
-        set: mkSetter(),
-        enumerable: false,
-        configurable: true
-      },
-      acc3: {
-        get: mkGetter(),
-        set: mkSetter(),
-        enumerable: true,
-        configurable: false
-      },
-      acc4: {
-        get: mkGetter(),
-        set: mkSetter(),
-        enumerable: false,
-        configurable: false
-      }
-    });
+    function mkGetter() {
+        return function getter() {
+            print('getter called');
+            throw new Error('unexpected getter call');
+        };
+    }
+    function mkSetter() {
+        return function getter() {
+            print('setter called');
+            throw new Error('unexpected setter call');
+        };
+    }
+    function mkObj() {
+        var obj = {};
+        Object.defineProperties(obj, {
+            prop1: { value: 1, writable: true, enumerable: true, configurable: true },
+            prop2: { value: 2, writable: false, enumerable: true, configurable: true },
+            prop3: { value: 3, writable: true, enumerable: false, configurable: true },
+            prop4: { value: 4, writable: false, enumerable: false, configurable: true },
+            prop5: { value: 5, writable: true, enumerable: true, configurable: false },
+            prop6: { value: 6, writable: false, enumerable: true, configurable: false },
+            prop7: { value: 7, writable: true, enumerable: false, configurable: false },
+            prop8: { value: 8, writable: false, enumerable: false, configurable: false },
+            acc1: { get: mkGetter(), set: mkSetter(), enumerable: true, configurable: true },
+            acc2: { get: mkGetter(), set: mkSetter(), enumerable: false, configurable: true },
+            acc3: { get: mkGetter(), set: mkSetter(), enumerable: true, configurable: false },
+            acc4: { get: mkGetter(), set: mkSetter(), enumerable: false, configurable: false },
+        });
 
-    /*
+/*
     For some reason V8 (at least 3.7.12.22) reorders these properties regardless
     of whether one uses defineProperty() or defineProperties().  So, we read back
     properties with explicitly ordered names below instead of relying on
@@ -261,59 +170,44 @@ function propertyAttributeTest() {
         Object.defineProperty(obj, 'acc4', { get: mkGetter(), set: mkSetter(), enumerable: false, configurable: false });
 */
 
-    return obj;
-  }
-  function printObj(o) {
-    var i, pd;
-
-    names = Object.getOwnPropertyNames(o);
-    print(
-      "object, #names: " +
-        names.length +
-        ", extensible: " +
-        Object.isExtensible(o)
-    );
-
-    /* Use explicit names because V8 loses property order for some reason */
-
-    for (i = 0; i < prop_names.length; i++) {
-      pd = Object.getOwnPropertyDescriptor(o, prop_names[i]);
-      print(
-        "index: " +
-          i +
-          ", name: " +
-          prop_names[i] +
-          ", value: " +
-          pd.value +
-          ", writable: " +
-          pd.writable +
-          ", enumerable: " +
-          pd.enumerable +
-          ", configurable: " +
-          pd.configurable +
-          ", get: " +
-          typeof pd.get +
-          ", set: " +
-          typeof pd.set
-      );
+        return obj;
     }
-  }
+    function printObj(o) {
+        var i, pd;
 
-  obj = mkObj();
-  printObj(obj);
-  Object.seal(obj);
-  printObj(obj);
+        names = Object.getOwnPropertyNames(o);
+        print('object, #names: ' + names.length + ', extensible: ' + Object.isExtensible(o));
 
-  obj = mkObj();
-  printObj(obj);
-  Object.freeze(obj);
-  printObj(obj);
+        /* Use explicit names because V8 loses property order for some reason */
+
+        for (i = 0; i < prop_names.length; i++) {
+            pd = Object.getOwnPropertyDescriptor(o, prop_names[i]);
+            print('index: ' + i +
+                  ', name: ' + prop_names[i] +
+                  ', value: ' + pd.value +
+                  ', writable: ' + pd.writable +
+                  ', enumerable: ' + pd.enumerable +
+                  ', configurable: ' + pd.configurable +
+                  ', get: ' + typeof pd.get +
+                  ', set: ' + typeof pd.set);
+        }
+    }
+
+    obj = mkObj();
+    printObj(obj);
+    Object.seal(obj);
+    printObj(obj);
+
+    obj = mkObj();
+    printObj(obj);
+    Object.freeze(obj);
+    printObj(obj);
 }
 
 try {
-  propertyAttributeTest();
+    propertyAttributeTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -400,46 +294,37 @@ ok
 ===*/
 
 function coercionTest() {
-  var funcs = [
-    Object.isSealed,
-    Object.isFrozen,
-    Object.isExtensible,
-    Object.seal,
-    Object.freeze
-  ];
-  var values = [
-    undefined,
-    null,
-    true,
-    false,
-    123,
-    "foo",
-    [1, 2],
-    { foo: 1, bar: 2 }
-  ];
-  var i, j;
+    var funcs = [
+        Object.isSealed, Object.isFrozen, Object.isExtensible,
+        Object.seal, Object.freeze
+    ];
+    var values = [
+        undefined, null, true, false, 123, 'foo',
+        [1,2], { foo: 1, bar: 2 }
+    ];
+    var i, j;
 
-  function test(func, obj) {
-    try {
-      func(obj);
-      print("ok");
-    } catch (e) {
-      print(e.name);
+    function test(func, obj) {
+        try {
+            func(obj);
+            print('ok');
+        } catch (e) {
+            print(e.name);
+        }
     }
-  }
 
-  for (i = 0; i < funcs.length; i++) {
-    for (j = 0; j < values.length; j++) {
-      print(i, j);
-      test(funcs[i], values[j]);
+    for (i = 0; i < funcs.length; i++) {
+        for (j = 0; j < values.length; j++) {
+            print(i, j);
+            test(funcs[i], values[j]);
+        }
     }
-  }
 }
 
 try {
-  coercionTest();
+    coercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /* XXX: test that ancestors have no effect and or not affected */

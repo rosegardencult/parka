@@ -9,9 +9,9 @@ undefined
  */
 
 try {
-  var t = typeof foo; // UnresolvableReference
-  print(typeof t);
-  print(t);
+    var t = typeof foo;   // UnresolvableReference
+    print(typeof t);
+    print(t);
 } catch (e) {
-  print(e);
+    print(e);
 }

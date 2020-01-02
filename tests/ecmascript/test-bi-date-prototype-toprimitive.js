@@ -14,21 +14,21 @@ false false true
 ===*/
 
 function basicTest() {
-  var pd;
+    var pd;
 
-  print(typeof Symbol.toPrimitive);
-  print(Symbol.toPrimitive in Date.prototype);
-  print(typeof Date.prototype[Symbol.toPrimitive]);
-  print(Date.prototype[Symbol.toPrimitive].length);
-  // print(Date.prototype[Symbol.toPrimitive].name);  // XXX: disabled for now, broken
-  pd = Object.getOwnPropertyDescriptor(Date.prototype, Symbol.toPrimitive);
-  print(pd.writable, pd.enumerable, pd.configurable);
+    print(typeof Symbol.toPrimitive);
+    print(Symbol.toPrimitive in Date.prototype);
+    print(typeof Date.prototype[Symbol.toPrimitive]);
+    print(Date.prototype[Symbol.toPrimitive].length);
+    // print(Date.prototype[Symbol.toPrimitive].name);  // XXX: disabled for now, broken
+    pd = Object.getOwnPropertyDescriptor(Date.prototype, Symbol.toPrimitive);
+    print(pd.writable, pd.enumerable, pd.configurable);
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -126,70 +126,48 @@ valueOf called
 ===*/
 
 function combinationTest() {
-  // Date instance needs censoring because of timezone.
-  function censorDate(x) {
-    if (typeof x !== "string") {
-      return x;
-    }
-    var m = /^\d\d\d\d-\d\d-\d\d\s.*$/.exec(x);
-    if (m) {
-      return "DATESTRING";
-    } else {
-      return x;
-    }
-  }
-
-  [
-    void 0,
-    null,
-    123,
-    "foo",
-    new Date(12345),
-    {},
-    [],
-    {
-      valueOf: function() {
-        print("valueOf called");
-        return 123;
-      },
-      toString: function() {
-        print("valueOf called");
-        return "bar";
-      }
-    }
-  ].forEach(function(thisArg, idx1) {
-    [
-      "__NONE__",
-      void 0,
-      null,
-      123,
-      "default",
-      "string",
-      "number",
-      "something",
-      "default\u0000foo",
-      "string\u0000foo",
-      "number\u0000foo"
-    ].forEach(function(firstArg, idx2) {
-      try {
-        var res;
-        if (thisArg === "__NONE__") {
-          res = Date.prototype[Symbol.toPrimitive].call(thisArg);
+    // Date instance needs censoring because of timezone.
+    function censorDate(x) {
+        if (typeof x !== 'string') { return x; }
+        var m = /^\d\d\d\d-\d\d-\d\d\s.*$/.exec(x);
+        if (m) {
+            return 'DATESTRING';
         } else {
-          res = Date.prototype[Symbol.toPrimitive].call(thisArg, firstArg);
+            return x;
         }
-        print(idx1, idx2, censorDate(res));
-      } catch (e) {
-        print(idx1, idx2, e.name);
+    }
+
+    [ void 0, null, 123, 'foo',
+      new Date(12345),
+      {},
+      [],
+      {
+          valueOf: function () { print('valueOf called'); return 123; },
+          toString: function () { print('valueOf called'); return 'bar'; }
       }
+    ].forEach(function (thisArg, idx1) {
+        [ '__NONE__', void 0, null, 123, 'default', 'string', 'number',
+          'something', 'default\u0000foo', 'string\u0000foo',
+          'number\u0000foo' ].forEach(function (firstArg, idx2) {
+            try {
+                var res;
+                if (thisArg === '__NONE__') {
+                    res = Date.prototype[Symbol.toPrimitive].call(thisArg);
+                } else {
+                    res = Date.prototype[Symbol.toPrimitive].call(thisArg, firstArg);
+                }
+                print(idx1, idx2, censorDate(res));
+            } catch (e) {
+                print(idx1, idx2, e.name);
+            }
+        });
     });
-  });
 }
 
 try {
-  combinationTest();
+    combinationTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -200,21 +178,21 @@ aiee
 ===*/
 
 function replaceTest() {
-  // Because Date.prototype[@@toPrimitive] is configurable, it can be
-  // replaced.
+    // Because Date.prototype[@@toPrimitive] is configurable, it can be
+    // replaced.
 
-  Object.defineProperty(Date.prototype, Symbol.toPrimitive, {
-    value: function() {
-      print("Date.prototype[@@toPrimitive] called");
-      return "aiee";
-    }
-  });
-  print(+new Date());
-  print("" + new Date());
+    Object.defineProperty(Date.prototype, Symbol.toPrimitive, {
+        value: function () {
+            print('Date.prototype[@@toPrimitive] called');
+            return 'aiee';
+        }
+    });
+    print(+(new Date()));
+    print("" + (new Date()));
 }
 
 try {
-  replaceTest();
+    replaceTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

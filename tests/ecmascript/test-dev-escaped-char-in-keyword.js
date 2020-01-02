@@ -15,13 +15,13 @@ SyntaxError
  */
 
 try {
-  eval("if = 1;");
+    eval("if = 1;");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("\\u0069f = 1; print(\\u0069f);"); // double escape on purpose
+    eval("\\u0069f = 1; print(\\u0069f);");  // double escape on purpose
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

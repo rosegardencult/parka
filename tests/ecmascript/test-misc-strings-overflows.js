@@ -10,10 +10,10 @@
 1048576
 ===*/
 
-var oneMeg = "x";
+var oneMeg = 'x';
 var i;
 for (i = 0; i < 20; i++) {
-  oneMeg += oneMeg;
+    oneMeg += oneMeg;
 }
 print(oneMeg.length);
 
@@ -23,37 +23,37 @@ RangeError
 ===*/
 
 function arrayJoinSepOverflow() {
-  /* The internal helper first computes total size of separators, so see
-   * that the overflow check for that works.
-   */
+    /* The internal helper first computes total size of separators, so see
+     * that the overflow check for that works.
+     */
 
-  var test = [];
-  var i;
-  for (i = 0; i < 4097; i++) {
-    test[i] = "";
-  }
-  test.join(oneMeg); /* 4096 seps * 1M = 2**32 -> overflow */
-  print("still here");
+    var test = [];
+    var i;
+    for (i = 0; i < 4097; i++) {
+        test[i] = '';
+    }
+    test.join(oneMeg);  /* 4096 seps * 1M = 2**32 -> overflow */
+    print('still here');
 }
 
 function arrayJoinResultOverflow() {
-  var test = [];
-  var i;
-  for (i = 0; i < 4097; i++) {
-    test[i] = oneMeg;
-  }
-  test.join("");
-  print("still here");
+    var test = [];
+    var i;
+    for (i = 0; i < 4097; i++) {
+        test[i] = oneMeg;
+    }
+    test.join('');
+    print('still here');
 }
 
 try {
-  arrayJoinSepOverflow();
+    arrayJoinSepOverflow();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  arrayJoinResultOverflow();
+    arrayJoinResultOverflow();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

@@ -26,27 +26,15 @@
 ===*/
 
 [
-  undefined, // not actually a literal, but global variable
+    undefined,   // not actually a literal, but global variable
 
-  null,
-  true,
-  false,
-  -1e9,
-  -123456789,
-  -1,
-  -0,
-  +0,
-  1,
-  123456789,
-  1e9,
-  -0xdeadbeef,
-  0xdeadbeef,
-  -123.456,
-  123.456,
-  "",
-  "foo",
-  "foo\u0041",
-  /foo/gim
-].forEach(function(v, i) {
-  print(i, typeof v, Object.prototype.toString.call(v));
+    null,
+    true, false,
+    -1e9, -123456789, -1, -0, +0, 1, 123456789, 1e9,
+    -0xdeadbeef, 0xdeadbeef,
+    -123.456, 123.456,
+    '', 'foo', 'foo\u0041',
+    /foo/gim
+].forEach(function (v, i) {
+    print(i, typeof v, Object.prototype.toString.call(v));
 });

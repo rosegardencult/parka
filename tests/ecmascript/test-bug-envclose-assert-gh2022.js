@@ -6,20 +6,20 @@
 done
 ===*/
 
-function test() {
-  try {
-    test();
-  } catch (x) {
-    TypeError.stack;
-  }
-  var i;
-  var f = eval(f);
+function test ( ) {
+    try {
+        test();
+    } catch ( x ) {
+        TypeError.stack
+    }
+    var i;
+    var f = eval( f );
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
-print("done");
+print('done');

@@ -10,15 +10,15 @@
 
 // See: GH-214
 function f() {
-  return f();
+    return f();
 }
 
 function test() {
-  f();
+    f();
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

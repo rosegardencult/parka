@@ -35,37 +35,37 @@ false true
 ===*/
 
 function proxyPropertyTest(key) {
-  var obj = {};
-  var traps = {};
-  var proxy = new Proxy(obj, traps);
-  var val1, val2;
+    var obj = {};
+    var traps = {};
+    var proxy = new Proxy(obj, traps);
+    var val1, val2;
 
-  // These don't really access the Proxy object itself - reads and writes will
-  // fall back to the target object.
+    // These don't really access the Proxy object itself - reads and writes will
+    // fall back to the target object.
 
-  print(key in proxy);
-  val1 = proxy[key];
-  proxy[key] = "dummy";
-  val2 = proxy[key];
-  print(typeof val1, typeof val2, val1 === val2, val1 === obj);
+    print(key in proxy);
+    val1 = proxy[key];
+    proxy[key] = 'dummy';
+    val2 = proxy[key];
+    print(typeof val1, typeof val2, val1 === val2, val1 === obj);
 
-  // In Duktape 1.x, with the Proxy subset, getOwnPropertyDescriptor() will
-  // fetch the property descriptor from the proxy instead of the target.
+    // In Duktape 1.x, with the Proxy subset, getOwnPropertyDescriptor() will
+    // fetch the property descriptor from the proxy instead of the target.
 
-  pd = Object.getOwnPropertyDescriptor(proxy, key);
-  print(typeof pd.value, pd.writable, pd.enumerable, pd.configurable);
-  print(pd.value === obj, pd.value === traps);
+    pd = Object.getOwnPropertyDescriptor(proxy, key);
+    print(typeof pd.value, pd.writable, pd.enumerable, pd.configurable);
+    print(pd.value === obj, pd.value === traps);
 }
 
 function proxyInternalKeysSandboxTest() {
-  print("_Target");
-  proxyPropertyTest(bufferToStringRaw(Duktape.dec("hex", "ff546172676574")));
-  print("_Handler");
-  proxyPropertyTest(bufferToStringRaw(Duktape.dec("hex", "ff48616e646c6572")));
+    print('_Target');
+    proxyPropertyTest(bufferToStringRaw(Duktape.dec('hex', 'ff546172676574')));
+    print('_Handler');
+    proxyPropertyTest(bufferToStringRaw(Duktape.dec('hex', 'ff48616e646c6572')));
 }
 
 try {
-  proxyInternalKeysSandboxTest();
+    proxyInternalKeysSandboxTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

@@ -12,15 +12,15 @@ print(Object.prototype.toString.call(JSON));
 print(Object.isExtensible(JSON));
 
 try {
-  // not constructable -> TypeError
-  new JSON();
+    // not constructable -> TypeError
+    new JSON();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  // not callable -> TypeError
-  new JSON();
+    // not callable -> TypeError
+    new JSON();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

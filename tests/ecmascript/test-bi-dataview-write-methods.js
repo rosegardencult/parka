@@ -683,180 +683,93 @@ write DataView test, arrayLength 17
  */
 
 function writeDataViewTest(arrayLength) {
-  [
-    -100,
-    -10,
-    -9,
-    -8,
-    -7,
-    -6,
-    -5,
-    -4,
-    -3,
-    -2,
-    -1,
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-    100
-  ].forEach(function(offset) {
-    [undefined, 0, 1, 2, 3, 4, 5, 6, 7, 8, 100].forEach(function(length) {
-      var tmp = [];
+    [ -100, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7,
+      8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 100 ].forEach(function (offset) {
+        [ undefined, 0, 1, 2, 3, 4, 5, 6, 7, 8, 100 ].forEach(function (length) {
+            var tmp = [];
 
-      [
-        -0x100000000,
-        -0xffffffff,
-        -0xdeadbeef,
-        -0x80000001,
-        -0x80000000,
-        -0x7fffffff,
-        -0x10000,
-        -0xffff,
-        -0x8001,
-        -0x8000,
-        -0x7fff,
-        -0x100,
-        -0xff,
-        -0x81,
-        -0x80,
-        -0x7f,
-        -1,
-        -0,
-        0,
-        1,
-        0x7f,
-        0x80,
-        0x81,
-        0xff,
-        0x100,
-        0x7fff,
-        0x8000,
-        0x8001,
-        0xffff,
-        0x10000,
-        0x7fffffff,
-        0x80000000,
-        0x80000001,
-        0xdeadbeef,
-        0xffffffff,
-        0x100000000,
-        Number.NEGATIVE_INFINITY,
-        Number.POSITIVE_INFINITY,
+            [ -0x100000000, -0xffffffff, -0xdeadbeef,
+              -0x80000001, -0x80000000, -0x7fffffff, -0x10000, -0xffff, -0x8001,
+              -0x8000, -0x7fff, -0x100, -0xff, -0x81, -0x80, -0x7f, -1, -0, 0, 1,
+              0x7f, 0x80, 0x81, 0xff, 0x100, 0x7fff, 0x8000, 0x8001, 0xffff, 0x10000,
+              0x7fffffff, 0x80000000, 0x80000001, 0xdeadbeef, 0xffffffff, 0x100000000,
+              Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY,
 
-        // Leave NaN intentionally out of the test because its representation
-        // varies across platforms and engines.
+              // Leave NaN intentionally out of the test because its representation
+              // varies across platforms and engines.
 
-        2.1,
-        2.5,
-        2.9,
-        3.1,
-        3.5,
-        3.9,
-        4.1,
-        4.5,
-        4.9,
-        -2.1,
-        -2.5,
-        -2.9,
-        -3.1,
-        -3.5,
-        -3.9,
-        -4.1,
-        -4.5,
-        -4.9
-      ].forEach(function(value) {
-        [
-          "setInt8",
-          "setUint8",
-          "setInt16",
-          "setUint16",
-          "setInt32",
-          "setUint32",
-          "setFloat32",
-          "setFloat64"
-        ].forEach(function(funcname) {
-          var evalstr;
-          var b, b_u8;
-          var i;
-          var res;
+              2.1, 2.5, 2.9, 3.1, 3.5, 3.9, 4.1, 4.5, 4.9,
+              -2.1, -2.5, -2.9, -3.1, -3.5, -3.9, -4.1, -4.5, -4.9,
+            ].forEach(function (value) {
+                [ 'setInt8', 'setUint8', 'setInt16', 'setUint16',
+                  'setInt32', 'setUint32', 'setFloat32', 'setFloat64' ].forEach(function (funcname) {
+                    var evalstr;
+                    var b, b_u8;
+                    var i;
+                    var res;
 
-          b = new ArrayBuffer(arrayLength);
-          b_u8 = new Uint8Array(b);
+                    b = new ArrayBuffer(arrayLength);
+                    b_u8 = new Uint8Array(b);
 
-          evalstr = "new DataView(b, " + offset;
-          if (length !== undefined) {
-            evalstr += ", " + length;
-          }
-          evalstr += ")";
+                    evalstr = 'new DataView(b, ' + offset;
+                    if (length !== undefined) {
+                        evalstr += ', ' + length;
+                    }
+                    evalstr += ')';
 
-          tmp.push(offset + " " + value + " " + funcname + " " + evalstr);
-          try {
-            // workaround because there's no programmatic 'construct' call
-            var v = eval(evalstr);
+                    tmp.push(offset + ' ' + value + ' ' + funcname + ' ' + evalstr);
+                    try {
+                        // workaround because there's no programmatic 'construct' call
+                        var v = eval(evalstr);
 
-            for (i = 0; i < b_u8.length; i++) {
-              b_u8[i] = 0x11;
-            }
-            v[funcname](0, value, true);
-            tmp.push(printableBuffer(b));
-            //print(printableBuffer(b));
+                        for (i = 0; i < b_u8.length; i++) {
+                            b_u8[i] = 0x11;
+                        }
+                        v[funcname](0, value, true);
+                        tmp.push(printableBuffer(b));
+                        //print(printableBuffer(b));
 
-            for (i = 0; i < b_u8.length; i++) {
-              b_u8[i] = 0x11;
-            }
-            v[funcname](0, value, false);
-            tmp.push(printableBuffer(b));
-            //print(printableBuffer(b));
+                        for (i = 0; i < b_u8.length; i++) {
+                            b_u8[i] = 0x11;
+                        }
+                        v[funcname](0, value, false);
+                        tmp.push(printableBuffer(b));
+                        //print(printableBuffer(b));
 
-            for (i = 0; i < b_u8.length; i++) {
-              b_u8[i] = 0x11;
-            }
-            v[funcname](1, value, true);
-            tmp.push(printableBuffer(b));
-            //print(printableBuffer(b));
+                        for (i = 0; i < b_u8.length; i++) {
+                            b_u8[i] = 0x11;
+                        }
+                        v[funcname](1, value, true);
+                        tmp.push(printableBuffer(b));
+                        //print(printableBuffer(b));
 
-            for (i = 0; i < b_u8.length; i++) {
-              b_u8[i] = 0x11;
-            }
-            v[funcname](1, value, false);
-            tmp.push(printableBuffer(b));
-            //print(printableBuffer(b));
-          } catch (e) {
-            tmp.push(e.name);
-            tmp.push(printableBuffer(b));
-            //print(printableBuffer(b));
-          }
+                        for (i = 0; i < b_u8.length; i++) {
+                            b_u8[i] = 0x11;
+                        }
+                        v[funcname](1, value, false);
+                        tmp.push(printableBuffer(b));
+                        //print(printableBuffer(b));
+                    } catch (e) {
+                        tmp.push(e.name);
+                        tmp.push(printableBuffer(b));
+                        //print(printableBuffer(b));
+                    }
+                });
+            });
+
+            print(offset, length, checksumString(tmp.join('\n')));
         });
-      });
-
-      print(offset, length, checksumString(tmp.join("\n")));
     });
-  });
 }
 
 try {
-  print("write DataView test, arrayLength 16");
-  writeDataViewTest(16);
+    print('write DataView test, arrayLength 16');
+    writeDataViewTest(16);
 
-  print("write DataView test, arrayLength 17");
-  writeDataViewTest(17);
+    print('write DataView test, arrayLength 17');
+    writeDataViewTest(17);
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -879,26 +792,26 @@ undefined undefined
  */
 
 function dataViewWriteRetvalTest() {
-  var buf = new ArrayBuffer(32);
-  var v = new DataView(buf, 12);
+    var buf = new ArrayBuffer(32);
+    var v = new DataView(buf, 12);
 
-  function f(v) {
-    print(typeof v, v);
-  }
+    function f(v) {
+        print(typeof v, v);
+    }
 
-  f(v.setInt8(1, -0x80));
-  f(v.setUint8(1, 0xff));
-  f(v.setInt16(1, -0x8000));
-  f(v.setUint16(1, 0xdead));
-  f(v.setInt32(1, -0x80000000));
-  f(v.setUint32(1, 0xdeadbeef));
-  f(v.setFloat32(1, Math.PI));
-  f(v.setFloat64(1, Math.PI));
+    f(v.setInt8(1, -0x80));
+    f(v.setUint8(1, 0xff));
+    f(v.setInt16(1, -0x8000));
+    f(v.setUint16(1, 0xdead));
+    f(v.setInt32(1, -0x80000000));
+    f(v.setUint32(1, 0xdeadbeef));
+    f(v.setFloat32(1, Math.PI));
+    f(v.setFloat64(1, Math.PI));
 }
 
 try {
-  print("DataView write return value test");
-  dataViewWriteRetvalTest();
+    print('DataView write return value test');
+    dataViewWriteRetvalTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

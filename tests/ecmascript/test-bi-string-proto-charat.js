@@ -30,39 +30,37 @@ string 1 z
 string 1 U+FFFF
 ===*/
 
-print("basic test");
+print('basic test');
 
 function charAtTest() {
-  var str = new String(
-    "abcABC\u0000foo\u0081bar\u07ffquux\u1234baz\ufedcxyz\uffff"
-  );
-  var i;
+    var str = new String('abcABC\u0000foo\u0081bar\u07ffquux\u1234baz\ufedcxyz\uffff');
+    var i;
 
-  // we want to print out ascii but don't want to rely on charCodeAt().
-  // use a hashmap to "stringify" the non-ascii chars
-  var map = {
-    "\u0000": "U+0000",
-    "\u0081": "U+0081",
-    "\u07ff": "U+07FF",
-    ሴ: "U+1234",
-    ﻜ: "U+FEDC",
-    "\uffff": "U+FFFF"
-  };
+    // we want to print out ascii but don't want to rely on charCodeAt().
+    // use a hashmap to "stringify" the non-ascii chars
+    var map = {
+        '\u0000': 'U+0000',
+        '\u0081': 'U+0081',
+        '\u07ff': 'U+07FF',
+        '\u1234': 'U+1234',
+        '\ufedc': 'U+FEDC',
+        '\uffff': 'U+FFFF',
+    }
 
-  function pc(c) {
-    print(typeof c, c.length, c >= " " && c <= "~" ? c : map[c]);
-  }
+    function pc(c) {
+        print(typeof c, c.length, (c >= ' ' && c <= '~' ? c : map[c]));
+    }
 
-  // print in order
-  for (i = 0; i < str.length; i++) {
-    pc(str.charAt(i));
-  }
+    // print in order
+    for (i = 0; i < str.length; i++) {
+        pc(str.charAt(i));
+    }
 }
 
 try {
-  charAtTest();
+    charAtTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -81,31 +79,32 @@ Infinity 0
 NaN 1 b
 ===*/
 
-print("oob test");
+print('oob test');
 
 function outOfBoundsTest() {
-  var str = new String("bar");
-  var i;
+    var str = new String('bar');
+    var i;
 
-  function pc(idx) {
-    var c = str.charAt(idx);
-    print(idx, c.length, c);
-  }
+    function pc(idx) {
+        var c = str.charAt(idx);
+        print(idx, c.length, c);
+    }
 
-  for (i = -3; i < 6; i++) {
-    pc(i);
-  }
+    for (i = -3; i < 6; i++) {
+        pc(i);
+    }
 
-  pc(Number.NEGATIVE_INFINITY),
+    pc(Number.NEGATIVE_INFINITY),
     pc(Number.POSITIVE_INFINITY),
+
     // ToInteger(NaN) coerces to 0 -> 'b'
     pc(Number.NaN);
 }
 
 try {
-  outOfBoundsTest();
+    outOfBoundsTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -117,35 +116,35 @@ random access test done
  * stress the stringcache.  Note that the test is not deterministic.
  */
 
-print("random access test");
+print('random access test');
 
 function randomAccessTest() {
-  var tmp = [];
-  var str;
-  var i;
-  var idx, c1, c2;
+    var tmp = [];
+    var str;
+    var i;
+    var idx, c1, c2;
 
-  for (i = 0; i < 65536; i++) {
-    tmp.push(String.fromCharCode(i));
-  }
-  str = new String(tmp.join(""));
-
-  for (i = 0; i < 100000; i++) {
-    idx = Math.floor(Math.random() * 65536);
-    c1 = str.charAt(idx);
-    c2 = String.fromCharCode(idx); // XXX: unfortunately we depend on this too
-    if (c1 !== c2) {
-      print("random access test failed for index", idx);
+    for (i = 0; i < 65536; i++) {
+        tmp.push(String.fromCharCode(i));
     }
-  }
+    str = new String(tmp.join(''));
 
-  print("random access test done");
+    for (i = 0; i < 100000; i++) {
+        idx = Math.floor(Math.random() * 65536);
+        c1 = str.charAt(idx);
+        c2 = String.fromCharCode(idx);  // XXX: unfortunately we depend on this too
+        if (c1 !== c2) {
+            print('random access test failed for index', idx);
+        }
+    }
+
+    print('random access test done');
 }
 
 try {
-  randomAccessTest();
+    randomAccessTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -197,42 +196,42 @@ testing [object Object]
 
 /* charAt() is generic, check 'this' coercion */
 
-print("coercion");
+print('coercion');
 
 function thisCoercionTest() {
-  function test(x) {
-    var c;
-    var i;
+    function test(x) {
+        var c;
+        var i;
 
-    print("testing", x);
-    try {
-      for (i = 0; ; i++) {
-        c = String.prototype.charAt.call(x, i);
-        if (c === "") {
-          break;
+        print('testing', x);
+        try {
+            for (i = 0; ; i++) {
+                c = String.prototype.charAt.call(x, i);
+                if (c === '') {
+                    break;
+                }
+                print(i, typeof c, c);
+            }
+        } catch (e) {
+            print(e.name);
         }
-        print(i, typeof c, c);
-      }
-    } catch (e) {
-      print(e.name);
     }
-  }
 
-  // undefined and null cause TypeError from CheckObjectCoercible
+    // undefined and null cause TypeError from CheckObjectCoercible
 
-  test(undefined);
-  test(null);
+    test(undefined);
+    test(null);
 
-  test(true);
-  test(false);
-  test(123);
-  test("foo");
-  test([1, 2]);
-  test({ foo: 1, bar: 2 });
+    test(true);
+    test(false);
+    test(123);
+    test('foo');
+    test([1,2]);
+    test({ foo: 1, bar: 2 });
 }
 
 try {
-  thisCoercionTest();
+    thisCoercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

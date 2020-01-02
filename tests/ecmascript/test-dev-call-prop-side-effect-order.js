@@ -8,11 +8,8 @@ TypeError: [object Error] not callable
 ===*/
 
 var base = [];
-Object.defineProperty(base, "func", {
-  get: function myGetter() {
-    print("getter");
-    return "notCallable";
-  }
+Object.defineProperty(base, 'func', {
+    get: function myGetter() { print('getter'); return 'notCallable'; }
 });
 
 // Main test: ensure that observable side effect order is correct:
@@ -30,9 +27,9 @@ Object.defineProperty(base, "func", {
 //    and throws error created in step 1.
 
 try {
-  base.func(print("foo"), print("bar"), print("quux"));
+    base.func(print('foo'), print('bar'), print('quux'));
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 // Call handling must not confuse errors created by GETPROPC and user code.
@@ -40,7 +37,7 @@ try {
 // target (error or any other object) it will be thrown as is instead of a
 // normal call error being thrown.  This is weird by memory safe.
 try {
-  new RangeError("aiee")();
+    new RangeError('aiee')();
 } catch (e) {
-  print(e);
+    print(e);
 }

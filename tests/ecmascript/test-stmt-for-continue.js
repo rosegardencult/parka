@@ -127,69 +127,72 @@ body 4
 ===*/
 
 function forContinueTest1a() {
-  for (var i = 0; print("check"), i < 10; print("update")) {
-    print("body", i);
-    i++;
-    continue;
-    i += 100;
-  }
-  print(i);
+    for (var i = 0; print('check'), i < 10; print('update')) {
+        print('body', i);
+        i++;
+        continue;
+        i += 100;
+    }
+    print(i);
 }
 
 function forContinueTest1b() {
-  for (var i = 0; print("check"), i < 10; ) {
-    print("body", i);
-    i++;
-    continue;
-    i += 100;
-  }
-  print(i);
+    for (var i = 0; print('check'), i < 10;) {
+        print('body', i);
+        i++;
+        continue;
+        i += 100;
+    }
+    print(i);
 }
 
+
 function forContinueTest2a() {
-  var i;
-  for (i = 0; print("check"), i < 10; print("update")) {
-    print("body", i);
-    i++;
-    continue;
-    i += 100;
-  }
-  print(i);
+    var i;
+    for (i = 0; print('check'), i < 10; print('update')) {
+        print('body', i);
+        i++;
+        continue;
+        i += 100;
+    }
+    print(i);
 }
 
 function forContinueTest2b() {
-  var i;
-  for (i = 0; print("check"), i < 10; ) {
-    print("body", i);
-    i++;
-    continue;
-    i += 100;
-  }
-  print(i);
+    var i;
+    for (i = 0; print('check'), i < 10;) {
+        print('body', i);
+        i++;
+        continue;
+        i += 100;
+    }
+    print(i);
 }
 
+
 function forContinueTest3() {
-  for (var i in [1, 2, 3, 4, 5]) {
-    print("body", i);
-    continue;
-  }
+    for (var i in [1,2,3,4,5]) {
+        print('body', i);
+        continue;
+    }
 }
 
 function forContinueTest4() {
-  var i;
-  for (i in [1, 2, 3, 4, 5]) {
-    print("body", i);
-    continue;
-  }
+    var i;
+    for (i in [1,2,3,4,5]) {
+        print('body', i);
+        continue;
+    }
 }
 
+
 try {
-  forContinueTest1a();
-  forContinueTest1b();
-  forContinueTest2a();
-  forContinueTest2b();
-  forContinueTest3();
-  forContinueTest4();
+    forContinueTest1a();
+    forContinueTest1b();
+    forContinueTest2a();
+    forContinueTest2b();
+    forContinueTest3();
+    forContinueTest4();
 } catch (e) {
-  print(e);
+    print(e);
 }

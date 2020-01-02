@@ -30,40 +30,20 @@ function:foo
 
 // Exercise resolve types other than thenables.
 
-Promise.all(
-  [
-    void 0,
-    null,
-    true,
-    false,
-    -1 / 0,
-    -123,
-    -0,
-    0,
-    123,
-    1 / 0,
-    0 / 0,
-    "",
-    "foo",
-    { foo: "bar" },
-    ["A", "B", "C"],
-    function foo() {},
-    new Uint8Array([1, 2, 3])
-  ].map(function(v) {
-    return new Promise(function(resolve, reject) {
-      resolve(v);
+Promise.all([
+    void 0, null, true, false,
+    -1/0, -123, -0, 0, 123, 1/0, 0/0,
+    '', 'foo', { foo: 'bar' }, [ 'A', 'B', 'C' ],
+    function foo() {}, new Uint8Array([ 1, 2, 3 ])
+].map(function (v) {
+    return new Promise(function (resolve, reject) { resolve(v); });
+})).then(function (v) {
+    print('fulfill:', JSON.stringify(v));
+    v.forEach(function (x) {
+        print(Test.valueToString(x));
     });
-  })
-).then(
-  function(v) {
-    print("fulfill:", JSON.stringify(v));
-    v.forEach(function(x) {
-      print(Test.valueToString(x));
-    });
-  },
-  function(e) {
-    print("reject:", e);
-  }
-);
+}, function (e) {
+    print('reject:', e);
+});
 
-print("done");
+print('done');

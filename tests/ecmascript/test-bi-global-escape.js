@@ -3,24 +3,21 @@
  * (minimizes test case size).
  */
 function checkSumString(x) {
-  var i, n;
-  var res = 0;
-  var mult = [1, 3, 5, 7, 11, 13, 17, 19, 23];
+    var i, n;
+    var res = 0;
+    var mult = [ 1, 3, 5, 7, 11, 13, 17, 19, 23 ];
 
-  n = x.length;
-  for (i = 0; i < n; i++) {
-    res += x.charCodeAt(i) * mult[i % mult.length];
-    res = res >>> 0; // coerce to 32 bits
-  }
+    n = x.length;
+    for (i = 0; i < n; i++) {
+        res += x.charCodeAt(i) * mult[i % mult.length];
+        res = res >>> 0;  // coerce to 32 bits
+    }
 
-  return res;
+    return res;
 }
 
 // indirect eval -> this is bound to the global object, E5 Section 10.4.2, step 1.a.
-var g = (function() {
-  var e = eval;
-  return e("this");
-})();
+var g = (function () { var e = eval; return e('this'); } )();
 
 /*===
 basic
@@ -62,27 +59,27 @@ basic
  * escape types.
  */
 
-print("basic");
+print('basic');
 
 function basicTest() {
-  var i, j;
-  var tmp;
+    var i, j;
+    var tmp;
 
-  for (i = 0; i < 1024; i += 32) {
-    tmp = [];
-    for (j = 0; j < 32; j++) {
-      tmp.push(String.fromCharCode(i + j));
+    for (i = 0; i < 1024; i += 32) {
+        tmp = [];
+        for (j = 0; j < 32; j++) {
+            tmp.push(String.fromCharCode(i + j));
+        }
+        tmp = g.escape(tmp.join(''));
+
+        print(tmp);
     }
-    tmp = g.escape(tmp.join(""));
-
-    print(tmp);
-  }
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -155,25 +152,25 @@ bruteforce
 
 /* Bruteforce test of the whole Unicode range, string hash outputs. */
 
-print("bruteforce");
+print('bruteforce');
 
 function bruteForceTest() {
-  for (i = 0; i < 65536; i += 1024) {
-    tmp = [];
-    for (j = 0; j < 1024; j++) {
-      tmp.push(String.fromCharCode(i + j));
-    }
-    tmp = tmp.join("");
+    for (i = 0; i < 65536; i += 1024) {
+        tmp = [];
+        for (j = 0; j < 1024; j++) {
+            tmp.push(String.fromCharCode(i + j));
+        }
+        tmp = tmp.join('');
 
-    tmp = g.escape(tmp);
-    print(i, checkSumString(tmp));
-  }
+        tmp = g.escape(tmp);
+        print(i, checkSumString(tmp));
+    }
 }
 
 try {
-  bruteForceTest();
+    bruteForceTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -189,22 +186,22 @@ foo
 %5Bobject%20Object%5D
 ===*/
 
-print("coercion");
+print('coercion');
 
 function coercionTest() {
-  print(g.escape());
-  print(g.escape(undefined));
-  print(g.escape(null));
-  print(g.escape(true));
-  print(g.escape(false));
-  print(g.escape(1234));
-  print(g.escape("foo"));
-  print(g.escape([1, 2, 3]));
-  print(g.escape({ foo: 1, bar: 2 }));
+    print(g.escape());
+    print(g.escape(undefined));
+    print(g.escape(null));
+    print(g.escape(true));
+    print(g.escape(false));
+    print(g.escape(1234));
+    print(g.escape('foo'));
+    print(g.escape([1,2,3]));
+    print(g.escape({ foo: 1, bar: 2}));
 }
 
 try {
-  coercionTest();
+    coercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

@@ -320,7 +320,7 @@ function executeTest(options, callback) {
       "-ggdb",
       //'-Werror',  // Would be nice but GCC differences break tests too easily
       //'-m32',
-      "runtests/api_testcase_main.c",
+      "tests/api_testcase_main.c",
       tempSource,
       "-lduktape",
       //'-lduktaped',

@@ -5,11 +5,11 @@ abbababbab,b object
 ===*/
 
 try {
-  r = eval("/^(a|b){10}$/");
-  t = r.exec("abbababbab");
-  print(t, typeof t);
+    r = eval("/^(a|b){10}$/");
+    t = r.exec('abbababbab');
+    print(t, typeof t);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -17,11 +17,11 @@ null object
 ===*/
 
 try {
-  r = eval("/^(a|b){1000}$/");
-  t = r.exec("abbababbab");
-  print(t, typeof t);
+    r = eval("/^(a|b){1000}$/");
+    t = r.exec('abbababbab');
+    print(t, typeof t);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -36,9 +36,9 @@ RangeError
  */
 
 try {
-  r = eval("/^(a|b){100000}$/");
-  t = r.exec("abbababbab");
-  print(t, typeof t);
+    r = eval("/^(a|b){100000}$/");
+    t = r.exec('abbababbab');
+    print(t, typeof t);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

@@ -4,14 +4,14 @@ foo
 ===*/
 
 function test() {
-  var foo = "foo";
+    var foo = 'foo';
 
-  print(+foo);
-  print(foo);
+    print(+foo);
+    print(foo);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

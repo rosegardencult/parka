@@ -1,4 +1,4 @@
-var obj = { foo: 1, bar: 2, quux: [1, 2], emptyObj: {}, emptyArr: [] };
+var obj = { foo:1, bar:2, quux: [ 1, 2 ], emptyObj: {}, emptyArr: [] };
 
 /*===
 {"foo":1,"bar":2,"quux":[1,2],"emptyObj":{},"emptyArr":[]}
@@ -49,10 +49,10 @@ print(JSON.stringify(obj));
  * form, as "[]" and "{}", respectively.
  */
 
-print(JSON.stringify(obj, null, ""));
-print(JSON.stringify(obj, null, "  "));
-print(JSON.stringify(obj, null, "          "));
-print(JSON.stringify(obj, null, "          clipped"));
+print(JSON.stringify(obj, null, ''));
+print(JSON.stringify(obj, null, '  '));
+print(JSON.stringify(obj, null, '          '));
+print(JSON.stringify(obj, null, '          clipped'));
 
 /*===
 {
@@ -69,7 +69,7 @@ foo"emptyArr": []
 
 /* String may also contain arbitrary characters, producing invalid JSON. */
 
-print(JSON.stringify(obj, null, "foo"));
+print(JSON.stringify(obj, null, 'foo'));
 
 /*===
 {"foo":1,"bar":2,"quux":[1,2],"emptyObj":{},"emptyArr":[]}

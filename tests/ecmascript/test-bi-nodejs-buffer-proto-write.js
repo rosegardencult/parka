@@ -199,109 +199,97 @@ false [object Object] 3
 ===*/
 
 function nodejsBufferWriteTest() {
-  var b = Buffer("ABCDEFGHIJKLMNOP");
-  print(b.length, String(b), printableNodejsBuffer(b));
+    var b = Buffer('ABCDEFGHIJKLMNOP');
+    print(b.length, String(b), printableNodejsBuffer(b));
 
-  // Unlike typed write methods like writeUInt32BE(), returns
-  // #bytes written (instead of offset + #bytes written)
+    // Unlike typed write methods like writeUInt32BE(), returns
+    // #bytes written (instead of offset + #bytes written)
 
-  print(b.write("foo"));
-  print(b.write("bar", 5));
-  print(b.length, String(b), printableNodejsBuffer(b));
+    print(b.write('foo'));
+    print(b.write('bar', 5));
+    print(b.length, String(b), printableNodejsBuffer(b));
 
-  // If string is longer than available size, it gets clamped.
+    // If string is longer than available size, it gets clamped.
 
-  print(b.write("foobarquuxbaz", 10));
-  print(b.length, String(b), printableNodejsBuffer(b));
+    print(b.write('foobarquuxbaz', 10));
+    print(b.length, String(b), printableNodejsBuffer(b));
 
-  // Length argument can also be over buffer length and is
-  // silently clamped.
+    // Length argument can also be over buffer length and is
+    // silently clamped.
 
-  print(b.write("FOO", 10, 100));
-  print(b.length, String(b), printableNodejsBuffer(b));
+    print(b.write('FOO', 10, 100));
+    print(b.length, String(b), printableNodejsBuffer(b));
 
-  // Offset argument over buffer length is rejected.
-  // Negative offset and length are rejected.
+    // Offset argument over buffer length is rejected.
+    // Negative offset and length are rejected.
 
-  try {
-    // offset exactly at end is ok
-    b.fill(0x41);
-    b.write("FOO", 16);
-  } catch (e) {
-    print(e.name);
-  }
-  print(b.length, String(b), printableNodejsBuffer(b));
-
-  try {
-    b.fill(0x41);
-    b.write("FOO", -1);
-  } catch (e) {
-    print(e.name);
-  }
-  print(b.length, String(b), printableNodejsBuffer(b));
-
-  try {
-    b.fill(0x41);
-    b.write("FOO", -1);
-  } catch (e) {
-    print(e.name);
-  }
-  print(b.length, String(b), printableNodejsBuffer(b));
-
-  try {
-    b.fill(0x41);
-    b.write("FOO", 3, -1);
-  } catch (e) {
-    print(e.name);
-  }
-  print(b.length, String(b), printableNodejsBuffer(b));
-
-  // Non-string values are not accepted - not even Buffers.
-
-  [undefined, null, true, false, 123, new Buffer("ABCDEFGH")].forEach(function(
-    arg
-  ) {
     try {
-      b.fill(0x41);
-      b.write(arg, 0);
-    } catch (e) {
-      print(typeof arg, String(arg), e.name);
-    }
-  });
-
-  // Offset and length are integer coerced.
-
-  var vals = [
-    undefined,
-    null,
-    true,
-    false,
-    -1,
-    0,
-    12,
-    14,
-    {
-      valueOf: function() {
-        return 4;
-      }
-    }
-  ];
-
-  vals.forEach(function(offset) {
-    vals.forEach(function(length) {
-      try {
+        // offset exactly at end is ok
         b.fill(0x41);
-        print(offset, length, b.write("foo", offset, length));
-      } catch (e) {
-        print(offset, length, e.name);
-      }
-      print(b.length, String(b), printableNodejsBuffer(b));
+        b.write('FOO', 16);
+    } catch (e) {
+        print(e.name);
+    }
+    print(b.length, String(b), printableNodejsBuffer(b));
+
+    try {
+        b.fill(0x41);
+        b.write('FOO', -1);
+    } catch (e) {
+        print(e.name);
+    }
+    print(b.length, String(b), printableNodejsBuffer(b));
+
+    try {
+        b.fill(0x41);
+        b.write('FOO', -1);
+    } catch (e) {
+        print(e.name);
+    }
+    print(b.length, String(b), printableNodejsBuffer(b));
+
+    try {
+        b.fill(0x41);
+        b.write('FOO', 3, -1);
+    } catch (e) {
+        print(e.name);
+    }
+    print(b.length, String(b), printableNodejsBuffer(b));
+
+    // Non-string values are not accepted - not even Buffers.
+
+    [ undefined, null, true, false, 123,
+      new Buffer('ABCDEFGH') ].forEach(function (arg) {
+        try {
+            b.fill(0x41);
+            b.write(arg, 0);
+        } catch (e) {
+            print(typeof arg, String(arg), e.name);
+        }
     });
-  });
+
+    // Offset and length are integer coerced.
+
+    var vals = [
+        undefined, null, true, false, -1, 0, 12, 14,
+        { valueOf: function () { return 4; } }
+    ];
+
+    vals.forEach(function (offset) {
+        vals.forEach(function (length) {
+            try {
+                b.fill(0x41);
+                print(offset, length, b.write('foo', offset, length));
+            } catch (e) {
+                print(offset, length, e.name);
+            }
+            print(b.length, String(b), printableNodejsBuffer(b));
+        });
+    });
 }
 
 try {
-  nodejsBufferWriteTest();
+    nodejsBufferWriteTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

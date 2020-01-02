@@ -21,18 +21,18 @@ var dummy = {};
 var z = 1;
 
 function test() {
-  var tmp;
+    var tmp;
 
-  print(getObjectRefcount(dummy));
-  tmp = dummy;
-  print(getObjectRefcount(dummy));
-  tmp = !z;
-  print(getObjectRefcount(dummy));
-  print(tmp);
+    print(getObjectRefcount(dummy));
+    tmp = dummy;
+    print(getObjectRefcount(dummy));
+    tmp = !z;
+    print(getObjectRefcount(dummy));
+    print(tmp);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

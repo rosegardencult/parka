@@ -8,7 +8,7 @@ ReferenceError
 ===*/
 
 try {
-  this = 1;
-} catch (e) {
-  print(e.name);
+    this = 1;
+} catch(e) {
+    print(e.name);
 }

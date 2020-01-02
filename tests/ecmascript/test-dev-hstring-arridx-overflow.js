@@ -143,60 +143,51 @@
 ===*/
 
 function test() {
-  var i;
+    var i;
 
-  function f(str) {
-    var arridx = false;
-    var arr1, arr2;
+    function f(str) {
+        var arridx = false;
+        var arr1, arr2;
 
-    arr1 = [];
-    arr1[str] = 1;
-    if (arr1.length !== 0) {
-      arridx = true;
+        arr1 = []; arr1[str] = 1;
+        if (arr1.length !== 0) { arridx = true; }
+        arr2 = [ 1 ]; arr2[str] = 1;
+        if (arr2.length !== 1) { arridx = true; }
+
+        if (arridx) {
+            print(str, arridx, arr1.length, arr2.length);
+        }
+    }
+
+    vals = [
+        // Basic cases
+        '', '0', '+0', '-0',
+        '123',
+        '100000',
+
+        // Valid 32-bit boundary
+        '4294967294',  // highest arridx
+        '4294967295',  // 32-bit, no longer arridx
+        '4294967296'   // not 32-bit
+    ];
+
+    // Transition to overflow
+    for (i = 0xffffff80; i <= 0x100000080; i++) {
+        vals.push(String(i));
     }
-    arr2 = [1];
-    arr2[str] = 1;
-    if (arr2.length !== 1) {
-      arridx = true;
+
+    // 10-digit values above overflow
+    for (i = 429496; i <= 1000000; i++) {
+        vals.push(String(i) + '1234');
     }
 
-    if (arridx) {
-      print(str, arridx, arr1.length, arr2.length);
-    }
-  }
-
-  vals = [
-    // Basic cases
-    "",
-    "0",
-    "+0",
-    "-0",
-    "123",
-    "100000",
-
-    // Valid 32-bit boundary
-    "4294967294", // highest arridx
-    "4294967295", // 32-bit, no longer arridx
-    "4294967296" // not 32-bit
-  ];
-
-  // Transition to overflow
-  for (i = 0xffffff80; i <= 0x100000080; i++) {
-    vals.push(String(i));
-  }
-
-  // 10-digit values above overflow
-  for (i = 429496; i <= 1000000; i++) {
-    vals.push(String(i) + "1234");
-  }
-
-  vals.forEach(function(v) {
-    f(v);
-  });
+    vals.forEach(function (v) {
+        f(v);
+    });
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

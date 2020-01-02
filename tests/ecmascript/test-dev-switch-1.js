@@ -9,18 +9,18 @@ default matches
 /* Case matching goes through a default if it is in the middle. */
 
 switch (3) {
-  case 1:
-    print("first case matches");
-    break;
-  default:
-    print("default matches");
-    break;
-  case 2:
-    print("second case matches");
-    break;
-  case 3:
-    print("third case matches");
-    break;
+    case 1:
+        print("first case matches");
+        break;
+    default:
+        print("default matches");
+        break;
+    case 2:
+        print("second case matches");
+        break;
+    case 3:
+        print("third case matches");
+        break;
 }
 
 /* Case matching goes through a default if it is in the middle,
@@ -28,18 +28,18 @@ switch (3) {
  */
 
 switch (4) {
-  case 1:
-    print("first case matches");
-    break;
-  default:
-    print("default matches");
-    break;
-  case 2:
-    print("second case matches");
-    break;
-  case 3:
-    print("third case matches");
-    break;
+    case 1:
+        print("first case matches");
+        break;
+    default:
+        print("default matches");
+        break;
+    case 2:
+        print("second case matches");
+        break;
+    case 3:
+        print("third case matches");
+        break;
 }
 
 /*===
@@ -54,14 +54,14 @@ third case matches
  */
 
 switch (1) {
-  case 1:
-    print("first case matches");
-  default:
-    print("default matches");
-  case 2:
-    print("second case matches");
-  case 3:
-    print("third case matches");
+    case 1:
+        print("first case matches");
+    default:
+        print("default matches");
+    case 2:
+        print("second case matches");
+    case 3:
+        print("third case matches");
 }
 
 /*===
@@ -73,14 +73,14 @@ third case matches
 /* If default matches, it will fall through any case clauses following it. */
 
 switch (4) {
-  case 1:
-    print("first case matches");
-  default:
-    print("default matches");
-  case 2:
-    print("second case matches");
-  case 3:
-    print("third case matches");
+    case 1:
+        print("first case matches");
+    default:
+        print("default matches");
+    case 2:
+        print("second case matches");
+    case 3:
+        print("third case matches");
 }
 
 /*===
@@ -90,9 +90,9 @@ default matches
 /* Implementation corner case: only default clause exists. */
 
 switch (1) {
-  default:
-    print("default matches");
-    break;
+    default:
+        print("default matches");
+        break;
 }
 
 /*===
@@ -114,18 +114,18 @@ third case matches
  */
 
 switch (3) {
-  case 1:
-    print("first case matches");
-    break;
-  case 2:
-    print("second case matches");
-    break;
-  case 1 + 2:
-    print("third case matches");
-    break;
-  case foo: // ReferenceError
-    print("fourth case matches");
-    break;
+   case 1:
+       print("first case matches");
+       break;
+   case 2:
+       print("second case matches");
+       break;
+   case 1+2:
+       print("third case matches");
+       break;
+   case foo:  // ReferenceError
+       print("fourth case matches");
+       break;
 }
 
 /*===
@@ -137,18 +137,16 @@ ReferenceError
  */
 
 try {
-  /* Here 'foo' throws a ReferenceError before the matching case is found. */
-  eval(
-    "switch (3) {" +
-    "case 1: print('first case matches'); break;" +
-    "case 2: print('second case matches'); break;" +
-    "case foo: " + // ReferenceError
-      "case 3: print('fourth case matches'); break;" +
-      "default: print('default case matches'); break;" +
-      "}"
-  );
+    /* Here 'foo' throws a ReferenceError before the matching case is found. */
+    eval("switch (3) {" +
+         "case 1: print('first case matches'); break;" +
+         "case 2: print('second case matches'); break;" +
+         "case foo: " +  // ReferenceError
+         "case 3: print('fourth case matches'); break;" +
+         "default: print('default case matches'); break;" +
+         "}");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -158,15 +156,15 @@ first case matches
 /* Multiple cases with the same value.  Only the first matches. */
 
 switch (1) {
-  case 1:
-    print("first case matches");
-    break;
-  case 1:
-    print("second case matches");
-    break;
-  default:
-    print("default case matches");
-    break;
+    case 1:
+        print("first case matches");
+        break;
+    case 1:
+        print("second case matches");
+        break;
+    default:
+        print("default case matches");
+        break;
 }
 
 /*===
@@ -176,13 +174,11 @@ SyntaxError
 /* Multiple 'default' cases are a SyntaxError. */
 
 try {
-  eval(
-    "switch (1) {" +
-      "case 1: print('first case matches'); break;" +
-      "default: print('first default case matches'); break;" +
-      "default: print('second default case matches'); break;" +
-      "}"
-  );
+    eval("switch (1) {" +
+         "case 1: print('first case matches'); break;" +
+         "default: print('first default case matches'); break;" +
+         "default: print('second default case matches'); break;" +
+         "}");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

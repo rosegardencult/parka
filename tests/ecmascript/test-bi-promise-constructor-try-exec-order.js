@@ -12,12 +12,12 @@ done
 .then() called
 ===*/
 
-print("call Promise.try()");
-var P = Promise.try(function() {
-  print("argument called");
+print('call Promise.try()');
+var P = Promise.try(function () {
+    print('argument called');
 });
-P.then(function() {
-  print(".then() called");
+P.then(function () {
+    print('.then() called');
 });
-print("call returned");
-print("done");
+print('call returned');
+print('done');

@@ -25,83 +25,67 @@ function undefined undefined true
 ===*/
 
 function test() {
-  "use strict"; // duplicates allowed even in strict mode
+    'use strict';  // duplicates allowed even in strict mode
 
-  var foo = "foovar";
-  var obj;
-  var pd;
+    var foo = 'foovar';
+    var obj;
+    var pd;
 
-  obj = {
-    foo: 123,
-    foo: (print("aiee 1"), 234),
-    foo: (print("aiee 2"), 345)
-  };
-  print(obj.foo);
+    obj = {
+        foo: 123,
+        foo: (print('aiee 1'), 234),
+        foo: (print('aiee 2'), 345)
+    };
+    print(obj.foo);
 
-  obj = {
-    foo: 123,
-    foo: (print("aiee 1"), 234),
-    foo: (print("aiee 2"), 345),
-    foo
-  };
-  print(obj.foo);
+    obj = {
+        foo: 123,
+        foo: (print('aiee 1'), 234),
+        foo: (print('aiee 2'), 345),
+        foo
+    };
+    print(obj.foo);
 
-  obj = {
-    foo: 1,
-    get foo() {
-      print("foo getter");
-    }
-  };
-  print(obj.foo);
-  pd = Object.getOwnPropertyDescriptor(obj, "foo");
-  print(typeof pd.get, typeof pd.set, pd.writable, pd.configurable);
+    obj = {
+        foo: 1,
+        get foo() { print('foo getter') }
+    };
+    print(obj.foo);
+    pd = Object.getOwnPropertyDescriptor(obj, 'foo');
+    print(typeof pd.get, typeof pd.set, pd.writable, pd.configurable);
 
-  obj = {
-    get foo() {
-      print("foo getter");
-    },
-    foo: 1
-  };
-  print(obj.foo);
-  pd = Object.getOwnPropertyDescriptor(obj, "foo");
-  print(typeof pd.get, typeof pd.set, pd.writable, pd.configurable);
+    obj = {
+        get foo() { print('foo getter') },
+        foo: 1
+    };
+    print(obj.foo);
+    pd = Object.getOwnPropertyDescriptor(obj, 'foo');
+    print(typeof pd.get, typeof pd.set, pd.writable, pd.configurable);
 
-  obj = {
-    get foo() {
-      print("foo getter");
-    },
-    set foo(v) {
-      print("foo setter");
-    },
-    // this updates the getter - but the setter is kept
-    get foo() {
-      print("foo getter 2");
-    }
-  };
-  print(obj.foo);
-  obj.foo = 123;
-  pd = Object.getOwnPropertyDescriptor(obj, "foo");
-  print(typeof pd.get, typeof pd.set, pd.writable, pd.configurable);
+    obj = {
+        get foo() { print('foo getter') },
+        set foo(v) { print('foo setter') },
+        // this updates the getter - but the setter is kept
+        get foo() { print('foo getter 2') },
+    };
+    print(obj.foo);
+    obj.foo = 123;
+    pd = Object.getOwnPropertyDescriptor(obj, 'foo');
+    print(typeof pd.get, typeof pd.set, pd.writable, pd.configurable);
 
-  obj = {
-    get foo() {
-      print("foo getter");
-    },
-    set foo(v) {
-      print("foo setter");
-    },
-    foo, // this resets both setter and getter
-    get foo() {
-      print("foo getter 2");
-    }
-  };
-  print(obj.foo);
-  pd = Object.getOwnPropertyDescriptor(obj, "foo");
-  print(typeof pd.get, typeof pd.set, pd.writable, pd.configurable);
+    obj = {
+        get foo() { print('foo getter') },
+        set foo(v) { print('foo setter') },
+        foo,  // this resets both setter and getter
+        get foo() { print('foo getter 2') },
+    };
+    print(obj.foo);
+    pd = Object.getOwnPropertyDescriptor(obj, 'foo');
+    print(typeof pd.get, typeof pd.set, pd.writable, pd.configurable);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

@@ -29,20 +29,18 @@ RangeError: callstack limit
 ===*/
 
 try {
-  function recurse(n) {
-    print(n);
-    if (--n > 0) recurse(n);
-  }
+    function recurse(n) {
+        print(n);
+        if (--n > 0) recurse(n);
+    }
 
-  Duktape.errCreate = function(e) {
-    recurse(10);
-    return e;
-  };
+    Duktape.errCreate = function(e) {
+        recurse(10);
+        return e;
+    };
 
-  function f() {
+    function f() { f(); }
     f();
-  }
-  f();
-} catch (e) {
-  print(e);
+} catch(e) {
+    print(e);
 }

@@ -27,31 +27,31 @@ TypeError: coercion to primitive failed
 ===*/
 
 function test1(forceSlow) {
-  var x = new String("my string");
-  x.toString = function() {
-    print("x.toString() called");
-    return function dummy1() {}; // ignored by ToPrimitive()
-  };
-  x.valueOf = function() {
-    print("x.valueOf() called");
-    return function dummy2() {}; // ignored by ToPrimitive()
-  };
-  if (forceSlow) {
-    x.toJSON = 1; // non-callable so ignored, but forces out of fast path (at least in Duktape 1.5.x)
-  }
+    var x = new String('my string');
+    x.toString = function () {
+        print('x.toString() called');
+        return function dummy1() {};  // ignored by ToPrimitive()
+    };
+    x.valueOf = function () {
+        print('x.valueOf() called');
+        return function dummy2() {};  // ignored by ToPrimitive()
+    }
+    if (forceSlow) {
+        x.toJSON = 1;  // non-callable so ignored, but forces out of fast path (at least in Duktape 1.5.x)
+    }
 
-  print(JSON.stringify(x));
+    print(JSON.stringify(x));
 }
 
 try {
-  test1(false);
+    test1(false);
 } catch (e) {
-  print(e);
+    print(e);
 }
 try {
-  test1(true);
+    test1(true);
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -64,29 +64,29 @@ TypeError: coercion to primitive failed
 ===*/
 
 function test2(forceSlow) {
-  var x = new Number(1234);
-  x.toString = function() {
-    print("x.toString() called");
-    return function dummy1() {}; // ignored by ToPrimitive()
-  };
-  x.valueOf = function() {
-    print("x.valueOf() called");
-    return function dummy2() {}; // ignored by ToPrimitive()
-  };
-  if (forceSlow) {
-    x.toJSON = 1; // non-callable so ignored, but forces out of fast path (at least in Duktape 1.5.x)
-  }
+    var x = new Number(1234);
+    x.toString = function () {
+        print('x.toString() called');
+        return function dummy1() {};  // ignored by ToPrimitive()
+    };
+    x.valueOf = function () {
+        print('x.valueOf() called');
+        return function dummy2() {};  // ignored by ToPrimitive()
+    }
+    if (forceSlow) {
+        x.toJSON = 1;  // non-callable so ignored, but forces out of fast path (at least in Duktape 1.5.x)
+    }
 
-  print(JSON.stringify(x));
+    print(JSON.stringify(x));
 }
 
 try {
-  test2(false);
+    test2(false);
 } catch (e) {
-  print(e);
+    print(e);
 }
 try {
-  test2(true);
+    test2(true);
 } catch (e) {
-  print(e);
+    print(e);
 }

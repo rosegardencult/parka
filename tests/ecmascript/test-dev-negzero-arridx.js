@@ -15,27 +15,27 @@
 ===*/
 
 function test() {
-  var arr;
+    var arr;
 
-  arr = [];
-  arr[-0] = "foo";
-  print(arr.length, JSON.stringify(arr));
+    arr = [];
+    arr[-0] = 'foo';
+    print(arr.length, JSON.stringify(arr));
 
-  arr = [];
-  arr["0"] = "foo";
-  print(arr.length, JSON.stringify(arr));
+    arr = [];
+    arr['0'] = 'foo';
+    print(arr.length, JSON.stringify(arr));
 
-  arr = [];
-  arr["+0"] = "foo";
-  print(arr.length, JSON.stringify(arr));
+    arr = [];
+    arr['+0'] = 'foo';
+    print(arr.length, JSON.stringify(arr));
 
-  arr = [];
-  arr["-0"] = "foo";
-  print(arr.length, JSON.stringify(arr));
+    arr = [];
+    arr['-0'] = 'foo';
+    print(arr.length, JSON.stringify(arr));
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

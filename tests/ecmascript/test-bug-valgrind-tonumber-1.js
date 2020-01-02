@@ -24,4 +24,4 @@ still here
 var x;
 
 x = "NaN" >>> 0;
-print("still here");
+print('still here');

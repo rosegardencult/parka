@@ -29,91 +29,91 @@ false
 ===*/
 
 function nodejsDifferencesTest() {
-  var buf, buf2;
-  var proto;
+    var buf, buf2;
+    var proto;
 
-  /*
-   *  buf.fill() offset coercion differs.  Duktape behavior is to integer
-   *  coerce and clamp both arguments, allowing crossed offsets.  This
-   *  matches toString() clamping behavior.
-   */
+    /*
+     *  buf.fill() offset coercion differs.  Duktape behavior is to integer
+     *  coerce and clamp both arguments, allowing crossed offsets.  This
+     *  matches toString() clamping behavior.
+     */
 
-  print("fill()");
+    print('fill()');
 
-  // If start offset is negative, Node.js throws a RangeError.
-  // Duktape treats it like 0 (clamped).
+    // If start offset is negative, Node.js throws a RangeError.
+    // Duktape treats it like 0 (clamped).
 
-  buf = new Buffer("ABCDEFGH");
-  try {
-    buf.fill(0x61, -1); // Node.js: RangeError, Duktape: treat like 0, fill entire buffer
-  } catch (e) {
-    print(e.name);
-  }
-  print(String(buf));
+    buf = new Buffer('ABCDEFGH');
+    try {
+        buf.fill(0x61, -1);  // Node.js: RangeError, Duktape: treat like 0, fill entire buffer
+    } catch (e) {
+        print(e.name);
+    }
+    print(String(buf));
 
-  // If start offset is beyond buffer length, Node.js clamps the offset.
-  // Duktape does the same.  Result is a silent success with no changes
-  // to the buffer.
+    // If start offset is beyond buffer length, Node.js clamps the offset.
+    // Duktape does the same.  Result is a silent success with no changes
+    // to the buffer.
 
-  buf = new Buffer("ABCDEFGH");
-  try {
-    buf.fill(0x61, 9); // Node.js: clamp, Duktape: clamp; no change to buffer
-  } catch (e) {
-    print(e.name);
-  }
-  print(String(buf));
+    buf = new Buffer('ABCDEFGH');
+    try {
+        buf.fill(0x61, 9);  // Node.js: clamp, Duktape: clamp; no change to buffer
+    } catch (e) {
+        print(e.name);
+    }
+    print(String(buf));
 
-  // If end offset is beyond buffer length, Node.js throws a RangeError.
-  // Duktape clamps to the end of the buffer.
+    // If end offset is beyond buffer length, Node.js throws a RangeError.
+    // Duktape clamps to the end of the buffer.
 
-  buf = new Buffer("ABCDEFGH");
-  try {
-    buf.fill(0x61, 3, 9); // Node.js: RangeError, Duktape: clamp, fill [3,8[
-  } catch (e) {
-    print(e.name);
-  }
-  print(String(buf));
+    buf = new Buffer('ABCDEFGH');
+    try {
+        buf.fill(0x61, 3, 9);  // Node.js: RangeError, Duktape: clamp, fill [3,8[
+    } catch (e) {
+        print(e.name);
+    }
+    print(String(buf));
 
-  /*
-   *  buf.toString() offset coercion differs from Node.js.  Duktape
-   *  behavior is to integer coerce and clamp both arguments, allowing
-   *  crossed offsets.
-   */
+    /*
+     *  buf.toString() offset coercion differs from Node.js.  Duktape
+     *  behavior is to integer coerce and clamp both arguments, allowing
+     *  crossed offsets.
+     */
 
-  print("toString()");
-  buf = new Buffer("ABCDEFGH");
+    print('toString()');
+    buf = new Buffer('ABCDEFGH');
 
-  // If start offset is negative, Node.js always outputs an empty string.
-  // Duktape will clamp the negative value to zero and interpret the end
-  // offset.
+    // If start offset is negative, Node.js always outputs an empty string.
+    // Duktape will clamp the negative value to zero and interpret the end
+    // offset.
 
-  print(buf.toString(undefined, -1)); // Node.js: "", Duktape: "ABCDEFGH"
-  print(buf.toString(undefined, -10, 3)); // Node.js: "", Duktape: "ABC"
+    print(buf.toString(undefined, -1));      // Node.js: "", Duktape: "ABCDEFGH"
+    print(buf.toString(undefined, -10, 3));  // Node.js: "", Duktape: "ABC"
 
-  // If end offset is negative, Node.js will ignore it.  Duktape will
-  // clamp it to zero (or start offset if higher).
+    // If end offset is negative, Node.js will ignore it.  Duktape will
+    // clamp it to zero (or start offset if higher).
 
-  print(buf.toString(undefined, 0, -1)); // Node.js: "ABCDEFGH", Duktape: ""
-  print(buf.toString(undefined, 3, -1)); // Node.js: "DEFGH", Duktape: ""
+    print(buf.toString(undefined, 0, -1));   // Node.js: "ABCDEFGH", Duktape: ""
+    print(buf.toString(undefined, 3, -1));   // Node.js: "DEFGH", Duktape: ""
 
-  /*
-   *  buf.slice() result is a Node.js Buffer whose internal prototype is
-   *  (the initial value of) Buffer.prototype.  This was changed to match
-   *  Node.js in Duktape 2.x.
-   */
+    /*
+     *  buf.slice() result is a Node.js Buffer whose internal prototype is
+     *  (the initial value of) Buffer.prototype.  This was changed to match
+     *  Node.js in Duktape 2.x.
+     */
 
-  print("slice() prototype");
-  buf = new Buffer("ABCDEFGH");
-  proto = { name: "my_proto" };
-  Object.setPrototypeOf(proto, Buffer.prototype);
-  Object.setPrototypeOf(buf, proto);
-  buf2 = buf.slice(2, 6);
-  print(Object.getPrototypeOf(buf2) === Buffer.prototype); // Node.js: true, Duktape: true
-  print(Object.getPrototypeOf(buf2) === proto); // Node.js: false, Duktape: false
+    print('slice() prototype');
+    buf = new Buffer('ABCDEFGH');
+    proto = { name: 'my_proto' };
+    Object.setPrototypeOf(proto, Buffer.prototype);
+    Object.setPrototypeOf(buf, proto);
+    buf2 = buf.slice(2, 6);
+    print(Object.getPrototypeOf(buf2) === Buffer.prototype);  // Node.js: true, Duktape: true
+    print(Object.getPrototypeOf(buf2) === proto);             // Node.js: false, Duktape: false
 }
 
 try {
-  nodejsDifferencesTest();
+    nodejsDifferencesTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

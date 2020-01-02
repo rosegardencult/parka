@@ -20,19 +20,19 @@ error 2
 ===*/
 
 function FooError() {
-  Object.defineProperty(this, "fileName", { value: "my filename" });
+    Object.defineProperty(this, 'fileName', { value: 'my filename' });
 }
 FooError.prototype = Error.prototype;
 
 function BarError() {
-  Object.defineProperty(this, "lineNumber", { value: 12345 });
+    Object.defineProperty(this, 'lineNumber', { value: 12345 });
 }
 BarError.prototype = Error.prototype;
 
 var e1 = new FooError();
-print("error 1");
+print('error 1');
 print(e1.fileName);
 
 var e2 = new BarError();
-print("error 2");
+print('error 2');
 print(e2.lineNumber);

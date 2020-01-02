@@ -9,12 +9,9 @@ var func;
 
 /* Basic cases */
 print.bind(null)();
-print.bind(null, 1, 2)();
-print.bind(null, 1, 2)(3, 4);
-print
-  .bind(null, 1)
-  .bind(null, 2)
-  .bind(null, 3)();
+print.bind(null,1,2)();
+print.bind(null,1,2)(3,4);
+print.bind(null,1).bind(null,2).bind(null,3)();
 
 /*===
 2
@@ -26,7 +23,8 @@ print
 
 /* XXX: length handling of bound function, improve */
 
-function f1(x, y) {}
+function f1(x,y) {
+}
 
 print(f1.length);
 func = f1.bind(null);

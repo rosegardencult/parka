@@ -22,108 +22,108 @@ var a;
 RangeError
 ===*/
 
-a = [1, 2, 3];
+a = [1,2,3];
 try {
-  a.length = undefined;
-  print(a.length);
+    a.length = undefined;
+    print(a.length);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
 0
 ===*/
 
-a = [1, 2, 3];
+a = [1,2,3];
 try {
-  a.length = null;
-  print(a.length);
+    a.length = null;
+    print(a.length);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
 0
 ===*/
 
-a = [1, 2, 3];
+a = [1,2,3];
 try {
-  a.length = false;
-  print(a.length);
+    a.length = false;
+    print(a.length);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
 1
 ===*/
 
-a = [1, 2, 3];
+a = [1,2,3];
 try {
-  a.length = true;
-  print(a.length);
+    a.length = true;
+    print(a.length);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
 2
 ===*/
 
-a = [1, 2, 3];
+a = [1,2,3];
 try {
-  a.length = 2.0;
-  print(a.length);
+    a.length = 2.0;
+    print(a.length);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
 5
 ===*/
 
-a = [1, 2, 3];
+a = [1,2,3];
 try {
-  a.length = 5.0;
-  print(a.length);
+    a.length = 5.0;
+    print(a.length);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
 2
 ===*/
 
-a = [1, 2, 3];
+a = [1,2,3];
 try {
-  a.length = "2";
-  print(a.length);
+    a.length = "2";
+    print(a.length);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
 2
 ===*/
 
-a = [1, 2, 3];
+a = [1,2,3];
 try {
-  a.length = "2.000";
-  print(a.length);
+    a.length = "2.000";
+    print(a.length);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
 2
 ===*/
 
-a = [1, 2, 3];
+a = [1,2,3];
 try {
-  a.length = "0.02e2";
-  print(a.length);
+    a.length = "0.02e2";
+    print(a.length);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /* XXX: strings and objects */

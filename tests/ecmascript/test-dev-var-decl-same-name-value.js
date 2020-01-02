@@ -13,8 +13,8 @@ var x = 10;
 var y = 20;
 
 function f1() {
-  var x = x;
-  print(typeof x, x);
+    var x = x;
+    print(typeof x, x);
 }
 
 f1();
@@ -27,10 +27,10 @@ undefined undefined
 /* Order trick should not help, both should be undefined. */
 
 function f2() {
-  var y = x;
-  var x = y;
-  print(typeof x, x);
-  print(typeof y, y);
+    var y = x;
+    var x = y;
+    print(typeof x, x);
+    print(typeof y, y);
 }
 
 f2();

@@ -7,32 +7,26 @@ key0,key1,key2,key3,key4,key5,key6,key7,key8,key9,key10,key11,key12,key13,key14,
 ===*/
 
 function buildExpression(n) {
-  var res = [];
-  var i;
+    var res = [];
+    var i;
 
-  res.push("var obj = {};");
-  res.push("Object.defineProperties(obj, {");
-  for (i = 0; i < n; i++) {
-    res.push(
-      "    key" +
-        i +
-        ": { value: " +
-        i +
-        ", writable: true, enumerable: true, configurable: true },"
-    );
-  }
-  res.push("});");
-  res.push("print(Object.keys(obj));");
-  return res.join("\n");
+    res.push('var obj = {};');
+    res.push('Object.defineProperties(obj, {');
+    for (i = 0; i < n; i++) {
+        res.push('    key' + i + ': { value: ' + i + ', writable: true, enumerable: true, configurable: true },');
+    }
+    res.push('});');
+    res.push('print(Object.keys(obj));');
+    return res.join('\n');
 }
 
 function test() {
-  var code = buildExpression(1000);
-  eval(code);
+    var code = buildExpression(1000);
+    eval(code);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

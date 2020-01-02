@@ -2,7 +2,7 @@
  *  Compilation and execution of eval code (E5 Sections 13, 10.4.2).
  */
 
-var myEval = eval; // for indirect evals
+var myEval = eval;  // for indirect evals
 
 /*===
 basic eval
@@ -10,7 +10,7 @@ foo
 foo
 ===*/
 
-print("basic eval");
+print('basic eval');
 print(eval("'foo'"));
 print(myEval("'foo'"));
 
@@ -24,7 +24,7 @@ number
  * gets declared to global object because the eval is a 'direct call' which
  * inherits the calling scope.
  */
-print("eval return value");
+print('eval return value');
 print(eval("123; var test1=10;"));
 print(typeof test1);
 
@@ -66,25 +66,25 @@ false
  */
 
 function testEvalScope() {
-  var x = 123;
-  var global = new Function("return this;")();
+    var x = 123;
+    var global = new Function('return this;')();
 
-  eval("print(typeof x, x); var y = 234;");
-  print(typeof y, y);
+    eval('print(typeof x, x); var y = 234;');
+    print(typeof y, y);
 
-  eval('"use strict"; print(typeof x, x); var z = 345');
-  print(typeof z);
+    eval('"use strict"; print(typeof x, x); var z = 345');
+    print(typeof z);
 
-  myEval("print(typeof Math, typeof x); var test2a=10;");
-  print(typeof test2a);
-  print("test2a" in global);
+    myEval('print(typeof Math, typeof x); var test2a=10;');
+    print(typeof test2a);
+    print('test2a' in global);
 
-  myEval('"use strict"; print(typeof Math, typeof x); var test2b=10;');
-  print(typeof test2b);
-  print("test2b" in global);
+    myEval('"use strict"; print(typeof Math, typeof x); var test2b=10;');
+    print(typeof test2b);
+    print('test2b' in global);
 }
 
-print("eval scope");
+print('eval scope');
 testEvalScope();
 
 /*===
@@ -103,16 +103,14 @@ undefined object object
  */
 
 function testEvalThisBinding() {
-  var x = 123;
-  var global = new Function("return this;")();
+    var x = 123;
+    var global = new Function('return this;')();
 
-  eval("print(typeof x, typeof this, typeof this.message, this.message);");
-  eval(
-    '"use strict"; print(typeof x, typeof this, typeof this.message, this.message);'
-  );
-  myEval("print(typeof x, typeof this, typeof this.Math);");
-  myEval('"use strict"; print(typeof x, typeof this, typeof this.Math);');
+    eval('print(typeof x, typeof this, typeof this.message, this.message);');
+    eval('"use strict"; print(typeof x, typeof this, typeof this.message, this.message);');
+    myEval('print(typeof x, typeof this, typeof this.Math);');
+    myEval('"use strict"; print(typeof x, typeof this, typeof this.Math);');
 }
 
-print("eval this binding");
-testEvalThisBinding.call({ message: "this-binding" });
+print('eval this binding');
+testEvalThisBinding.call({ message: 'this-binding' });

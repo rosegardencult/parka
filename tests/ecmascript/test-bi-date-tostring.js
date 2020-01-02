@@ -24,19 +24,19 @@ toUTCString="Invalid Date" toGMTString="Invalid Date" toISOString="RangeError" t
  */
 
 function printConversions(dt) {
-  var tmp = [];
-  var t;
+    var tmp = [];
+    var t;
 
-  function f(n, v) {
-    if (typeof v !== "string") {
-      throw new Error("invalid type: " + v);
+    function f(n,v) {
+        if (typeof v !== 'string') {
+            throw new Error('invalid type: ' + v);
+        }
+        tmp.push(n + '="' + String(v) + '"');
     }
-    tmp.push(n + '="' + String(v) + '"');
-  }
 
-  // XXX: how to test these, as even the custom output depends on
-  // build options and current locale?
-  /*
+    // XXX: how to test these, as even the custom output depends on
+    // build options and current locale?
+    /*
     f('toString', dt.toString());
     f('toDateString', dt.toDateString());
     f('toTimeString', dt.toTimeString());
@@ -45,38 +45,38 @@ function printConversions(dt) {
     f('toLocaleTimeString', dt.toLocaleTimeString());
     */
 
-  f("toUTCString", dt.toUTCString());
-  f("toGMTString", dt.toUTCString());
-  try {
-    f("toISOString", dt.toISOString());
-  } catch (e) {
-    // RangeError is possible
-    f("toISOString", e.name);
-  }
-  t = dt.toJSON();
-  if (t === null) {
-    // null is possible
-    t = "null";
-  }
-  f("toJSON", t);
+    f('toUTCString', dt.toUTCString());
+    f('toGMTString', dt.toUTCString());
+    try {
+        f('toISOString', dt.toISOString());
+    } catch (e) {
+        // RangeError is possible
+        f('toISOString', e.name);
+    }
+    t = dt.toJSON();
+    if (t === null) {
+        // null is possible
+        t = 'null';
+    }
+    f('toJSON', t);
 
-  print(tmp.join(" "));
+    print(tmp.join(' '));
 }
 
 function datePrototypeStringConversion() {
-  var pc = printConversions;
+    var pc = printConversions;
 
-  pc(new Date(0)); // single argument is 'utc time'
+    pc(new Date(0));  // single argument is 'utc time'
 
-  pc(new Date(Date.UTC(-200000, 1, 2, 3, 4, 5, 6)));
-  pc(new Date(Date.UTC(200000, 1, 2, 3, 4, 5, 6)));
-  pc(new Date(Date.UTC(1800000000000e3)));
+    pc(new Date(Date.UTC(-200000, 1, 2, 3, 4, 5, 6)));
+    pc(new Date(Date.UTC(200000, 1, 2, 3, 4, 5, 6)));
+    pc(new Date(Date.UTC(1800000000000e3)));
 }
 
 try {
-  datePrototypeStringConversion();
+    datePrototypeStringConversion();
 } catch (e) {
-  print(e.name, e);
+    print(e.name, e);
 }
 
 /*===
@@ -85,11 +85,11 @@ RangeError
 ===*/
 
 try {
-  // toISOString() is required to throw a RangeError rather than return
-  // an 'Invalid Date' if time value is invalid.  Other converters don't
-  // have this property.
-  print(new Date(NaN).toUTCString());
-  print(new Date(NaN).toISOString());
+    // toISOString() is required to throw a RangeError rather than return
+    // an 'Invalid Date' if time value is invalid.  Other converters don't
+    // have this property.
+    print(new Date(NaN).toUTCString());
+    print(new Date(NaN).toISOString());
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

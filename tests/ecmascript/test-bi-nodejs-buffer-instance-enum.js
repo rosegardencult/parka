@@ -43,40 +43,40 @@ string length
 ===*/
 
 function enumeratingAndKeysTest() {
-  var b = new Buffer(10);
-  var k;
+    var b = new Buffer(10);
+    var k;
 
-  b.fill(0x12);
+    b.fill(0x12);
 
-  // Node.js v6.9.1 enumerates index keys, 'buffer', 'parent', and all
-  // Buffer.prototype methods (they're enumerable).
-  //
-  // In Duktape the Buffer.prototype methods are not enumerable as that's
-  // more in line with other built-ins.
+    // Node.js v6.9.1 enumerates index keys, 'buffer', 'parent', and all
+    // Buffer.prototype methods (they're enumerable).
+    //
+    // In Duktape the Buffer.prototype methods are not enumerable as that's
+    // more in line with other built-ins.
 
-  print("for-in");
-  for (k in b) {
-    print(typeof k, k);
-  }
+    print('for-in');
+    for (k in b) {
+        print(typeof k, k);
+    }
 
-  print("Object.keys");
-  Object.keys(b).forEach(function(k) {
-    print(typeof k, k);
-  });
+    print('Object.keys');
+    Object.keys(b).forEach(function (k) {
+        print(typeof k, k);
+    });
 
-  // In ES2015 (and Node.js) .byteOffset, .buffer etc are inherited accessors and
-  // not shown here.  Also .length should be an inherited getter, but is
-  // currently a virtual own property and shows up here.
+    // In ES2015 (and Node.js) .byteOffset, .buffer etc are inherited accessors and
+    // not shown here.  Also .length should be an inherited getter, but is
+    // currently a virtual own property and shows up here.
 
-  print("Object.getOwnPropertyNames");
-  Object.getOwnPropertyNames(b).forEach(function(k) {
-    print(typeof k, k);
-  });
+    print('Object.getOwnPropertyNames');
+    Object.getOwnPropertyNames(b).forEach(function (k) {
+        print(typeof k, k);
+    });
 }
 
 try {
-  print("enumerating and keys test");
-  enumeratingAndKeysTest();
+    print('enumerating and keys test');
+    enumeratingAndKeysTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

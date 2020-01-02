@@ -65,75 +65,52 @@ Q reject 26 321
 ===*/
 
 var resolveP, rejectP;
-var P = new Promise(function(resolve, reject) {
-  resolveP = resolve;
-  rejectP = reject;
+var P = new Promise(function (resolve, reject) {
+    resolveP = resolve;
+    rejectP = reject;
 });
 
 var resolveQ, rejectQ;
-var Q = new Promise(function(resolve, reject) {
-  resolveQ = resolve;
-  rejectQ = reject;
+var Q = new Promise(function (resolve, reject) {
+    resolveQ = resolve;
+    rejectQ = reject;
 });
 
 var values = [
-  void 0,
-  null,
-  true,
-  false,
-  -1 / 0,
-  -123,
-  -0,
-  0,
-  123,
-  1 / 0,
-  0 / 0,
-  { foo: "bar" },
-  [1, 2, 3]
+    void 0, null, true, false, -1/0, -123, -0, 0, 123, 1/0, 0/0,
+    { foo: 'bar' }, [ 1, 2, 3 ]
 ];
 
 var counter = 0;
-values.forEach(function(v) {
-  var idx = ++counter;
-  var prom = P.then(v).then(
-    function(v) {
-      print("P fulfill", idx, v);
-    },
-    function(e) {
-      print("P reject", idx, e);
-    }
-  );
-  var prom = Q.then(v).then(
-    function(v) {
-      print("Q fulfill", idx, v);
-    },
-    function(e) {
-      print("Q reject", idx, e);
-    }
-  );
+values.forEach(function (v) {
+    var idx = ++counter;
+    var prom = P.then(v).then(function (v) {
+        print('P fulfill', idx, v);
+    }, function (e) {
+        print('P reject', idx, e);
+    });
+    var prom = Q.then(v).then(function (v) {
+        print('Q fulfill', idx, v);
+    }, function (e) {
+        print('Q reject', idx, e);
+    });
 });
 
-values.forEach(function(v) {
-  var idx = ++counter;
-  var prom = P.then(void 0, v).then(
-    function(v) {
-      print("P fulfill", idx, v);
-    },
-    function(e) {
-      print("P reject", idx, e);
-    }
-  );
-  var prom = Q.then(void 0, v).then(
-    function(v) {
-      print("Q fulfill", idx, v);
-    },
-    function(e) {
-      print("Q reject", idx, e);
-    }
-  );
+values.forEach(function (v) {
+    var idx = ++counter;
+    var prom = P.then(void 0, v).then(function (v) {
+        print('P fulfill', idx, v);
+    }, function (e) {
+        print('P reject', idx, e);
+    });
+    var prom = Q.then(void 0, v).then(function (v) {
+        print('Q fulfill', idx, v);
+    }, function (e) {
+        print('Q reject', idx, e);
+    });
 });
 
 resolveP(123);
 rejectQ(321);
 
-print("done");
+print('done');

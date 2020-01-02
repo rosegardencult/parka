@@ -42,67 +42,67 @@ var thisPointer;
 var sanityCount = 0;
 
 function finalizer(o) {
-  if (o === Foo.prototype) {
-    print("finalizer called for prototype");
-    return;
-  }
+    if (o === Foo.prototype) {
+        print('finalizer called for prototype');
+        return;
+    }
 
-  print("finalizer called for object");
-  if (++sanityCount > 1000) {
-    // Break the finalizer loop for testing.  Without this, the loop
-    // would go on forever.
-    print("sanity limit reached");
-    return;
-  }
+    print('finalizer called for object');
+    if (++sanityCount > 1000) {
+        // Break the finalizer loop for testing.  Without this, the loop
+        // would go on forever.
+        print('sanity limit reached');
+        return;
+    }
 
-  // Create a temporary object referencing the object being finalized.
-  // When temp is assigned null, the temporary object gets refzero queued
-  // to refzero_list, but won't be actually processed because we're already
-  // processing the finalizer for the current object inside refzero_list
-  // handling.
-  var temp = { name: "temp", ref: o };
-  //temp.foo = { bar: temp };  // ref loop
-  temp = null;
+    // Create a temporary object referencing the object being finalized.
+    // When temp is assigned null, the temporary object gets refzero queued
+    // to refzero_list, but won't be actually processed because we're already
+    // processing the finalizer for the current object inside refzero_list
+    // handling.
+    var temp = { name: 'temp', ref: o };
+    //temp.foo = { bar: temp };  // ref loop
+    temp = null;
 
-  // If 'temp' was in a reference loop, it would only be collectable via
-  // mark-and-sweep, and the *second* finalization round would then be
-  // mark-and-sweep driven, avoiding the infinite loop.
+    // If 'temp' was in a reference loop, it would only be collectable via
+    // mark-and-sweep, and the *second* finalization round would then be
+    // mark-and-sweep driven, avoiding the infinite loop.
 
-  // This would cause the same issue.
-  // void Object.getOwnPropertyNames(o);
+    // This would cause the same issue.
+    // void Object.getOwnPropertyNames(o);
 }
 
 function Foo() {
-  thisPointer = String(Duktape.Pointer(this));
+    thisPointer = String(Duktape.Pointer(this));
 
-  // If the object is placed into a reference loop, the finalization will
-  // be handled via mark-and-sweep which works fine.
+    // If the object is placed into a reference loop, the finalization will
+    // be handled via mark-and-sweep which works fine.
 
-  /*
+    /*
     this.foo = {};
     this.foo.bar = this;
     */
 
-  this.name = "Foo instance";
+    this.name = 'Foo instance';
 
-  throw new Error("thrown by constructor");
+    throw new Error('thrown by constructor');
 }
 
-print("no finalizer");
+print('no finalizer');
 try {
-  new Foo();
+    new Foo();
 } catch (e) {
-  print("caught", e);
+    print('caught', e);
 }
 
-print("add finalizer");
+print('add finalizer');
 Duktape.fin(Foo.prototype, finalizer);
 Duktape.gc();
 
 try {
-  new Foo();
+    new Foo();
 } catch (e) {
-  print("caught", e);
+    print('caught', e);
 }
 
-print("done");
+print('done');

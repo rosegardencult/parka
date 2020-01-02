@@ -37,35 +37,19 @@
 ===*/
 
 function simulateToNumber(v) {
-  var year1900 = Date.UTC(0, 0, 0, 0, 0, 0, 0).valueOf();
-  return Date.UTC(0, 0, 0, 0, 0, 0, v).valueOf() - year1900;
+    var year1900 = Date.UTC(0, 0, 0, 0, 0, 0, 0).valueOf();
+    return Date.UTC(0, 0, 0, 0, 0, 0, v).valueOf() - year1900;
 }
 
 function test() {
-  [
-    -1e12,
-    -1e10,
-    -1e9,
-    -100.9,
-    -100.5,
-    -100.1,
-    -1,
-    -0,
-    +0,
-    1,
-    100.1,
-    100.5,
-    100.9,
-    1e9,
-    1e10,
-    1e12
-  ].forEach(function(v, i) {
-    print(i, simulateToNumber(v));
-  });
+    [ -1e12, -1e10, -1e9, -100.9, -100.5, -100.1, -1, -0, +0, 1, 100.1, 100.5, 100.9,
+      1e9, 1e10, 1e12 ].forEach(function (v, i) {
+        print(i, simulateToNumber(v));
+    });
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

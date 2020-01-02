@@ -7,42 +7,42 @@ bar
 ===*/
 
 function basicTest() {
-  function printObj(o) {
-    print("extensible: " + Object.isExtensible(o));
-  }
+    function printObj(o) {
+        print('extensible: ' + Object.isExtensible(o));
+    }
 
-  var proto = {};
-  var obj = Object.create(proto);
+    var proto = {};
+    var obj = Object.create(proto);
 
-  printObj(obj);
-  Object.preventExtensions(obj);
-  printObj(obj);
-  Object.preventExtensions(obj);
-  printObj(obj);
+    printObj(obj);
+    Object.preventExtensions(obj);
+    printObj(obj);
+    Object.preventExtensions(obj);
+    printObj(obj);
 
-  try {
-    obj.foo = "bar";
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        obj.foo = 'bar';
+    } catch (e) {
+        print(e.name);
+    }
 
-  print(obj.foo);
+    print(obj.foo);
 
-  // ancestor can still be extended
+    // ancestor can still be extended
 
-  try {
-    proto.foo = "bar";
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        proto.foo = 'bar';
+    } catch (e) {
+        print(e.name);
+    }
 
-  print(obj.foo);
+    print(obj.foo);
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -81,35 +81,26 @@ preventExtensions 7
 ===*/
 
 function coercionTest() {
-  // Note: ES5 behavior was to throw a TypeError for non-object values.  ES2015
-  // changes this to treat them as already non-extensible objects instead.
-  // This goes for undefined and null too, even though they are not normally
-  // object coercible!
+    // Note: ES5 behavior was to throw a TypeError for non-object values.  ES2015
+    // changes this to treat them as already non-extensible objects instead.
+    // This goes for undefined and null too, even though they are not normally
+    // object coercible!
 
-  var values = [
-    undefined,
-    null,
-    true,
-    false,
-    123,
-    "foo",
-    [1, 2, 3],
-    { foo: 1, bar: 1 }
-  ];
+    var values = [ undefined, null, true, false, 123, 'foo', [1,2,3], { foo: 1, bar: 1 } ];
 
-  for (i = 0; i < values.length; i++) {
-    print("isExtensible", i);
-    print(Object.isExtensible(values[i]));
-  }
+    for (i = 0; i < values.length; i++) {
+        print('isExtensible', i);
+        print(Object.isExtensible(values[i]));
+    }
 
-  for (i = 0; i < values.length; i++) {
-    print("preventExtensions", i);
-    print(Object.preventExtensions(values[i]));
-  }
+    for (i = 0; i < values.length; i++) {
+        print('preventExtensions', i);
+        print(Object.preventExtensions(values[i]));
+    }
 }
 
 try {
-  coercionTest();
+    coercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

@@ -25,28 +25,28 @@ func
 ===*/
 
 function test() {
-  function func() {
-    "use strict"; // to avoid 'this' coercion
-    print("func called");
-    print("typeof this:", typeof this);
-    print(Duktape.act(-2).function === func);
-    print(Duktape.act(-2).function.fileName === "dummy.js");
-    print(Duktape.act(-2).function.name);
-  }
+    function func() {
+        'use strict';  // to avoid 'this' coercion
+        print('func called');
+        print('typeof this:', typeof this);
+        print(Duktape.act(-2).function === func);
+        print(Duktape.act(-2).function.fileName === 'dummy.js');
+        print(Duktape.act(-2).function.name);
+    }
 
-  func();
+    func();
 
-  var bound = func.bind(123);
-  Object.defineProperty(bound, "fileName", { value: "dummy.js" });
-  Object.defineProperty(bound, "name", { value: "bound" });
-  print("bound.fileName:", bound.fileName);
-  print("bound.name:", bound.name);
+    var bound = func.bind(123);
+    Object.defineProperty(bound, 'fileName', { value: 'dummy.js' });
+    Object.defineProperty(bound, 'name', { value: 'bound' });
+    print('bound.fileName:', bound.fileName);
+    print('bound.name:', bound.name);
 
-  bound();
+    bound();
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

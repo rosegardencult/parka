@@ -63,74 +63,76 @@ should get here
 24 SyntaxError
 ===*/
 
-function func() {}
+function func() {
+}
 
-function MyCons() {}
+function MyCons() {
+}
 
 function lhsTest() {
-  [
-    /* Variable declaration variant. */
-    'for (var i in ["foo","bar"]) {}; print("i: " + i);',
+    [
+        /* Variable declaration variant. */
+        'for (var i in ["foo","bar"]) {}; print("i: " + i);',
 
-    /* These are valid and useful LeftHandSideExpressions. */
-    'var i; for (i in ["foo","bar"]) {}; print("i: " + i);',
-    'var obj={}; for (obj.foo in ["foo","bar"]) {}; print("obj.foo: " + obj.foo);',
-    'var obj={}; for (obj["bar"] in ["foo","bar"]) {}; print("obj.bar: " + obj.bar);',
+        /* These are valid and useful LeftHandSideExpressions. */
+        'var i; for (i in ["foo","bar"]) {}; print("i: " + i);',
+        'var obj={}; for (obj.foo in ["foo","bar"]) {}; print("obj.foo: " + obj.foo);',
+        'var obj={}; for (obj["bar"] in ["foo","bar"]) {}; print("obj.bar: " + obj.bar);',
 
-    /* The LHS target may be in parenthesis. */
-    'var i; for ((i) in ["foo","bar"]) {}; print("i: " + i);',
-    'var obj={}; for ((obj.foo) in ["foo","bar"]) {}; print("obj.foo: " + obj.foo);',
-    'var obj={}; for ((obj["bar"]) in ["foo","bar"]) {}; print("obj.bar: " + obj.bar);',
+        /* The LHS target may be in parenthesis. */
+        'var i; for ((i) in ["foo","bar"]) {}; print("i: " + i);',
+        'var obj={}; for ((obj.foo) in ["foo","bar"]) {}; print("obj.foo: " + obj.foo);',
+        'var obj={}; for ((obj["bar"]) in ["foo","bar"]) {}; print("obj.bar: " + obj.bar);',
 
-    /* These are valid but not so useful LeftHandSideExpressions,
-     * should cause ReferenceErrors at runtime.
-     */
-    'for (this in ["foo","bar"]) {}; print("this: " + obj.foo);',
-    'for ([1,2,3] in ["foo","bar"]) {};',
-    'for ({ foo: 1 } in ["foo","bar"]) {};',
-    'for (func() in ["foo","bar"]) {};',
-    'for (new MyCons() in ["foo","bar"]) {};',
+        /* These are valid but not so useful LeftHandSideExpressions,
+         * should cause ReferenceErrors at runtime.
+         */
+        'for (this in ["foo","bar"]) {}; print("this: " + obj.foo);',
+        'for ([1,2,3] in ["foo","bar"]) {};',
+        'for ({ foo: 1 } in ["foo","bar"]) {};',
+        'for (func() in ["foo","bar"]) {};',
+        'for (new MyCons() in ["foo","bar"]) {};',
 
-    /* Even if a ReferenceError is thrown, the offending LHS must still
-     * be evaluated for its side effects.  (V8 won't print 'lhs' here.)
-     */
-    'for (print("lhs") in print("rhs"), [0,1]) {};',
+        /* Even if a ReferenceError is thrown, the offending LHS must still
+         * be evaluated for its side effects.  (V8 won't print 'lhs' here.)
+         */
+        'for (print("lhs") in print("rhs"), [0,1]) {};',
 
-    /* If the RHS evaluates to an empty list, the offending LHS is never
-     * evaluated and a ReferenceError must not be thrown.
-     */
-    'for (print("lhs") in print("rhs"), []) {}; print("should get here");',
+        /* If the RHS evaluates to an empty list, the offending LHS is never
+         * evaluated and a ReferenceError must not be thrown.
+         */
+        'for (print("lhs") in print("rhs"), []) {}; print("should get here");',
 
-    /* These are invalid LHS values so a SyntaxError is required.
-     * This list is not exhaustive, just a sample here and there.
-     * (At least up to Duktape 1.1 these incorrecly cause a ReferenceError.)
-     */
-    "var x; for (x++ in [0,1]) {}",
-    "var foo; for (delete foo in [0,1]) {}",
-    "var x; for (void x in [0,1]) {}",
-    "var x; for (typeof x in [0,1]) {}",
-    "var x; for (++x in [0,1]) {}",
-    "var x; for (+x in [0,1]) {}",
-    "var a, b; for (a + b in [0,1]) {}",
-    "var a, b; for (a * b in [0,1]) {}",
-    "var a; for (a >> 2 in [0,1]) {}",
-    "var a, b; for (a && b in [0,1]) {}",
-    "var a; for (a = 2 in [0,1]) {}"
-  ].forEach(function(val, idx) {
-    try {
-      // The eval() call establishes variables in the current
-      // function so avoid clashes.
-      eval(val);
-      print(idx, "no error");
-    } catch (e) {
-      print(idx, e.name);
-      //            print(e.stack);
-    }
-  });
+        /* These are invalid LHS values so a SyntaxError is required.
+         * This list is not exhaustive, just a sample here and there.
+         * (At least up to Duktape 1.1 these incorrecly cause a ReferenceError.)
+         */
+        'var x; for (x++ in [0,1]) {}',
+        'var foo; for (delete foo in [0,1]) {}',
+        'var x; for (void x in [0,1]) {}',
+        'var x; for (typeof x in [0,1]) {}',
+        'var x; for (++x in [0,1]) {}',
+        'var x; for (+x in [0,1]) {}',
+        'var a, b; for (a + b in [0,1]) {}',
+        'var a, b; for (a * b in [0,1]) {}',
+        'var a; for (a >> 2 in [0,1]) {}',
+        'var a, b; for (a && b in [0,1]) {}',
+        'var a; for (a = 2 in [0,1]) {}',
+    ].forEach(function (val, idx) {
+        try {
+            // The eval() call establishes variables in the current
+            // function so avoid clashes.
+            eval(val);
+            print(idx, 'no error');
+        } catch (e) {
+            print(idx, e.name);
+//            print(e.stack);
+        }
+    });
 }
 
 try {
-  lhsTest();
+    lhsTest();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

@@ -11,23 +11,23 @@ done
 ===*/
 
 function test() {
-  var obj;
-  var i;
+    var obj;
+    var i;
 
-  print("build object");
-  obj = {};
-  for (i = 0; i < 1e7; i++) {
-    obj = { ref: obj };
-  }
+    print('build object');
+    obj = {};
+    for (i = 0; i < 1e7; i++) {
+        obj = { ref: obj };
+    }
 
-  // On return 'obj' becomes unreachable and is freed.
-  print("start cascade");
+    // On return 'obj' becomes unreachable and is freed.
+    print('start cascade');
 }
 
 try {
-  test();
-  print("end cascade");
+    test();
+    print('end cascade');
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
-print("done");
+print('done');

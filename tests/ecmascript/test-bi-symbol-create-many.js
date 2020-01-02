@@ -7,16 +7,16 @@ done
 ===*/
 
 function test() {
-  var i, s;
+    var i, s;
 
-  for (i = 0; i < 1e7; i++) {
-    s = Symbol("foo");
-  }
-  print("done");
+    for (i = 0; i < 1e7; i++) {
+        s = Symbol('foo');
+    }
+    print('done');
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

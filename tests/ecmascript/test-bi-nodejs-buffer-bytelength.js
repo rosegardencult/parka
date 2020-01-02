@@ -29,76 +29,59 @@ byteLength test
 ===*/
 
 function byteLengthTest() {
-  var b1 = new Buffer(0);
-  var b2 = new Buffer(16);
-  var b3 = new Buffer(123456);
+    var b1 = new Buffer(0);
+    var b2 = new Buffer(16);
+    var b3 = new Buffer(123456);
 
-  b1.fill(0x11);
-  b2.fill(0xff);
-  b3.fill(0x33);
+    b1.fill(0x11);
+    b2.fill(0xff);
+    b3.fill(0x33);
 
-  // The intended use of byteLength() is to indicate for an input string/encoding
-  // pair how long a Buffer is needed.  For Duktape this is just the string's
-  // internal byte length because we just use the string internal representation
-  // and ignore the encoding.
-  //
-  // Duktape and Node.js differ on the 'ascii' encoding of 'foo\u1234bar'.
-  // Node.js would encode it into 7 bytes, Duktape into 9 (CESU-8 internal
-  // length).
+    // The intended use of byteLength() is to indicate for an input string/encoding
+    // pair how long a Buffer is needed.  For Duktape this is just the string's
+    // internal byte length because we just use the string internal representation
+    // and ignore the encoding.
+    //
+    // Duktape and Node.js differ on the 'ascii' encoding of 'foo\u1234bar'.
+    // Node.js would encode it into 7 bytes, Duktape into 9 (CESU-8 internal
+    // length).
 
-  ["", "foo", "foo\u1234bar"].forEach(function(v) {
-    [undefined, "utf8", "ascii", "dummy"].forEach(function(encoding) {
-      print(v.length, encoding, Buffer.byteLength(v, encoding));
+    [ '', 'foo', 'foo\u1234bar' ].forEach(function (v) {
+        [ undefined, 'utf8', 'ascii', 'dummy' ].forEach(function (encoding) {
+            print(v.length, encoding, Buffer.byteLength(v, encoding));
+        });
     });
-  });
 
-  // Behavior for non-string inputs is not defined but there seems to be a ToString()
-  // coercion for the input.
+    // Behavior for non-string inputs is not defined but there seems to be a ToString()
+    // coercion for the input.
 
-  // Avoid testing for Buffer.prototype: causes an assertion failure with Node.js
-  // v0.12.1.  The cause seems to be string-coercion of Buffer.prototype:
-  //
-  // > String(Buffer.prototype)
-  // node: ../src/node_buffer.cc:262: void node::Buffer::StringSlice(const v8::FunctionCallbackInfo<v8::Value>&) [with node::encoding encoding = (node::encoding)1u]: Assertion `obj_data != __null' failed.
-  // Aborted (core dumped)
+    // Avoid testing for Buffer.prototype: causes an assertion failure with Node.js
+    // v0.12.1.  The cause seems to be string-coercion of Buffer.prototype:
+    //
+    // > String(Buffer.prototype)
+    // node: ../src/node_buffer.cc:262: void node::Buffer::StringSlice(const v8::FunctionCallbackInfo<v8::Value>&) [with node::encoding encoding = (node::encoding)1u]: Assertion `obj_data != __null' failed.
+    // Aborted (core dumped)
 
-  // Buffers b1 and b3 are ASCII compatible.  Their byteLength() will match
-  // the input byte length.  For buffer b2 (16 bytes) Node.js returns 48,
-  // because the string is invalid UTF-8 and coerces to 16 U+FFFD replacement
-  // characters, which are then UTF-8 encoded into 48 bytes.  Duktape 2.x
-  // matches this behavior.
+    // Buffers b1 and b3 are ASCII compatible.  Their byteLength() will match
+    // the input byte length.  For buffer b2 (16 bytes) Node.js returns 48,
+    // because the string is invalid UTF-8 and coerces to 16 U+FFFD replacement
+    // characters, which are then UTF-8 encoded into 48 bytes.  Duktape 2.x
+    // matches this behavior.
 
-  [
-    b1,
-    b2,
-    b3,
-    {
-      valueOf: function() {
-        return "dummydummy";
-      },
-      toString: function() {
-        return "dummydummy";
-      }
-    }, // 10 bytes
-    {
-      valueOf: function() {
-        return "dummydummy\u1234";
-      },
-      toString: function() {
-        return "dummydummy\u1234";
-      }
-    }, // 13 bytes in UTF-8
-    {}, // "[object Object]" -> 15 bytes
-    123, // -> 3 bytes
-    null // -> 4 bytes
-  ].forEach(function(v) {
-    print(Buffer.byteLength(v));
-  });
+    [ b1, b2, b3,
+      { valueOf: function () { return 'dummydummy'; }, toString: function () { return 'dummydummy'; } },  // 10 bytes
+      { valueOf: function () { return 'dummydummy\u1234'; }, toString: function () { return 'dummydummy\u1234' ; } },  // 13 bytes in UTF-8
+      {},  // "[object Object]" -> 15 bytes
+      123, // -> 3 bytes
+      null // -> 4 bytes
+    ].forEach(function (v) {
+        print(Buffer.byteLength(v));
+    });
 }
 
 try {
-  print("byteLength test");
-  byteLengthTest();
+    print('byteLength test');
+    byteLengthTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

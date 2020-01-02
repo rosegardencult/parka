@@ -3388,84 +3388,57 @@ read TypedArray test, arrayLength 17
 ===*/
 
 function readTypedArrayTest(arrayLength) {
-  // DEADBEEF CAFEBABE 11223344 55667788 99
-  var b = new ArrayBuffer(arrayLength);
-  var b_u8 = new Uint8Array(b);
-  [
-    0xde,
-    0xad,
-    0xbe,
-    0xef,
-    0xca,
-    0xfe,
-    0xba,
-    0xbe,
-    0x11,
-    0x22,
-    0x33,
-    0x44,
-    0x55,
-    0x66,
-    0x77,
-    0x88,
-    0x99
-  ].forEach(function(v, i) {
-    if (i < arrayLength) {
-      b_u8[i] = v;
-    }
-  });
-  printBuffer(b);
+    // DEADBEEF CAFEBABE 11223344 55667788 99
+    var b = new ArrayBuffer(arrayLength);
+    var b_u8 = new Uint8Array(b);
+    [
+        0xde, 0xad, 0xbe, 0xef, 0xca, 0xfe, 0xba, 0xbe,
+        0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88,
+        0x99
+    ].forEach(function (v, i) {
+        if (i < arrayLength) {
+            b_u8[i] = v;
+        }
+    });
+    printBuffer(b);
 
-  [-100, -5, -1, 0, 1, 2, 3, 8, 9, 10, 12, 13, 14, 15, 16, 17, 100].forEach(
-    function(offset, idx1) {
-      [undefined, 0, 1, 2, 3, 4, 5, 6, 7, 8, 100].forEach(function(
-        length,
-        idx2
-      ) {
-        [
-          "Int8Array",
-          "Uint8Array",
-          "Uint8ClampedArray",
-          "Int16Array",
-          "Uint16Array",
-          "Int32Array",
-          "Uint32Array",
-          "Float32Array",
-          "Float64Array"
-        ].forEach(function(consname, idx3) {
-          var evalstr;
+    [ -100, -5, -1, 0, 1, 2, 3, 8, 9, 10, 12, 13, 14, 15, 16, 17, 100 ].forEach(function (offset, idx1) {
+        [ undefined, 0, 1, 2, 3, 4, 5, 6, 7, 8, 100 ].forEach(function (length, idx2) {
+            [ 'Int8Array', 'Uint8Array', 'Uint8ClampedArray', 'Int16Array',
+              'Uint16Array', 'Int32Array', 'Uint32Array', 'Float32Array',
+              'Float64Array' ].forEach(function (consname, idx3) {
+                var evalstr;
 
-          evalstr = "new " + consname + "(b, " + offset;
-          if (length !== undefined) {
-            evalstr += ", " + length;
-          }
-          evalstr += ")";
+                evalstr = 'new ' + consname + '(b, ' + offset;
+                if (length !== undefined) {
+                    evalstr += ', ' + length;
+                }
+                evalstr += ')';
 
-          try {
-            // workaround because there's no programmatic 'construct' call
-            var v = eval(evalstr);
-            print(idx1, idx2, idx3, v[0], v[1]);
-          } catch (e) {
-            print(idx1, idx2, idx3, e.name);
-          }
+                try {
+                    // workaround because there's no programmatic 'construct' call
+                    var v = eval(evalstr);
+                    print(idx1, idx2, idx3, v[0], v[1]);
+                } catch (e) {
+                    print(idx1, idx2, idx3, e.name);
+                }
+            });
         });
-      });
-    }
-  );
+    });
 }
 
 try {
-  /* Attempt to create a view using default length fails if starting offset
-   * is not aligned and the underlying ArrayBuffer doesn't end up evenly at
-   * an element boundary.  Run the testcase with two ArrayBuffer lengths to
-   * cover these cases properly.
-   */
+    /* Attempt to create a view using default length fails if starting offset
+     * is not aligned and the underlying ArrayBuffer doesn't end up evenly at
+     * an element boundary.  Run the testcase with two ArrayBuffer lengths to
+     * cover these cases properly.
+     */
 
-  print("read TypedArray test, arrayLength 16");
-  readTypedArrayTest(16);
+    print('read TypedArray test, arrayLength 16');
+    readTypedArrayTest(16);
 
-  print("read TypedArray test, arrayLength 17");
-  readTypedArrayTest(17);
+    print('read TypedArray test, arrayLength 17');
+    readTypedArrayTest(17);
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

@@ -17,63 +17,63 @@ RangeError
 ===*/
 
 function test() {
-  var a;
+    var a;
 
-  // Write directly
+    // Write directly
 
-  try {
-    a = [];
-    a.length = -1;
-  } catch (e) {
-    print(e.name);
-  }
-  print(a.length);
+    try {
+        a = [];
+        a.length = -1;
+    } catch (e) {
+        print(e.name);
+    }
+    print(a.length);
 
-  try {
-    a = [];
-    a.length = 0xffffffff; // valid
-  } catch (e) {
-    print(e.name);
-  }
-  print(a.length);
+    try {
+        a = [];
+        a.length = 0xffffffff;  // valid
+    } catch (e) {
+        print(e.name);
+    }
+    print(a.length);
 
-  try {
-    a = [];
-    a.length = 0xffffffff + 1;
-  } catch (e) {
-    print(e.name);
-  }
-  print(a.length);
+    try {
+        a = [];
+        a.length = 0xffffffff + 1;
+    } catch (e) {
+        print(e.name);
+    }
+    print(a.length);
 
-  // Write using defineProperty()
+    // Write using defineProperty()
 
-  try {
-    a = [];
-    Object.defineProperty(a, "length", { value: -1 });
-  } catch (e) {
-    print(e.name);
-  }
-  print(a.length);
+    try {
+        a = [];
+        Object.defineProperty(a, 'length', { value: -1 });
+    } catch (e) {
+        print(e.name);
+    }
+    print(a.length);
 
-  try {
-    a = [];
-    Object.defineProperty(a, "length", { value: 0xffffffff }); // valid
-  } catch (e) {
-    print(e.name);
-  }
-  print(a.length);
+    try {
+        a = [];
+        Object.defineProperty(a, 'length', { value: 0xffffffff });  // valid
+    } catch (e) {
+        print(e.name);
+    }
+    print(a.length);
 
-  try {
-    a = [];
-    Object.defineProperty(a, "length", { value: 0xffffffff + 1 });
-  } catch (e) {
-    print(e.name);
-  }
-  print(a.length);
+    try {
+        a = [];
+        Object.defineProperty(a, 'length', { value: 0xffffffff + 1 });
+    } catch (e) {
+        print(e.name);
+    }
+    print(a.length);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

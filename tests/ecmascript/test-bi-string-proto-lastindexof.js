@@ -18,43 +18,43 @@ number -1
 number -1
 ===*/
 
-print("basic");
+print('basic');
 
 function basicTest() {
-  var str = new String("foobarfoobar");
+    var str = new String('foobarfoobar');
 
-  function p(x) {
-    print(typeof x, x);
-  }
+    function p(x) {
+        print(typeof x, x);
+    }
 
-  p(str.lastIndexOf("foo"));
-  p(str.lastIndexOf("bar"));
-  p(str.lastIndexOf("foo", 6)); // last foo
-  p(str.lastIndexOf("bar", 9)); // last bar
-  p(str.lastIndexOf("foo", 5)); // first foo
-  p(str.lastIndexOf("bar", 8)); // first bar
-  p(str.lastIndexOf("bar", 2)); // not found
+    p(str.lastIndexOf('foo'));
+    p(str.lastIndexOf('bar'));
+    p(str.lastIndexOf('foo', 6));   // last foo
+    p(str.lastIndexOf('bar', 9));  // last bar
+    p(str.lastIndexOf('foo', 5));   // first foo
+    p(str.lastIndexOf('bar', 8));   // first bar
+    p(str.lastIndexOf('bar', 2));  // not found
 
-  p(str.lastIndexOf("quux"));
+    p(str.lastIndexOf('quux'));
 
-  // empty string; empty search matches with any initial position,
-  // non-empty search never matches
+    // empty string; empty search matches with any initial position,
+    // non-empty search never matches
 
-  str = new String("");
-  p(str.indexOf(""));
-  p(str.indexOf("", -1));
-  p(str.indexOf("", 0));
-  p(str.indexOf("", 1));
-  p(str.indexOf("foo"));
-  p(str.indexOf("foo", -1));
-  p(str.indexOf("foo", 0));
-  p(str.indexOf("foo", 1));
+    str = new String('');
+    p(str.indexOf(''));
+    p(str.indexOf('', -1));
+    p(str.indexOf('', 0));
+    p(str.indexOf('', 1));
+    p(str.indexOf('foo'));
+    p(str.indexOf('foo', -1));
+    p(str.indexOf('foo', 0));
+    p(str.indexOf('foo', 1));
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -88,30 +88,30 @@ number 6
  * or above.
  */
 
-print("empty");
+print('empty');
 
 function emptyTest() {
-  var str = new String("foobar");
-  var i;
+    var str = new String('foobar');
+    var i;
 
-  function p(x) {
-    print(typeof x, x);
-  }
+    function p(x) {
+        print(typeof x, x);
+    }
 
-  p(str.lastIndexOf(""));
-  for (i = -3; i < 10; i++) {
-    p(str.lastIndexOf("", i));
-  }
+    p(str.lastIndexOf(''));
+    for (i = -3; i < 10; i++) {
+        p(str.lastIndexOf('', i));
+    }
 
-  p(str.lastIndexOf("", Number.NEGATIVE_INFINITY));
-  p(str.lastIndexOf("", Number.POSITIVE_INFINITY));
-  p(str.lastIndexOf("", Number.NaN)); // coerces to 0
+    p(str.lastIndexOf('', Number.NEGATIVE_INFINITY));
+    p(str.lastIndexOf('', Number.POSITIVE_INFINITY));
+    p(str.lastIndexOf('', Number.NaN));  // coerces to 0
 }
 
 try {
-  emptyTest();
+    emptyTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -151,56 +151,56 @@ number -1
  * clamped to the range [0, len(str)].  ToInteger(NaN) is 0.
  */
 
-print("position");
+print('position');
 
 function positionTest() {
-  // test string, 'x' always found if index < 6
-  var str = "xxxxxx";
+    // test string, 'x' always found if index < 6
+    var str = 'xxxxxx';
 
-  function p(x) {
-    print(typeof x, x);
-  }
+    function p(x) {
+        print(typeof x, x);
+    }
 
-  p(str.lastIndexOf("x"));
-  p(str.lastIndexOf("x", Number.NEGATIVE_INFINITY));
-  p(str.lastIndexOf("x", -123));
-  p(str.lastIndexOf("x", -3));
-  p(str.lastIndexOf("x", -2));
-  p(str.lastIndexOf("x", -1));
-  p(str.lastIndexOf("x", -0));
-  p(str.lastIndexOf("x", 0));
-  p(str.lastIndexOf("x", 1));
-  p(str.lastIndexOf("x", 2));
-  p(str.lastIndexOf("x", 3));
-  p(str.lastIndexOf("x", 4));
-  p(str.lastIndexOf("x", 5));
-  p(str.lastIndexOf("x", 6));
-  p(str.lastIndexOf("x", 7));
-  p(str.lastIndexOf("x", 8));
-  p(str.lastIndexOf("x", 123));
-  p(str.lastIndexOf("x", Number.POSITIVE_INFINITY));
-  p(str.lastIndexOf("x", Number.NaN));
+    p(str.lastIndexOf('x'));
+    p(str.lastIndexOf('x', Number.NEGATIVE_INFINITY));
+    p(str.lastIndexOf('x', -123));
+    p(str.lastIndexOf('x', -3));
+    p(str.lastIndexOf('x', -2));
+    p(str.lastIndexOf('x', -1));
+    p(str.lastIndexOf('x', -0));
+    p(str.lastIndexOf('x', 0));
+    p(str.lastIndexOf('x', 1));
+    p(str.lastIndexOf('x', 2));
+    p(str.lastIndexOf('x', 3));
+    p(str.lastIndexOf('x', 4));
+    p(str.lastIndexOf('x', 5));
+    p(str.lastIndexOf('x', 6));
+    p(str.lastIndexOf('x', 7));
+    p(str.lastIndexOf('x', 8));
+    p(str.lastIndexOf('x', 123));
+    p(str.lastIndexOf('x', Number.POSITIVE_INFINITY));
+    p(str.lastIndexOf('x', Number.NaN));
 
-  // fractions
-  p(str.lastIndexOf("x", 3.0));
-  p(str.lastIndexOf("x", 3.1));
-  p(str.lastIndexOf("x", 3.5));
-  p(str.lastIndexOf("x", 3.9));
-  p(str.lastIndexOf("x", -3.0));
-  p(str.lastIndexOf("x", -3.1));
-  p(str.lastIndexOf("x", -3.5));
-  p(str.lastIndexOf("x", -3.9));
+    // fractions
+    p(str.lastIndexOf('x', 3.0));
+    p(str.lastIndexOf('x', 3.1));
+    p(str.lastIndexOf('x', 3.5));
+    p(str.lastIndexOf('x', 3.9));
+    p(str.lastIndexOf('x', -3.0));
+    p(str.lastIndexOf('x', -3.1));
+    p(str.lastIndexOf('x', -3.5));
+    p(str.lastIndexOf('x', -3.9));
 
-  // if string is empty, even zero/NaN will yield -1 (not found)
-  str = new String("");
-  p(str.lastIndexOf("x", 0));
-  p(str.lastIndexOf("x", Number.NaN));
+    // if string is empty, even zero/NaN will yield -1 (not found)
+    str = new String('');
+    p(str.lastIndexOf('x', 0));
+    p(str.lastIndexOf('x', Number.NaN));
 }
 
 try {
-  positionTest();
+    positionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -223,61 +223,43 @@ number 33
 
 /* Argument coercion.  Argument is coerced with ToString. */
 
-print("argument coercion");
+print('argument coercion');
 
 function argumentTest() {
-  var str = new String(
-    "foobar undefined null true false 123 baz 1,2 [object Object]"
-  );
+    var str = new String('foobar undefined null true false 123 baz 1,2 [object Object]');
 
-  function p(x) {
-    print(typeof x, x);
-  }
+    function p(x) {
+        print(typeof x, x);
+    }
 
-  p(str.lastIndexOf()); // argument not given
-  p(str.lastIndexOf(undefined));
-  p(str.lastIndexOf(null));
-  p(str.lastIndexOf(true));
-  p(str.lastIndexOf(false));
-  p(str.lastIndexOf(123));
-  p(str.lastIndexOf("baz"));
-  p(str.lastIndexOf([1, 2]));
-  p(str.lastIndexOf({ foo: 1, bar: 2 }));
+    p(str.lastIndexOf());  // argument not given
+    p(str.lastIndexOf(undefined));
+    p(str.lastIndexOf(null));
+    p(str.lastIndexOf(true));
+    p(str.lastIndexOf(false));
+    p(str.lastIndexOf(123));
+    p(str.lastIndexOf('baz'));
+    p(str.lastIndexOf([1,2]));
+    p(str.lastIndexOf({ foo: 1, bar: 2 }));
 
-  // coercion side effect
-  p(
-    str.lastIndexOf({
-      toString: function() {
-        print("toString()");
-        return "baz";
-      },
-      valueOf: function() {
-        print("valueOf()");
-        return "123";
-      }
-    })
-  );
+    // coercion side effect
+    p(str.lastIndexOf({
+        toString: function() { print('toString()'); return 'baz'; },
+        valueOf: function() { print('valueOf()'); return '123'; }
+    }));
 
-  // ToString() coercion falls back from toString() to valueOf() if toString()
-  // returns a non-primitive value
-  p(
-    str.lastIndexOf({
-      toString: function() {
-        print("toString()");
-        return [];
-      },
-      valueOf: function() {
-        print("valueOf()");
-        return "123";
-      }
-    })
-  );
+    // ToString() coercion falls back from toString() to valueOf() if toString()
+    // returns a non-primitive value
+    p(str.lastIndexOf({
+        toString: function() { print('toString()'); return []; },
+        valueOf: function() { print('valueOf()'); return '123'; }
+    }));
 }
 
 try {
-  argumentTest();
+    argumentTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -297,58 +279,43 @@ number 5
 
 /* This coercion, the method is generic. */
 
-print("this coercion");
+print('this coercion');
 
 function thisCoercionTest() {
-  function test(x, y) {
-    var t;
-    try {
-      t = String.prototype.lastIndexOf.call(x, y);
-      print(typeof t, t);
-    } catch (e) {
-      print(e.name);
+    function test(x,y) {
+        var t;
+        try {
+            t = String.prototype.lastIndexOf.call(x, y);
+            print(typeof t, t);
+        } catch (e) {
+            print(e.name);
+        }
     }
-  }
 
-  test(undefined, "undefined"); // TypeError
-  test(null, "null"); // TypeError
+    test(undefined, 'undefined');  // TypeError
+    test(null, 'null');  // TypeError
 
-  test(true, "true");
-  test(false, "lse");
-  test(123, "23");
-  test("quux", "uux");
-  test([1, 2], ",2");
-  test({ foo: 1, bar: 2 }, "Object");
+    test(true, 'true');
+    test(false, 'lse');
+    test(123, '23');
+    test('quux', 'uux');
+    test([1,2], ',2');
+    test({ foo: 1, bar: 2 }, 'Object');
 
-  // coercion order if both this and searchString are coerced
-  test(
-    {
-      toString: function() {
-        print("toString() this");
-        return "test string";
-      },
-      valueOf: function() {
-        print("valueOf() this");
-        return "another value";
-      }
-    },
-    {
-      toString: function() {
-        print("toString() arg");
-        return "stri";
-      },
-      valueOf: function() {
-        print("valueOf() arg");
-        return "foo";
-      }
-    }
-  );
+    // coercion order if both this and searchString are coerced
+    test({
+        toString: function() { print('toString() this'); return 'test string'; },
+        valueOf: function() { print('valueOf() this'); return 'another value'; }
+    }, {
+        toString: function() { print('toString() arg'); return 'stri'; },
+        valueOf: function() { print('valueOf() arg'); return 'foo'; }
+    });
 }
 
 try {
-  thisCoercionTest();
+    thisCoercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -365,25 +332,25 @@ number -1
  * with Unicode characters of varying length.
  */
 
-print("non-bmp");
+print('non-bmp');
 
 function nonBmpTest() {
-  var str = new String("foo\u1234bar\udeadquux\ubeefbaz");
+    var str = new String('foo\u1234bar\udeadquux\ubeefbaz');
 
-  function p(x) {
-    print(typeof x, x);
-  }
+    function p(x) {
+        print(typeof x, x);
+    }
 
-  p(str.lastIndexOf("foo"));
-  p(str.lastIndexOf("\u1234"));
-  p(str.lastIndexOf("\udead"));
-  p(str.lastIndexOf("\udead", 7)); // found
-  p(str.lastIndexOf("\udead", 8)); // found
-  p(str.lastIndexOf("\udead", 6)); // not found
+    p(str.lastIndexOf('foo'));
+    p(str.lastIndexOf('\u1234'));
+    p(str.lastIndexOf('\udead'));
+    p(str.lastIndexOf('\udead', 7));  // found
+    p(str.lastIndexOf('\udead', 8));  // found
+    p(str.lastIndexOf('\udead', 6));  // not found
 }
 
 try {
-  nonBmpTest();
+    nonBmpTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

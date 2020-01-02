@@ -8,8 +8,8 @@ SyntaxError
 ===*/
 
 try {
-  var re = new RegExp("\\"); // regexp with a single backslash
-  print("never here");
+    var re = new RegExp("\\");  // regexp with a single backslash
+    print('never here');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

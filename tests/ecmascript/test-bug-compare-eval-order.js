@@ -23,27 +23,27 @@ true
 ===*/
 
 function getObject(name, value) {
-  return {
-    valueOf: function() {
-      print("valueOf", name);
-      return value;
+    return {
+        valueOf: function() {
+            print('valueOf', name);
+            return value;
+        }
     }
-  };
 }
 
 function test() {
-  print("<");
-  print(getObject("obj1", 1) < getObject("obj2", 2));
-  print(">");
-  print(getObject("obj1", 2) > getObject("obj2", 1));
-  print("<=");
-  print(getObject("obj1", 1) <= getObject("obj2", 2));
-  print(">=");
-  print(getObject("obj1", 2) >= getObject("obj2", 1));
+    print('<');
+    print(getObject('obj1', 1) < getObject('obj2', 2));
+    print('>');
+    print(getObject('obj1', 2) > getObject('obj2', 1));
+    print('<=');
+    print(getObject('obj1', 1) <= getObject('obj2', 2));
+    print('>=');
+    print(getObject('obj1', 2) >= getObject('obj2', 1));
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

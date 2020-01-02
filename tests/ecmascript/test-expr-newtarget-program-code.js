@@ -12,6 +12,6 @@
 /*===
 ===*/
 
-print("start");
+print('start');
 print(typeof new.target);
-print("done");
+print('done');

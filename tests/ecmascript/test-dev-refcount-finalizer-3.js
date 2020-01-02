@@ -23,24 +23,24 @@ var o = { foo: "bar" };
 var rescue;
 
 function finalizer(x) {
-  if (rescue) {
-    o = x;
-    print("rescued");
-  } else {
-    print("not rescued");
-  }
+    if (rescue) {
+        o = x;
+        print("rescued");
+    } else {
+        print("not rescued");
+    }
 }
 
 Duktape.fin(o, finalizer);
 
 rescue = true;
-o = undefined; // refzero, finalize, gets rescued
+o = undefined;  // refzero, finalize, gets rescued
 print(typeof o);
 
 rescue = true;
-o = undefined; // refzero, finalize, gets rescued
+o = undefined;  // refzero, finalize, gets rescued
 print(typeof o);
 
 rescue = false;
-o = undefined; // refzero, finalize, not rescue
+o = undefined;  // refzero, finalize, not rescue
 print(typeof o);

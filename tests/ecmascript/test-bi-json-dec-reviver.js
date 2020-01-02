@@ -9,27 +9,27 @@ holder: [object Object]
 
 /* Basic reviver test. */
 
-print("basic reviver");
+print('basic reviver');
 
 function basicReviverTest() {
-  var v;
+    var v;
 
-  function reviver(name, val) {
-    var holder = this;
-    print("reviver called");
-    print("name:", name);
-    print("val:", val);
-    print("holder:", holder);
-    print(JSON.stringify(holder));
-  }
+    function reviver(name, val) {
+        var holder = this;
+        print('reviver called');
+        print('name:', name);
+        print('val:', val);
+        print('holder:', holder);
+        print(JSON.stringify(holder));
+    }
 
-  v = JSON.parse('"foo"', reviver);
+    v = JSON.parse('"foo"', reviver);
 }
 
 try {
-  basicReviverTest();
+    basicReviverTest();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -54,39 +54,33 @@ reviver: json(name)="", json(val)={"k_null":null,"k_true":true,"k_false":false,"
  * call order and arguments.
  */
 
-print("complex reviver test");
+print('complex reviver test');
 
 function complexReviverTest() {
-  var txt;
-  var v;
+    var txt;
+    var v;
 
-  function reviver(name, val) {
-    var holder = this;
-    print(
-      "reviver: json(name)=" +
-        JSON.stringify(name) +
-        ", json(val)=" +
-        JSON.stringify(val) +
-        ", json(holder)=" +
-        JSON.stringify(holder)
-    );
-    return val;
-  }
+    function reviver(name, val) {
+        var holder = this;
+        print('reviver: json(name)=' + JSON.stringify(name) +
+              ', json(val)=' + JSON.stringify(val) +
+              ', json(holder)=' + JSON.stringify(holder));
+        return val;
+    }
 
-  txt =
-    '{"k_null":null, "k_true":true, "k_false":false, ' +
-    '"k_num":123, "k_str":"str", "k_arr":[1,2], ' +
-    '"k_obj":{"foo":1,"bar":2}}';
-  print(txt);
+    txt = '{"k_null":null, "k_true":true, "k_false":false, ' +
+          '"k_num":123, "k_str":"str", "k_arr":[1,2], ' +
+          '"k_obj":{"foo":1,"bar":2}}';
+    print(txt);
 
-  v = JSON.parse(txt, reviver);
-  print(JSON.stringify(v));
+    v = JSON.parse(txt, reviver);
+    print(JSON.stringify(v));
 }
 
 try {
-  complexReviverTest();
+    complexReviverTest();
 } catch (e) {
-  print(e.name, e);
+    print(e.name, e);
 }
 
 /*===
@@ -109,45 +103,39 @@ reviver: json(name)="", json(val)={"k_null":null,"k_false":false,"k_num":123,"k_
 
 /* Reviver deletion test. */
 
-print("reviver deletion test");
+print('reviver deletion test');
 
 function reviverDeletionTest() {
-  var txt;
-  var v;
+    var txt;
+    var v;
 
-  function reviver(name, val) {
-    var holder = this;
+    function reviver(name, val) {
+        var holder = this;
 
-    print(
-      "reviver: json(name)=" +
-        JSON.stringify(name) +
-        ", json(val)=" +
-        JSON.stringify(val) +
-        ", json(holder)=" +
-        JSON.stringify(holder)
-    );
+        print('reviver: json(name)=' + JSON.stringify(name) +
+              ', json(val)=' + JSON.stringify(val) +
+              ', json(holder)=' + JSON.stringify(holder));
 
-    // delete k_arr and k_true
-    if (name === "k_arr" || name === "k_true") {
-      return;
+        // delete k_arr and k_true
+        if (name === 'k_arr' || name === 'k_true') {
+            return;
+        }
+        return val;
     }
-    return val;
-  }
 
-  txt =
-    '{"k_null":null, "k_true":true, "k_false":false, ' +
-    '"k_num":123, "k_str":"str", "k_arr":[1,2], ' +
-    '"k_obj":{"foo":1,"bar":2}}';
-  print(txt);
+    txt = '{"k_null":null, "k_true":true, "k_false":false, ' +
+          '"k_num":123, "k_str":"str", "k_arr":[1,2], ' +
+          '"k_obj":{"foo":1,"bar":2}}';
+    print(txt);
 
-  v = JSON.parse(txt, reviver);
-  print(JSON.stringify(v));
+    v = JSON.parse(txt, reviver);
+    print(JSON.stringify(v));
 }
 
 try {
-  reviverDeletionTest();
+    reviverDeletionTest();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -174,48 +162,42 @@ reviver: json(name)="", json(val)={"k_null":null,"k_true":[3,2,1],"k_false":fals
  * it should not.
  */
 
-print("reviver replacement test");
+print('reviver replacement test');
 
 function reviverReplacementTest() {
-  var txt;
-  var v;
+    var txt;
+    var v;
 
-  function reviver(name, val) {
-    var holder = this;
+    function reviver(name, val) {
+        var holder = this;
 
-    print(
-      "reviver: json(name)=" +
-        JSON.stringify(name) +
-        ", json(val)=" +
-        JSON.stringify(val) +
-        ", json(holder)=" +
-        JSON.stringify(holder)
-    );
+        print('reviver: json(name)=' + JSON.stringify(name) +
+              ', json(val)=' + JSON.stringify(val) +
+              ', json(holder)=' + JSON.stringify(holder));
 
-    // replace k_true with [3,2,1] and k_arr with {foo:'foo',bar:'bar}
-    if (name === "k_arr") {
-      return { foo: "foo", bar: "bar" };
-    } else if (name === "k_true") {
-      return [3, 2, 1];
-    } else {
-      return val;
+        // replace k_true with [3,2,1] and k_arr with {foo:'foo',bar:'bar}
+        if (name === 'k_arr') {
+            return { foo: 'foo', bar: 'bar' };
+        } else if (name === 'k_true') {
+            return [ 3, 2, 1 ];
+        } else {
+            return val;
+        }
     }
-  }
 
-  txt =
-    '{"k_null":null, "k_true":true, "k_false":false, ' +
-    '"k_num":123, "k_str":"str", "k_arr":[1,2], ' +
-    '"k_obj":{"foo":1,"bar":2}}';
-  print(txt);
+    txt = '{"k_null":null, "k_true":true, "k_false":false, ' +
+          '"k_num":123, "k_str":"str", "k_arr":[1,2], ' +
+          '"k_obj":{"foo":1,"bar":2}}';
+    print(txt);
 
-  v = JSON.parse(txt, reviver);
-  print(JSON.stringify(v));
+    v = JSON.parse(txt, reviver);
+    print(JSON.stringify(v));
 }
 
 try {
-  reviverReplacementTest();
+    reviverReplacementTest();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -234,47 +216,42 @@ true
  * returning the same object retains object identity in the result.
  */
 
-print("reviver object identity");
+print('reviver object identity');
 
 function reviverObjectIdentityTest() {
-  var txt;
-  var v;
-  var repl_value = {}; // test this identity
+    var txt;
+    var v;
+    var repl_value = {};  // test this identity
 
-  function reviver(name, val) {
-    var holder = this;
+    function reviver(name, val) {
+        var holder = this;
 
-    print(
-      "reviver: json(name)=" +
-        JSON.stringify(name) +
-        ", json(val)=" +
-        JSON.stringify(val) +
-        ", json(holder)=" +
-        JSON.stringify(holder)
-    );
+        print('reviver: json(name)=' + JSON.stringify(name) +
+              ', json(val)=' + JSON.stringify(val) +
+              ', json(holder)=' + JSON.stringify(holder));
 
-    if (name === "foo" || name === "bar") {
-      return repl_value;
-    } else {
-      return val;
+        if (name === 'foo' || name === 'bar') {
+            return repl_value;
+        } else {
+            return val;
+        }
     }
-  }
 
-  txt = '{"foo":1,"bar":2}';
-  print(txt);
+    txt = '{"foo":1,"bar":2}';
+    print(txt);
 
-  v = JSON.parse(txt, reviver);
-  print(JSON.stringify(v));
+    v = JSON.parse(txt, reviver);
+    print(JSON.stringify(v));
 
-  print(v.foo === repl_value);
-  print(v.bar === repl_value);
-  print(v.foo === v.bar);
+    print(v.foo === repl_value);
+    print(v.bar === repl_value);
+    print(v.foo === v.bar);
 }
 
 try {
-  reviverObjectIdentityTest();
+    reviverObjectIdentityTest();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -294,25 +271,25 @@ object string object
  * (Rhino uses a numeric array index key.)
  */
 
-print("reviver name type test");
+print('reviver name type test');
 
 function reviverNameTypeTest() {
-  function reviver(name, val) {
-    print(typeof this, typeof name, typeof val);
-    return val;
-  }
+    function reviver(name, val) {
+        print(typeof this, typeof name, typeof val);
+        return val;
+    }
 
-  txt = '{"foo":1,"bar":[2,3]}';
-  print(txt);
+    txt = '{"foo":1,"bar":[2,3]}';
+    print(txt);
 
-  v = JSON.parse(txt, reviver);
-  print(JSON.stringify(v));
+    v = JSON.parse(txt, reviver);
+    print(JSON.stringify(v));
 }
 
 try {
-  reviverNameTypeTest();
+    reviverNameTypeTest();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -330,35 +307,35 @@ invalid revivers
 
 /* Reviver must callable; other values are ignored silently. */
 
-print("invalid revivers");
+print('invalid revivers');
 
 function testInvalidRevivers() {
-  var v;
+    var v;
 
-  // base case
-  v = JSON.parse('{"foo":1,"bar":2}');
-  print(JSON.stringify(v));
+    // base case
+    v = JSON.parse('{"foo":1,"bar":2}');
+    print(JSON.stringify(v));
 
-  v = JSON.parse('{"foo":1,"bar":2}', undefined);
-  print(JSON.stringify(v));
-  v = JSON.parse('{"foo":1,"bar":2}', null);
-  print(JSON.stringify(v));
-  v = JSON.parse('{"foo":1,"bar":2}', true);
-  print(JSON.stringify(v));
-  v = JSON.parse('{"foo":1,"bar":2}', false);
-  print(JSON.stringify(v));
-  v = JSON.parse('{"foo":1,"bar":2}', 1.23);
-  print(JSON.stringify(v));
-  v = JSON.parse('{"foo":1,"bar":2}', "foo");
-  print(JSON.stringify(v));
-  v = JSON.parse('{"foo":1,"bar":2}', []);
-  print(JSON.stringify(v));
-  v = JSON.parse('{"foo":1,"bar":2}', {});
-  print(JSON.stringify(v));
+    v = JSON.parse('{"foo":1,"bar":2}', undefined);
+    print(JSON.stringify(v));
+    v = JSON.parse('{"foo":1,"bar":2}', null);
+    print(JSON.stringify(v));
+    v = JSON.parse('{"foo":1,"bar":2}', true);
+    print(JSON.stringify(v));
+    v = JSON.parse('{"foo":1,"bar":2}', false);
+    print(JSON.stringify(v));
+    v = JSON.parse('{"foo":1,"bar":2}', 1.23);
+    print(JSON.stringify(v));
+    v = JSON.parse('{"foo":1,"bar":2}', 'foo');
+    print(JSON.stringify(v));
+    v = JSON.parse('{"foo":1,"bar":2}', []);
+    print(JSON.stringify(v));
+    v = JSON.parse('{"foo":1,"bar":2}', {});
+    print(JSON.stringify(v));
 }
 
 try {
-  testInvalidRevivers();
+    testInvalidRevivers();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

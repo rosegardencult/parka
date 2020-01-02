@@ -679,162 +679,75 @@ write TypedArray test, arrayLength 17
 ===*/
 
 function writeTypedArrayTest(arrayLength) {
-  [
-    -100,
-    -10,
-    -9,
-    -8,
-    -7,
-    -6,
-    -5,
-    -4,
-    -3,
-    -2,
-    -1,
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-    100
-  ].forEach(function(offset, idx1) {
-    [undefined, 0, 1, 2, 3, 4, 5, 6, 7, 8, 100].forEach(function(length, idx2) {
-      var tmp = [];
+    [ -100, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7,
+      8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 100 ].forEach(function (offset, idx1) {
+        [ undefined, 0, 1, 2, 3, 4, 5, 6, 7, 8, 100 ].forEach(function (length, idx2) {
+            var tmp = [];
 
-      [
-        -0x100000000,
-        -0xffffffff,
-        -0xdeadbeef,
-        -0x80000001,
-        -0x80000000,
-        -0x7fffffff,
-        -0x10000,
-        -0xffff,
-        -0x8001,
-        -0x8000,
-        -0x7fff,
-        -0x100,
-        -0xff,
-        -0x81,
-        -0x80,
-        -0x7f,
-        -1,
-        -0,
-        0,
-        1,
-        0x7f,
-        0x80,
-        0x81,
-        0xff,
-        0x100,
-        0x7fff,
-        0x8000,
-        0x8001,
-        0xffff,
-        0x10000,
-        0x7fffffff,
-        0x80000000,
-        0x80000001,
-        0xdeadbeef,
-        0xffffffff,
-        0x100000000,
-        Number.NEGATIVE_INFINITY,
-        Number.POSITIVE_INFINITY,
+            [ -0x100000000, -0xffffffff, -0xdeadbeef,
+              -0x80000001, -0x80000000, -0x7fffffff, -0x10000, -0xffff, -0x8001,
+              -0x8000, -0x7fff, -0x100, -0xff, -0x81, -0x80, -0x7f, -1, -0, 0, 1,
+              0x7f, 0x80, 0x81, 0xff, 0x100, 0x7fff, 0x8000, 0x8001, 0xffff, 0x10000,
+              0x7fffffff, 0x80000000, 0x80000001, 0xdeadbeef, 0xffffffff, 0x100000000,
+              Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY,
 
-        // Leave NaN intentionally out because its representation is
-        // platform and engine specific.
+              // Leave NaN intentionally out because its representation is
+              // platform and engine specific.
 
-        2.1,
-        2.5,
-        2.9,
-        3.1,
-        3.5,
-        3.9,
-        4.1,
-        4.5,
-        4.9,
-        -2.1,
-        -2.5,
-        -2.9,
-        -3.1,
-        -3.5,
-        -3.9,
-        -4.1,
-        -4.5,
-        -4.9
-      ].forEach(function(value, idx3) {
-        [
-          "Int8Array",
-          "Uint8Array",
-          "Uint8ClampedArray",
-          "Int16Array",
-          "Uint16Array",
-          "Int32Array",
-          "Uint32Array",
-          "Float32Array",
-          "Float64Array"
-        ].forEach(function(consname) {
-          var evalstr;
-          var b, b_u8;
-          var i;
+              2.1, 2.5, 2.9, 3.1, 3.5, 3.9, 4.1, 4.5, 4.9,
+              -2.1, -2.5, -2.9, -3.1, -3.5, -3.9, -4.1, -4.5, -4.9,
+            ].forEach(function (value, idx3) {
+                [ 'Int8Array', 'Uint8Array', 'Uint8ClampedArray', 'Int16Array',
+                  'Uint16Array', 'Int32Array', 'Uint32Array', 'Float32Array',
+                  'Float64Array' ].forEach(function (consname) {
+                    var evalstr;
+                    var b, b_u8;
+                    var i;
 
-          b = new ArrayBuffer(arrayLength);
-          b_u8 = new Uint8Array(b);
+                    b = new ArrayBuffer(arrayLength);
+                    b_u8 = new Uint8Array(b);
 
-          for (i = 0; i < b_u8.length; i++) {
-            b_u8[i] = 0x11;
-          }
+                    for (i = 0; i < b_u8.length; i++) {
+                        b_u8[i] = 0x11;
+                    }
 
-          evalstr = "new " + consname + "(b, " + offset;
-          if (length !== undefined) {
-            evalstr += ", " + length;
-          }
-          evalstr += ")";
+                    evalstr = 'new ' + consname + '(b, ' + offset;
+                    if (length !== undefined) {
+                        evalstr += ', ' + length;
+                    }
+                    evalstr += ')';
 
-          tmp.push(offset + " " + value + " " + consname + " " + evalstr);
-          try {
-            // workaround because there's no programmatic 'construct' call
-            var v = eval(evalstr);
-            v[0] = value;
-            v[1] = value;
-            tmp.push(success);
-          } catch (e) {
-            tmp.push(e.name);
-          }
-          tmp.push(printableBuffer(b));
+                    tmp.push(offset + ' ' + value + ' ' + consname + ' ' + evalstr);
+                    try {
+                        // workaround because there's no programmatic 'construct' call
+                        var v = eval(evalstr);
+                        v[0] = value;
+                        v[1] = value;
+                        tmp.push(success);
+                    } catch (e) {
+                        tmp.push(e.name);
+                    }
+                    tmp.push(printableBuffer(b));
+                });
+            });
+
+            print(offset, length, checksumString(tmp.join('\n')));
         });
-      });
-
-      print(offset, length, checksumString(tmp.join("\n")));
     });
-  });
 }
 
 try {
-  /* Attempt to create a view using default length fails if starting offset
-   * is not aligned and the underlying ArrayBuffer doesn't end up evenly at
-   * an element boundary.  Run the testcase with two ArrayBuffer lengths to
-   * cover these cases properly.
-   */
+    /* Attempt to create a view using default length fails if starting offset
+     * is not aligned and the underlying ArrayBuffer doesn't end up evenly at
+     * an element boundary.  Run the testcase with two ArrayBuffer lengths to
+     * cover these cases properly.
+     */
 
-  print("write TypedArray test, arrayLength 16");
-  writeTypedArrayTest(16);
+    print('write TypedArray test, arrayLength 16');
+    writeTypedArrayTest(16);
 
-  print("write TypedArray test, arrayLength 17");
-  writeTypedArrayTest(17);
+    print('write TypedArray test, arrayLength 17');
+    writeTypedArrayTest(17);
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

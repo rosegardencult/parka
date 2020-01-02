@@ -15,28 +15,28 @@ undefined
 ===*/
 
 function dataViewPrototypeMethodTest() {
-  var pb, t;
+    var pb, t;
 
-  pb = createPlainBuffer("abcdefghijklmnop");
+    pb = createPlainBuffer('abcdefghijklmnop');
 
-  // Spot check one get method
-  print("- getUint16");
-  print(Duktape.enc("jx", pb));
-  print(DataView.prototype.getUint16.call(pb, 5, false)); // 66 67 -> 0x6667 big endian
-  print(DataView.prototype.getUint16.call(pb, 5, true)); // 66 67 -> 0x6766 little endian
+    // Spot check one get method
+    print('- getUint16');
+    print(Duktape.enc('jx', pb));
+    print(DataView.prototype.getUint16.call(pb, 5, false));  // 66 67 -> 0x6667 big endian
+    print(DataView.prototype.getUint16.call(pb, 5, true));   // 66 67 -> 0x6766 little endian
 
-  // Spot check one set method
-  print("- setInt32");
-  print(Duktape.enc("jx", pb));
-  print(DataView.prototype.setInt32.call(pb, 3, 0xdeadbeef, false));
-  print(Duktape.enc("jx", pb));
-  print(DataView.prototype.setInt32.call(pb, 8, 0xdeadbeef, true));
-  print(Duktape.enc("jx", pb));
+    // Spot check one set method
+    print('- setInt32');
+    print(Duktape.enc('jx', pb));
+    print(DataView.prototype.setInt32.call(pb, 3, 0xdeadbeef, false));
+    print(Duktape.enc('jx', pb));
+    print(DataView.prototype.setInt32.call(pb, 8, 0xdeadbeef, true));
+    print(Duktape.enc('jx', pb));
 }
 
 try {
-  print("DataView.prototype methods");
-  dataViewPrototypeMethodTest();
+    print('DataView.prototype methods');
+    dataViewPrototypeMethodTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

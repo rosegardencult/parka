@@ -7,7 +7,7 @@
 111
 ===*/
 
-var text = "Foo";
+var text = 'Foo';
 
 print(text.charCodeAt(0));
 print(text.charCodeAt(1));

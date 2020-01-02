@@ -11,26 +11,22 @@ SyntaxError
 ===*/
 
 try {
-  eval(
-    "try {\n" +
-      "    throw 123\n" +
-      "} catch (e) {\n" +
-      '    print("e=" + e);\n' +
-      "}\n"
-  );
+   eval('try {\n' +
+        '    throw 123\n' +
+        '} catch (e) {\n' +
+        '    print("e=" + e);\n' +
+        '}\n');
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 try {
-  eval(
-    "try {\n" +
-      "    throw\n" +
-      "    123;\n" +
-      "} catch (e) {\n" +
-      '    print("e=" + e);\n' +
-      "}\n"
-  );
+    eval('try {\n' +
+         '    throw\n' +
+         '    123;\n' +
+         '} catch (e) {\n' +
+         '    print("e=" + e);\n' +
+         '}\n');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

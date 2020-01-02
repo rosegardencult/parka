@@ -6,20 +6,17 @@
 /* XXX: add more coercion tests */
 
 function hex(v) {
-  return v.toString(16);
+    return v.toString(16);
 }
 
 function printHex(v) {
-  print(hex(v));
+    print(hex(v));
 }
 
 function valWithSideEffect(v) {
-  return {
-    valueOf: function() {
-      print("coerced:", hex(v));
-      return v;
-    }
-  };
+    return {
+        valueOf: function () { print('coerced:', hex(v)); return v; }
+    };
 }
 
 /*===
@@ -30,16 +27,16 @@ minimal and-or-xor
 ===*/
 
 function minimalAndOrXorTest() {
-  print(255 & 64);
-  print(128 | 64);
-  print(255 ^ 64);
+    print(255 & 64);
+    print(128 | 64);
+    print(255 ^ 64);
 }
 
 try {
-  print("minimal and-or-xor");
-  minimalAndOrXorTest();
+    print('minimal and-or-xor');
+    minimalAndOrXorTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -51,17 +48,17 @@ minimal not
 ===*/
 
 function minimalNotTest() {
-  print(~123);
-  print(~~123);
-  print(~1e10);
-  print(~~1e10);
+    print(~123);
+    print(~~123);
+    print(~1e10);
+    print(~~1e10);
 }
 
 try {
-  print("minimal not");
-  minimalNotTest();
+    print('minimal not');
+    minimalNotTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -93,42 +90,42 @@ a986
 ===*/
 
 function precedenceAndOrXorTest() {
-  print("- XOR binds more strongly than OR");
-  printHex((0x12345678 ^ 0x12340000) | 0x00005678);
-  printHex(0x12345678 ^ (0x12340000 | 0x00005678));
-  printHex(0x00005678 | (0x12345678 ^ 0x12345678));
-  printHex((0x00005678 | 0x12345678) ^ 0x12345678);
+    print('- XOR binds more strongly than OR');
+    printHex(0x12345678 ^ 0x12340000 | 0x00005678);
+    printHex(0x12345678 ^ (0x12340000 | 0x00005678));
+    printHex(0x00005678 | 0x12345678 ^ 0x12345678);
+    printHex((0x00005678 | 0x12345678) ^ 0x12345678);
 
-  print("- AND binds more strongly than XOR");
-  printHex((0x12345678 ^ 0x12345678) & 0xffff0000);
-  printHex(0x12345678 ^ (0x12345678 & 0xffff0000));
-  printHex((0xffff0000 & 0x12345678) ^ 0x12345678);
-  printHex(0xffff0000 & (0x12345678 ^ 0x12345678));
+    print('- AND binds more strongly than XOR');
+    printHex((0x12345678 ^ 0x12345678) & 0xffff0000);
+    printHex(0x12345678 ^ 0x12345678 & 0xffff0000);
+    printHex(0xffff0000 & 0x12345678 ^ 0x12345678);
+    printHex(0xffff0000 & (0x12345678 ^ 0x12345678));
 
-  print("- AND binds more strongly than OR");
-  printHex((0x12345678 & 0xffff0000) | 0x80000000);
-  printHex(0x12345678 & (0xffff0000 | 0x80000000));
-  printHex(0x80000000 | (0xffff0000 & 0x12345678));
-  printHex((0x80000000 | 0xffff0000) & 0x12345678);
+    print('- AND binds more strongly than OR');
+    printHex(0x12345678 & 0xffff0000 | 0x80000000);
+    printHex(0x12345678 & (0xffff0000 | 0x80000000));
+    printHex(0x80000000 | 0xffff0000 & 0x12345678);
+    printHex((0x80000000 | 0xffff0000) & 0x12345678);
 
-  print("- Bitwise NOT bings more strongly than AND");
-  printHex(~0x12345678 & 0xffff0000);
-  printHex(~(0x12345678 & 0xffff0000));
+    print('- Bitwise NOT bings more strongly than AND');
+    printHex(~0x12345678 & 0xffff0000);
+    printHex(~(0x12345678 & 0xffff0000));
 
-  print("- Bitwise NOT bings more strongly than XOR");
-  printHex(~0x12345678 ^ 0xffff0000);
-  printHex(~(0x12345678 ^ 0xffff0000));
+    print('- Bitwise NOT bings more strongly than XOR');
+    printHex(~0x12345678 ^ 0xffff0000);
+    printHex(~(0x12345678 ^ 0xffff0000));
 
-  print("- Bitwise NOT bings more strongly than OR");
-  printHex(~0x12345678 | 0xffff0000);
-  printHex(~(0x12345679 | 0xffff0000));
+    print('- Bitwise NOT bings more strongly than OR');
+    printHex(~0x12345678 | 0xffff0000);
+    printHex(~(0x12345679 | 0xffff0000));
 }
 
 try {
-  print("precedence and-or-xor");
-  precedenceAndOrXorTest();
+    print('precedence and-or-xor');
+    precedenceAndOrXorTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -163,43 +160,43 @@ coerced: 12345678
 ===*/
 
 function associativityAndOrXorTest() {
-  /* Associativity is not always easy to see, e.g. bitwise OR is left
-   * associative but the result would be the same.  Using coercion side
-   * effects is not entirely reliable either because implementations
-   * differ in their evaluation order.
-   *
-   * For instance, if evaluating val(A) | (val(B) | val(C)), the coercion
-   * order is different on various engines:
-   *
-   *    Duktape 0.12.0: B, C, A
-   *    V8: B, C, A
-   *    Rhino: A, B, C
-   *
-   * The current code here relies on Duktape evaluation order.  This order
-   * may not actually be fully compliant: E5.1 Section 11.10 algorithm
-   * states that left side (val(A)) should be evaluated first.
-   */
+    /* Associativity is not always easy to see, e.g. bitwise OR is left
+     * associative but the result would be the same.  Using coercion side
+     * effects is not entirely reliable either because implementations
+     * differ in their evaluation order.
+     *
+     * For instance, if evaluating val(A) | (val(B) | val(C)), the coercion
+     * order is different on various engines:
+     *
+     *    Duktape 0.12.0: B, C, A
+     *    V8: B, C, A
+     *    Rhino: A, B, C
+     *
+     * The current code here relies on Duktape evaluation order.  This order
+     * may not actually be fully compliant: E5.1 Section 11.10 algorithm
+     * states that left side (val(A)) should be evaluated first.
+     */
 
-  var val = valWithSideEffect;
+    var val = valWithSideEffect;
 
-  print("- Bitwise OR");
-  printHex(val(0x12345678) | val(0x23456789) | val(0x3456789a));
-  printHex(val(0x12345678) | (val(0x23456789) | val(0x3456789a)));
+    print('- Bitwise OR');
+    printHex(val(0x12345678) | val(0x23456789) | val(0x3456789a));
+    printHex(val(0x12345678) | (val(0x23456789) | val(0x3456789a)));
 
-  print("- Bitwise XOR");
-  printHex(val(0x12345678) ^ val(0x23456789) ^ val(0x3456789a));
-  printHex(val(0x12345678) ^ (val(0x23456789) ^ val(0x3456789a)));
+    print('- Bitwise XOR');
+    printHex(val(0x12345678) ^ val(0x23456789) ^ val(0x3456789a));
+    printHex(val(0x12345678) ^ (val(0x23456789) ^ val(0x3456789a)));
 
-  print("- Bitwise AND");
-  printHex(val(0x12345678) & val(0x23456789) & val(0x3456789a));
-  printHex(val(0x12345678) & (val(0x23456789) & val(0x3456789a)));
+    print('- Bitwise AND');
+    printHex(val(0x12345678) & val(0x23456789) & val(0x3456789a));
+    printHex(val(0x12345678) & (val(0x23456789) & val(0x3456789a)));
 }
 
 try {
-  print("associativity and-or-xor");
-  associativityAndOrXorTest();
+    print('associativity and-or-xor');
+    associativityAndOrXorTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -211,25 +208,25 @@ target modify not
 ===*/
 
 function targetModifyNotTest() {
-  /* Ensure that target is not modified (this would happen if expression is
-   * not allocated a real temporary register but operates directly on a register
-   * bound value).
-   */
+    /* Ensure that target is not modified (this would happen if expression is
+     * not allocated a real temporary register but operates directly on a register
+     * bound value).
+     */
 
-  var x = 123;
-  print(~x);
-  print(x);
+    var x = 123;
+    print(~x);
+    print(x);
 
-  var obj = { x: 1 };
-  print(~obj.x);
-  print(obj.x);
+    var obj = {x:1};
+    print(~obj.x);
+    print(obj.x);
 }
 
 try {
-  print("target modify not");
-  targetModifyNotTest();
+    print('target modify not');
+    targetModifyNotTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -887,57 +884,39 @@ matrix and-or-xor-not
 ===*/
 
 function matrixAndOrXorNotTest() {
-  var vals = [
-    Number.NEGATIVE_INFINITY,
-    -1e100,
-    -0x123456789ab,
-    -0xffffffff,
-    -0x80000000,
-    -0x7fffffff,
-    -0x12345678 - 0.75,
-    -0x12345678 - 0.5,
-    -0x12345678 - 0.25,
-    -0x12345678,
-    -1,
-    -0,
-    +0,
-    +1,
-    0x12345678,
-    0x12345678 + 0.25,
-    0x12345678 + 0.5,
-    0x12345678 + 0.75,
-    0x7fffffff,
-    0x80000000,
-    0xffffffff,
-    0x123456789ab,
-    1e100,
-    Number.POSITIVE_INFINITY,
-    Number.NaN
-  ];
-  var i, j;
+    var vals = [
+        Number.NEGATIVE_INFINITY,
+        -1e100,
+        -0x123456789ab,
+        -0xffffffff, -0x80000000, -0x7fffffff,
+        -0x12345678 - 0.75, -0x12345678 - 0.50, -0x12345678 - 0.25, -0x12345678,
+        -1, -0, +0, +1,
+        0x12345678, 0x12345678 + 0.25, 0x12345678 + 0.50, 0x12345678 + 0.75,
+        0x7fffffff, 0x80000000, 0xffffffff,
+        0x123456789ab,
+        1e100,
+        Number.POSITIVE_INFINITY,
+        Number.NaN
+    ];
+    var i, j;
 
-  for (i = 0; i < vals.length; i++) {
-    for (j = 0; j < vals.length; j++) {
-      print(
-        i,
-        j,
-        hex(vals[i]),
-        hex(vals[j]),
-        hex(vals[i] & vals[j]),
-        hex(vals[i] | vals[j]),
-        hex(vals[i] ^ vals[j])
-      );
+    for (i = 0; i < vals.length; i++) {
+        for (j = 0; j < vals.length; j++) {
+            print(i, j, hex(vals[i]), hex(vals[j]),
+                  hex(vals[i] & vals[j]),
+                  hex(vals[i] | vals[j]),
+                  hex(vals[i] ^ vals[j]));
+        }
     }
-  }
 
-  for (i = 0; i < vals.length; i++) {
-    print(i, hex(vals[i]), hex(~vals[i]));
-  }
+    for (i = 0; i < vals.length; i++) {
+        print(i, hex(vals[i]), hex(~vals[i]));
+    }
 }
 
 try {
-  print("matrix and-or-xor-not");
-  matrixAndOrXorNotTest();
+    print('matrix and-or-xor-not');
+    matrixAndOrXorNotTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

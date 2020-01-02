@@ -119,91 +119,61 @@ dummy value
 ===*/
 
 function compareTest() {
-  var b1a = new Buffer(0);
-  var b1b = new Buffer(0);
-  var b2a = new Buffer(4);
-  var b2b = new Buffer(4);
-  var b2c = new Buffer(4);
-  var b3a = new Buffer(8);
-  var b3b = new Buffer(8);
-  var b3c = new Buffer(8);
+    var b1a = new Buffer(0);
+    var b1b = new Buffer(0);
+    var b2a = new Buffer(4);
+    var b2b = new Buffer(4);
+    var b2c = new Buffer(4);
+    var b3a = new Buffer(8);
+    var b3b = new Buffer(8);
+    var b3c = new Buffer(8);
 
-  // b2a and b2b have same bytes, b2c is different
+    // b2a and b2b have same bytes, b2c is different
 
-  b2a[0] = 0xde;
-  b2a[1] = 0xad;
-  b2a[2] = 0xbe;
-  b2a[3] = 0xef;
-  b2b[0] = 0xde;
-  b2b[1] = 0xad;
-  b2b[2] = 0xbe;
-  b2b[3] = 0xef;
-  b2c[0] = 0xde;
-  b2c[1] = 0xad;
-  b2c[2] = 0xbe;
-  b2c[3] = 0x99;
+    b2a[0] = 0xde; b2a[1] = 0xad; b2a[2] = 0xbe; b2a[3] = 0xef;
+    b2b[0] = 0xde; b2b[1] = 0xad; b2b[2] = 0xbe; b2b[3] = 0xef;
+    b2c[0] = 0xde; b2c[1] = 0xad; b2c[2] = 0xbe; b2c[3] = 0x99;
 
-  // b3a and b3b have same bytes, and same 4 byte prefix as b2a/b2b.
-  // b3c is different.
+    // b3a and b3b have same bytes, and same 4 byte prefix as b2a/b2b.
+    // b3c is different.
 
-  b3a[0] = 0xde;
-  b3a[1] = 0xad;
-  b3a[2] = 0xbe;
-  b3a[3] = 0xef;
-  b3a[4] = 0xca;
-  b3a[5] = 0xfe;
-  b3a[6] = 0xba;
-  b3a[7] = 0xbe;
+    b3a[0] = 0xde; b3a[1] = 0xad; b3a[2] = 0xbe; b3a[3] = 0xef;
+    b3a[4] = 0xca; b3a[5] = 0xfe; b3a[6] = 0xba; b3a[7] = 0xbe;
 
-  b3b[0] = 0xde;
-  b3b[1] = 0xad;
-  b3b[2] = 0xbe;
-  b3b[3] = 0xef;
-  b3b[4] = 0xca;
-  b3b[5] = 0xfe;
-  b3b[6] = 0xba;
-  b3b[7] = 0xbe;
+    b3b[0] = 0xde; b3b[1] = 0xad; b3b[2] = 0xbe; b3b[3] = 0xef;
+    b3b[4] = 0xca; b3b[5] = 0xfe; b3b[6] = 0xba; b3b[7] = 0xbe;
 
-  b3c[0] = 0xde;
-  b3c[1] = 0xad;
-  b3c[2] = 0xbe;
-  b3c[3] = 0xef;
-  b3c[4] = 0xca;
-  b3c[5] = 0xfe;
-  b3c[6] = 0xba;
-  b3c[7] = 0x99;
+    b3c[0] = 0xde; b3c[1] = 0xad; b3c[2] = 0xbe; b3c[3] = 0xef;
+    b3c[4] = 0xca; b3c[5] = 0xfe; b3c[6] = 0xba; b3c[7] = 0x99;
 
-  var buffers = [b1a, b1b, b2a, b2b, b2c, b3a, b3b, b3c, "foo", undefined];
+    var buffers = [ b1a, b1b, b2a, b2b, b2c, b3a, b3b, b3c, 'foo', undefined ];
 
-  buffers.forEach(function(b) {
-    if (!Buffer.isBuffer(b)) {
-      print("dummy value");
-      return;
-    }
-    printNodejsBuffer(b);
-  });
-
-  buffers.forEach(function(b1, i) {
-    buffers.forEach(function(b2, j) {
-      try {
-        if (b2 === undefined) {
-          print(i, j, Buffer.compare(b1));
-        } else {
-          print(i, j, Buffer.compare(b1, b2));
-        }
-      } catch (e) {
-        // TypeError for non-buffer arguments
-        print(i, j, e.name);
-      }
+    buffers.forEach(function (b) {
+        if (!Buffer.isBuffer(b)) { print('dummy value'); return; }
+        printNodejsBuffer(b);
     });
-  });
+
+    buffers.forEach(function (b1, i) {
+        buffers.forEach(function (b2, j) {
+            try {
+                if (b2 === undefined) {
+                    print(i, j, Buffer.compare(b1));
+                } else {
+                    print(i, j, Buffer.compare(b1, b2));
+                }
+            } catch (e) {
+                // TypeError for non-buffer arguments
+                print(i, j, e.name);
+            }
+        });
+    });
 }
 
 try {
-  print("Node.js Buffer.compare() test");
-  compareTest();
+    print('Node.js Buffer.compare() test');
+    compareTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -553,93 +523,76 @@ Node.js Buffer instance compare() test
 ===*/
 
 function nodejsBufferCompareTest() {
-  var b1, b2, b3, b4;
-  var values;
-  var tmp = [];
+    var b1, b2, b3, b4;
+    var values;
+    var tmp = [];
 
-  b1 = new Buffer("foo");
-  b2 = new Buffer("foo");
-  b3 = new Buffer("fo");
-  b4 = new Buffer("foo1");
-  b5 = new Buffer("foo2");
-  b6 = new Buffer("quux");
-  b7 = new Buffer("abc");
+    b1 = new Buffer('foo');
+    b2 = new Buffer('foo');
+    b3 = new Buffer('fo');
+    b4 = new Buffer('foo1');
+    b5 = new Buffer('foo2');
+    b6 = new Buffer('quux');
+    b7 = new Buffer('abc');
 
-  values = [
-    undefined,
-    null,
-    true,
-    false,
-    123,
-    "foo",
-    "fo",
-    "foo1",
-    "foo2",
-    "quux",
-    "abc",
-    b1,
-    b2,
-    b3,
-    b4,
-    b5,
-    b6,
-    b7
-  ];
+    values = [
+        undefined,
+        null,
+        true,
+        false,
+        123,
+        'foo', 'fo', 'foo1', 'foo2', 'quux', 'abc',
+        b1, b2, b3, b4, b5, b6, b7
+    ];
 
-  // Not sure about correct semantics because Node.js v0.12.1 crashes
-  // when 'this' is not a Buffer.
-  //
-  // But reasonable semantics might be:
-  //     - If 'this' is not a Buffer, TypeError.
-  //     - If argument is not a Buffer, TypeError.
-  //     - Compare buffers.
+    // Not sure about correct semantics because Node.js v0.12.1 crashes
+    // when 'this' is not a Buffer.
+    //
+    // But reasonable semantics might be:
+    //     - If 'this' is not a Buffer, TypeError.
+    //     - If argument is not a Buffer, TypeError.
+    //     - Compare buffers.
 
-  values.forEach(function(v1, i1) {
-    if (i1 > 0) {
-      tmp.push("\n");
-    }
-    values.forEach(function(v2, i2) {
-      try {
-        // Avoid Node.js issue to get an except string:
-        //
-        // $ node
-        // > Buffer.prototype.compare.call(undefined, new Buffer(4))
-        // Segmentation fault (core dumped)
-        //
-        // Seems to happen when 'this' is not a buffer but argument is.
+    values.forEach(function (v1, i1) {
+        if (i1 > 0) { tmp.push('\n'); }
+        values.forEach(function (v2, i2) {
+            try {
+                // Avoid Node.js issue to get an except string:
+                //
+                // $ node
+                // > Buffer.prototype.compare.call(undefined, new Buffer(4))
+                // Segmentation fault (core dumped)
+                //
+                // Seems to happen when 'this' is not a buffer but argument is.
 
-        if (
-          typeof process === "object" &&
-          process.version !== undefined &&
-          !(v1 instanceof Buffer)
-        ) {
-          print(i1, i2, "TypeError");
-          tmp.push("!");
-        } else {
-          var cmp = Buffer.prototype.compare.call(v1, v2);
-          print(i1, i2, cmp);
-          if (cmp === -1) {
-            tmp.push("<");
-          } else if (cmp === 0) {
-            tmp.push("=");
-          } else if (cmp === 1) {
-            tmp.push(">");
-          } else {
-            tmp.push("?");
-          }
-        }
-      } catch (e) {
-        print(i1, i2, e.name);
-        tmp.push("!");
-      }
+                if (typeof process === 'object' && process.version !== undefined && !(v1 instanceof Buffer)) {
+                    print(i1, i2, 'TypeError');
+                    tmp.push('!');
+                } else {
+                    var cmp = Buffer.prototype.compare.call(v1, v2);
+                    print(i1, i2, cmp);
+                    if (cmp === -1) {
+                        tmp.push('<');
+                    } else if (cmp === 0) {
+                        tmp.push('=');
+                    } else if (cmp === 1) {
+                        tmp.push('>');
+                    } else {
+                        tmp.push('?');
+                    }
+                }
+            } catch (e) {
+                print(i1, i2, e.name);
+                tmp.push('!');
+            }
+        });
     });
-  });
-  print(tmp.join(""));
+    print(tmp.join(''));
 }
 
 try {
-  print("Node.js Buffer instance compare() test");
-  nodejsBufferCompareTest();
+    print('Node.js Buffer instance compare() test');
+    nodejsBufferCompareTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

@@ -18,10 +18,10 @@ true
 ===*/
 
 /* Evaluation order is left-to-right */
-print((print("left"), 1) == (print("right"), 2));
-print((print("left"), 1) != (print("right"), 2));
-print((print("left"), 1) === (print("right"), 2));
-print((print("left"), 1) !== (print("right"), 2));
+print( (print('left'), 1) == (print('right'), 2) );
+print( (print('left'), 1) != (print('right'), 2) );
+print( (print('left'), 1) === (print('right'), 2) );
+print( (print('left'), 1) !== (print('right'), 2) );
 
 /*===
 0 0 true false true false
@@ -351,31 +351,18 @@ print((print("left"), 1) !== (print("right"), 2));
 ===*/
 
 var testValues = [
-  undefined,
-  null,
-  true,
-  false,
+    undefined, null, true, false,
 
-  -1 / 0,
-  -1e9,
-  -1,
-  -0,
-  +0,
-  +1,
-  1e9,
-  1 / 0,
-  0 / 0,
+    -1/0, -1e9, -1, -0, +0, +1, 1e9, 1/0, 0/0,
 
-  "",
-  "foo",
+    '', 'foo',
 
-  [],
-  {},
-  function test() {}
+    [], {},
+    function test() {}
 ];
 
-testValues.forEach(function(v1, i1) {
-  testValues.forEach(function(v2, i2) {
-    print(i1, i2, v1 == v2, v1 != v2, v1 === v2, v1 !== v2);
-  });
+testValues.forEach(function (v1, i1) {
+    testValues.forEach(function (v2, i2) {
+        print(i1, i2, v1 == v2, v1 != v2, v1 === v2, v1 !== v2);
+    });
 });

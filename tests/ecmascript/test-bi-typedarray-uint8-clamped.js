@@ -45,67 +45,53 @@ Uint8ClampedArray coercion test
 ===*/
 
 function uint8ClampedArrayCoercionTest() {
-  var vals = [
-    // Rounding
-    0,
-    0.1,
-    0.5,
-    0.9,
-    1,
-    1.1,
-    1.5,
-    1.9,
-    2,
-    2.1,
-    2.5,
-    2.9,
-    3,
-    3.1,
-    3.5,
-    3.9,
-    4,
-    4.1,
-    4.5,
-    4.9,
+    var vals = [
+        // Rounding
+        0, 0.1, 0.5, 0.9,
+        1, 1.1, 1.5, 1.9,
+        2, 2.1, 2.5, 2.9,
+        3, 3.1, 3.5, 3.9,
+        4, 4.1, 4.5, 4.9,
 
-    // Clamping
-    Number.NEGATIVE_INFINITY,
-    -1e20 - 1e9, // within 32-bit
-    -1,
-    -0.9,
-    -0.5,
-    -0.1,
-    -0,
-    255,
-    255.1,
-    255.5,
-    255.9,
-    256,
-    1e9,
-    1e20,
-    Number.POSITIVE_INFINITY,
-    Number.NaN
-  ];
-  var b = new ArrayBuffer(vals.length);
-  var v1 = new Uint8ClampedArray(b);
-  var i;
+        // Clamping
+        Number.NEGATIVE_INFINITY,
+        -1e20
+        -1e9,  // within 32-bit
+        -1,
+        -0.9,
+        -0.5,
+        -0.1,
+        -0,
+        255,
+        255.1,
+        255.5,
+        255.9,
+        256,
+        1e9,
+        1e20,
+        Number.POSITIVE_INFINITY,
+        Number.NaN
+    ];
+    var b = new ArrayBuffer(vals.length);
+    var v1 = new Uint8ClampedArray(b);
+    var i;
 
-  // http://www.ecma-international.org/ecma-262/6.0/index.html#sec-touint8clamp
-  // https://www.khronos.org/registry/typedarray/specs/latest/#7.1
-  // https://www.khronos.org/registry/typedarray/specs/latest/#3
+    // http://www.ecma-international.org/ecma-262/6.0/index.html#sec-touint8clamp
+    // https://www.khronos.org/registry/typedarray/specs/latest/#7.1
+    // https://www.khronos.org/registry/typedarray/specs/latest/#3
 
-  for (i = 0; i < vals.length; i++) {
-    v1[i] = vals[i];
-  }
+    for (i = 0; i < vals.length; i++) {
+        v1[i] = vals[i];
+    }
 
-  for (i = 0; i < v1.byteLength; i++) {
-    print(i, vals[i], v1[i]);
-  }
+    for (i = 0; i < v1.byteLength; i++) {
+        print(i, vals[i], v1[i]);
+    }
 }
 
 try {
-  print("Uint8ClampedArray coercion test");
-  uint8ClampedArrayCoercionTest();
+    print('Uint8ClampedArray coercion test');
+    uint8ClampedArrayCoercionTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

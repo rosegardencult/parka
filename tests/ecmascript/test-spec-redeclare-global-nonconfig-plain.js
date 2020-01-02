@@ -17,7 +17,7 @@
  * actually checked for?
  */
 
-print("never here");
+print('never here');
 
 /*===
 ===*/
@@ -29,20 +29,20 @@ print("never here");
 
 var desc;
 var indirectEval = eval;
-var global = indirectEval("this"); // for Node
+var global = indirectEval("this");  // for Node
 
 // Note: since declarations are hoisted, the RegExp declaration below
 // will already have taken effect here.
 
 print(typeof NaN);
-desc = Object.getOwnPropertyDescriptor(global, "NaN");
+desc = Object.getOwnPropertyDescriptor(global, 'NaN');
 print(desc.writable, desc.enumerable, desc.configurable);
 
 function NaN() {
-  return 123;
+    return 123;
 }
 
 // just checking that order does not matter
 print(typeof NaN);
-desc = Object.getOwnPropertyDescriptor(global, "NaN");
+desc = Object.getOwnPropertyDescriptor(global, 'NaN');
 print(desc.writable, desc.enumerable, desc.configurable);

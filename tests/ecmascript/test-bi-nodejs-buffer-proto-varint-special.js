@@ -337,46 +337,42 @@ NaN 6 00000000000000000000000000000000
 ===*/
 
 function specialWriteValuesTest() {
-  [
-    -1 / 0,
-    1 / 0,
-    0 / 0,
-    -0x1665544332211, // -2^48
-    -0x1000000000000,
-    -0xffffffffffff,
-    -0x800000000001, // -2^47 - 1
-    -0x800000000000, // -2^47  (minimum 48-bit signed value)
-    0x7fffffffffff, // 2^47 - 1  (maximum 48-bit signed value)
-    0x800000000000,
-    0xffffffffffff,
-    0x100000000000,
-    0x1665544332211
-  ].forEach(function(value) {
-    [1, 2, 3, 4, 5, 6].forEach(function(length) {
-      var buf = new Buffer(16);
+    [ -1/0, 1/0, 0/0,
+      -0x1665544332211,    // -2^48
+      -0x1000000000000,
+      -0xffffffffffff,
+      -0x800000000001,     // -2^47 - 1
+      -0x800000000000,     // -2^47  (minimum 48-bit signed value)
+      0x7fffffffffff,      // 2^47 - 1  (maximum 48-bit signed value)
+      0x800000000000,
+      0xffffffffffff,
+      0x100000000000,
+      0x1665544332211 ].forEach(function (value) {
+        [ 1, 2, 3, 4, 5, 6 ].forEach(function (length) {
+            var buf = new Buffer(16);
 
-      buf.fill(0x00);
-      buf.writeUIntLE(value, 1, length, true);
-      print(value, length, printableNodejsBuffer(buf));
+            buf.fill(0x00);
+            buf.writeUIntLE(value, 1, length, true);
+            print(value, length, printableNodejsBuffer(buf));
 
-      buf.fill(0x00);
-      buf.writeUIntBE(value, 1, length, true);
-      print(value, length, printableNodejsBuffer(buf));
+            buf.fill(0x00);
+            buf.writeUIntBE(value, 1, length, true);
+            print(value, length, printableNodejsBuffer(buf));
 
-      buf.fill(0x00);
-      buf.writeIntLE(value, 1, length, true);
-      print(value, length, printableNodejsBuffer(buf));
+            buf.fill(0x00);
+            buf.writeIntLE(value, 1, length, true);
+            print(value, length, printableNodejsBuffer(buf));
 
-      buf.fill(0x00);
-      buf.writeIntBE(value, 1, length, true);
-      print(value, length, printableNodejsBuffer(buf));
+            buf.fill(0x00);
+            buf.writeIntBE(value, 1, length, true);
+            print(value, length, printableNodejsBuffer(buf));
+        });
     });
-  });
 }
 
 try {
-  print("special write values");
-  specialWriteValuesTest();
+    print('special write values');
+    specialWriteValuesTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

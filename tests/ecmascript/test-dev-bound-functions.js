@@ -7,16 +7,16 @@ args: f2 f3 1 2
 this: this-f2
 ===*/
 
-function orig(x, y, z, w) {
-  print("args:", x, y, z, w);
-  print("this:", this);
+function orig(x,y,z,w) {
+    print('args:', x, y, z, w);
+    print('this:', this);
 }
 
 var f1, f2, f3, f4;
 
 f1 = orig;
-f2 = f1.bind("this-f2", "f2");
-f3 = f2.bind("this-f3", "f3");
+f2 = f1.bind('this-f2', 'f2');
+f3 = f2.bind('this-f3', 'f3');
 
 /* Plain function call, 'this' binding will be the global object. */
 f1(1, 2, 3, 4);
@@ -76,10 +76,10 @@ this: this-f2
  */
 
 f1 = orig;
-f2 = f1.bind("this-f2", 1, 2);
-f3 = f2.bind("this-f3", 3, 4);
+f2 = f1.bind('this-f2', 1, 2);
+f3 = f2.bind('this-f3', 3, 4);
 
-f4 = f1.bind("this-f2", 1, 2, 3, 4); // equivalent to f3
+f4 = f1.bind('this-f2', 1, 2, 3, 4);  // equivalent to f3
 
 f3();
 f4();

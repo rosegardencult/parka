@@ -9,17 +9,17 @@ SyntaxError
 ===*/
 
 try {
-  var t = eval("/(?P<name>a)(?P=name)/");
-  print(t);
-  print(t.test("aa"));
+    var t = eval('/(?P<name>a)(?P=name)/');
+    print(t);
+    print(t.test("aa"));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  // In General '(?' followed by something else than ':' is a SyntaxError.
-  var t = eval("/(?X)/");
-  print(t);
+    // In General '(?' followed by something else than ':' is a SyntaxError.
+    var t = eval('/(?X)/');
+    print(t);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

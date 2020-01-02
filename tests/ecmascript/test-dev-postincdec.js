@@ -11,8 +11,8 @@ var x = 10;
 print(x);
 print(x-- + 10);
 print(x++ + 10);
-print(x--); // parens are OK
-print(x++);
+print((x)--);  // parens are OK
+print((x)++);
 print(x);
 
 /*===
@@ -24,12 +24,12 @@ print(x);
 10
 ===*/
 
-var obj = { x: 10 };
+var obj = {x:10};
 print(obj.x);
 print(obj.x-- + 10);
 print(obj.x++ + 10);
-print(obj.x--);
-print(obj.x++);
+print((obj.x)--);
+print((obj.x)++);
 print(obj.x);
 
 /*===
@@ -44,9 +44,9 @@ ReferenceError
  */
 
 try {
-  eval("print('should print')++;");
+    eval("print('should print')++;");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -75,33 +75,20 @@ number
 
 var y;
 
-y = undefined;
-print(y--, y);
-y = undefined;
-print(y++, y);
-y = null;
-print(y--, y);
-y = null;
-print(y++, y);
-y = false;
-print(y--, y);
-y = false;
-print(y++, y);
-y = true;
-print(y--, y); // ToNumber(true) -> 1
-y = true;
-print(y++, y);
-y = "123";
-print(y--, y); // ToNumber('123') -> 123
-y = "123";
-print(y++, y);
-y = "foo";
-print(y--, y); // ToNumber('foo') -> NaN
-y = "foo";
-print(y++, y);
+y = undefined; print(y--, y);
+y = undefined; print(y++, y);
+y = null; print(y--, y);
+y = null; print(y++, y);
+y = false; print(y--, y);
+y = false; print(y++, y);
+y = true; print(y--, y);   // ToNumber(true) -> 1
+y = true; print(y++, y);
+y = '123'; print(y--, y);  // ToNumber('123') -> 123
+y = '123'; print(y++, y);
+y = 'foo'; print(y--, y);  // ToNumber('foo') -> NaN
+y = 'foo'; print(y++, y);
 
-y = "123";
-print(typeof y++, y); // ToNumber() is applied to OLD value too
+y = '123'; print(typeof y++, y);  // ToNumber() is applied to OLD value too
 print(typeof y);
 
 /*===
@@ -116,15 +103,15 @@ print(typeof y);
 
 obj = {};
 obj.valueOf = function() {
-  return 1000;
-};
+    return 1000;
+}
 print(obj--);
 print(obj);
 
 obj = {};
 obj.valueOf = function() {
-  return 1000;
-};
+    return 1000;
+}
 print(obj++);
 print(obj);
 
@@ -142,33 +129,31 @@ SyntaxError
 var old_eval = eval;
 
 try {
-  // Note: this will clobber eval
-  eval("function f1() { eval++; eval--; print('eval'); }; f1();");
+    // Note: this will clobber eval
+    eval("function f1() { eval++; eval--; print('eval'); }; f1();");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 eval = old_eval;
 
 try {
-  eval(
-    "function f2() { arguments++; arguments--; print('arguments'); }; f2();"
-  );
+    eval("function f2() { arguments++; arguments--; print('arguments'); }; f2();");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  /* Rhino allows this, and clobbers eval in the process. */
-  eval("function f3() { 'use strict'; eval++; eval--; }; f3();");
+    /* Rhino allows this, and clobbers eval in the process. */
+    eval("function f3() { 'use strict'; eval++; eval--; }; f3();");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
-eval = old_eval; // just in case
+eval = old_eval;  // just in case
 
 try {
-  eval("function f4() { 'use strict'; arguments++; arguments--; }; f4();");
+    eval("function f4() { 'use strict'; arguments++; arguments--; }; f4();");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -185,16 +170,16 @@ ReferenceError
 var z = 10;
 
 try {
-  /* Note: Rhino won't even parse this, so wrap in an eval to allow Rhino
-   * testing of other cases here.
-   *
-   * Note: V8 will print '10' below, it will detect the invalid LHS case
-   * without executing the postincrement.  This seems to be contrary to
-   * the specification?
-   */
-  eval("print(++z++);");
+    /* Note: Rhino won't even parse this, so wrap in an eval to allow Rhino
+     * testing of other cases here.
+     *
+     * Note: V8 will print '10' below, it will detect the invalid LHS case
+     * without executing the postincrement.  This seems to be contrary to
+     * the specification?
+     */
+    eval("print(++z++);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 print(z);
 

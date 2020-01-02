@@ -2311,61 +2311,61 @@ FAIL 57343
 ===*/
 
 function test(s, verbose) {
-  var t;
-  var i;
-  var tmp;
+    var t;
+    var i;
+    var tmp;
 
-  try {
-    tmp = [];
+    try {
+        tmp = [];
 
-    t = s;
+        t = s;
 
-    for (i = 0; i < t.length; i++) {
-      tmp.push(t.charCodeAt(i));
+        for (i = 0; i < t.length; i++) {
+            tmp.push(t.charCodeAt(i));
+        }
+        tmp.push('->');
+
+        t = unescape(encodeURIComponent(t));
+
+        for (i = 0; i < t.length; i++) {
+            tmp.push(t.charCodeAt(i));
+        }
+        tmp.push('->');
+
+        t = decodeURIComponent(escape(t));
+
+        for (i = 0; i < t.length; i++) {
+            tmp.push(t.charCodeAt(i));
+        }
+
+        if (t === s) {
+            if (verbose) {
+                print(tmp.join(' '));
+            }
+        } else {
+            print('FAIL', tmp.join(' '));
+        }
+    } catch (e) {
+        tmp = [];
+
+        t = s;
+
+        for (i = 0; i < t.length; i++) {
+            tmp.push(t.charCodeAt(i));
+        }
+
+        print('FAIL', tmp.join(' '));
     }
-    tmp.push("->");
-
-    t = unescape(encodeURIComponent(t));
-
-    for (i = 0; i < t.length; i++) {
-      tmp.push(t.charCodeAt(i));
-    }
-    tmp.push("->");
-
-    t = decodeURIComponent(escape(t));
-
-    for (i = 0; i < t.length; i++) {
-      tmp.push(t.charCodeAt(i));
-    }
-
-    if (t === s) {
-      if (verbose) {
-        print(tmp.join(" "));
-      }
-    } else {
-      print("FAIL", tmp.join(" "));
-    }
-  } catch (e) {
-    tmp = [];
-
-    t = s;
-
-    for (i = 0; i < t.length; i++) {
-      tmp.push(t.charCodeAt(i));
-    }
-
-    print("FAIL", tmp.join(" "));
-  }
 }
 
 try {
-  var cp;
-  test("abc\u0678\u1234", true);
+    var cp;
+    test('abc\u0678\u1234', true);
 
-  // comprehensive 16-bit test
-  for (cp = 0; cp < 65536; cp++) {
-    test(String.fromCharCode(cp), cp < 256);
-  }
+    // comprehensive 16-bit test
+    for (cp = 0; cp < 65536; cp++) {
+        test(String.fromCharCode(cp), (cp < 256));
+    }
 } catch (e) {
-  print(e);
+    print(e);
 }

@@ -65,195 +65,183 @@ Error: cannot write 18
 ===*/
 
 function arrayFastWriteTest() {
-  "use strict"; // use strict mode so that write to non-writable property is not silent
-  var arr;
-  var i;
+    'use strict';  // use strict mode so that write to non-writable property is not silent
+    var arr;
+    var i;
 
-  /* Establish a few conflicting properties in Array.prototype.  Not sure
-   * why anyone would do this in practice.
-   */
+    /* Establish a few conflicting properties in Array.prototype.  Not sure
+     * why anyone would do this in practice.
+     */
 
-  Object.defineProperties(Array.prototype, {
-    "17": {
-      value: "ancestor-17",
-      writable: false,
-      enumerable: false,
-      configurable: false
-    },
-    "18": {
-      set: function() {
-        throw new Error("cannot write 18");
-      },
-      get: function() {
-        return "ancestor-getter-18";
-      },
-      enumerable: false,
-      configurable: false
+    Object.defineProperties(Array.prototype, {
+        "17": { value: "ancestor-17", writable: false, enumerable: false, configurable: false },
+        "18": { set: function () { throw new Error('cannot write 18'); },
+                get: function () { return 'ancestor-getter-18'; },
+                enumerable: false, configurable: false }
+    });
+
+    /* Here the write to '17' would need to grow the internal allocation
+     * so that the write skips the fast path.  As a result the write (and
+     * the internal resize) gets prevented.  Same happens for '18'.
+     */
+
+    print('empty array');
+    arr = [];
+    print(arr[17], arr[18]);
+
+    try {
+        arr[17] = 'foo';
+    } catch (e) {
+        print(e.name);
     }
-  });
 
-  /* Here the write to '17' would need to grow the internal allocation
-   * so that the write skips the fast path.  As a result the write (and
-   * the internal resize) gets prevented.  Same happens for '18'.
-   */
+    try {
+        arr[18] = 'foo';
+    } catch (e) {
+        print(e);
+    }
 
-  print("empty array");
-  arr = [];
-  print(arr[17], arr[18]);
+    print(arr.length, JSON.stringify(arr));
 
-  try {
-    arr[17] = "foo";
-  } catch (e) {
-    print(e.name);
-  }
+    /* Here write to '20' skips the fast path because it extends the
+     * internal allocation.  It also makes the array sparse, so that
+     * the later writes to '17' and '18' don't go through the array
+     * write fast path.  As a result Array.prototype checks are made
+     * normally.
+     */
 
-  try {
-    arr[18] = "foo";
-  } catch (e) {
-    print(e);
-  }
+    print('sparse array');
+    arr = [];
+    arr[1e6] = 123;
+    arr.length = 20;
+    arr[20] = 'quux';
+    print(arr[17], arr[18]);
 
-  print(arr.length, JSON.stringify(arr));
+    try {
+        arr[17] = 'foo';
+    } catch (e) {
+        print(e.name);
+    }
 
-  /* Here write to '20' skips the fast path because it extends the
-   * internal allocation.  It also makes the array sparse, so that
-   * the later writes to '17' and '18' don't go through the array
-   * write fast path.  As a result Array.prototype checks are made
-   * normally.
-   */
+    try {
+        arr[18] = 'foo';
+    } catch (e) {
+        print(e);
+    }
 
-  print("sparse array");
-  arr = [];
-  arr[1e6] = 123;
-  arr.length = 20;
-  arr[20] = "quux";
-  print(arr[17], arr[18]);
+    print(arr.length, JSON.stringify(arr));
 
-  try {
-    arr[17] = "foo";
-  } catch (e) {
-    print(e.name);
-  }
+    /* Here array is not sparse but internal allocation would grow,
+     * so the writes don't go through the fast path.  As a result,
+     * Array.prototype checks are made normally.
+     *
+     * NOTE: this test is fragile and may break when internal resize
+     * parameters are changed.
+     */
 
-  try {
-    arr[18] = "foo";
-  } catch (e) {
-    print(e);
-  }
+    print('dense but allocation would grow');
 
-  print(arr.length, JSON.stringify(arr));
+    arr = [];
+    for (i = 0; i < 13; i++) {
+        arr[i] = i;
+    }
 
-  /* Here array is not sparse but internal allocation would grow,
-   * so the writes don't go through the fast path.  As a result,
-   * Array.prototype checks are made normally.
-   *
-   * NOTE: this test is fragile and may break when internal resize
-   * parameters are changed.
-   */
+    try {
+        arr[17] = 'foo';
+    } catch (e) {
+        print(e.name);
+    }
 
-  print("dense but allocation would grow");
+    try {
+        arr[18] = 'foo';
+    } catch (e) {
+        print(e);
+    }
 
-  arr = [];
-  for (i = 0; i < 13; i++) {
-    arr[i] = i;
-  }
+    print(arr.length, JSON.stringify(arr));
 
-  try {
-    arr[17] = "foo";
-  } catch (e) {
-    print(e.name);
-  }
+    /* Here array is dense and allocation wouldn't grow, so fast path
+     * is active and non-compliant writes are allowed.
+     */
 
-  try {
-    arr[18] = "foo";
-  } catch (e) {
-    print(e);
-  }
+    print('dense, fast path active');
 
-  print(arr.length, JSON.stringify(arr));
+    arr = [];
+    for (i = 0; i < 16; i++) {
+        arr[i] = i;
+    }
+    arr[20] = 'quux';  // ensure allocation is large enough, and dense
 
-  /* Here array is dense and allocation wouldn't grow, so fast path
-   * is active and non-compliant writes are allowed.
-   */
+    try {
+        arr[17] = 'foo';
+    } catch (e) {
+        print(e);
+    }
 
-  print("dense, fast path active");
+    try {
+        arr[18] = 'foo';
+    } catch (e) {
+        print(e);
+    }
 
-  arr = [];
-  for (i = 0; i < 16; i++) {
-    arr[i] = i;
-  }
-  arr[20] = "quux"; // ensure allocation is large enough, and dense
+    print(arr.length, JSON.stringify(arr));
 
-  try {
-    arr[17] = "foo";
-  } catch (e) {
-    print(e);
-  }
+    /* Here array is dense and allocation wouldn't grow, but we use a
+     * string key so fast path is not activated.
+     */
 
-  try {
-    arr[18] = "foo";
-  } catch (e) {
-    print(e);
-  }
+    print('dense, but use string key');
 
-  print(arr.length, JSON.stringify(arr));
+    arr = [];
+    for (i = 0; i < 16; i++) {
+        arr[i] = i;
+    }
+    arr[20] = 'quux';  // ensure allocation is large enough
 
-  /* Here array is dense and allocation wouldn't grow, but we use a
-   * string key so fast path is not activated.
-   */
+    try {
+        arr['17'] = 'foo';
+    } catch (e) {
+        print(e.name);
+    }
 
-  print("dense, but use string key");
+    try {
+        arr['18'] = 'foo';
+    } catch (e) {
+        print(e);
+    }
 
-  arr = [];
-  for (i = 0; i < 16; i++) {
-    arr[i] = i;
-  }
-  arr[20] = "quux"; // ensure allocation is large enough
+    print(arr.length, JSON.stringify(arr));
 
-  try {
-    arr["17"] = "foo";
-  } catch (e) {
-    print(e.name);
-  }
+    /* Array is dense, writes use integer keys, but array is not
+     * extensible.
+     */
 
-  try {
-    arr["18"] = "foo";
-  } catch (e) {
-    print(e);
-  }
+    print('dense, but not extensible');
 
-  print(arr.length, JSON.stringify(arr));
+    arr = [];
+    for (i = 0; i < 16; i++) {
+        arr[i] = i;
+    }
+    arr[20] = 'quux';  // ensure allocation is large enough
+    Object.preventExtensions(arr);
 
-  /* Array is dense, writes use integer keys, but array is not
-   * extensible.
-   */
+    try {
+        arr[17] = 'foo';
+    } catch (e) {
+        print(e.name);
+    }
 
-  print("dense, but not extensible");
+    try {
+        arr[18] = 'foo';
+    } catch (e) {
+        print(e);
+    }
 
-  arr = [];
-  for (i = 0; i < 16; i++) {
-    arr[i] = i;
-  }
-  arr[20] = "quux"; // ensure allocation is large enough
-  Object.preventExtensions(arr);
-
-  try {
-    arr[17] = "foo";
-  } catch (e) {
-    print(e.name);
-  }
-
-  try {
-    arr[18] = "foo";
-  } catch (e) {
-    print(e);
-  }
-
-  print(arr.length, JSON.stringify(arr));
+    print(arr.length, JSON.stringify(arr));
 }
 
 try {
-  arrayFastWriteTest();
+    arrayFastWriteTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

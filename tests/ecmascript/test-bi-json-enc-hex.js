@@ -332,36 +332,32 @@
 ===*/
 
 function test() {
-  var i, j, len;
-  var buf;
+    var i, j, len;
+    var buf;
 
-  for (len = 0; len < 64; len++) {
-    buf = createPlainBuffer(len);
-    for (i = 0; i < buf.length; i++) {
-      buf[i] = 0x55 * i;
+    for (len = 0; len < 64; len++) {
+        buf = createPlainBuffer(len);
+        for (i = 0; i < buf.length; i++) {
+            buf[i] = 0x55 * i;
+        }
+
+        // Vary key by 1 char to ensure both aligned and unaligned output for
+        // hex data.
+        print(len, Duktape.enc('jx', { foo: buf }), Duktape.enc('jx', { foox: buf }));
     }
 
-    // Vary key by 1 char to ensure both aligned and unaligned output for
-    // hex data.
-    print(
-      len,
-      Duktape.enc("jx", { foo: buf }),
-      Duktape.enc("jx", { foox: buf })
-    );
-  }
-
-  // March all bytes through an 11 byte long buffer (2 x 4 bytes fast path, 3 leftover).
-  for (i = 0; i < 256; i++) {
-    buf = createPlainBuffer(11);
-    for (j = 0; j < 11; j++) {
-      buf[j] = i + j;
+    // March all bytes through an 11 byte long buffer (2 x 4 bytes fast path, 3 leftover).
+    for (i = 0; i < 256; i++) {
+        buf = createPlainBuffer(11);
+        for (j = 0; j < 11; j++) {
+            buf[j] = i + j;
+        }
+        print(i, Duktape.enc('jx', { foo: buf }), Duktape.enc('jx', { foox: buf }));
     }
-    print(i, Duktape.enc("jx", { foo: buf }), Duktape.enc("jx", { foox: buf }));
-  }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

@@ -14,17 +14,17 @@ done
 ===*/
 
 function test(count) {
-  if (count % 1e5 == 0) {
-    print(count);
-  }
-  if (count < 1e6) {
-    return test.apply(null, [count + 1]);
-  }
-  return "done";
+    if ((count % 1e5) == 0) {
+        print(count);
+    }
+    if (count < 1e6) {
+        return test.apply(null, [ count + 1 ]);
+    }
+    return 'done';
 }
 
 try {
-  print(test(0));
+    print(test(0));
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

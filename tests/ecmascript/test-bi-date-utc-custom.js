@@ -21,19 +21,19 @@ RangeError
  */
 
 try {
-  print(new Date(Date.UTC()).toISOString());
+    print(new Date(Date.UTC()).toISOString());
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(new Date(Date.UTC(0)).toISOString());
+    print(new Date(Date.UTC(0)).toISOString());
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(new Date(Date.UTC(0, 0)).toISOString());
+    print(new Date(Date.UTC(0,0)).toISOString());
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

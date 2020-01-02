@@ -22,11 +22,11 @@ true
 false
 ===*/
 
-var obj = { foo: 1, bar: 2 };
+var obj = {foo:1, bar:2};
 
-print("foo" in obj);
-print("bar" in obj);
-print("quux" in obj);
+print('foo' in obj);
+print('bar' in obj);
+print('quux' in obj);
 
 /*===
 true
@@ -38,4 +38,4 @@ var num = new Number(123);
 
 print(num instanceof Number);
 print(123 instanceof Number);
-print("foo" instanceof Number);
+print('foo' instanceof Number);

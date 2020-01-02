@@ -7,18 +7,18 @@ true
 ===*/
 
 function arrayBufferMethodTest() {
-  var pb;
+    var pb;
 
-  pb = createPlainBuffer("abcdefghijklmnop");
+    pb = createPlainBuffer('abcdefghijklmnop');
 
-  // ArrayBuffer only has .isView()
-  print("- isView");
-  print(ArrayBuffer.isView(pb));
+    // ArrayBuffer only has .isView()
+    print('- isView');
+    print(ArrayBuffer.isView(pb));
 }
 
 try {
-  print("ArrayBuffer methods");
-  arrayBufferMethodTest();
+    print('ArrayBuffer methods');
+    arrayBufferMethodTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

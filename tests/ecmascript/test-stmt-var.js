@@ -7,22 +7,22 @@
  */
 
 /* Test value for scope tests. */
-var globalValue = "this is global";
+var globalValue = 'this is global';
 
 /* Test variable declaration inside a dummy function. */
 function testDeclFunc(decl) {
-  var func;
-  try {
-    func = eval("(function dummy() {\n" + decl + "\n})");
-    print(JSON.stringify(decl) + " -> success");
+    var func;
     try {
-      print("func call -> " + func());
+        func = eval('(function dummy() {\n' + decl + '\n})');
+        print(JSON.stringify(decl) + ' -> success');
+        try {
+            print('func call -> ' + func());
+        } catch (e) {
+            print('func call -> ' + e.name);
+        }
     } catch (e) {
-      print("func call -> " + e.name);
+        print(JSON.stringify(decl) + ' -> ' + e.name);
     }
-  } catch (e) {
-    print(JSON.stringify(decl) + " -> " + e.name);
-  }
 }
 
 /*===
@@ -69,57 +69,51 @@ func call -> undefined
 ===*/
 
 function variableDeclarationTest() {
-  var test = testDeclFunc;
+    var test = testDeclFunc;
 
-  /* Variable declaration cannot have zero variable. */
-  test("var;");
+    /* Variable declaration cannot have zero variable. */
+    test('var;');
 
-  /* Various lengths, with and without initializer, various whitespace. */
-  test("var x;");
-  test("var x = 123;");
-  test("var x,y;");
-  test("var x = 123, y=234;");
-  test("var x, y = 234,z,w=345, foo = 456, bar, quux;");
+    /* Various lengths, with and without initializer, various whitespace. */
+    test('var x;');
+    test('var x = 123;');
+    test('var x,y;');
+    test('var x = 123, y=234;');
+    test('var x, y = 234,z,w=345, foo = 456, bar, quux;');
 
-  /* Newlines within declaration are OK. */
-  test("var\n" + "  x = 123\n" + " ,y = 234;");
+    /* Newlines within declaration are OK. */
+    test('var\n' +
+         '  x = 123\n' +
+         ' ,y = 234;');
 
-  /* Semicolon insertion. */
-  test(
-    "var\n" +
-      "  x = 123\n" +
-      " ,y = 234\n" +
-      'print("howdy");\n' +
-      'return "foo";'
-  );
+    /* Semicolon insertion. */
+    test('var\n' +
+         '  x = 123\n' +
+         ' ,y = 234\n' +
+         'print("howdy");\n' +
+         'return "foo";');
 
-  /* Variable initializers are executed in sequence.  All bindings in
-   * the function exist from the beginning and have 'undefined' values
-   * until assigned to.  All bindings in the a function shadow any outer
-   * values of the same name.
-   */
+    /* Variable initializers are executed in sequence.  All bindings in
+     * the function exist from the beginning and have 'undefined' values
+     * until assigned to.  All bindings in the a function shadow any outer
+     * values of the same name.
+     */
 
-  test('var x = globalValue, y = x; print("x:", x, "y:", y);');
-  test('var x = globalValue; var y = x; print("x:", x, "y:", y);');
+    test('var x = globalValue, y = x; print("x:", x, "y:", y);');
+    test('var x = globalValue; var y = x; print("x:", x, "y:", y);');
 
-  test('var y = x, x = globalValue; print("x:", x, "y:", y);');
-  test('var y = x; var x = globalValue; print("x:", x, "y:", y);');
+    test('var y = x, x = globalValue; print("x:", x, "y:", y);');
+    test('var y = x; var x = globalValue; print("x:", x, "y:", y);');
 
-  test('var x = globalValue; print("x:", x, "y:", y); var y = x;');
+    test('var x = globalValue; print("x:", x, "y:", y); var y = x;');
 
-  test(
-    'var x = globalValue; print("x:", x, "globalValue:", globalValue); var globalValue = "shadow";'
-  );
-  test(
-    'var x = globalValue; var globalValue = "shadow"; print("x:", x, "globalValue:", globalValue);'
-  );
-  test(
-    'var globalValue = "shadow"; var x = globalValue; print("x:", x, "globalValue:", globalValue);'
-  );
+    test('var x = globalValue; print("x:", x, "globalValue:", globalValue); var globalValue = "shadow";');
+    test('var x = globalValue; var globalValue = "shadow"; print("x:", x, "globalValue:", globalValue);');
+    test('var globalValue = "shadow"; var x = globalValue; print("x:", x, "globalValue:", globalValue);');
 }
 
 try {
-  variableDeclarationTest();
+    variableDeclarationTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

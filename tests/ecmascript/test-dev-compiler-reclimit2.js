@@ -17,9 +17,8 @@
 ---*/
 
 function rep(n, c) {
-  var a = [];
-  a.length = n + 1;
-  return a.join(c);
+    var a = []; a.length = n + 1;
+    return a.join(c);
 }
 
 /*===
@@ -30,26 +29,21 @@ RangeError
 /* Expression recursion. */
 
 try {
-  // expression recursion limit does not prevent this
-  print(
-    eval(
-      "(((((((((((((((((((((((((((((((((((((((((((((((" +
-        "'test'" +
-        ")))))))))))))))))))))))))))))))))))))))))))))))"
-    )
-  );
-  //         111111111122222222223333333333444444444455555555555
-  //123456789012345678901234567890123456789012345678901234567890
+    // expression recursion limit does not prevent this
+    print(eval("(((((((((((((((((((((((((((((((((((((((((((((((" + "'test'" +
+               ")))))))))))))))))))))))))))))))))))))))))))))))"));
+              //         111111111122222222223333333333444444444455555555555
+              //123456789012345678901234567890123456789012345678901234567890
 } catch (e) {
-  print(e.name, e);
+    print(e.name, e);
 }
 
 try {
-  // expression recursion limit prevents this, with both shallow/deep stacks
-  var inp = rep(2500, "(") + "'never here'" + rep(2500, ")");
-  print(eval(inp));
+    // expression recursion limit prevents this, with both shallow/deep stacks
+    var inp = rep(2500, '(') + "'never here'" + rep(2500, ')');
+    print(eval(inp));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -60,26 +54,21 @@ RangeError
 /* Statement recursion. */
 
 try {
-  // statement recursion limit does not prevent this
-  print(
-    eval(
-      "{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{" +
-        "'test'" +
-        "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}"
-    )
-  );
-  //         111111111122222222223333333333444444444455555555555
-  //123456789012345678901234567890123456789012345678901234567890
+    // statement recursion limit does not prevent this
+    print(eval("{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{" + "'test'" +
+               "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}"));
+              //         111111111122222222223333333333444444444455555555555
+              //123456789012345678901234567890123456789012345678901234567890
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  // statement recursion limit prevents this, with both shallow/deep stacks
-  var inp = rep(2500, "{") + "'test'" + rep(2500, "}");
-  print(eval(inp));
+    // statement recursion limit prevents this, with both shallow/deep stacks
+    var inp = rep(2500, '{') + "'test'" + rep(2500, '}');
+    print(eval(inp));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -94,14 +83,14 @@ test
 var ignore;
 
 function buildFunc(n) {
-  var res = "function(){}";
-  var i;
+    var res = 'function(){}';
+    var i;
 
-  for (i = 0; i < n; i++) {
-    res = "function(){ var f=" + res + "; }";
-  }
+    for (i = 0; i < n; i++) {
+        res = 'function(){ var f=' + res + '; }'
+    }
 
-  return res;
+    return res;
 }
 
 print(buildFunc(1));
@@ -109,15 +98,15 @@ print(buildFunc(2));
 print(buildFunc(3));
 
 try {
-  // function recursion limit does not prevent this
+    // function recursion limit does not prevent this
 
-  // NOTE: because inner functions are parsed and re-parsed an
-  // exponentially number of times at the moment, this takes a
-  // long time
+    // NOTE: because inner functions are parsed and re-parsed an
+    // exponentially number of times at the moment, this takes a
+    // long time
 
-  print(eval("ignore = " + buildFunc(15) + "; 'test'"));
+    print(eval("ignore = " + buildFunc(15) + "; 'test'"));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /* The test for function recursion limit is disabled now.  The code

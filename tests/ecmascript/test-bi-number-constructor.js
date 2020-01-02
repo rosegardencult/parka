@@ -16,59 +16,52 @@ arg valueOf
 number 321 [object Number]
 ===*/
 
-print("function");
+print('function');
 
 function functionTest() {
-  var t;
+    var t;
 
-  function test(x, nargs) {
-    try {
-      if (nargs === 0) {
-        t = Number();
-      } else {
-        t = Number(x);
-      }
-      print(typeof t, t, Object.prototype.toString.call(t));
-    } catch (e) {
-      print(e.name);
+    function test(x, nargs) {
+        try {
+            if (nargs === 0) {
+                t = Number();
+            } else {
+                t = Number(x);
+            }
+            print(typeof t, t, Object.prototype.toString.call(t));
+        } catch (e) {
+            print(e.name);
+        }
     }
-  }
 
-  // no arg given should be treated as +0
-  t = Number();
-  print(typeof t, t);
+    // no arg given should be treated as +0
+    t = Number(); print(typeof t, t);
 
-  // other basic argument types
-  test(undefined);
-  test(null);
-  test(true);
-  test(false);
-  test(123);
-  test("");
-  test("123");
-  test("  123foo");
-  test("foo");
-  test([1, 2]);
-  test({ foo: 1, bar: 2 });
+    // other basic argument types
+    test(undefined);
+    test(null);
+    test(true);
+    test(false);
+    test(123);
+    test('');
+    test('123');
+    test('  123foo');
+    test('foo');
+    test([1,2]);
+    test({ foo: 1, bar: 2 });
 
-  // coercion side effect
+    // coercion side effect
 
-  test({
-    toString: function() {
-      print("arg toString");
-      return "123";
-    },
-    valueOf: function() {
-      print("arg valueOf");
-      return "321";
-    }
-  });
+    test({
+        toString: function() { print('arg toString'); return '123'; },
+        valueOf: function() { print('arg valueOf'); return '321'; }
+    });
 }
 
 try {
-  functionTest();
+    functionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -89,64 +82,54 @@ arg valueOf
 object 321 [object Number] true true
 ===*/
 
-print("constructor");
+print('constructor');
 
 function constructorTest() {
-  var t;
+    var t;
 
-  function test(x, nargs) {
-    try {
-      if (nargs === 0) {
-        t = new Number();
-      } else {
-        t = new Number(x);
-      }
-      print(
-        typeof t,
-        t,
-        Object.prototype.toString.call(t),
-        Object.getPrototypeOf(t) === Number.prototype,
-        Object.isExtensible(t)
-      );
-    } catch (e) {
-      print(e.name);
+    function test(x, nargs) {
+        try {
+            if (nargs === 0) {
+                t = new Number();
+            } else {
+                t = new Number(x);
+            }
+            print(typeof t, t, Object.prototype.toString.call(t),
+                  Object.getPrototypeOf(t) === Number.prototype,
+                  Object.isExtensible(t));
+        } catch (e) {
+            print(e.name);
+        }
     }
-  }
 
-  // no arg given should be treated as +0
-  test(undefined, 0);
+    // no arg given should be treated as +0
+    test(undefined, 0);
 
-  // other basic argument types
-  test(undefined);
-  test(null);
-  test(true);
-  test(false);
-  test(123);
-  test("");
-  test("123");
-  test("  123foo");
-  test("foo");
-  test([1, 2]);
-  test({ foo: 1, bar: 2 });
+    // other basic argument types
+    test(undefined);
+    test(null);
+    test(true);
+    test(false);
+    test(123);
+    test('');
+    test('123');
+    test('  123foo');
+    test('foo');
+    test([1,2]);
+    test({ foo: 1, bar: 2 });
 
-  // coercion side effect
+    // coercion side effect
 
-  test({
-    toString: function() {
-      print("arg toString");
-      return "123";
-    },
-    valueOf: function() {
-      print("arg valueOf");
-      return "321";
-    }
-  });
+    test({
+        toString: function() { print('arg toString'); return '123'; },
+        valueOf: function() { print('arg valueOf'); return '321'; }
+    });
 }
 
 try {
-  constructorTest();
+    constructorTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -166,22 +149,22 @@ false
  * Number.prototype has the right attributes.
  */
 
-print("prototype");
+print('prototype');
 
 function prototypeTest() {
-  var orig_prototype = Number.prototype;
-  var repl_prototype = { foo: "bar" };
-  Number.prototype = repl_prototype; /* this write will fail silently */
+    var orig_prototype = Number.prototype;
+    var repl_prototype = { "foo": "bar" };
+    Number.prototype = repl_prototype;  /* this write will fail silently */
 
-  var num = new Number(123);
-  print(num.foo);
-  print(Object.getPrototypeOf(num) === Number.prototype);
-  print(Object.getPrototypeOf(num) === orig_prototype);
-  print(Object.getPrototypeOf(num) === repl_prototype);
+    var num = new Number(123);
+    print(num.foo);
+    print(Object.getPrototypeOf(num) === Number.prototype);
+    print(Object.getPrototypeOf(num) === orig_prototype);
+    print(Object.getPrototypeOf(num) === repl_prototype);
 }
 
 try {
-  prototypeTest();
+    prototypeTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

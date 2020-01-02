@@ -39,24 +39,24 @@ Object.getOwnPropertyNames: length
 /* Test enum with one non-8-bit view. */
 
 function typedArrayEnumTest() {
-  var buf = new ArrayBuffer(64);
-  var view = new Uint32Array(buf, 4, 8);
+    var buf = new ArrayBuffer(64);
+    var view = new Uint32Array(buf, 4, 8);
 
-  for (var k in view) {
-    print("for-in:", k);
-  }
+    for (var k in view) {
+        print('for-in:', k);
+    }
 
-  Object.keys(view).forEach(function(k) {
-    print("Object.keys:", k);
-  });
+    Object.keys(view).forEach(function (k) {
+        print('Object.keys:', k);
+    });
 
-  Object.getOwnPropertyNames(view).forEach(function(k) {
-    print("Object.getOwnPropertyNames:", k);
-  });
+    Object.getOwnPropertyNames(view).forEach(function (k) {
+        print('Object.getOwnPropertyNames:', k);
+    });
 }
 
 try {
-  typedArrayEnumTest();
+    typedArrayEnumTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

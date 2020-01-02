@@ -58,11 +58,11 @@ match: 123
 
 re = /[x-{]/i;
 for (i = 0; i < 65536; i++) {
-  t = String.fromCharCode(i);
-  t = re.exec(t);
-  if (t != null) {
-    print("match: " + i);
-  }
+    t = String.fromCharCode(i);
+    t = re.exec(t);
+    if (t != null) {
+        print('match: ' + i);
+    }
 }
 
 /* XXX: add more canonicalization tests */

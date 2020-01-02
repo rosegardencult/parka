@@ -14,25 +14,22 @@ still here
 ===*/
 
 function test() {
-  // Use a native call in the recursion to hit the native recursion
-  // limit before call stack limit.
+    // Use a native call in the recursion to hit the native recursion
+    // limit before call stack limit.
 
-  function f() {
-    [1].map(f);
-    return "dummy";
-  }
+    function f() { [1].map(f); return 'dummy'; }
 
-  try {
-    f();
-  } catch (e) {
-    print(e.name + ": " + e.message);
-  }
+    try {
+        f();
+    } catch (e) {
+        print(e.name + ': ' + e.message);
+    }
 
-  print("still here");
+    print('still here');
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

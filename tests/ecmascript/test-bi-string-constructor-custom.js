@@ -24,44 +24,44 @@ object
 ===*/
 
 function test() {
-  var buf, ptr, str;
+    var buf, ptr, str;
 
-  // Buffer values
+    // Buffer values
 
-  buf = Duktape.dec("hex", "666f6f"); // plain buffer value
-  print(typeof buf);
-  str = String(buf); // since Duktape 2.x coerces (usually) to '[object Uint8Array]'
-  print(typeof str, str.length, str);
-  str = new String(buf);
-  print(typeof str, str.length, str);
+    buf = Duktape.dec('hex', '666f6f');  // plain buffer value
+    print(typeof buf);
+    str = String(buf);  // since Duktape 2.x coerces (usually) to '[object Uint8Array]'
+    print(typeof str, str.length, str);
+    str = new String(buf);
+    print(typeof str, str.length, str);
 
-  buf = new Uint8Array([0x66, 0x6f, 0x6f]).buffer; // full ArrayBuffer object
-  print(typeof buf);
-  str = String(buf);
-  print(typeof str, str.length, str);
-  str = new String(buf);
-  print(typeof str, str.length, str);
+    buf = new Uint8Array([ 0x66, 0x6f, 0x6f ]).buffer;  // full ArrayBuffer object
+    print(typeof buf);
+    str = String(buf);
+    print(typeof str, str.length, str);
+    str = new String(buf);
+    print(typeof str, str.length, str);
 
-  // Pointer values: don't print the result because the result length,
-  // contents and even format varies.
+    // Pointer values: don't print the result because the result length,
+    // contents and even format varies.
 
-  ptr = Duktape.Pointer("dummy"); // plain pointer value
-  print(typeof ptr);
-  str = String(ptr);
-  print(typeof str);
-  str = new String(ptr);
-  print(typeof str);
+    ptr = Duktape.Pointer('dummy');  // plain pointer value
+    print(typeof ptr);
+    str = String(ptr);
+    print(typeof str);
+    str = new String(ptr);
+    print(typeof str);
 
-  ptr = new Duktape.Pointer("dummy"); // full pointer object
-  print(typeof ptr);
-  str = String(ptr);
-  print(typeof str);
-  str = new String(ptr);
-  print(typeof str);
+    ptr = new Duktape.Pointer('dummy');  // full pointer object
+    print(typeof ptr);
+    str = String(ptr);
+    print(typeof str);
+    str = new String(ptr);
+    print(typeof str);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

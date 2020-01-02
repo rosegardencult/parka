@@ -16,16 +16,16 @@
 ===*/
 
 function nodejsBufferClassTest() {
-  // Object.prototype.toString() prints "[object <classname>]" so use
-  // it to indicate class.
+    // Object.prototype.toString() prints "[object <classname>]" so use
+    // it to indicate class.
 
-  print(Object.prototype.toString.call(Buffer));
-  print(Object.prototype.toString.call(Buffer.prototype));
-  print(Object.prototype.toString.call(new Buffer(123)));
+    print(Object.prototype.toString.call(Buffer));
+    print(Object.prototype.toString.call(Buffer.prototype));
+    print(Object.prototype.toString.call(new Buffer(123)));
 }
 
 try {
-  nodejsBufferClassTest();
+    nodejsBufferClassTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

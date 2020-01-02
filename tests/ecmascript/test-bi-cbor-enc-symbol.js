@@ -7,7 +7,7 @@ a0
 ===*/
 
 try {
-  print(Duktape.enc("hex", CBOR.encode(Symbol("foo"))));
+    print(Duktape.enc('hex', CBOR.encode(Symbol('foo'))));
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

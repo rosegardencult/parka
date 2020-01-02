@@ -24,45 +24,31 @@ configurable true boolean false
 ===*/
 
 function test() {
-  var obj = {};
-  var pd;
+    var obj = {};
+    var pd;
 
-  Object.defineProperty(obj, "prop1", {
-    set: function() {
-      print("prop1 set");
+    Object.defineProperty(obj, 'prop1', {
+        set: function() { print('prop1 set'); }
+    });
+
+    Object.defineProperty(obj, 'prop2', {
+        get: function() { print('prop2 get'); }
+    });
+
+    function printDesc(prop) {
+        pd = Object.getOwnPropertyDescriptor(obj, prop);
+        print('set', 'set' in pd, typeof pd.set);
+        print('get', 'get' in pd, typeof pd.get);
+        print('enumerable', 'enumerable' in pd, typeof pd.enumerable, pd.enumerable);
+        print('configurable', 'configurable' in pd, typeof pd.configurable, pd.configurable);
     }
-  });
 
-  Object.defineProperty(obj, "prop2", {
-    get: function() {
-      print("prop2 get");
-    }
-  });
-
-  function printDesc(prop) {
-    pd = Object.getOwnPropertyDescriptor(obj, prop);
-    print("set", "set" in pd, typeof pd.set);
-    print("get", "get" in pd, typeof pd.get);
-    print(
-      "enumerable",
-      "enumerable" in pd,
-      typeof pd.enumerable,
-      pd.enumerable
-    );
-    print(
-      "configurable",
-      "configurable" in pd,
-      typeof pd.configurable,
-      pd.configurable
-    );
-  }
-
-  printDesc("prop1");
-  printDesc("prop2");
+    printDesc('prop1');
+    printDesc('prop2');
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

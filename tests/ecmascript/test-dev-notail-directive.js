@@ -9,46 +9,42 @@ test2: act test2func test2 useNotailDirectiveTest
 ===*/
 
 function test1func() {
-  // tailcall, call stack indices:
-  // -1 = Duktape.act, -2 = test1func, -3 = useNotailDirectiveTest
-  // Duktape.act.name is not printed directly because it may be a lightfunc
-  print(
-    "test1:",
-    Duktape.act(-1).function === Duktape.act ? "act" : "???",
-    Duktape.act(-2).function.name,
-    Duktape.act(-3).function.name
-  );
+    // tailcall, call stack indices:
+    // -1 = Duktape.act, -2 = test1func, -3 = useNotailDirectiveTest
+    // Duktape.act.name is not printed directly because it may be a lightfunc
+    print('test1:',
+          Duktape.act(-1).function === Duktape.act ? 'act' : '???',
+          Duktape.act(-2).function.name,
+          Duktape.act(-3).function.name);
 }
 
 function test1() {
-  return test1func();
+    return test1func();
 }
 
 function test2func() {
-  "use duk notail";
+    'use duk notail';
 
-  // no tailcall, call stack indices:
-  // -1 = Duktape.act, -2 = test1func, -3 = test1, -4 = useNotailDirectiveTest
-  // Duktape.act.name is not printed directly because it may be a lightfunc
-  print(
-    "test2:",
-    Duktape.act(-1).function === Duktape.act ? "act" : "???",
-    Duktape.act(-2).function.name,
-    Duktape.act(-3).function.name,
-    Duktape.act(-4).function.name
-  );
+    // no tailcall, call stack indices:
+    // -1 = Duktape.act, -2 = test1func, -3 = test1, -4 = useNotailDirectiveTest
+    // Duktape.act.name is not printed directly because it may be a lightfunc
+    print('test2:',
+          Duktape.act(-1).function === Duktape.act ? 'act' : '???',
+          Duktape.act(-2).function.name,
+          Duktape.act(-3).function.name,
+          Duktape.act(-4).function.name);
 }
 function test2() {
-  return test2func();
+    return test2func();
 }
 
 function useNotailDirectiveTest() {
-  test1();
-  test2();
+    test1();
+    test2();
 }
 
 try {
-  useNotailDirectiveTest();
+    useNotailDirectiveTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

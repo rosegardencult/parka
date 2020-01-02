@@ -57,58 +57,47 @@ string "<U+0004><U+0000><U+0005><U+0000><U+0006><U+0000><U+0007><U+0000>"
 ===*/
 
 function test() {
-  var arrayBuf = new ArrayBuffer(4);
-  var u8 = new Uint8Array(arrayBuf);
-  u8[0] = 0xfe; // avoid 0xFF -> interpreted as a symbol
-  u8[1] = 0xee;
-  u8[2] = 0xdd;
-  u8[3] = 0xcc;
+    var arrayBuf = new ArrayBuffer(4);
+    var u8 = new Uint8Array(arrayBuf);
+    u8[0] = 0xfe;  // avoid 0xFF -> interpreted as a symbol
+    u8[1] = 0xee;
+    u8[2] = 0xdd;
+    u8[3] = 0xcc;
 
-  [
-    // All of these are rejected
-    void 0,
-    null,
-    true,
-    false,
-    "foo",
-    "123",
-    -1,
-    0,
-    1,
-    4.4,
-    4.5,
-    4.6,
-    128,
-    "foo\ucafe\ufacebar",
-    [0xde, 0xad, 0xbe, 0xef, "123", "234", "1234"],
-    { length: 4, 0: 100, 1: 101, 2: 102, 3: 103, 4: 104 },
-    { 0: 100, 1: 101 },
+    [
+        // All of these are rejected
+        void 0, null, true, false, 'foo', '123',
+        -1, 0, 1, 4.4, 4.5, 4.6, 128,
+        'foo\ucafe\ufacebar',
+        [ 0xde, 0xad, 0xbe, 0xef, '123', '234', '1234' ],
+        { length: 4, 0: 100, 1: 101, 2: 102, 3: 103, 4: 104 },
+        { 0: 100, 1: 101 },
 
-    // Plain buffers are accepted
-    Duktape.dec("hex", "deadbeef"),
+        // Plain buffers are accepted
+        Duktape.dec('hex', 'deadbeef'),
 
-    // Buffer objects are accepted, active byte slice is used
-    // (not element slice)
-    arrayBuf,
-    new Buffer("abcd"),
-    new Uint8Array([0, 1, 2, 0xfe, 0xff]),
-    new Int32Array([-0x02020202, 0x12345678, 0xcafeface]),
-    new Float64Array([0.0, 0.1, 0.4, 0.5, 0.6, 1.0, 1.4, 1.5, 1.6, 1000]),
-    new Uint16Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).subarray(3, 7)
-  ].forEach(function(v) {
-    try {
-      var p = String.fromBufferRaw(v);
-      print(Duktape.enc("jx", p));
-      print(typeof p, safeEscapeString(p));
-      print(Duktape.enc("jx", stringToBuffer(p)));
-    } catch (e) {
-      print(e.name);
-    }
-  });
+        // Buffer objects are accepted, active byte slice is used
+        // (not element slice)
+        arrayBuf,
+        new Buffer('abcd'),
+        new Uint8Array([ 0, 1, 2, 0xfe, 0xff ]),
+        new Int32Array([ -0x02020202, 0x12345678, 0xcafeface ]),
+        new Float64Array([ 0.0, 0.1, 0.4, 0.5, 0.6, 1.0, 1.4, 1.5, 1.6, 1000 ]),
+        new Uint16Array([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]).subarray(3, 7)
+    ].forEach(function (v) {
+        try {
+            var p = String.fromBufferRaw(v);
+            print(Duktape.enc('jx', p));
+            print(typeof p, safeEscapeString(p));
+            print(Duktape.enc('jx', stringToBuffer(p)));
+        } catch (e) {
+            print(e.name);
+        }
+    });
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

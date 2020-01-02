@@ -12,23 +12,23 @@ hello from eval!
 ===*/
 
 function test() {
-  var code = 'print("hello from eval!");';
-  var f;
+    var code = 'print("hello from eval!");';
+    var f;
 
-  print("apply");
-  eval.apply(this, [code]);
+    print('apply');
+    eval.apply(this, [ code ]);
 
-  print("call");
-  eval.call(this, code);
+    print('call');
+    eval.call(this, code);
 
-  /* Also test indirect use of eval through bind() */
-  print("bind");
-  f = eval.bind(this, code);
-  f();
+    /* Also test indirect use of eval through bind() */
+    print('bind');
+    f = eval.bind(this, code);
+    f();
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

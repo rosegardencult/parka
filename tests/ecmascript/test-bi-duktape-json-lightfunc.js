@@ -21,39 +21,39 @@ string {"foo":123,"bar":{"_func":true}}
 ===*/
 
 function test() {
-  // Note: rely on Math.cos being a lightfunc
-  var lf = Math.cos;
+    // Note: rely on Math.cos being a lightfunc
+    var lf = Math.cos;
 
-  function json(x) {
-    var res = JSON.stringify(x);
-    print(typeof res, res);
-  }
+    function json(x) {
+        var res = JSON.stringify(x);
+        print(typeof res, res);
+    }
 
-  function jx(x) {
-    var res = Duktape.enc("jx", x);
-    print(typeof res, res);
-  }
+    function jx(x) {
+        var res = Duktape.enc('jx', x);
+        print(typeof res, res);
+    }
 
-  function jc(x) {
-    var res = Duktape.enc("jc", x);
-    print(typeof res, res);
-  }
+    function jc(x) {
+        var res = Duktape.enc('jc', x);
+        print(typeof res, res);
+    }
 
-  json(lf);
-  json([1, 2, 3, lf, 4, 5, 6]);
-  json({ foo: 123, bar: lf });
+    json(lf);
+    json([ 1, 2, 3, lf, 4, 5, 6 ]);
+    json({ foo: 123, bar: lf });
 
-  jx(lf);
-  jx([1, 2, 3, lf, 4, 5, 6]);
-  jx({ foo: 123, bar: lf });
+    jx(lf);
+    jx([ 1, 2, 3, lf, 4, 5, 6 ]);
+    jx({ foo: 123, bar: lf });
 
-  jc(lf);
-  jc([1, 2, 3, lf, 4, 5, 6]);
-  jc({ foo: 123, bar: lf });
+    jc(lf);
+    jc([ 1, 2, 3, lf, 4, 5, 6 ]);
+    jc({ foo: 123, bar: lf });
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

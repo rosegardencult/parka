@@ -41,100 +41,98 @@ input length: 116
 ===*/
 
 function jsonClipTest(input, parser) {
-  var i, j;
-  var t, buf;
+    var i, j;
+    var t, buf;
 
-  print("input length: " + input.length);
+    print('input length: ' + input.length);
 
-  for (i = 0; i <= input.length; i++) {
-    for (j = -1; j < 256; j++) {
-      try {
-        t = input.substring(0, i);
-        if (j >= 0) {
-          buf = createPlainBuffer(1);
-          buf[0] = j;
-          t = t + bufferToStringRaw(buf);
+    for (i = 0; i <= input.length; i++) {
+        for (j = -1; j < 256; j++) {
+            try {
+                t = input.substring(0, i);
+                if (j >= 0) {
+                    buf = createPlainBuffer(1);
+                    buf[0] = j;
+                    t = t + bufferToStringRaw(buf);
+                }
+                if (parser === 'json') {
+                    t = JSON.parse(t);
+                } else if (parser === 'jx') {
+                    t = Duktape.dec('jx', t);
+                } else if (parser === 'jc') {
+                    t = Duktape.dec('jc', t);
+                } else {
+                    throw new Error('invalid parser: ' + parser);
+                }
+            } catch (e) {
+                if ((j == 255 || (j & 0xc0) == 0x80) && e.name === 'TypeError') {
+                    // if initial byte starts a Symbol, TypeError is expected
+                } else if ((i == input.length && j == -1) || e.name !== 'SyntaxError') {
+                    // print error if original input doesn't parse (expected for some tests)
+                    print(i, j, e.name);
+                }
+            }
         }
-        if (parser === "json") {
-          t = JSON.parse(t);
-        } else if (parser === "jx") {
-          t = Duktape.dec("jx", t);
-        } else if (parser === "jc") {
-          t = Duktape.dec("jc", t);
-        } else {
-          throw new Error("invalid parser: " + parser);
-        }
-      } catch (e) {
-        if ((j == 255 || (j & 0xc0) == 0x80) && e.name === "TypeError") {
-          // if initial byte starts a Symbol, TypeError is expected
-        } else if ((i == input.length && j == -1) || e.name !== "SyntaxError") {
-          // print error if original input doesn't parse (expected for some tests)
-          print(i, j, e.name);
-        }
-      }
     }
-  }
 }
 
 function test() {
-  var inp;
-  var i, j;
+    var inp;
+    var i, j;
 
-  // Exercise:
-  // - all types
-  // - all escapes
-  inp =
-    "{ " +
-    '"types": [ null, true, false, 123, 123.456, 123e3, "", "val", { "foo": "bar" }, [ 1, 2, 3 ] ], ' +
-    '"escapes": "foo\\t\\n\\r\\f\\b\\u1234\\ubeef\\u0000bar", ' +
-    '"emptyobj": {}, ' +
-    '"emptyarr": [], ' +
-    '"dummy":"value" ' +
-    "}";
-  jsonClipTest(inp, "json");
-  jsonClipTest(inp, "jx");
-  jsonClipTest(inp, "jc");
+    // Exercise:
+    // - all types
+    // - all escapes
+    inp = '{ ' +
+          '"types": [ null, true, false, 123, 123.456, 123e3, "", "val", { "foo": "bar" }, [ 1, 2, 3 ] ], ' +
+          '"escapes": "foo\\t\\n\\r\\f\\b\\u1234\\ubeef\\u0000bar", ' +
+          '"emptyobj": {}, ' +
+          '"emptyarr": [], ' +
+          '"dummy":"value" ' +
+          '}';
+    jsonClipTest(inp, 'json');
+    jsonClipTest(inp, 'jx');
+    jsonClipTest(inp, 'jc');
 
-  // Exercise:
-  // - All codepoints 0x00...0xff
-  // - All UTF-8 encoding lengths
+    // Exercise:
+    // - All codepoints 0x00...0xff
+    // - All UTF-8 encoding lengths
 
-  for (i = 0; i < 256; i++) {
-    inp += String.fromCharCode(i);
-  }
-  inp += "\u0123\ubeef"; // 2 and 3 byte
-  inp = JSON.stringify(inp);
-  jsonClipTest(inp, "json");
-  jsonClipTest(inp, "jx");
-  jsonClipTest(inp, "jc");
+    for (i = 0; i < 256; i++) {
+        inp += String.fromCharCode(i);
+    }
+    inp += '\u0123\ubeef';  // 2 and 3 byte
+    inp = JSON.stringify(inp);
+    jsonClipTest(inp, 'json');
+    jsonClipTest(inp, 'jx');
+    jsonClipTest(inp, 'jc');
 
-  // Exercise:
-  // - Control character (< 0x20) unescaped in the middle of a string
-  inp = '"foo\u0013"';
-  jsonClipTest(inp, "json"); // won't parse
-  jsonClipTest(inp, "jx");
-  jsonClipTest(inp, "jc");
+    // Exercise:
+    // - Control character (< 0x20) unescaped in the middle of a string
+    inp = '"foo\u0013"';
+    jsonClipTest(inp, 'json');  // won't parse
+    jsonClipTest(inp, 'jx');
+    jsonClipTest(inp, 'jc');
 
-  // Exercise:
-  // - JX escapes
-  inp = '"foo\\x00\\xff\\Udeadbeefbar"';
-  jsonClipTest(inp, "jx");
+    // Exercise:
+    // - JX escapes
+    inp = '"foo\\x00\\xff\\Udeadbeefbar"';
+    jsonClipTest(inp, 'jx');
 
-  // Exercise:
-  // - JX custom syntax
-  inp =
-    "{ " +
-    "plainkey: true, " +
-    "buffer: |deadbeef|, " +
-    "pointer: (0xdeadbeef), " +
-    "numbers: [ Infinity, -Infinity, NaN ], " +
-    'dummy: "value" ' +
-    "}";
-  jsonClipTest(inp, "jx"); // causes TypeErrors for decode failures
+    // Exercise:
+    // - JX custom syntax
+    inp = '{ ' +
+          'plainkey: true, ' +
+          'buffer: |deadbeef|, ' +
+          'pointer: (0xdeadbeef), ' +
+          'numbers: [ Infinity, -Infinity, NaN ], ' +
+          'dummy: "value" ' +
+          '}';
+    jsonClipTest(inp, 'jx');  // causes TypeErrors for decode failures
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

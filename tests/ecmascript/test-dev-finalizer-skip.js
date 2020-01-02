@@ -21,34 +21,34 @@ done
 ===*/
 
 function createGarbage() {
-  var temp = function tempFunc() {};
-  Duktape.fin(temp, function(v) {
-    print("finalizer for temp called");
-  });
+    var temp = function tempFunc() {};
+    Duktape.fin(temp, function (v) {
+        print('finalizer for temp called');
+    });
 
-  // Once we return, 'temp' exists only in a reference loop by itself
-  // and won't be collected by refcounting.
+    // Once we return, 'temp' exists only in a reference loop by itself
+    // and won't be collected by refcounting.
 }
 
 try {
-  // Forced GC to ensure GC is "in sync"
-  print("gc before creating garbage");
-  Duktape.gc(8);
+    // Forced GC to ensure GC is "in sync"
+    print('gc before creating garbage');
+    Duktape.gc(8);
 
-  createGarbage();
+    createGarbage();
 
-  // Mark-and-sweep without finalizers.  (1 << 3) = 8 is a flag from
-  // duk_heap.h (this is a fragile dependency):
+    // Mark-and-sweep without finalizers.  (1 << 3) = 8 is a flag from
+    // duk_heap.h (this is a fragile dependency):
 
-  print("gc without finalizers");
-  Duktape.gc(8);
+    print('gc without finalizers');
+    Duktape.gc(8);
 
-  // Mark-and-sweep with finalizers, should run the pending finalizers.
+    // Mark-and-sweep with finalizers, should run the pending finalizers.
 
-  print("gc with finalizers");
-  Duktape.gc();
+    print('gc with finalizers');
+    Duktape.gc();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
-print("done");
+print('done');

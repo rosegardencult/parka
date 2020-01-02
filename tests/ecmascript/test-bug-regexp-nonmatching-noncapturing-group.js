@@ -22,29 +22,29 @@ true
 ===*/
 
 function regexpNoncapturingTest() {
-  // should be false
-  print(/a/.test("x"));
-  print(/(a)/.test("x"));
-  print(/(?:a)/.test("x"));
+    // should be false
+    print(/a/.test("x"));
+    print(/(a)/.test("x"));
+    print(/(?:a)/.test("x"));
 
-  // should be true
-  print(/a/.test("a"));
-  print(/(a)/.test("a"));
-  print(/(?:a)/.test("a"));
+    // should be true
+    print(/a/.test("a"));
+    print(/(a)/.test("a"));
+    print(/(?:a)/.test("a"));
 
-  // should be true
-  print(/a?/.test("x"));
-  print(/(a)?/.test("x"));
-  print(/(?:a)?/.test("x"));
+    // should be true
+    print(/a?/.test("x"));
+    print(/(a)?/.test("x"));
+    print(/(?:a)?/.test("x"));
 
-  // should be true
-  print(/a?/.test("a"));
-  print(/(a)?/.test("a"));
-  print(/(?:a)?/.test("a"));
+    // should be true
+    print(/a?/.test("a"));
+    print(/(a)?/.test("a"));
+    print(/(?:a)?/.test("a"));
 }
 
 try {
-  regexpNoncapturingTest();
+    regexpNoncapturingTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

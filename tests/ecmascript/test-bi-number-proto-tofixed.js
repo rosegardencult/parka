@@ -7,20 +7,20 @@
  */
 
 function test(this_value, args, prefix_string) {
-  var t;
+    var t;
 
-  if (prefix_string === undefined) {
-    prefix_string = "";
-  } else {
-    prefix_string += " ";
-  }
+    if (prefix_string === undefined) {
+        prefix_string = '';
+    } else {
+        prefix_string += ' ';
+    }
 
-  try {
-    t = Number.prototype.toFixed.apply(this_value, args);
-    print(prefix_string + typeof t, t);
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        t = Number.prototype.toFixed.apply(this_value, args);
+        print(prefix_string + typeof t, t);
+    } catch (e) {
+        print(e.name);
+    }
 }
 
 /*===
@@ -517,64 +517,64 @@ RangeError
 RangeError
 ===*/
 
-print("basic");
+print('basic');
 
 function basicTest() {
-  var i, f;
+    var i, f;
 
-  var values = [
-    Number.NEGATIVE_INFINITY,
-    -1e100,
-    -1e21,
-    -0.987654321e21,
-    -12345.678901234567890123456789,
-    -0.12345678901234567890123456789,
-    -0.12345678901234567890123456789e-20,
-    -0.12345678901234567890123456789e-21,
-    -0.12345678901234567890123456789e-22,
-    -0,
-    +0,
-    0.12345678901234567890123456789e-22,
-    0.12345678901234567890123456789e-21,
-    0.12345678901234567890123456789e-20,
-    0.12345678901234567890123456789,
-    12345.678901234567890123456789,
-    0.987654321e21,
-    1e21,
-    1e100,
-    Number.POSITIVE_INFINITY,
-    Number.NaN
-  ];
+    var values = [
+        Number.NEGATIVE_INFINITY,
+        -1e100,
+        -1e21,
+        -0.987654321e21,
+        -12345.6789012345678901234567890,
+        -0.123456789012345678901234567890,
+        -0.123456789012345678901234567890e-20,
+        -0.123456789012345678901234567890e-21,
+        -0.123456789012345678901234567890e-22,
+        -0,
+        +0,
+        0.123456789012345678901234567890e-22,
+        0.123456789012345678901234567890e-21,
+        0.123456789012345678901234567890e-20,
+        0.123456789012345678901234567890,
+        12345.6789012345678901234567890,
+        0.987654321e21,
+        1e21,
+        1e100,
+        Number.POSITIVE_INFINITY,
+        Number.NaN
+    ];
 
-  // Step 4: special handling for NaN
+    // Step 4: special handling for NaN
 
-  test(new Number(Number.NaN), []);
+    test(new Number(Number.NaN), []);
 
-  // Step 7: if abs(number) > 10^21, fall back to ToString()
-  // (this also covers infinite values)
+    // Step 7: if abs(number) > 10^21, fall back to ToString()
+    // (this also covers infinite values)
 
-  test(new Number(0.999999e21), []); // below
-  test(new Number(1e21), []); // above
+    test(new Number(0.999999e21), []);   // below
+    test(new Number(1e21), []);          // above
 
-  test(new Number(-0.999999e21), []); // below
-  test(new Number(-1e21), []); // above
+    test(new Number(-0.999999e21), []);  // below
+    test(new Number(-1e21), []);         // above
 
-  test(new Number(Number.NEGATIVE_INFINITY), []);
-  test(new Number(Number.POSITIVE_INFINITY), []);
+    test(new Number(Number.NEGATIVE_INFINITY), []);
+    test(new Number(Number.POSITIVE_INFINITY), []);
 
-  // test a bunch of value and fractionDigits combinations
+    // test a bunch of value and fractionDigits combinations
 
-  for (i = 0; i < values.length; i++) {
-    for (f = -1; f <= 21; f++) {
-      test(new Number(values[i]), [f], i + "," + f);
+    for (i = 0; i < values.length; i++) {
+        for (f = -1; f <= 21; f++) {
+            test(new Number(values[i]), [ f ], i + ',' + f);
+        }
     }
-  }
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -697,73 +697,65 @@ RangeError
  *    (V8 coerces e.g. booleans to numbers, only number/Number should be accepted)
  */
 
-print("coercion");
+print('coercion');
 
 function coercionTest() {
-  var i, f;
-  var testnum = 12345.678901234567890123456789;
+    var i, f;
+    var testnum = 12345.6789012345678901234567890;
 
-  // this coercion - occurs *after* fractionDigits coercion (undefined = 0 here)
-  // (only plain number and a Number instance allowed as a valid 'this' binding)
+    // this coercion - occurs *after* fractionDigits coercion (undefined = 0 here)
+    // (only plain number and a Number instance allowed as a valid 'this' binding)
 
-  test(undefined, []);
-  test(null, []);
-  test(true, []);
-  test(false, []);
-  test(123, []);
-  test("foo", []);
-  test([1, 2], []);
-  test({ foo: 1, bar: 2 }, []);
-  test(new Number(123), []);
+    test(undefined, []);
+    test(null, []);
+    test(true, []);
+    test(false, []);
+    test(123, []);
+    test('foo', []);
+    test([1,2], []);
+    test({ foo: 1, bar: 2 }, []);
+    test(new Number(123), []);
 
-  // fractionDigits, ToInteger() coercion, [0,20] range
+    // fractionDigits, ToInteger() coercion, [0,20] range
 
-  for (i = -3; i <= 23; i++) {
-    print("frac", i);
-    test(new Number(testnum), [i]);
-  }
-
-  test(new Number(testnum), ["3.9"]); // -> 3
-  test(new Number(testnum), [-256 * 256 * 256 * 256 + 3.9]); // -> invalid, no 32-bit wrap
-  test(new Number(testnum), [256 * 256 * 256 * 256 + 3.9]); // -> invalid, same
-
-  test(new Number(testnum), [
-    {
-      toString: function() {
-        print("fractionDigits toString");
-        return 10;
-      },
-      valueOf: function() {
-        print("fractionDigits valueOf");
-        return 6;
-      }
+    for (i = -3; i <= 23; i++) {
+        print('frac', i);
+        test(new Number(testnum), [ i ]);
     }
-  ]);
 
-  // In ES2015+ the 'this' binding is validated before any arguments.
-  // In ES5.1 an invalid fractionDigits value is detected (and reported as
-  // RangeError) before an invalid 'this' binding is detected.
+    test(new Number(testnum), [ '3.9' ]);  // -> 3
+    test(new Number(testnum), [ -256*256*256*256 + 3.9 ]);  // -> invalid, no 32-bit wrap
+    test(new Number(testnum), [ 256*256*256*256 + 3.9 ]);   // -> invalid, same
 
-  var frac_values = [-1, 0, 20, 21];
-  for (i = 0; i < frac_values.length; i++) {
-    f = frac_values[i];
-    print("frac", f);
-    test(undefined, [f]);
-    test(null, [f]);
-    test(true, [f]);
-    test(false, [f]);
-    test(123, [f]);
-    test("foo", [f]);
-    test([1, 2], [f]);
-    test({ foo: 1, bar: 2 }, [f]);
-    test(new Number(123), [f]);
-  }
+    test(new Number(testnum), [ {
+        toString: function() { print('fractionDigits toString'); return 10; },
+        valueOf: function() { print('fractionDigits valueOf'); return 6; },
+    } ]);
+
+    // In ES2015+ the 'this' binding is validated before any arguments.
+    // In ES5.1 an invalid fractionDigits value is detected (and reported as
+    // RangeError) before an invalid 'this' binding is detected.
+
+    var frac_values = [ -1, 0, 20, 21 ];
+    for (i = 0; i < frac_values.length; i++) {
+        f = frac_values[i];
+        print('frac', f);
+        test(undefined, [ f ]);
+        test(null, [ f ]);
+        test(true, [ f ]);
+        test(false, [ f ]);
+        test(123, [ f ]);
+        test('foo', [ f ]);
+        test([1,2], [ f ]);
+        test({ foo: 1, bar: 2 }, [ f ]);
+        test(new Number(123), [ f ]);
+    }
 }
 
 try {
-  coercionTest();
+    coercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -772,12 +764,12 @@ try {
 ===*/
 
 function specNoteTest() {
-  print((1000000000000000128).toString());
-  print((1000000000000000128).toFixed());
+    print((1000000000000000128).toString());
+    print((1000000000000000128).toFixed());
 }
 
 try {
-  specNoteTest();
+    specNoteTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

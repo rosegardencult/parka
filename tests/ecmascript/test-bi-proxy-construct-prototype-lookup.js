@@ -12,34 +12,35 @@ get trap: prototype
 bar-replaced
 ===*/
 
-function MyConstructor() {}
+function MyConstructor() {
+}
 
-MyConstructor.prototype.foo = "bar-prototype";
+MyConstructor.prototype.foo = 'bar-prototype';
 
 function test() {
-  var replaced = { foo: "bar-replaced" };
-  var proxy = new Proxy(MyConstructor, {
-    get: function get(targ, prop, recv) {
-      print("get trap:", prop);
-      if (prop === "prototype") {
-        return replaced;
-      }
-      return targ[prop];
-    }
-  });
-  var tmp;
+    var replaced = { foo: 'bar-replaced' };
+    var proxy = new Proxy(MyConstructor, {
+        get: function get(targ, prop, recv) {
+            print('get trap:', prop);
+            if (prop === 'prototype') {
+                return replaced;
+            }
+            return targ[prop];
+        }
+    });
+    var tmp;
 
-  print("- direct call");
-  tmp = new MyConstructor();
-  print(tmp.foo);
+    print('- direct call');
+    tmp = new MyConstructor();
+    print(tmp.foo);
 
-  print("- call via proxy");
-  tmp = new proxy();
-  print(tmp.foo);
+    print('- call via proxy');
+    tmp = new proxy();
+    print(tmp.foo);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

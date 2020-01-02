@@ -23,27 +23,22 @@ string bar
 ===*/
 
 function test() {
-  var P;
-  var P = new Proxy(
-    { foo: 123, bar: 234 },
-    {
-      enumerate: function() {
-        print("enumerate trap");
-        return ["foo"];
-      },
-      ownKeys: function() {
-        print("ownKeys trap");
-        return ["bar"];
-      }
+    var P;
+    var P = new Proxy({ foo: 123, bar: 234 }, {
+        enumerate: function () {
+            print('enumerate trap'); return [ 'foo' ];
+        },
+        ownKeys: function () {
+            print('ownKeys trap'); return [ 'bar' ];
+        }
+    });
+    for (k in P) {
+        print(typeof k, String(k));
     }
-  );
-  for (k in P) {
-    print(typeof k, String(k));
-  }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

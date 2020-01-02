@@ -21,36 +21,34 @@ false
 ===*/
 
 function moduleLoadErrorTest() {
-  Duktape.modSearch = function(id, require, exports, module) {
-    if (id === "test1/foo") {
-      return (
-        'print("loading module...");\n' +
-        "exports.magic = 42;\n" +
-        'throw new Error("aiee");'
-      );
+    Duktape.modSearch = function (id, require, exports, module) {
+        if (id === 'test1/foo') {
+            return 'print("loading module...");\n' +
+                   'exports.magic = 42;\n' +
+                   'throw new Error("aiee");'
+        }
+        throw new Error('module not found: ' + id);
+    };
+
+    try {
+        require('test1/foo');
+        print('success');
+    } catch (e) {
+        print(e);
     }
-    throw new Error("module not found: " + id);
-  };
+    print('test1/foo' in Duktape.modLoaded);
 
-  try {
-    require("test1/foo");
-    print("success");
-  } catch (e) {
-    print(e);
-  }
-  print("test1/foo" in Duktape.modLoaded);
-
-  try {
-    require("test1/foo");
-    print("success");
-  } catch (e) {
-    print(e);
-  }
-  print("test1/foo" in Duktape.modLoaded);
+    try {
+        require('test1/foo');
+        print('success');
+    } catch (e) {
+        print(e);
+    }
+    print('test1/foo' in Duktape.modLoaded);
 }
 
 try {
-  moduleLoadErrorTest();
+    moduleLoadErrorTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

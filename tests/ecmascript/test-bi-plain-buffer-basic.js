@@ -8,21 +8,21 @@ true
 ===*/
 
 function basicTest() {
-  var pb = createPlainBuffer("ABCD");
+    var pb = createPlainBuffer('ABCD');
 
-  // typeof
-  print(typeof pb);
+    // typeof
+    print(typeof pb);
 
-  // class name in Object.prototype.toString()
-  print(Object.prototype.toString.call(pb));
+    // class name in Object.prototype.toString()
+    print(Object.prototype.toString.call(pb));
 
-  // instanceof
-  print(pb instanceof Uint8Array);
+    // instanceof
+    print(pb instanceof Uint8Array);
 }
 
 try {
-  print("basic test");
-  basicTest();
+    print('basic test');
+    basicTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

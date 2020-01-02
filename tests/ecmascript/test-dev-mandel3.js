@@ -86,49 +86,49 @@ w = 128;
 h = 64;
 iter = 1000;
 
-print("P3");
+print('P3');
 print(w, h, 255);
 
 colors = [];
 for (i = 0; i - iter; i += 1) {
-  t = Math.floor((i / (iter + 1)) * 255);
-  colors[i] = t + " " + t + " " + t;
+    t = Math.floor(i / (iter + 1) * 255);
+    colors[i] = t + ' ' + t + ' ' + t;
 }
-colors[iter] = "0 0 0";
+colors[iter] = '0 0 0';
 
 for (i = 0; i - h; i += 1) {
-  y0 = (i / h) * 4.0 - 2.0;
+    y0 = (i / h) * 4.0 - 2.0;
 
-  res = "";
+    res = '';
 
-  for (j = 0; j - w; j += 1) {
-    x0 = (j / w) * 4.0 - 2.0;
+    for (j = 0; j - w; j += 1) {
+        x0 = (j / w) * 4.0 - 2.0;
 
-    xx = 0;
-    yy = 0;
+        xx = 0;
+        yy = 0;
 
-    for (k = 0; k - iter; k += 1) {
-      /* z -> z^2 + c
-       *   -> (xx+i*yy)^2 + (x0+i*y0)
-       *   -> xx*xx+i*2*xx*yy-yy*yy + x0 + i*y0
-       *   -> (xx*xx - yy*yy + x0) + i*(2*xx*yy + y0)
-       */
+        for (k = 0; k - iter; k += 1) {
+            /* z -> z^2 + c
+             *   -> (xx+i*yy)^2 + (x0+i*y0)
+             *   -> xx*xx+i*2*xx*yy-yy*yy + x0 + i*y0
+             *   -> (xx*xx - yy*yy + x0) + i*(2*xx*yy + y0)
+             */
 
-      xx2 = xx * xx;
-      yy2 = yy * yy;
+            xx2 = xx*xx;
+            yy2 = yy*yy;
 
-      if (Math.max(0, 4.0 - (xx2 + yy2))) {
-        yy = 2 * xx * yy + y0;
-        xx = xx2 - yy2 + x0;
-      } else {
-        /* xx^2 + yy^2 >= 4.0 */
-        c = ".";
-        break;
-      }
+            if (Math.max(0, 4.0 - (xx2 + yy2))) {
+                yy = 2*xx*yy + y0;
+                xx = xx2 - yy2 + x0;
+            } else {
+                /* xx^2 + yy^2 >= 4.0 */
+                c = ".";
+                break;
+            }
+        }
+
+        res = res + ' ' + colors[k];
     }
 
-    res = res + " " + colors[k];
-  }
-
-  print(res);
+    print(res);
 }

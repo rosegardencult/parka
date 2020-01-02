@@ -15,35 +15,35 @@ done
 ===*/
 
 function test1() {
-  var d = new Date(123);
-  print(d.toISOString());
-  d.setTime(234);
-  print(d.toISOString());
-  Object.freeze(d);
-  d.setTime(345);
-  print(d.toISOString());
+    var d = new Date(123);
+    print(d.toISOString());
+    d.setTime(234);
+    print(d.toISOString());
+    Object.freeze(d);
+    d.setTime(345);
+    print(d.toISOString());
 }
 
 function test2() {
-  var d = new Date(123);
-  print(d.toISOString());
-  d.setUTCFullYear(1000);
-  print(d.toISOString());
-  Object.freeze(d);
-  d.setUTCFullYear(2000);
-  print(d.toISOString());
+    var d = new Date(123);
+    print(d.toISOString());
+    d.setUTCFullYear(1000);
+    print(d.toISOString());
+    Object.freeze(d);
+    d.setUTCFullYear(2000);
+    print(d.toISOString());
 }
 
 try {
-  test1();
+    test1();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 try {
-  test2();
+    test2();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
-print("done");
+print('done');

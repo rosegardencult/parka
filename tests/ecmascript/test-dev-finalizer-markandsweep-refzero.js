@@ -25,39 +25,39 @@ done
 ===*/
 
 function test() {
-  var obj = {};
-  obj.ref = {};
-  obj.ref.ref = obj; // cycle
+    var obj = {};
+    obj.ref = {};
+    obj.ref.ref = obj;  // cycle
 
-  var func;
+    var func;
 
-  Duktape.fin(obj, function(v) {
-    print("finalizer called");
-    // When finalizer finishes the object is reachable via 'func'.
-    // When func() is called and set to null, it gets a REFZERO.
-    func = function() {
-      print("func called");
-      v.ref = null; // break cycle
-    };
-    func.prototype = null; // break cycle
-  });
+    Duktape.fin(obj, function (v) {
+        print('finalizer called');
+        // When finalizer finishes the object is reachable via 'func'.
+        // When func() is called and set to null, it gets a REFZERO.
+        func = function () {
+            print('func called');
+            v.ref = null;  // break cycle
+        };
+        func.prototype = null;  // break cycle
+    });
 
-  print("gc 1");
-  Duktape.gc();
-  obj = null;
-  print("gc 2, finalizer");
-  Duktape.gc(); // finalizer execution
-  print("call func()");
-  func();
-  print("set func to null");
-  func = null; // DECREF
-  print("gc 3, nop");
-  Duktape.gc(); // should no longer see object
-  print("done");
+    print('gc 1');
+    Duktape.gc();
+    obj = null;
+    print('gc 2, finalizer');
+    Duktape.gc();  // finalizer execution
+    print('call func()');
+    func();
+    print('set func to null');
+    func = null;   // DECREF
+    print('gc 3, nop');
+    Duktape.gc();  // should no longer see object
+    print('done');
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

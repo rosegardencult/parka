@@ -25,54 +25,50 @@ var data = new Uint8Array(64);
 var offset = 0;
 
 function received(buf) {
-  // Incoming data ('buf') is an ArrayBuffer.  Use .byteLength throughout
-  // because it's available for both ArrayBuffers and Uint8Arrays; for
-  // standard ArrayBuffers a .length is not available.
+    // Incoming data ('buf') is an ArrayBuffer.  Use .byteLength throughout
+    // because it's available for both ArrayBuffers and Uint8Arrays; for
+    // standard ArrayBuffers a .length is not available.
 
-  while (data.byteLength - offset < buf.byteLength) {
-    // Not enough space, resize to make room.  Factor could be other
-    // than 2, e.g. 1.5.
-    print("resize from", data.byteLength, "to", data.byteLength * 2);
-    var newBuf = new Uint8Array(data.byteLength * 2);
-    newBuf.set(data); // copy old bytes
-    data = newBuf;
-  }
+    while (data.byteLength - offset < buf.byteLength) {
+        // Not enough space, resize to make room.  Factor could be other
+        // than 2, e.g. 1.5.
+        print('resize from', data.byteLength, 'to', data.byteLength * 2);
+        var newBuf = new Uint8Array(data.byteLength * 2);
+        newBuf.set(data);  // copy old bytes
+        data = newBuf;
+    }
 
-  data.set(new Uint8Array(buf), offset);
-  offset += buf.byteLength;
+    data.set(new Uint8Array(buf), offset);
+    offset += buf.byteLength;
 }
 
 function finalize() {
-  // When accumulation is finished, final data can be extracted as follows:
-  var finalArrayBuffer = data.buffer.slice(0, offset);
-  return finalArrayBuffer;
+    // When accumulation is finished, final data can be extracted as follows:
+    var finalArrayBuffer = data.buffer.slice(0, offset);
+    return finalArrayBuffer;
 }
 
 function test() {
-  var i,
-    len,
-    u8,
-    res,
-    wrote = 0;
+    var i, len, u8, res, wrote = 0;
 
-  for (i = 0; i < 1000; i++) {
-    len = i % 10;
-    u8 = new Uint8Array(len);
-    for (j = 0; j < len; j++) {
-      u8[j] = 0x80 + j;
+    for (i = 0; i < 1000; i++) {
+        len = i % 10;
+        u8 = new Uint8Array(len);
+        for (j = 0; j < len; j++) {
+            u8[j] = 0x80 + j;
+        }
+        received(u8.buffer);
+        wrote += u8.byteLength;
     }
-    received(u8.buffer);
-    wrote += u8.byteLength;
-  }
 
-  res = finalize();
-  print("Final length: " + res.byteLength + " (wrote " + wrote + ")");
+    res = finalize();
+    print('Final length: ' + res.byteLength + ' (wrote ' + wrote + ')');
 
-  //print(Duktape.enc('jx', res));
+    //print(Duktape.enc('jx', res));
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

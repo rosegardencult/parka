@@ -11,5 +11,5 @@ x,,
 ===*/
 
 var re = /x|(y)|(z)/;
-var res = re.exec("x");
+var res = re.exec('x');
 print(res);

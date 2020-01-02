@@ -12,5 +12,5 @@ string string undefined
  * The second alternative is not tried and capture is undefined.
  */
 
-t = /()|()/.exec("");
+t = /()|()/.exec('');
 print(typeof t[0], typeof t[1], typeof t[2]);

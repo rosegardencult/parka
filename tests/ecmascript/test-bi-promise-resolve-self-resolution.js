@@ -10,23 +10,20 @@ reject: TypeError
 ===*/
 
 var resolveFn;
-var P = new Promise(function(resolve, reject) {
-  resolveFn = resolve;
+var P = new Promise(function (resolve, reject) {
+    resolveFn = resolve;
 });
 
-P.then(
-  function(v) {
-    print("fulfill:", v);
-  },
-  function(e) {
-    print("reject:", e.name);
-  }
-);
+P.then(function (v) {
+    print('fulfill:', v);
+}, function (e) {
+    print('reject:', e.name);
+});
 
 try {
-  resolveFn(P);
+    resolveFn(P);
 } catch (e) {
-  print("should not happen:", e);
+    print('should not happen:', e);
 }
 
-print("done");
+print('done');

@@ -13,37 +13,32 @@ string 49 fooundefinednulltruefalse123bar1,2[object Object]
 string 3 foo
 ===*/
 
-print("basic");
+print('basic');
 
 function concatTest() {
-  var str = String("foo");
+    var str = String('foo');
 
-  function pv(x) {
-    print(typeof x, x.length, x);
-  }
+    function pv(x) {
+        print(typeof x, x.length, x);
+    }
 
-  pv(str);
-  pv(str.concat());
-  pv(str.concat(undefined));
-  pv(str.concat(undefined, null));
-  pv(str.concat(undefined, null, true));
-  pv(str.concat(undefined, null, true, false));
-  pv(str.concat(undefined, null, true, false, 123));
-  pv(str.concat(undefined, null, true, false, 123, "bar"));
-  pv(str.concat(undefined, null, true, false, 123, "bar", [1, 2]));
-  pv(
-    str.concat(undefined, null, true, false, 123, "bar", [1, 2], {
-      foo: 1,
-      bar: 2
-    })
-  );
-  pv(str);
+    pv(str);
+    pv(str.concat());
+    pv(str.concat(undefined));
+    pv(str.concat(undefined, null));
+    pv(str.concat(undefined, null, true));
+    pv(str.concat(undefined, null, true, false));
+    pv(str.concat(undefined, null, true, false, 123));
+    pv(str.concat(undefined, null, true, false, 123, 'bar'));
+    pv(str.concat(undefined, null, true, false, 123, 'bar', [1,2]));
+    pv(str.concat(undefined, null, true, false, 123, 'bar', [1,2], { foo: 1, bar: 2 }));
+    pv(str);
 }
 
 try {
-  concatTest();
+    concatTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -60,23 +55,23 @@ unicode
 65535
 ===*/
 
-print("unicode");
+print('unicode');
 
 function unicodeTest() {
-  var str = new String("foo\u1234");
-  var t;
-  var i;
+    var str = new String('foo\u1234');
+    var t;
+    var i;
 
-  t = str.concat("\u07fe", "\u0080foo", "\uffff");
-  for (i = 0; i < t.length; i++) {
-    print(t.charCodeAt(i));
-  }
+    t = str.concat('\u07fe', '\u0080foo', '\uffff');
+    for (i = 0; i < t.length; i++) {
+        print(t.charCodeAt(i));
+    }
 }
 
 try {
-  unicodeTest();
+    unicodeTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -95,57 +90,46 @@ toString() obj3
 string 15 firstfoobarquux
 ===*/
 
-print("coercion");
+print('coercion');
 
 function coercionTest() {
-  var t;
-
-  function test(x) {
     var t;
-    try {
-      t = String.prototype.concat.call(x, "bar");
-      print(typeof t, t.length, t);
-    } catch (e) {
-      print(e.name);
+
+    function test(x) {
+        var t;
+        try {
+            t = String.prototype.concat.call(x, 'bar');
+            print(typeof t, t.length, t);
+        } catch (e) {
+            print(e.name);
+        }
     }
-  }
-  function mkObj(name, strval) {
-    return {
-      toString: function() {
-        print("toString()", name);
-        return strval;
-      },
-      valueOf: function() {
-        print("valueOf()", name);
-        return "unexpected";
-      }
-    };
-  }
+    function mkObj(name, strval) {
+        return {
+            toString: function() { print('toString()', name); return strval; },
+            valueOf: function() { print('valueOf()', name); return 'unexpected'; }
+        };
+    }
 
-  // expect TypeError for these
-  test(undefined);
-  test(null);
+    // expect TypeError for these
+    test(undefined);
+    test(null);
 
-  // and a ToString() coercion for these
-  test(true);
-  test(false);
-  test(123);
-  test("foo");
-  test([1, 2]);
-  test({ foo: 1, bar: 2 });
+    // and a ToString() coercion for these
+    test(true);
+    test(false);
+    test(123);
+    test('foo');
+    test([1,2]);
+    test({ foo: 1, bar: 2 });
 
-  // coercion side effect test
-  t = String.prototype.concat.call(
-    "first",
-    mkObj("obj1", "foo"),
-    mkObj("obj2", "bar"),
-    mkObj("obj3", "quux")
-  );
-  print(typeof t, t.length, t);
+    // coercion side effect test
+    t = String.prototype.concat.call('first', mkObj('obj1', 'foo'), mkObj('obj2', 'bar'), mkObj('obj3', 'quux'));
+    print(typeof t, t.length, t);
 }
 
 try {
-  coercionTest();
+    coercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

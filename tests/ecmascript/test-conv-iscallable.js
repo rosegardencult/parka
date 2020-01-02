@@ -7,7 +7,7 @@
  */
 
 function indirectIsCallable(x) {
-  Function.prototype.bind.call(x);
+    Function.prototype.bind.call(x);
 }
 
 /*===
@@ -24,26 +24,16 @@ no error
 no error
 ===*/
 
-var values = [
-  undefined,
-  null,
-  true,
-  false,
-  123.0,
-  "foo",
-  {},
-  [],
-  function() {},
-  Object.prototype.toLocaleString,
-  Object.prototype.toLocaleString.bind("foo")
-];
+var values = [ undefined, null, true, false, 123.0, "foo",
+               {}, [], function () {}, Object.prototype.toLocaleString,
+               Object.prototype.toLocaleString.bind('foo') ];
 var i;
 
 for (i = 0; i < values.length; i++) {
-  try {
-    indirectIsCallable(values[i]);
-    print("no error");
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        indirectIsCallable(values[i]);
+        print('no error');
+    } catch (e) {
+        print(e.name);
+    }
 }

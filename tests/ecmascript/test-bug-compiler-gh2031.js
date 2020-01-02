@@ -5,11 +5,11 @@ ReferenceError
 ===*/
 
 try {
-  print("A");
-  Object.defineProperty(Array.prototype, 0, { set: function() {} });
-  print("B");
-  eval("var x; for (x++ in [0,1]) {}");
-  print("done");
+    print('A');
+    Object.defineProperty(Array.prototype, 0, { set : function ( ) { } } ) ;
+    print('B');
+    eval('var x; for (x++ in [0,1]) {}');
+    print('done');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

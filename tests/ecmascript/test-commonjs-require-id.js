@@ -24,28 +24,26 @@ function string foo/bar
 
 var global_require = require;
 
-Duktape.modSearch = function(id) {
-  if (id === "foo/bar") {
-    return (
-      'print("foo/bar");' +
-      "print(require === global_require);" +
-      "print(typeof require, typeof require.id, require.id);"
-    );
-  }
-  throw new Error("cannot resolve module: " + id);
+Duktape.modSearch = function (id) {
+    if (id === 'foo/bar') {
+        return 'print("foo/bar");' +
+               'print(require === global_require);' +
+               'print(typeof require, typeof require.id, require.id);';
+    }
+    throw new Error('cannot resolve module: ' + id);
 };
 
 function test() {
-  // Global require(), 'id' is undefined
-  print(typeof this.require);
-  print("id" in this.require, typeof this.require.id, this.require.id);
+    // Global require(), 'id' is undefined
+    print(typeof this.require);
+    print('id' in this.require, typeof this.require.id, this.require.id);
 
-  // Module require(), require.id gets the *resolved* id
-  var foobar = require("foo/./bar"); // resolves to 'foo/bar'
+    // Module require(), require.id gets the *resolved* id
+    var foobar = require('foo/./bar');  // resolves to 'foo/bar'
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

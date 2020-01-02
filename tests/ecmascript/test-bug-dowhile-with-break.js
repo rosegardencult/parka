@@ -22,41 +22,41 @@ with top
  */
 
 function test1() {
-  var obj = {};
-  do {
-    print("do top");
-    with (obj) {
-      print("with top");
-    }
-    print("do bottom");
-  } while (0);
+    var obj = {};
+    do {
+        print('do top');
+        with (obj) {
+            print('with top');
+        }
+        print('do bottom');
+    } while (0);
 }
 
 function test2() {
-  var obj = {};
-  do {
-    print("do top");
-    with (obj) {
-      print("with top");
-      break;
-    }
-    /* not reached */
-    print("do bottom");
-  } while (0);
+    var obj = {};
+    do {
+        print('do top');
+        with (obj) {
+            print('with top');
+            break;
+        }
+        /* not reached */
+        print('do bottom');
+    } while (0);
 }
 
-print("test1");
+print('test1');
 
 try {
-  test1();
+    test1();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
-print("test2");
+print('test2');
 
 try {
-  test2();
+    test2();
 } catch (e) {
-  print(e);
+    print(e);
 }

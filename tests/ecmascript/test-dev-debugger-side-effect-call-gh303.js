@@ -20,28 +20,26 @@ get
 ===*/
 
 var obj = {};
-Object.defineProperty(obj, "prop", {
-  get: function() {
-    print("get");
-  }
+Object.defineProperty(obj, 'prop', {
+    get: function () { print('get'); }
 });
 
 function test() {
-  // Step into test(), then step into the getter.  Set a breakpoint on one
-  // of the lines below and Resume.  The breakpoint will be skipped in
-  // Duktape 1.3.  The same thing happens if you e.g. StepOut from the
-  // getter.
+    // Step into test(), then step into the getter.  Set a breakpoint on one
+    // of the lines below and Resume.  The breakpoint will be skipped in
+    // Duktape 1.3.  The same thing happens if you e.g. StepOut from the
+    // getter.
 
-  obj.prop;
-  obj.prop;
-  obj.prop;
-  obj.prop;
-  obj.prop;
-  obj.prop;
-  obj.prop;
-  obj.prop;
-  obj.prop;
-  obj.prop;
+    obj.prop;
+    obj.prop;
+    obj.prop;
+    obj.prop;
+    obj.prop;
+    obj.prop;
+    obj.prop;
+    obj.prop;
+    obj.prop;
+    obj.prop;
 }
 
 test();

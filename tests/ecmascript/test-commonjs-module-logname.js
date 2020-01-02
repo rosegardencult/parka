@@ -13,24 +13,24 @@ TIMESTAMP INF foo/BAR/quux: hello from module
 ===*/
 
 function moduleLogNameTest() {
-  var mod;
+    var mod;
 
-  Duktape.modSearch = function(id) {
-    print("Duktape.modSearch", id);
-    return 'var logger = new Duktape.Logger(); logger.info("hello from module");';
-  };
-  Duktape.Logger.prototype.raw = function(buf) {
-    var str = bufferToStringRaw(buf);
-    str = str.replace(/^\S+/, "TIMESTAMP");
-    print(str);
-  };
+    Duktape.modSearch = function (id) {
+        print('Duktape.modSearch', id);
+        return 'var logger = new Duktape.Logger(); logger.info("hello from module");';
+    };
+    Duktape.Logger.prototype.raw = function (buf) {
+        var str = bufferToStringRaw(buf);
+        str = str.replace(/^\S+/, 'TIMESTAMP');
+        print(str);
+    };
 
-  mod = require("foo");
-  mod = require("foo/./bar/../BAR/quux"); // foo/BAR/quux absolute
+    mod = require('foo');
+    mod = require('foo/./bar/../BAR/quux');  // foo/BAR/quux absolute
 }
 
 try {
-  moduleLogNameTest();
+    moduleLogNameTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

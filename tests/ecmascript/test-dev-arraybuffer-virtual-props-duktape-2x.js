@@ -25,45 +25,38 @@ bar
 ===*/
 
 function test() {
-  var buf = new ArrayBuffer(10);
-  var u8;
-  var pd;
-  var i;
+    var buf = new ArrayBuffer(10);
+    var u8;
+    var pd;
+    var i;
 
-  // In Duktape 2.0 .byteLength is a virtual own property which is not
-  // ES2015 compliant, where it is required to be an inherited accessor.
+    // In Duktape 2.0 .byteLength is a virtual own property which is not
+    // ES2015 compliant, where it is required to be an inherited accessor.
 
-  [
-    "length",
-    "byteLength",
-    "byteOffset",
-    "BYTES_PER_ELEMENT",
-    "0",
-    "9",
-    "10"
-  ].forEach(function(v) {
-    print(v, v in buf, buf.hasOwnProperty(v), typeof buf[v], buf[v]);
-  });
+    [ 'length', 'byteLength', 'byteOffset', 'BYTES_PER_ELEMENT',
+      '0', '9', '10' ].forEach(function (v) {
+        print(v, v in buf, buf.hasOwnProperty(v), typeof buf[v], buf[v]);
+    });
 
-  // Because index properties have no special behavior, they can be written
-  // to normally without affecting the buffer data.
+    // Because index properties have no special behavior, they can be written
+    // to normally without affecting the buffer data.
 
-  buf = new ArrayBuffer(10);
-  u8 = new Uint8Array(buf);
-  for (i = 0; i < u8.length; i++) {
-    u8[i] = 0x10 + i;
-  }
-  buf[5] = 123;
-  buf[6] = "foo";
-  buf[100] = "bar";
-  for (i = 0; i < u8.length; i++) {
-    print(i, u8[i], buf[i]);
-  }
-  print(buf[100]);
+    buf = new ArrayBuffer(10);
+    u8 = new Uint8Array(buf);
+    for (i = 0; i < u8.length; i++) {
+        u8[i] = 0x10 + i;
+    }
+    buf[5] = 123;
+    buf[6] = 'foo';
+    buf[100] = 'bar';
+    for (i = 0; i < u8.length; i++) {
+        print(i, u8[i], buf[i]);
+    }
+    print(buf[100]);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

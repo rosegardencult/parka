@@ -18,52 +18,38 @@ function
 ===*/
 
 function test() {
-  var pd;
+    var pd;
 
-  function dump(f) {
-    print(typeof f);
-    var pd = Object.getOwnPropertyDescriptor(f, "name");
-    if (pd) {
-      print(
-        ".name",
-        typeof pd.value,
-        pd.value,
-        pd.writable,
-        pd.enumerable,
-        pd.configurable
-      );
-    } else {
-      print(".name", "none");
+    function dump(f) {
+        print(typeof f);
+        var pd = Object.getOwnPropertyDescriptor(f, 'name');
+        if (pd) {
+            print('.name', typeof pd.value, pd.value, pd.writable, pd.enumerable, pd.configurable);
+        } else {
+            print('.name', 'none');
+        }
+        var pd = Object.getOwnPropertyDescriptor(f, 'length');
+        if (pd) {
+            print('.length', typeof pd.value, pd.value, pd.writable, pd.enumerable, pd.configurable);
+        } else {
+            print('.length', 'none');
+        }
     }
-    var pd = Object.getOwnPropertyDescriptor(f, "length");
-    if (pd) {
-      print(
-        ".length",
-        typeof pd.value,
-        pd.value,
-        pd.writable,
-        pd.enumerable,
-        pd.configurable
-      );
-    } else {
-      print(".length", "none");
-    }
-  }
 
-  // In ES2015 function .name and .length are non-writable, non-enumerable,
-  // but configurable.  This also applies to built-ins.  Spot check a few.
+    // In ES2015 function .name and .length are non-writable, non-enumerable,
+    // but configurable.  This also applies to built-ins.  Spot check a few.
 
-  dump(Math.cos);
-  dump(JSON.stringify);
-  dump(Object.prototype.hasOwnProperty);
+    dump(Math.cos);
+    dump(JSON.stringify);
+    dump(Object.prototype.hasOwnProperty);
 
-  // Currently missing .name and .length: https://github.com/svaarala/duktape/issues/1187
-  pd = Object.getOwnPropertyDescriptor(RegExp.prototype, "source"); // getter in ES2015
-  dump(pd.get);
+    // Currently missing .name and .length: https://github.com/svaarala/duktape/issues/1187
+    pd = Object.getOwnPropertyDescriptor(RegExp.prototype, 'source');  // getter in ES2015
+    dump(pd.get);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

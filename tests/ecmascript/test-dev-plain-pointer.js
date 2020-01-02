@@ -19,22 +19,22 @@ true
 ===*/
 
 function basicTest() {
-  var plain = Duktape.Pointer("dummy");
-  var object = new Duktape.Pointer("dummy");
+    var plain = Duktape.Pointer('dummy');
+    var object = new Duktape.Pointer('dummy');
 
-  print(typeof plain);
-  print(typeof object);
+    print(typeof plain);
+    print(typeof object);
 
-  print(Object.prototype.toString.call(plain));
-  print(Object.prototype.toString.call(object));
+    print(Object.prototype.toString.call(plain));
+    print(Object.prototype.toString.call(object));
 
-  print(plain instanceof Duktape.Pointer); // Changed in Duktape 2.x to be true
-  print(object instanceof Duktape.Pointer);
+    print(plain instanceof Duktape.Pointer);  // Changed in Duktape 2.x to be true
+    print(object instanceof Duktape.Pointer);
 }
 
 try {
-  print("basic test");
-  basicTest();
+    print('basic test');
+    basicTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

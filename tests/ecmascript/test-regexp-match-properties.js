@@ -11,27 +11,19 @@
 ===*/
 
 function test() {
-  var re = /foo(...)quux$/;
-  var m = re.exec("xyzfoobarquux");
-  var props = Object.getOwnPropertyNames(m);
+    var re = /foo(...)quux$/;
+    var m = re.exec('xyzfoobarquux');
+    var props = Object.getOwnPropertyNames(m);
 
-  props.sort();
-  props.forEach(function(k, i) {
-    var pd = Object.getOwnPropertyDescriptor(m, k);
-    print(
-      i,
-      k,
-      typeof pd.value,
-      pd.value,
-      pd.writable,
-      pd.enumerable,
-      pd.configurable
-    );
-  });
+    props.sort();
+    props.forEach(function (k, i) {
+        var pd = Object.getOwnPropertyDescriptor(m, k);
+        print(i, k, typeof pd.value, pd.value, pd.writable, pd.enumerable, pd.configurable);
+    });
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

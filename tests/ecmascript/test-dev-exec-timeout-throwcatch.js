@@ -9,19 +9,19 @@
 ---*/
 
 function test() {
-  function thrower() {
-    throw new Error("aiee");
-  }
+    function thrower() { throw new Error('aiee'); }
 
-  for (;;) {
-    try {
-      thrower();
-    } catch (e) {}
-  }
+    for (;;) {
+        try {
+            thrower();
+        } catch (e) {
+            ;
+        }
+    }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

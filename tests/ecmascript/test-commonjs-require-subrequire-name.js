@@ -12,27 +12,27 @@ false false false
 ===*/
 
 function test() {
-  Duktape.modSearch = function modSearch(id, require, exports, module) {
-    var pd;
+    Duktape.modSearch = function modSearch(id, require, exports, module) {
+        var pd;
 
-    print(typeof require);
-    print(typeof require.name);
-    print(require.name);
+        print(typeof require);
+        print(typeof require.name);
+        print(require.name);
 
-    pd = Object.getOwnPropertyDescriptor(require, "name");
-    print(pd.writable, pd.enumerable, pd.configurable);
+        pd = Object.getOwnPropertyDescriptor(require, 'name');
+        print(pd.writable, pd.enumerable, pd.configurable);
 
-    //print(new Error('aiee').stack);
-    //require('../../../../foo')
+        //print(new Error('aiee').stack);
+        //require('../../../../foo')
 
-    return undefined;
-  };
+        return undefined;
+    };
 
-  require("foo/bar");
+    require('foo/bar');
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

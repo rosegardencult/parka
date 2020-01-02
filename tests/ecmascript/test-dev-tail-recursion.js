@@ -18,16 +18,16 @@
 /* Very basic case */
 
 function sum1(a, b) {
-  if (b == 0) {
-    return a;
-  }
-  return sum1(a + 1, b - 1);
+    if (b == 0) {
+        return a;
+    }
+    return sum1(a + 1, b - 1);
 }
 
 try {
-  print(sum1(0, 1000000));
+    print(sum1(0, 1000000));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -42,20 +42,20 @@ try {
 
 var count = 0;
 function commaop() {
-  count++;
+    count++;
 }
 
 function sum2(a, b) {
-  if (b == 0) {
-    return a;
-  }
-  return commaop(), sum2(a + 1, b - 1);
+    if (b == 0) {
+        return a;
+    }
+    return commaop(), sum2(a + 1, b - 1);
 }
 
 try {
-  print(sum2(0, 1000000));
+    print(sum2(0, 1000000));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 print(count);
@@ -74,26 +74,26 @@ RangeError
  * process still works correctly and fulfills eval semantics.
  */
 
-function tail_eval(a, b) {
-  if (b == 0) {
-    return a;
-  }
-  return eval("tail_eval(a + 1, b - 1)");
+function tail_eval(a,b) {
+    if (b == 0) {
+        return a;
+    }
+    return eval("tail_eval(a + 1, b - 1)");
 }
 
 try {
-  // This should fit in callstack even without tailcalls.
-  // C recursion limit is now 60, and each tail_eval()
-  // level requires two C calls (one for eval, one for
-  // bytecode executor)
-  print(tail_eval(0, 25));
+    // This should fit in callstack even without tailcalls.
+    // C recursion limit is now 60, and each tail_eval()
+    // level requires two C calls (one for eval, one for
+    // bytecode executor)
+    print(tail_eval(0, 25));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  // this should probably not
-  print(tail_eval(0, 100000));
+    // this should probably not
+    print(tail_eval(0, 100000));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

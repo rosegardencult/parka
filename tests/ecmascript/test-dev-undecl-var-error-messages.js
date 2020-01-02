@@ -15,23 +15,23 @@ ReferenceError: identifier 'noSuch' undefined
 ===*/
 
 function testRead() {
-  "use strict";
-  var dummy = noSuch;
+    'use strict';
+    var dummy = noSuch;
 }
 
 function testWrite() {
-  "use strict";
-  noSuch = 123;
+    'use strict';
+    noSuch = 123;
 }
 
 try {
-  testRead();
+    testRead();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 try {
-  testWrite();
+    testWrite();
 } catch (e) {
-  print(e);
+    print(e);
 }

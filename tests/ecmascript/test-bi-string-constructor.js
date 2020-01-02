@@ -17,42 +17,39 @@ string [object Object]
 string noval
 ===*/
 
-print("constructor as a function");
+print('constructor as a function');
 
 function constructorAsFunctionTest() {
-  function pv(x, noval) {
-    print(typeof x, noval ? "noval" : x);
-  }
+    function pv(x, noval) {
+        print(typeof x, (noval ? 'noval' : x));
+    }
 
-  // No argument is handled different from undefined
-  pv(String());
+    // No argument is handled different from undefined
+    pv(String());
 
-  pv(String(undefined));
-  pv(String(null));
-  pv(String(true));
-  pv(String(false));
-  pv(String(Number.NEGATIVE_INFINITY));
-  pv(String(-123.0));
-  pv(String(-0.0));
-  pv(String(0.0));
-  pv(String(123.0));
-  pv(String(Number.POSITIVE_INFINITY));
-  pv(String(Number.NaN));
-  pv(String([1, 2]));
-  pv(String({ foo: 1, bar: 2 }));
+    pv(String(undefined));
+    pv(String(null));
+    pv(String(true));
+    pv(String(false));
+    pv(String(Number.NEGATIVE_INFINITY));
+    pv(String(-123.0));
+    pv(String(-0.0));
+    pv(String(0.0));
+    pv(String(123.0));
+    pv(String(Number.POSITIVE_INFINITY));
+    pv(String(Number.NaN));
+    pv(String([1,2]));
+    pv(String({ foo: 1, bar: 2 }));
 
-  // the ToString() conversion of a function is implementation
-  // specific so just check the type
-  pv(
-    String(function() {}),
-    true
-  );
+    // the ToString() conversion of a function is implementation
+    // specific so just check the type
+    pv(String(function(){}), true);
 }
 
 try {
-  constructorAsFunctionTest();
+    constructorAsFunctionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -74,42 +71,37 @@ object [object Object] [object String] true
 object noval [object String] true
 ===*/
 
-print("constructor");
+print('constructor');
 
 function constructorTest() {
-  function pv(x, noval) {
-    print(
-      typeof x,
-      noval ? "noval" : x,
-      Object.prototype.toString.call(x),
-      Object.isExtensible(x)
-    );
-  }
+    function pv(x, noval) {
+        print(typeof x, (noval ? 'noval' : x), Object.prototype.toString.call(x), Object.isExtensible(x));
+    }
 
-  // No argument is handled different from undefined
-  pv(new String());
+    // No argument is handled different from undefined
+    pv(new String());
 
-  pv(new String(undefined));
-  pv(new String(null));
-  pv(new String(true));
-  pv(new String(false));
-  pv(new String(Number.NEGATIVE_INFINITY));
-  pv(new String(-123.0));
-  pv(new String(-0.0));
-  pv(new String(0.0));
-  pv(new String(123.0));
-  pv(new String(Number.POSITIVE_INFINITY));
-  pv(new String(Number.NaN));
-  pv(new String([1, 2]));
-  pv(new String({ foo: 1, bar: 2 }));
+    pv(new String(undefined));
+    pv(new String(null));
+    pv(new String(true));
+    pv(new String(false));
+    pv(new String(Number.NEGATIVE_INFINITY));
+    pv(new String(-123.0));
+    pv(new String(-0.0));
+    pv(new String(0.0));
+    pv(new String(123.0));
+    pv(new String(Number.POSITIVE_INFINITY));
+    pv(new String(Number.NaN));
+    pv(new String([1,2]));
+    pv(new String({ foo: 1, bar: 2 }));
 
-  // the ToString() conversion of a function is implementation
-  // specific so just check the type
-  pv(new String(function() {}), true);
+    // the ToString() conversion of a function is implementation
+    // specific so just check the type
+    pv(new String(function(){}), true);
 }
 
 try {
-  constructorTest();
+    constructorTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

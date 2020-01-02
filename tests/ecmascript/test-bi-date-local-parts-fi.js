@@ -36,36 +36,36 @@ finnish locale test
 ===*/
 
 function finnishLocaleTest() {
-  var d;
+    var d;
 
-  // 2014-03-30 02:59:59 Finnish time is still EET (GMT+0200)
-  d = new Date(2014, 2, 30, 2, 59, 59);
-  print(d.getTime(), d.toISOString(), d.toString());
+    // 2014-03-30 02:59:59 Finnish time is still EET (GMT+0200)
+    d = new Date(2014, 2, 30, 2, 59, 59);
+    print(d.getTime(), d.toISOString(), d.toString());
 
-  // 2014-03-30 03:59:59 Finnish time never normally occurs (one steps
-  // from the non-DST 02:59:59 to the DST 04:00:00).  This case thus
-  // has an ambiguous result, but we now test for behavior matching
-  // V8 and Rhino.
-  d = new Date(2014, 2, 30, 3, 59, 59);
-  print(d.getTime(), d.toISOString(), d.toString());
+    // 2014-03-30 03:59:59 Finnish time never normally occurs (one steps
+    // from the non-DST 02:59:59 to the DST 04:00:00).  This case thus
+    // has an ambiguous result, but we now test for behavior matching
+    // V8 and Rhino.
+    d = new Date(2014, 2, 30, 3, 59, 59);
+    print(d.getTime(), d.toISOString(), d.toString());
 
-  // 2014-03-30 04:00:00 Finnish time is EEST (GMT+0300)
-  d = new Date(2014, 2, 30, 4, 0, 0);
-  print(d.getTime(), d.toISOString(), d.toString());
+    // 2014-03-30 04:00:00 Finnish time is EEST (GMT+0300)
+    d = new Date(2014, 2, 30, 4, 0, 0);
+    print(d.getTime(), d.toISOString(), d.toString());
 
-  // 2014-10-26 02:59:59 Finnish time is still EEST (GMT+0300)
-  d = new Date(2014, 9, 26, 2, 59, 59);
-  print(d.getTime(), d.toISOString(), d.toString());
+    // 2014-10-26 02:59:59 Finnish time is still EEST (GMT+0300)
+    d = new Date(2014, 9, 26, 2, 59, 59);
+    print(d.getTime(), d.toISOString(), d.toString());
 
-  // 2014-10-26 03:00:00 Finnish time is EET (GMT+0200)
-  d = new Date(2014, 9, 26, 3, 0, 0);
-  print(d.getTime(), d.toISOString(), d.toString());
+    // 2014-10-26 03:00:00 Finnish time is EET (GMT+0200)
+    d = new Date(2014, 9, 26, 3, 0, 0);
+    print(d.getTime(), d.toISOString(), d.toString());
 }
 
-print("finnish locale test");
+print('finnish locale test');
 
 try {
-  finnishLocaleTest();
+    finnishLocaleTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

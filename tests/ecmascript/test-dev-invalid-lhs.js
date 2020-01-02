@@ -18,7 +18,7 @@ ReferenceError
 ===*/
 
 try {
-  eval("print('lhs') = print('rhs');");
-} catch (e) {
-  print(e.name);
+    eval("print('lhs') = print('rhs');");
+} catch(e) {
+    print(e.name);
 }

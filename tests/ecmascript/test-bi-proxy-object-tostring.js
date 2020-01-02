@@ -8,14 +8,14 @@
 ===*/
 
 function test() {
-  var proxy = new Proxy([], {});
+    var proxy = new Proxy([], {});
 
-  // This should print [object Array] (verified against Firefox).
-  print(Object.prototype.toString.call(proxy));
+    // This should print [object Array] (verified against Firefox).
+    print(Object.prototype.toString.call(proxy));
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

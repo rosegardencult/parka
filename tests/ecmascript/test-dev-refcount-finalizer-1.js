@@ -14,11 +14,11 @@ var a;
  * be active in temporary registers.
  */
 function init() {
-  a = { foo: 123 };
+    a = { foo: 123 };
 
-  Duktape.fin(a, function(x) {
-    print("finalizer, foo ->", x.foo);
-  });
+    Duktape.fin(a, function (x) {
+        print('finalizer, foo ->', x.foo);
+    });
 }
 
 init();

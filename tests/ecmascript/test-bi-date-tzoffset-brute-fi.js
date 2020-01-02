@@ -208,63 +208,63 @@ finnish tzoffset/dst brute force test
 ===*/
 
 function summarizeOffsets(offsets) {
-  var res = [];
-  var i, n;
-  var curroff, currlen;
+    var res = [];
+    var i, n;
+    var curroff, currlen;
 
-  for (i = 0, n = offsets.length; i < n; i++) {
-    if (curroff !== offsets[i]) {
-      if (currlen > 0) {
-        res.push(currlen + ":" + curroff);
-      }
-      curroff = offsets[i];
-      currlen = 1;
-    } else {
-      currlen++;
+    for (i = 0, n = offsets.length; i < n; i++) {
+        if (curroff !== offsets[i]) {
+            if (currlen > 0) {
+                res.push(currlen + ':' + curroff);
+            }
+            curroff = offsets[i];
+            currlen = 1;
+        } else {
+            currlen++;
+        }
     }
-  }
-  if (currlen > 0) {
-    res.push(currlen + ":" + curroff);
-  }
-  return res.join(" ");
+    if (currlen > 0) {
+        res.push(currlen + ':' + curroff);
+    }
+    return res.join(' ');
 }
 
 function finnishTzoffsetTest() {
-  var offsets;
-  var timeval_start, timeval_end, timeval, timeval_step;
-  var year_start, year_curr;
-  var d;
+    var offsets;
+    var timeval_start, timeval_end, timeval, timeval_step;
+    var year_start, year_curr;
+    var d;
 
-  // Start from Jan 1, 1900, 00:00:00 UTC
-  timeval_start = -2208988800000;
+    // Start from Jan 1, 1900, 00:00:00 UTC
+    timeval_start = -2208988800000;
 
-  // End at Jan 1, 2101, 00:00:00 UTC
-  timeval_end = 4133980800000;
+    // End at Jan 1, 2101, 00:00:00 UTC
+    timeval_end = 4133980800000;
 
-  // 60 minute steps
-  timeval_step = 60 * 60 * 1000;
+    // 60 minute steps
+    timeval_step = 60 * 60 * 1000;
 
-  timeval = timeval_start;
-  while (timeval < timeval_end) {
-    year_start = new Date(timeval).getUTCFullYear();
-    offsets = [];
-    while (true) {
-      d = new Date(timeval);
-      year_curr = d.getUTCFullYear();
-      if (year_curr != year_start) {
-        break;
-      }
-      offsets.push(d.getTimezoneOffset());
-      timeval += timeval_step;
+    timeval = timeval_start;
+    while (timeval < timeval_end) {
+        year_start = new Date(timeval).getUTCFullYear();
+        offsets = [];
+        while (true) {
+            d = new Date(timeval);
+            year_curr = d.getUTCFullYear();
+            if (year_curr != year_start) {
+                break;
+            }
+            offsets.push(d.getTimezoneOffset());
+            timeval += timeval_step;
+        }
+        print(year_start + ' -> ' + summarizeOffsets(offsets));
     }
-    print(year_start + " -> " + summarizeOffsets(offsets));
-  }
 }
 
-print("finnish tzoffset/dst brute force test");
+print('finnish tzoffset/dst brute force test');
 
 try {
-  finnishTzoffsetTest();
+    finnishTzoffsetTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

@@ -32,32 +32,32 @@ g 4
 ===*/
 
 function f(x) {
-  print("f", x);
-  return {
-    g: function(y) {
-      print("g", y);
+    print('f', x);
+    return {
+        "g": function(y) {
+                 print('g', y);
+             }
     }
-  };
 }
 
 function z(x, y) {
-  f(x).g(y);
+    f(x).g(y);
 }
 
 try {
-  f(1).g(2);
+    f(1).g(2);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  f(1).g(2);
+    (f(1)).g(2);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  z(3, 4);
+    z(3, 4);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

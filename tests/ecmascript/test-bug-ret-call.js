@@ -7,11 +7,11 @@ A
  */
 
 function f(x) {
-  return String.fromCharCode(x);
+    return String.fromCharCode(x);
 }
 
 try {
-  print(f(65));
+    print(f(65));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

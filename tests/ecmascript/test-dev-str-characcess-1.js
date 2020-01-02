@@ -48,13 +48,12 @@ You can fool all the people some of the time, and some of the people all the tim
 
 /* Building a larger string at once */
 
-var test =
-  "You can fool all the people some of the time, and some of the people all the time, but you cannot fool all the people all the time.";
+var test = "You can fool all the people some of the time, and some of the people all the time, but you cannot fool all the people all the time.";
 
 var codepoints = [];
 
 for (var i in test) {
-  codepoints[codepoints.length] = test.charCodeAt(i);
+    codepoints[codepoints.length] = test.charCodeAt(i);
 }
 
 print(String.fromCharCode.apply(null, codepoints));
@@ -84,7 +83,7 @@ string
  * Note that this coercion differs from fromCharCode() which uses
  * ToUint16().
  */
-text = "foo";
+text = 'foo';
 
 print(text.charAt(0));
 print(text.charAt(1));
@@ -96,8 +95,8 @@ print(text.charAt(null));
 print(text.charAt(false));
 print(text.charAt(true));
 print(text.charAt(NaN));
-print(text.charAt(Number.POSITIVE_INFINITY)); // out of bounds
-print(text.charAt(Number.NEGATIVE_INFINITY)); // out of bounds
+print(text.charAt(Number.POSITIVE_INFINITY));  // out of bounds
+print(text.charAt(Number.NEGATIVE_INFINITY));  // out of bounds
 
 print(typeof text.charAt(-1));
 print(typeof text.charAt(3));
@@ -123,7 +122,7 @@ NaN
  * the same.
  */
 
-text = "bar";
+text = 'bar';
 
 print(text.charCodeAt(0));
 print(text.charCodeAt(1));
@@ -135,8 +134,8 @@ print(text.charCodeAt(null));
 print(text.charCodeAt(false));
 print(text.charCodeAt(true));
 print(text.charCodeAt(NaN));
-print(text.charCodeAt(Number.POSITIVE_INFINITY)); // out of bounds
-print(text.charCodeAt(Number.NEGATIVE_INFINITY)); // out of bounds
+print(text.charCodeAt(Number.POSITIVE_INFINITY));  // out of bounds
+print(text.charCodeAt(Number.NEGATIVE_INFINITY));  // out of bounds
 
 /* XXX: object coercion */
 
@@ -149,8 +148,8 @@ print(text.charCodeAt(Number.NEGATIVE_INFINITY)); // out of bounds
 var fail = 0;
 
 for (var i = 0; i < 65536; i++) {
-  if (String.fromCharCode(i).charCodeAt(0) != i) {
-    fail++;
-  }
+    if (String.fromCharCode(i).charCodeAt(0) != i) {
+        fail++;
+    }
 }
 print(fail);

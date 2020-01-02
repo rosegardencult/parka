@@ -9,18 +9,16 @@
 ---*/
 
 function test() {
-  function mythread() {
-    return 123;
-  }
+    function mythread() { return 123; }
 
-  for (;;) {
-    var t = new Duktape.Thread(mythread);
-    Duktape.Thread.resume(t);
-  }
+    for (;;) {
+        var t = new Duktape.Thread(mythread);
+        Duktape.Thread.resume(t);
+    }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

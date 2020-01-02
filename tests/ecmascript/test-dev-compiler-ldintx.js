@@ -15,13 +15,13 @@
 ===*/
 
 // LDINT.
-print(-131072); // smallest LDINT
-print(131071); // largest LDINT
+print(-131072);      // smallest LDINT
+print(131071);       // largest LDINT
 
 // LDINT+LDINTX.  At the moment all signed 32-bit values are emitted as
 // LDINT+LDINTX although LDINT+LDINTX could emit larger values (36-bit signed).
-print(-2147483648); // smallest LDINTX
-print(2147483647); // largest LDINTX
+print(-2147483648);  // smallest LDINTX
+print(2147483647);   // largest LDINTX
 
 // Double constants.
 print(-2147483649);

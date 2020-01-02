@@ -11,18 +11,18 @@ array literal test
 ===*/
 
 function arrayLiteralTest() {
-  var arr;
+    var arr;
 
-  arr = [1, 2, 3];
-  print(arr.length);
-  print(arr);
+    arr = [ 1, 2, 3 ];
+    print(arr.length);
+    print(arr);
 }
 
 try {
-  print("array literal test");
-  arrayLiteralTest();
+    print('array literal test');
+    arrayLiteralTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -35,294 +35,55 @@ array constructor test
 ===*/
 
 function arrayConstructorTest() {
-  var arr;
-  var i;
+    var arr;
+    var i;
 
-  // Create Array using numeric argument
-  arr = new Array(10);
-  print(arr.length, JSON.stringify(arr));
-  arr[5] = "foo";
-  print(arr.length, JSON.stringify(arr));
-  for (i = 0; i < 256; i++) {
-    arr = new Array(i);
-    if (arr.length !== i) {
-      throw new Error("failed for index " + i);
+    // Create Array using numeric argument
+    arr = new Array(10);
+    print(arr.length, JSON.stringify(arr));
+    arr[5] = 'foo';
+    print(arr.length, JSON.stringify(arr));
+    for (i = 0; i < 256; i++) {
+        arr = new Array(i);
+        if (arr.length !== i) {
+            throw new Error('failed for index ' + i);
+        }
     }
-  }
 
-  // Create Array from initializer arguments
-  arr = new Array(1, 2, 3, "foo", "bar", "quux");
-  print(arr.length, JSON.stringify(arr));
-  arr[5] = "baz";
-  print(arr.length, JSON.stringify(arr));
+    // Create Array from initializer arguments
+    arr = new Array(1, 2, 3, 'foo', 'bar', 'quux');
+    print(arr.length, JSON.stringify(arr));
+    arr[5] = 'baz';
+    print(arr.length, JSON.stringify(arr));
 
-  // Create Array with a lot of initializer arguments (more than value stack reserve).
-  arr = new Array(
-    // 255 is the current maximum arg count
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15
-  );
-  print(arr.length);
+    // Create Array with a lot of initializer arguments (more than value stack reserve).
+    arr = new Array(
+        // 255 is the current maximum arg count
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
+    );
+    print(arr.length);
 }
 
 try {
-  print("array constructor test");
-  arrayConstructorTest();
+    print('array constructor test');
+    arrayConstructorTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -336,24 +97,24 @@ array enumeration test
 ===*/
 
 function arrayEnumerationTest() {
-  var arr;
+    var arr;
 
-  arr = [1, 2, 3, 4];
-  print(Object.getOwnPropertyNames(arr));
-  print(Object.keys(arr));
-  arr[4] = 5;
-  print(Object.getOwnPropertyNames(arr));
-  print(Object.keys(arr));
-  arr.foo = "bar";
-  print(Object.getOwnPropertyNames(arr));
-  print(Object.keys(arr));
+    arr = [ 1,2,3,4 ];
+    print(Object.getOwnPropertyNames(arr));
+    print(Object.keys(arr));
+    arr[4] = 5;
+    print(Object.getOwnPropertyNames(arr));
+    print(Object.keys(arr));
+    arr.foo = 'bar';
+    print(Object.getOwnPropertyNames(arr));
+    print(Object.keys(arr));
 }
 
 try {
-  print("array enumeration test");
-  arrayEnumerationTest();
+    print('array enumeration test');
+    arrayEnumerationTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -376,94 +137,86 @@ TypeError: not configurable
 ===*/
 
 function arrayLengthPropertyDescriptorTest() {
-  var arr, pd;
+    var arr, pd;
 
-  // Make .length non-writable.
-  arr = [1, 2, 3, 4, 5, 6];
-  pd = Object.getOwnPropertyDescriptor(arr, "length");
-  print(pd.value, pd.writable, pd.enumerable, pd.configurable);
-  print(arr.length, JSON.stringify(arr));
-  arr.length = 5;
-  print(arr.length, JSON.stringify(arr));
-  Object.defineProperty(arr, "length", { writable: false });
-  print(arr.length, JSON.stringify(arr));
-  arr.length = 4;
-  print(arr.length, JSON.stringify(arr));
-  pd = Object.getOwnPropertyDescriptor(arr, "length");
-  print(pd.value, pd.writable, pd.enumerable, pd.configurable);
-  print("defineProperty");
-  try {
-    Object.defineProperty(arr, "length", { value: 5 }); // no change, ok
+    // Make .length non-writable.
+    arr = [ 1, 2, 3, 4, 5, 6 ];
+    pd = Object.getOwnPropertyDescriptor(arr, 'length');
+    print(pd.value, pd.writable, pd.enumerable, pd.configurable);
     print(arr.length, JSON.stringify(arr));
-  } catch (e) {
-    print(e.stack || e);
-  }
-  try {
-    Object.defineProperty(arr, "length", {
-      value: 5,
-      writable: false,
-      enumerable: false,
-      configurable: false
-    }); // no change, ok
+    arr.length = 5;
     print(arr.length, JSON.stringify(arr));
-  } catch (e) {
-    print(e.stack || e);
-  }
-  try {
-    Object.defineProperty(arr, "length", { value: 4 }); // Not OK
-    print("never here");
+    Object.defineProperty(arr, 'length', { writable: false });
     print(arr.length, JSON.stringify(arr));
-  } catch (e) {
-    //print(e.stack);
-    print(e);
-  }
-  try {
-    Object.defineProperty(arr, "length", { writable: true }); // Not OK
-    print("never here");
+    arr.length = 4;
     print(arr.length, JSON.stringify(arr));
-  } catch (e) {
-    //print(e.stack);
-    print(e);
-  }
-  try {
-    Object.defineProperty(arr, "length", { enumerable: true }); // Not OK
-    print("never here");
-    print(arr.length, JSON.stringify(arr));
-  } catch (e) {
-    //print(e.stack);
-    print(e);
-  }
-  try {
-    Object.defineProperty(arr, "length", { configurable: true }); // Not OK
-    print("never here");
-    print(arr.length, JSON.stringify(arr));
-  } catch (e) {
-    //print(e.stack);
-    print(e);
-  }
-  try {
-    Object.defineProperty(arr, "length", {
-      set: function() {},
-      get: function() {}
-    }); // Not OK
-    print("never here");
-    print(arr.length, JSON.stringify(arr));
-  } catch (e) {
-    //print(e.stack);
-    print(e);
-  }
+    pd = Object.getOwnPropertyDescriptor(arr, 'length');
+    print(pd.value, pd.writable, pd.enumerable, pd.configurable);
+    print('defineProperty');
+    try {
+        Object.defineProperty(arr, 'length', { value: 5 });  // no change, ok
+        print(arr.length, JSON.stringify(arr));
+    } catch (e) {
+        print(e.stack || e);
+    }
+    try {
+        Object.defineProperty(arr, 'length', { value: 5, writable: false, enumerable: false, configurable: false });  // no change, ok
+        print(arr.length, JSON.stringify(arr));
+    } catch (e) {
+        print(e.stack || e);
+    }
+    try {
+        Object.defineProperty(arr, 'length', { value: 4 });  // Not OK
+        print('never here');
+        print(arr.length, JSON.stringify(arr));
+    } catch (e) {
+        //print(e.stack);
+        print(e);
+    }
+    try {
+        Object.defineProperty(arr, 'length', { writable: true });  // Not OK
+        print('never here');
+        print(arr.length, JSON.stringify(arr));
+    } catch (e) {
+        //print(e.stack);
+        print(e);
+    }
+    try {
+        Object.defineProperty(arr, 'length', { enumerable: true });  // Not OK
+        print('never here');
+        print(arr.length, JSON.stringify(arr));
+    } catch (e) {
+        //print(e.stack);
+        print(e);
+    }
+    try {
+        Object.defineProperty(arr, 'length', { configurable: true });  // Not OK
+        print('never here');
+        print(arr.length, JSON.stringify(arr));
+    } catch (e) {
+        //print(e.stack);
+        print(e);
+    }
+    try {
+        Object.defineProperty(arr, 'length', { set: function () {}, get: function () {} });  // Not OK
+        print('never here');
+        print(arr.length, JSON.stringify(arr));
+    } catch (e) {
+        //print(e.stack);
+        print(e);
+    }
 
-  // Set .length using Object.defineProperty().
-  arr = [];
-  Object.defineProperty(arr, "length", { value: 2 });
-  print(arr.length, JSON.stringify(arr));
+    // Set .length using Object.defineProperty().
+    arr = [];
+    Object.defineProperty(arr, 'length', { value: 2 });
+    print(arr.length, JSON.stringify(arr));
 }
 
 try {
-  print("array .length property descriptor test");
-  arrayLengthPropertyDescriptorTest();
+    print('array .length property descriptor test');
+    arrayLengthPropertyDescriptorTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -490,80 +243,77 @@ undefined
 ===*/
 
 function arrayLengthTest() {
-  var arr;
-  var obj;
+    var arr;
+    var obj;
 
-  // Attempt to delete Array .length fails; result false in non-strict
-  // mode, error in strict mode.
-  arr = [1, 2, 3, 4, 5];
-  print(delete arr.length);
-  try {
-    (function deleteTest() {
-      "use strict";
-      delete arr.length;
-    })();
-  } catch (e) {
-    //print(e.stack);
-    print(e);
-  }
+    // Attempt to delete Array .length fails; result false in non-strict
+    // mode, error in strict mode.
+    arr = [ 1, 2, 3, 4, 5 ];
+    print(delete arr.length);
+    try {
+        (function deleteTest() { 'use strict'; delete arr.length; })();
+    } catch (e) {
+        //print(e.stack);
+        print(e);
+    }
 
-  // Attempt to write a non-writable Array .length.
-  arr = [1, 2, 3, 4];
-  Object.defineProperty(arr, "length", { writable: false });
-  print(arr.length);
-  arr.length = 2;
-  print(arr.length);
+    // Attempt to write a non-writable Array .length.
+    arr = [ 1, 2, 3, 4 ];
+    Object.defineProperty(arr, 'length', { writable: false });
+    print(arr.length);
+    arr.length = 2;
+    print(arr.length);
 
-  // Property existence for Array .length.
-  arr = [1, 2, 3];
-  print("length" in arr);
-  print(Object.getOwnPropertyNames(arr));
-  obj = Object.create(arr); // inherit from 'arr'
-  print("length" in obj);
-  print(Object.getOwnPropertyNames(obj));
+    // Property existence for Array .length.
+    arr = [ 1, 2, 3 ];
+    print('length' in arr);
+    print(Object.getOwnPropertyNames(arr));
+    obj = Object.create(arr);  // inherit from 'arr'
+    print('length' in obj);
+    print(Object.getOwnPropertyNames(obj));
 
-  // Writing to an Array when .length is write protected.
-  // In a non-strict function this must be a silent failure.
-  arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  Object.defineProperty(arr, "length", { writable: false });
-  print(arr);
-  arr[5] = "foo"; // OK, length not changed
-  print(arr);
-  try {
-    print((arr[10] = "foo"));
-    print("write succeeded");
-  } catch (e) {
-    //print(e.stack);
-    print(e);
-  }
-  print(arr);
-  print(arr[10]);
+    // Writing to an Array when .length is write protected.
+    // In a non-strict function this must be a silent failure.
+    arr = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ];
+    Object.defineProperty(arr, 'length', { writable: false });
+    print(arr);
+    arr[5] = 'foo';  // OK, length not changed
+    print(arr);
+    try {
+        print(arr[10] = 'foo');
+        print('write succeeded');
+    } catch (e) {
+        //print(e.stack);
+        print(e);
+    }
+    print(arr);
+    print(arr[10]);
 
-  // For a strict function the result must be a TypeError.
-  arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  Object.defineProperty(arr, "length", { writable: false });
-  print(arr);
-  arr[5] = "foo"; // OK, length not changed
-  print(arr);
-  try {
-    (function() {
-      "use strict";
-      print((arr[10] = "foo"));
-      print("write succeeded");
-    })();
-  } catch (e) {
-    //print(e.stack);
-    print(e);
-  }
-  print(arr);
-  print(arr[10]);
+    // For a strict function the result must be a TypeError.
+    arr = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ];
+    Object.defineProperty(arr, 'length', { writable: false });
+    print(arr);
+    arr[5] = 'foo';  // OK, length not changed
+    print(arr);
+    try {
+        (function() {
+            'use strict';
+            print(arr[10] = 'foo');
+            print('write succeeded');
+        })();
+    } catch (e) {
+        //print(e.stack);
+        print(e);
+    }
+    print(arr);
+    print(arr[10]);
 }
 
 try {
-  print("array length test");
-  arrayLengthTest();
+    print('array length test');
+    arrayLengthTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -599,31 +349,30 @@ enumeration order for sparse arrays
  */
 
 function sparseArrayEnumTest() {
-  var arr;
+    var arr;
 
-  arr = [1, 2, 3];
-  print(Object.getOwnPropertyNames(arr));
-  print(Object.keys(arr));
+    arr = [ 1, 2, 3 ];
+    print(Object.getOwnPropertyNames(arr));
+    print(Object.keys(arr));
 
-  arr.foo = "bar";
-  print(Object.getOwnPropertyNames(arr));
-  print(Object.keys(arr));
+    arr.foo = 'bar';
+    print(Object.getOwnPropertyNames(arr));
+    print(Object.keys(arr));
 
-  arr[100] = 1;
-  arr.length = 3; // make sparse
-  print(Object.getOwnPropertyNames(arr));
-  print(Object.keys(arr));
+    arr[100] = 1; arr.length = 3;  // make sparse
+    print(Object.getOwnPropertyNames(arr));
+    print(Object.keys(arr));
 
-  arr.bar = "quux";
-  print(Object.getOwnPropertyNames(arr));
-  print(Object.keys(arr));
+    arr.bar = 'quux';
+    print(Object.getOwnPropertyNames(arr));
+    print(Object.keys(arr));
 }
 
 try {
-  print("enumeration order for sparse arrays");
-  sparseArrayEnumTest();
+    print('enumeration order for sparse arrays');
+    sparseArrayEnumTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -638,35 +387,35 @@ undefined
 ===*/
 
 function arrayPrototypeTest() {
-  var arr;
+    var arr;
 
-  // Array.prototype is an Array instance.
-  // This is useful to check for ROM built-ins.
-  print(Object.prototype.toString.call([]));
-  print(Object.prototype.toString.call(Array.prototype));
+    // Array.prototype is an Array instance.
+    // This is useful to check for ROM built-ins.
+    print(Object.prototype.toString.call([]));
+    print(Object.prototype.toString.call(Array.prototype));
 
-  // It can also be written to (unusual but required).
-  Array.prototype.push("foo", "bar", "quux");
-  arr = [];
-  print(arr.length, arr[0], arr[1], arr[2], arr[3]);
-  Array.prototype.length = 1;
-  print(arr.length, arr[0], arr[1], arr[2], arr[3]);
-  Array.prototype.length = 0;
-  print(arr.length, arr[0], arr[1], arr[2], arr[3]);
+    // It can also be written to (unusual but required).
+    Array.prototype.push('foo', 'bar', 'quux');
+    arr = [];
+    print(arr.length, arr[0], arr[1], arr[2], arr[3]);
+    Array.prototype.length = 1;
+    print(arr.length, arr[0], arr[1], arr[2], arr[3]);
+    Array.prototype.length = 0;
+    print(arr.length, arr[0], arr[1], arr[2], arr[3]);
 
-  // Array.prototype is dense by default; make it sparse.
-  Array.prototype[1000] = "dummy";
-  arr = [];
-  print(arr[1000]);
-  Array.prototype.length = 0;
-  print(arr[1000]);
+    // Array.prototype is dense by default; make it sparse.
+    Array.prototype[1000] = 'dummy';
+    arr = [];
+    print(arr[1000]);
+    Array.prototype.length = 0;
+    print(arr[1000]);
 }
 
 try {
-  print("Array.prototype test");
-  arrayPrototypeTest();
+    print('Array.prototype test');
+    arrayPrototypeTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -675,21 +424,21 @@ try {
 ===*/
 
 function arrayMiscTest() {
-  var arr;
+    var arr;
 
-  // Creating an Array with a small count creates a dense array
-  // with a preallocated array part.
-  arr = new Array(100);
-  print(arr.length);
+    // Creating an Array with a small count creates a dense array
+    // with a preallocated array part.
+    arr = new Array(100);
+    print(arr.length);
 
-  // Creating an Array with a huge count creates a dense array
-  // with a partial preallocated array part (64 elements in 2.0).
-  arr = new Array(1e9);
-  print(arr.length);
+    // Creating an Array with a huge count creates a dense array
+    // with a partial preallocated array part (64 elements in 2.0).
+    arr = new Array(1e9);
+    print(arr.length);
 }
 
 try {
-  arrayMiscTest();
+    arrayMiscTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

@@ -38,49 +38,49 @@ done
 var P1, P2, P3, P4, P5;
 
 function unhandledRejection(promise) {
-  print("unhandled/reject:", promise.name);
-  if (promise === P1) {
-    P2.catch(function(e) {
-      print("P2.catch:", e);
-    });
-    P4 = Promise.reject(456);
-    P4.name = "P4";
-    P5 = Promise.reject(567);
-    P5.name = "P5";
-  } else if (promise === P3) {
-    P5.catch(function(e) {
-      print("P5.catch:", e);
-    });
-  }
+    print('unhandled/reject:', promise.name);
+    if (promise === P1) {
+        P2.catch(function (e) {
+            print('P2.catch:', e);
+        });
+        P4 = Promise.reject(456);
+        P4.name = 'P4';
+        P5 = Promise.reject(567);
+        P5.name = 'P5';
+    } else if (promise === P3) {
+        P5.catch(function (e) {
+            print('P5.catch:', e);
+        });
+    }
 }
 function rejectionHandled(promise) {
-  print("unhandled/handle:", promise.name);
+    print('unhandled/handle:', promise.name);
 }
 
 setupPromiseUnhandledCallbacks(unhandledRejection, rejectionHandled);
 
 function tick1() {
-  print("TICK 1");
-  P1 = Promise.reject(123);
-  P1.name = "P1";
-  P2 = Promise.reject(234);
-  P2.name = "P2";
-  P3 = Promise.reject(345);
-  P3.name = "P3";
-  promiseNextTick(tick2);
+    print('TICK 1');
+    P1 = Promise.reject(123);
+    P1.name = 'P1';
+    P2 = Promise.reject(234);
+    P2.name = 'P2';
+    P3 = Promise.reject(345);
+    P3.name = 'P3';
+    promiseNextTick(tick2);
 }
 
 function tick2() {
-  print("TICK 2");
-  P4.catch(function(e) {
-    print("P4.catch:", e);
-  });
-  promiseNextTick(tick3);
+    print('TICK 2');
+    P4.catch(function (e) {
+        print('P4.catch:', e);
+    });
+    promiseNextTick(tick3);
 }
 
 function tick3() {
-  print("TICK 3");
-  print("done");
+    print('TICK 3');
+    print('done');
 }
 
 tick1();

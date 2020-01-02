@@ -17,23 +17,23 @@ true
 ===*/
 
 function nodejsBufferValueOfTest() {
-  var b;
+    var b;
 
-  // Check inheritance
-  print(typeof Buffer.prototype.valueOf);
-  print(Buffer.prototype.valueOf === Object.prototype.valueOf);
-  print(Buffer.prototype.hasOwnProperty("valueOf"));
+    // Check inheritance
+    print(typeof Buffer.prototype.valueOf);
+    print(Buffer.prototype.valueOf === Object.prototype.valueOf);
+    print(Buffer.prototype.hasOwnProperty('valueOf'));
 
-  // Object.prototype.valueOf() returns the buffer as is
-  b = new Buffer("ABCDEFGH");
-  print("" + b.valueOf());
-  print(typeof b.valueOf());
-  print(b.valueOf() === b);
+    // Object.prototype.valueOf() returns the buffer as is
+    b = new Buffer('ABCDEFGH');
+    print('' + b.valueOf());
+    print(typeof b.valueOf());
+    print(b.valueOf() === b);
 }
 
 try {
-  print("node.js Buffer valueOf() test");
-  nodejsBufferValueOfTest();
+    print('node.js Buffer valueOf() test');
+    nodejsBufferValueOfTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

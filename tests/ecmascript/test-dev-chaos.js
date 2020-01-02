@@ -9,60 +9,33 @@
 /* Comparison value computed using Rhino, V8 agrees. */
 
 function f(t) {
-  // http://pelulamu.net/countercomplex/music_formula_collection.txt
-  // unfortunately this is broken compared to the youtube version
+    // http://pelulamu.net/countercomplex/music_formula_collection.txt
+    // unfortunately this is broken compared to the youtube version
 
-  /*
+/*
 // mu6k 2011-10-10 http://www.youtube.com/watch?v=tCRPUv8V22o "Long-line Theory", Chaos Theory cover, optimized by ryg, p01 et al., JS-only
 w=t>>9,k=32,m=2048,a=1-t/m%1,d=(14*t*t^t)%m*a,y=[3,3,4.7,2][p=w/k&3]*t/4,h="IQNNNN!!]]!Q!IW]WQNN??!!W]WQNNN?".charCodeAt(w/2&15|p/3<<4)/33*t-t,s=y*.98%80+y%80+(w>>7&&a*((5*t%m*a&128)*(0x53232323>>w/4&1)+(d&127)*(0xa444c444>>w/4&1)*1.5+(d*w&1)+(h%k+h*1.99%k+h*.49%k+h*.97%k-64)*(4-a-a))),s*s>>14?127:s
 */
 
-  (w = t >> 9),
-    (k = 32),
-    (m = 2048),
-    (a = 1 - ((t / m) % 1)),
-    (d = (((14 * t * t) ^ t) % m) * a),
-    (y = ([3, 3, 4.7, 2][(p = (w / k) & 3)] * t) / 4),
-    (h =
-      ("IQNNNN!!]]!Q!IW]WQNN??!!W]WQNNN?".charCodeAt(
-        ((w / 2) & 15) | ((p / 3) << 4)
-      ) /
-        33) *
-        t -
-      t),
-    (s =
-      ((y * 0.98) % 80) +
-      (y % 80) +
-      (w >> 7 &&
-        a *
-          (((((5 * t) % m) * a) & 128) * ((0x53232323 >> (w / 4)) & 1) +
-            (d & 127) * ((0xa444c444 >> (w / 4)) & 1) * 1.5 +
-            ((d * w) & 1) +
-            ((h % k) +
-              ((h * 1.99) % k) +
-              ((h * 0.49) % k) +
-              ((h * 0.97) % k) -
-              64) *
-              (4 - a - a)))),
-    (s * s) >> 14 ? 127 : s;
+w=t>>9,k=32,m=2048,a=1-t/m%1,d=(14*t*t^t)%m*a,y=[3,3,4.7,2][p=w/k&3]*t/4,h="IQNNNN!!]]!Q!IW]WQNN??!!W]WQNNN?".charCodeAt(w/2&15|p/3<<4)/33*t-t,s=y*.98%80+y%80+(w>>7&&a*((5*t%m*a&128)*(0x53232323>>w/4&1)+(d&127)*(0xa444c444>>w/4&1)*1.5+(d*w&1)+(h%k+h*1.99%k+h*.49%k+h*.97%k-64)*(4-a-a))),s*s>>14?127:s
 
-  return s;
+    return s;
 }
 
 var digits = "0123456789abcdef";
 var res = [];
 
 for (var time = 0; time < 10000; time++) {
-  var sample = f(time) | 0;
-  sample = sample < 0 ? 0 : sample;
-  sample = sample > 255 ? 255 : sample;
+    var sample = f(time) | 0;
+    sample = (sample < 0 ? 0 : sample);
+    sample = (sample > 255 ? 255 : sample);
 
-  res[res.length] = digits[sample >> 4];
-  res[res.length] = digits[sample & 0x0f];
+    res[res.length] = digits[sample >> 4];
+    res[res.length] = digits[sample & 0x0f];
 
-  if (time % 1000 == 0) {
-    res = [res.join("")];
-  }
+    if ((time % 1000) == 0) {
+        res = [ res.join('') ]
+    }
 }
 
-print(res.join(""));
+print(res.join(''));

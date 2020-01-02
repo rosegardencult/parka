@@ -17,34 +17,28 @@ after loop 2
 ===*/
 
 function labelledBlockTest() {
-  label1: for (
-    print("loop 1 part A");
-    print("loop 1 part B"), true;
-    print("loop 1 part C")
-  ) {
-    print("loop 1 body");
-    break label1;
-  }
-
-  /* This should work the same as 'label1', but Duktape 0.9.0 fails with
-   * an INVALID opcde after printing 'loop 2 body' when handling 'break label2'.
-   */
-  label2: {
-    for (
-      print("loop 2 part A");
-      print("loop 2 part B"), true;
-      print("loop 2 part C")
-    ) {
-      print("loop 2 body");
-      break label2;
+    label1:
+    for (print("loop 1 part A"); print("loop 1 part B"), true; print("loop 1 part C")) {
+        print("loop 1 body");
+        break label1;
     }
-  }
 
-  print("after loop 2");
+    /* This should work the same as 'label1', but Duktape 0.9.0 fails with
+     * an INVALID opcde after printing 'loop 2 body' when handling 'break label2'.
+     */
+    label2:
+    {
+        for (print("loop 2 part A"); print("loop 2 part B"), true; print("loop 2 part C")) {
+            print("loop 2 body");
+            break label2;
+        }
+    }
+
+    print("after loop 2");
 }
 
 try {
-  labelledBlockTest();
+    labelledBlockTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

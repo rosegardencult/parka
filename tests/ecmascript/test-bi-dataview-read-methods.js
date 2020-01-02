@@ -1749,85 +1749,60 @@ read TypedArray test, arrayLength 17
 ===*/
 
 function readDataViewTest(arrayLength) {
-  // DEADBEEF CAFEBABE 11223344 55667788 99
-  var b = new ArrayBuffer(arrayLength);
-  var b_u8 = new Uint8Array(b);
-  [
-    0xde,
-    0xad,
-    0xbe,
-    0xef,
-    0xca,
-    0xfe,
-    0xba,
-    0xbe,
-    0x11,
-    0x22,
-    0x33,
-    0x44,
-    0x55,
-    0x66,
-    0x77,
-    0x88,
-    0x99
-  ].forEach(function(v, i) {
-    if (i < arrayLength) {
-      b_u8[i] = v;
-    }
-  });
-  printBuffer(b);
-
-  [-100, -5, -1, 0, 1, 2, 8, 13, 15, 16, 17, 100].forEach(function(
-    offset,
-    idx1
-  ) {
-    [undefined, 0, 1, 2, 3, 4, 5, 8, 100].forEach(function(length, idx2) {
-      [
-        "getInt8",
-        "getUint8",
-        "getInt16",
-        "getUint16",
-        "getInt32",
-        "getUint32",
-        "getFloat32",
-        "getFloat64"
-      ].forEach(function(funcname, idx3) {
-        var evalstr;
-
-        evalstr = "new DataView(b, " + offset;
-        if (length !== undefined) {
-          evalstr += ", " + length;
+    // DEADBEEF CAFEBABE 11223344 55667788 99
+    var b = new ArrayBuffer(arrayLength);
+    var b_u8 = new Uint8Array(b);
+    [
+        0xde, 0xad, 0xbe, 0xef, 0xca, 0xfe, 0xba, 0xbe,
+        0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88,
+        0x99
+    ].forEach(function (v, i) {
+        if (i < arrayLength) {
+            b_u8[i] = v;
         }
-        evalstr += ")";
-
-        var vals = [];
-        try {
-          // workaround because there's no programmatic 'construct' call
-
-          var v = eval(evalstr);
-          vals.push(v[funcname](0, true));
-          vals.push(v[funcname](0, false));
-          vals.push(v[funcname](1, true));
-          vals.push(v[funcname](1, false));
-          print(idx1, idx2, idx3, vals.join(" "));
-        } catch (e) {
-          print(idx1, idx2, idx3, vals.join(" "), e.name);
-        }
-      });
     });
-  });
+    printBuffer(b);
+
+    [ -100, -5, -1, 0, 1, 2, 8, 13, 15, 16, 17, 100 ].forEach(function (offset, idx1) {
+        [ undefined, 0, 1, 2, 3, 4, 5, 8, 100 ].forEach(function (length, idx2) {
+            [ 'getInt8', 'getUint8', 'getInt16', 'getUint16',
+              'getInt32', 'getUint32', 'getFloat32', 'getFloat64' ].forEach(function (funcname, idx3) {
+                var evalstr;
+
+                evalstr = 'new DataView(b, ' + offset;
+                if (length !== undefined) {
+                    evalstr += ', ' + length;
+                }
+                evalstr += ')';
+
+                var vals = [];
+                try {
+                    // workaround because there's no programmatic 'construct' call
+
+                    var v = eval(evalstr);
+                    vals.push(v[funcname](0, true));
+                    vals.push(v[funcname](0, false));
+                    vals.push(v[funcname](1, true));
+                    vals.push(v[funcname](1, false));
+                    print(idx1, idx2, idx3, vals.join(' '));
+                } catch (e) {
+                    print(idx1, idx2, idx3, vals.join(' '), e.name);
+                }
+            });
+        });
+    });
 }
 
 try {
-  /* There are no alignment requirements for DataView, but test two
-   * lengths anyway.
-   */
+    /* There are no alignment requirements for DataView, but test two
+     * lengths anyway.
+     */
 
-  print("read TypedArray test, arrayLength 16");
-  readDataViewTest(16);
+    print('read TypedArray test, arrayLength 16');
+    readDataViewTest(16);
 
-  print("read TypedArray test, arrayLength 17");
-  readDataViewTest(17);
+    print('read TypedArray test, arrayLength 17');
+    readDataViewTest(17);
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

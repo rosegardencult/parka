@@ -7,7 +7,7 @@
 ===*/
 
 function args_class() {
-  return arguments;
+    return arguments;
 }
 
 print("" + args_class());

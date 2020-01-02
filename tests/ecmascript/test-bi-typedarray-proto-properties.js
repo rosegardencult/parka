@@ -11,10 +11,8 @@
 ---*/
 
 function encValue(v) {
-  if (typeof v === "function") {
-    return "function";
-  }
-  return String(v);
+    if (typeof v === 'function') { return 'function'; }
+    return String(v);
 }
 
 /*===
@@ -67,40 +65,39 @@ true
 ===*/
 
 function typedArrayPrototypePropertiesTest() {
-  var views = [
-    "Int8Array",
-    "Uint8Array",
-    "Uint8ClampedArray",
-    "Int16Array",
-    "Uint16Array",
-    "Int32Array",
-    "Uint32Array",
-    "Float32Array",
-    "Float64Array"
-  ];
-  var props = ["set", "subarray", "constructor"];
+    var views = [
+        'Int8Array', 'Uint8Array', 'Uint8ClampedArray',
+        'Int16Array', 'Uint16Array',
+        'Int32Array', 'Uint32Array',
+        'Float32Array', 'Float64Array'
+    ];
+    var props = [
+        'set',
+        'subarray',
+        'constructor'
+    ];
 
-  views.forEach(function(viewname) {
-    print(viewname);
+    views.forEach(function (viewname) {
+        print(viewname);
 
-    var obj = eval(viewname + ".prototype");
+        var obj = eval(viewname + '.prototype');
 
-    props.forEach(function(propname) {
-      try {
-        var val = obj[propname];
-        print(propname, propname in obj, typeof val, encValue(val));
-      } catch (e) {
-        print(e.stack || e);
-      }
+        props.forEach(function (propname) {
+            try {
+                var val = obj[propname];
+                print(propname, propname in obj, typeof val, encValue(val));
+            } catch (e) {
+                print(e.stack || e);
+            }
+        });
+
+        print(obj.constructor === eval(viewname));
     });
-
-    print(obj.constructor === eval(viewname));
-  });
 }
 
 try {
-  print("TypedArray prototype properties test");
-  typedArrayPrototypePropertiesTest();
+    print('TypedArray prototype properties test');
+    typedArrayPrototypePropertiesTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

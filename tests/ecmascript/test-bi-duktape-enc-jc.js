@@ -7,12 +7,12 @@
 ===*/
 
 function test() {
-  // Array gaps: '{"_undef":true}'
-  print(Duktape.enc("jc", [void 0, null, , , , 1, ,]));
+    // Array gaps: '{"_undef":true}'
+    print(Duktape.enc('jc', [ void 0, null,,,, 1,, ]));
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

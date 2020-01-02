@@ -27,68 +27,36 @@ SyntaxError
 ===*/
 
 function printValue(v) {
-  print(
-    (v === null ? "null" : typeof v) +
-      (v != null ? " " + Object.prototype.toString.call(v) : "")
-  );
+    print((v === null ? 'null' : typeof v) +
+          (v != null ? (' ' + Object.prototype.toString.call(v)) : ''));
 }
 
 /*
  *  Must be able to return any type.  No argument means undefined.
  */
 
-function retEmpty() {
-  return;
-}
-function retUndefined() {
-  return undefined;
-}
-function retNull() {
-  return null;
-}
-function retTrue() {
-  return true;
-}
-function retFalse() {
-  return false;
-}
-function retNumber() {
-  return 123;
-}
-function retString() {
-  return "foo";
-}
-function retObject() {
-  return { foo: 1 };
-}
-function retArray() {
-  return [1, 2];
-}
-function retFunction() {
-  return function() {};
-}
+function retEmpty() { return; }
+function retUndefined() { return undefined; }
+function retNull() { return null; }
+function retTrue() { return true; }
+function retFalse() { return false; }
+function retNumber() { return 123; }
+function retString() { return 'foo'; }
+function retObject() { return { foo: 1 }; }
+function retArray() { return [ 1, 2 ]; }
+function retFunction() { return function () {} }
 
 function testReturnTypes() {
-  [
-    retEmpty,
-    retUndefined,
-    retNull,
-    retTrue,
-    retFalse,
-    retNumber,
-    retString,
-    retObject,
-    retArray,
-    retFunction
-  ].forEach(function(v) {
-    printValue(v());
-  });
+    [ retEmpty, retUndefined, retNull, retTrue, retFalse, retNumber,
+      retString, retObject, retArray, retFunction ].forEach(function (v) {
+        printValue(v());
+    });
 }
 
 try {
-  testReturnTypes();
+    testReturnTypes();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*
@@ -108,30 +76,31 @@ try {
  */
 
 function retLineTerm1() {
-  return;
-  123;
+    return
+    123;
 }
 function retLineTerm2() {
-  // As long as the Expression has started a newline is allowed.
-  // Here a unary plus is enough to start the expression.
-  return +234;
+    // As long as the Expression has started a newline is allowed.
+    // Here a unary plus is enough to start the expression.
+    return +
+    234;
 }
 function testReturnLineTerm() {
-  var ret;
+    var ret;
 
-  ret = retLineTerm1();
-  printValue(ret);
-  print(ret);
+    ret = retLineTerm1();
+    printValue(ret);
+    print(ret);
 
-  ret = retLineTerm2();
-  printValue(ret);
-  print(ret);
+    ret = retLineTerm2();
+    printValue(ret);
+    print(ret);
 }
 
 try {
-  testReturnLineTerm();
+    testReturnLineTerm();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*
@@ -139,15 +108,15 @@ try {
  */
 
 function testReturnInEval() {
-  eval("return 123");
+    eval('return 123');
 }
 try {
-  testReturnInEval();
+    testReturnInEval();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 try {
-  eval("return 123");
+    eval('return 123');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

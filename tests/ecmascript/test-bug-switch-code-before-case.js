@@ -7,7 +7,7 @@ SyntaxError
 ===*/
 
 try {
-  eval('switch (2) { print("hello"); case 2: print("match 2"); }');
+    eval('switch (2) { print("hello"); case 2: print("match 2"); }');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

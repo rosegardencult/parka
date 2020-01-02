@@ -7,23 +7,23 @@
  */
 
 function touint32(x) {
-  return x >>> 0;
+    return x >>> 0;
 }
 
 function zeroSign(x) {
-  if (x !== 0) {
-    return "nz";
-  }
-  if (1 / x > 0) {
-    return "pos";
-  } else {
-    return "neg";
-  }
+    if (x !== 0) {
+        return 'nz';
+    }
+    if (1 / x > 0) {
+        return 'pos';
+    } else {
+        return 'neg';
+    }
 }
 
 function test(x) {
-  var t = touint32(x);
-  print(t, zeroSign(t));
+    var t = touint32(x);
+    print(t, zeroSign(t));
 }
 
 /*===
@@ -97,10 +97,10 @@ test("Infinity");
 test("+Infinity");
 test("-Infinity");
 
-test("NaN"); // "NaN" does not parse -> results in NaN number -> +0
-test("NaY"); // same case
+test("NaN");  // "NaN" does not parse -> results in NaN number -> +0
+test("NaY");  // same case
 
-test("1e10"); // larger than 32-bit, fits in 53 bits of double
+test("1e10");  // larger than 32-bit, fits in 53 bits of double
 
 /* XXX: object coercion */
 
@@ -118,11 +118,11 @@ test("1e10"); // larger than 32-bit, fits in 53 bits of double
 
 test(4294967296);
 test(4294967297);
-test(-1); // --> 0xffffffffU
-test(-4294967294); // +2
-test(9007199254740991); // (2^53 - 1) % (2^32) --> 4294967295
-test(9007199254740992); // (2^53) % (2^32) --> 0
-test(9007199254740994); // (2^53 + 2) % (2^32) --> 2  (Note: 2^53+1 not representable)
+test(-1);  // --> 0xffffffffU
+test(-4294967294);        // +2
+test(9007199254740991);   // (2^53 - 1) % (2^32) --> 4294967295
+test(9007199254740992);   // (2^53) % (2^32) --> 0
+test(9007199254740994);   // (2^53 + 2) % (2^32) --> 2  (Note: 2^53+1 not representable)
 
 /*===
 3 nz
@@ -135,5 +135,5 @@ test(9007199254740994); // (2^53 + 2) % (2^32) --> 2  (Note: 2^53+1 not represen
  * Negative numbers: -x -> -floor(x)   e.g. -3.4 -> -3  (not -4)
  */
 
-test(3.4); // -> 3 -> 3
-test(-3.4); // -> -3 -> (2^32) - 3
+test(3.4);   // -> 3 -> 3
+test(-3.4);  // -> -3 -> (2^32) - 3

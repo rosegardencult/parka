@@ -9,22 +9,22 @@
 ===*/
 
 function testJson() {
-  // The parse error here is caused by the exponent plus sign.
-  print(JSON.parse("1.50e+2"));
+    // The parse error here is caused by the exponent plus sign.
+    print(JSON.parse('1.50e+2'));
 }
 
 function testEval() {
-  print(eval("1.50e+2"));
+    print(eval('1.50e+2'));
 }
 
 try {
-  testJson();
+    testJson();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 try {
-  testEval();
+    testEval();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

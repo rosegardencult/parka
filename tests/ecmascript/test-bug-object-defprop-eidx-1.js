@@ -19,41 +19,37 @@ Object.defineProperty() done
 var obj = {};
 
 function myFinalizer() {
-  var i;
+    var i;
 
-  print("finalizer, modify object");
+    print('finalizer, modify object');
 
-  delete obj.first;
-  for (i = 0; i < 10; i++) {
-    // i limit 2 is enough to trigger the bug now, overshoot a bit.
-    obj["dummy-" + i] = "foo";
-  }
+    delete obj.first;
+    for (i = 0; i < 10; i++) {
+        // i limit 2 is enough to trigger the bug now, overshoot a bit.
+        obj['dummy-' + i] = 'foo';
+    }
 
-  print("finalizer done");
+    print('finalizer done');
 }
 
 function accessorToDataTest() {
-  obj.first = 123;
+    obj.first = 123;
 
-  Object.defineProperty(obj, "prop", {
-    get: new Function(""),
-    configurable: true,
-    enumerable: true
-  });
-  Object.getOwnPropertyDescriptor(obj, "prop").get.prototype = null; // break circular ref
-  Duktape.fin(Object.getOwnPropertyDescriptor(obj, "prop").get, myFinalizer);
+    Object.defineProperty(obj, 'prop', { get: new Function(''), configurable: true, enumerable: true });
+    Object.getOwnPropertyDescriptor(obj, 'prop').get.prototype = null;  // break circular ref
+    Duktape.fin(Object.getOwnPropertyDescriptor(obj, 'prop').get, myFinalizer);
 
-  obj.oops = 345;
+    obj.oops = 345;
 
-  print("Object.defineProperty() to convert .prop to a data property");
-  Object.defineProperty(obj, "prop", { value: "replaced" });
-  print("Object.defineProperty() done");
+    print('Object.defineProperty() to convert .prop to a data property');
+    Object.defineProperty(obj, 'prop', { value: 'replaced' });
+    print('Object.defineProperty() done');
 
-  print(Duktape.enc("jx", obj));
+    print(Duktape.enc('jx', obj));
 }
 
 try {
-  accessorToDataTest();
+    accessorToDataTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

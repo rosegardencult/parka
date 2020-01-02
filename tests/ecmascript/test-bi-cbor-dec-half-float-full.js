@@ -137,53 +137,46 @@ done
 ===*/
 
 function test() {
-  var b1,
-    b2,
-    prev = null,
-    prevdiff = null;
+    var b1, b2, prev = null, prevdiff = null;
 
-  var res = [];
+    var res = [];
 
-  for (b1 = 0; b1 < 256; b1++) {
-    for (b2 = 0; b2 < 256; b2++) {
-      var data = new Uint8Array([0xf9, b1, b2]).buffer;
-      var val = CBOR.decode(data);
-      var obj = { input: Duktape.enc("hex", data), value: val };
-      if (prev !== null && Number.isNaN(prev) && Number.isNaN(val)) {
-        obj.diff = 0;
-      } else if (
-        prev !== null &&
-        Number.isFinite(prev) &&
-        Number.isFinite(val)
-      ) {
-        obj.diff = val - prev;
-      }
-      prev = val;
-      res.push(obj);
+    for (b1 = 0; b1 < 256; b1++) {
+        for (b2 = 0; b2 < 256; b2++) {
+            var data = new Uint8Array([ 0xf9, b1, b2 ]).buffer;
+            var val = CBOR.decode(data);
+            var obj = { input: Duktape.enc('hex', data), value: val };
+            if (prev !== null && Number.isNaN(prev) && Number.isNaN(val)) {
+                obj.diff = 0;
+            } else if (prev !== null && Number.isFinite(prev) && Number.isFinite(val)) {
+                obj.diff = val - prev;
+            }
+            prev = val;
+            res.push(obj);
+        }
     }
-  }
 
-  var diff_printed = false;
-  for (i = 0; i < res.length; i++) {
-    var prev = i > 0 ? res[i - 1] : {};
-    var curr = res[i];
-    if (prev.diff === curr.diff && typeof curr.diff === "number") {
-      if (diff_printed) {
-      } else {
-        print("  diff: " + prev.diff);
-        diff_printed = true;
-      }
-    } else {
-      print(curr.input, Duktape.enc("jx", curr.value));
-      diff_printed = false;
+    var diff_printed = false;
+    for (i = 0; i < res.length; i++) {
+        var prev = (i > 0 ? res[i - 1] : {});
+        var curr = res[i];
+        if (prev.diff === curr.diff && typeof curr.diff === 'number') {
+            if (diff_printed) {
+            } else {
+                print('  diff: ' + prev.diff);
+                diff_printed = true;
+            }
+        } else {
+            print(curr.input, Duktape.enc('jx', curr.value));
+            diff_printed = false;
+        }
     }
-  }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
-print("done");
+print('done');

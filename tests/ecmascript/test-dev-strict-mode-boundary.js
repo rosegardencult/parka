@@ -67,18 +67,18 @@ SyntaxError
 /* Duplicate argument names */
 
 try {
-  // non-strict function -> acceptable syntax, latter parameter
-  // is bound to 'a'
-  eval("(function (a,a) { print(a); })(1,2);");
+    // non-strict function -> acceptable syntax, latter parameter
+    // is bound to 'a'
+    eval("(function (a,a) { print(a); })(1,2);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  // SyntaxError
-  eval("(function (a,a) { 'use strict'; print(a); })(1,2);");
+    // SyntaxError
+    eval("(function (a,a) { 'use strict'; print(a); })(1,2);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -91,27 +91,27 @@ SyntaxError
 /* Argument named 'eval' or 'arguments' */
 
 try {
-  eval("(function (eval) { print(eval); })(1);");
+    eval("(function (eval) { print(eval); })(1);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("(function (eval) { 'use strict'; print(eval); })(1);");
+    eval("(function (eval) { 'use strict'; print(eval); })(1);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("(function (arguments) { print(arguments); })(1);");
+    eval("(function (arguments) { print(arguments); })(1);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("(function (arguments) { 'use strict'; print(arguments); })(1);");
+    eval("(function (arguments) { 'use strict'; print(arguments); })(1);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -124,25 +124,25 @@ SyntaxError
 /* Function name 'eval' or 'arguments' */
 
 try {
-  eval("(function eval(a) { print(a); })(1);");
+    eval("(function eval(a) { print(a); })(1);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("(function eval(a) { 'use strict'; print(a); })(1);");
+    eval("(function eval(a) { 'use strict'; print(a); })(1);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("(function arguments(a) { print(a); })(1);");
+    eval("(function arguments(a) { print(a); })(1);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("(function arguments(a) { 'use strict'; print(a); })(1);");
+    eval("(function arguments(a) { 'use strict'; print(a); })(1);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

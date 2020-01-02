@@ -9,9 +9,9 @@ This is a line continuation.
 var str;
 
 try {
-  str = '"This is a \\\nline continuation."';
-  print(str);
-  print(eval(str));
+    str = '"This is a \\\nline continuation."';
+    print(str);
+    print(eval(str));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

@@ -14,23 +14,23 @@ x = 1;
 print(x);
 
 x = 2;
-x = 3;
+(((x))) = 3;
 print(x);
 
 // inside function
 function test() {
-  var x = 123;
+    var x = 123;
 
-  x = 234;
-  print(x);
-  x = 345;
-  print(x);
+    x = 234;
+    print(x);
+    (((x))) = 345;
+    print(x);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /* XXX: more tests */

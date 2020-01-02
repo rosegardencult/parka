@@ -18,60 +18,54 @@ object prototype expected: true
 
 /* Test typeof, class etc of parsed values. */
 
-print("typeof, class, etc");
+print('typeof, class, etc');
 
 function getClass(v) {
-  var txt;
+    var txt;
 
-  txt = Object.prototype.toString.call(v); /* -> "[object <class>]" */
-  m = /^\[object\u0020(.*)\]$/.exec(txt);
-  if (m) {
-    return m[1];
-  } else {
-    return;
-  }
+    txt = Object.prototype.toString.call(v);  /* -> "[object <class>]" */
+    m = /^\[object\u0020(.*)\]$/.exec(txt);
+    if (m) {
+        return m[1];
+    } else {
+        return;
+    }
 }
 
 function testTypeofEtc(x) {
-  var v = JSON.parse(x);
-  print("typeof: " + typeof v);
-  print("class: " + getClass(v));
+    var v = JSON.parse(x);
+    print('typeof: ' + typeof v);
+    print('class: ' + getClass(v));
 }
 
 function testObjectAndArrayPrototypes() {
-  var v;
+    var v;
 
-  /* Both Object.prototype and Array.prototype are non-writable,
-   * non-configurable properties, so we can't test (and don't need
-   * to test) what happens if Object.prototype or Array.prototype
-   * is replaced with a custom value.
-   */
+    /* Both Object.prototype and Array.prototype are non-writable,
+     * non-configurable properties, so we can't test (and don't need
+     * to test) what happens if Object.prototype or Array.prototype
+     * is replaced with a custom value.
+     */
 
-  v = JSON.parse("[1,2]");
-  print(
-    "array prototype expected: " +
-      (Object.getPrototypeOf(v) === Array.prototype)
-  );
+    v = JSON.parse("[1,2]");
+    print('array prototype expected: ' + (Object.getPrototypeOf(v) === Array.prototype));
 
-  v = JSON.parse('{"foo":1,"bar":2}');
-  print(
-    "object prototype expected: " +
-      (Object.getPrototypeOf(v) === Object.prototype)
-  );
+    v = JSON.parse('{"foo":1,"bar":2}');
+    print('object prototype expected: ' + (Object.getPrototypeOf(v) === Object.prototype));
 }
 
 try {
-  testTypeofEtc("null");
-  testTypeofEtc("true");
-  testTypeofEtc("false");
-  testTypeofEtc("1.23");
-  testTypeofEtc("[1,2]");
-  testTypeofEtc('{"foo":1,"bar":2}');
+    testTypeofEtc("null");
+    testTypeofEtc("true");
+    testTypeofEtc("false");
+    testTypeofEtc("1.23");
+    testTypeofEtc("[1,2]");
+    testTypeofEtc('{"foo":1,"bar":2}');
 
-  // test Object and Array prototypes
-  testObjectAndArrayPrototypes();
+    // test Object and Array prototypes
+    testObjectAndArrayPrototypes();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -90,24 +84,24 @@ SyntaxError
  * JSON encoding format.
  */
 
-print("nan/inf");
+print('nan/inf');
 
 try {
-  print(JSON.parse("NaN"));
+    print(JSON.parse('NaN'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(JSON.parse("Infinity"));
+    print(JSON.parse('Infinity'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(JSON.parse("-Infinity"));
+    print(JSON.parse('-Infinity'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -119,24 +113,24 @@ SyntaxError
 
 /* JSONNumber does not allow hex or octal literals. */
 
-print("hex/octal literal");
+print('hex/octal literal');
 
 try {
-  print(JSON.parse("0x41"));
+    print(JSON.parse('0x41'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(JSON.parse("077"));
+    print(JSON.parse('077'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(JSON.parse("099"));
+    print(JSON.parse('099'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -149,13 +143,13 @@ SyntaxError
  * a leading plus sign is an unary plus operator.
  */
 
-print("leading plus");
+print('leading plus');
 
 try {
-  print(eval("+1"));
-  print(JSON.parse("+1"));
+    print(eval('+1'));
+    print(JSON.parse('+1'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -169,13 +163,13 @@ SyntaxError
  * (Rhino allows it.)
  */
 
-print("empty fractions");
+print('empty fractions');
 
 try {
-  print(eval("1."));
-  print(JSON.parse("1."));
+    print(eval('1.'));
+    print(JSON.parse('1.'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -186,13 +180,13 @@ SyntaxError
 
 /* JSONNumber does not allow fractions without an integer part. */
 
-print("missing integer part");
+print('missing integer part');
 
 try {
-  print(eval(".123"));
-  print(JSON.parse(".123"));
+    print(eval('.123'));
+    print(JSON.parse('.123'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -207,30 +201,30 @@ SyntaxError
  * good thing even if ECMAScript parsing allows octal literals.
  */
 
-print("leading zeroes");
+print('leading zeroes');
 
 try {
-  print(JSON.parse("0"));
+    print(JSON.parse('0'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(JSON.parse("00"));
+    print(JSON.parse('00'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(JSON.parse("012"));
+    print(JSON.parse('012'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(JSON.parse("019"));
+    print(JSON.parse('019'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -241,13 +235,13 @@ SyntaxError
 
 /* JSONString does not allow single quotes, ECMAScript does. */
 
-print("single quotes");
+print('single quotes');
 
 try {
-  print(eval("'foo'"));
-  print(JSON.parse("'foo'"));
+    print(eval("'foo'"));
+    print(JSON.parse("'foo'"));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -352,43 +346,43 @@ json SyntaxError
 
 /* JSONString does not accept codepoints U+0000 to U+001F (ECMAScript does). */
 
-print("string codepoints");
+print('string codepoints');
 
 function testStringCodepoint(x) {
-  var lit = '"' + String.fromCharCode(x) + '"';
-  var t;
+    var lit = '"' + String.fromCharCode(x) + '"';
+    var t;
 
-  print("cp", x);
+    print('cp', x);
 
-  // Codepoints 0x0a and 0x0d will cause eval to fail: newline inside
-  // a string
-  try {
-    t = eval(lit);
-    print("eval", t.length, t.charCodeAt(0));
-  } catch (e) {
-    print("eval", e.name);
-  }
+    // Codepoints 0x0a and 0x0d will cause eval to fail: newline inside
+    // a string
+    try {
+        t = eval(lit);
+        print('eval', t.length, t.charCodeAt(0));
+    } catch (e) {
+        print('eval', e.name);
+    }
 
-  try {
-    t = JSON.parse(lit);
-    print("json", t.length, t.charCodeAt(0));
-  } catch (e) {
-    print("json", e.name);
-  }
+    try {
+        t = JSON.parse(lit);
+        print('json', t.length, t.charCodeAt(0));
+    } catch (e) {
+        print('json', e.name);
+    }
 }
 
 function testStringCodepoints() {
-  var i;
+    var i;
 
-  for (i = 0; i < 32; i++) {
-    testStringCodepoint(i);
-  }
+    for (i = 0; i < 32; i++) {
+        testStringCodepoint(i);
+    }
 }
 
 try {
-  testStringCodepoints();
+    testStringCodepoints();
 } catch (e) {
-  print(e.name, e);
+    print(e.name, e);
 }
 
 /*===
@@ -398,26 +392,26 @@ unicode escape
 2 43981 61185
 ===*/
 
-print("unicode escape");
+print('unicode escape');
 
 function testUnicodeEscape() {
-  var t;
+    var t;
 
-  t = JSON.parse('"\\u1234"');
-  print(t.length, t.charCodeAt(0));
+    t = JSON.parse('"\\u1234"');
+    print(t.length, t.charCodeAt(0));
 
-  t = JSON.parse('"\\uabcd\\uef01"');
-  print(t.length, t.charCodeAt(0), t.charCodeAt(1));
+    t = JSON.parse('"\\uabcd\\uef01"');
+    print(t.length, t.charCodeAt(0), t.charCodeAt(1));
 
-  // both lowercase and uppercase hex digits are required
-  t = JSON.parse('"\\uABCD\\uEF01"');
-  print(t.length, t.charCodeAt(0), t.charCodeAt(1));
+    // both lowercase and uppercase hex digits are required
+    t = JSON.parse('"\\uABCD\\uEF01"');
+    print(t.length, t.charCodeAt(0), t.charCodeAt(1));
 }
 
 try {
-  testUnicodeEscape();
+    testUnicodeEscape();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -507,46 +501,46 @@ json SyntaxError
  * by JSON parsing.
  */
 
-print("character escapes");
+print('character escapes');
 
 function testCharacterEscape(x) {
-  var lit = '"' + "\\" + String.fromCharCode(x) + '"';
-  var t;
+    var lit = '"' + '\\' + String.fromCharCode(x) + '"';
+    var t;
 
-  print("cp", x, String.fromCharCode(x));
+    print('cp', x, String.fromCharCode(x));
 
-  // Escape chars 'b', 'f', 'n', 't', 'v' will decode to special characters.
-  // Unterminated hex/unicode escapes ('x' and 'u') are decoded as unknown
-  // escapes and *don't* cause a SyntaxError, e.g. "\\u" evals to "u".
-  try {
-    t = eval(lit);
-    print("eval", t.length, t.charCodeAt(0));
-  } catch (e) {
-    print("eval", e.name);
-  }
+    // Escape chars 'b', 'f', 'n', 't', 'v' will decode to special characters.
+    // Unterminated hex/unicode escapes ('x' and 'u') are decoded as unknown
+    // escapes and *don't* cause a SyntaxError, e.g. "\\u" evals to "u".
+    try {
+        t = eval(lit);
+        print('eval', t.length, t.charCodeAt(0));
+    } catch (e) {
+        print('eval', e.name);
+    }
 
-  try {
-    t = JSON.parse(lit);
-    print("json", t.length, t.charCodeAt(0));
-  } catch (e) {
-    print("json", e.name);
-  }
+    try {
+        t = JSON.parse(lit);
+        print('json', t.length, t.charCodeAt(0));
+    } catch (e) {
+        print('json', e.name);
+    }
 }
 
 function testCharacterEscapes() {
-  var i;
-  var cp;
+    var i;
+    var cp;
 
-  for (i = 0; i < 26; i++) {
-    cp = 97 + i; /* a to z */
-    testCharacterEscape(cp);
-  }
+    for (i = 0; i < 26; i++) {
+        cp = 97 + i;   /* a to z */
+        testCharacterEscape(cp);
+    }
 }
 
 try {
-  testCharacterEscapes();
+    testCharacterEscapes();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -557,18 +551,18 @@ SyntaxError
 
 /* ECMAScript strings accept a zero escape, JSONString does not. */
 
-print("zero escape");
+print('zero escape');
 
 try {
-  print(eval('"\\0"').charCodeAt(0));
+    print(eval('"\\0"').charCodeAt(0));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(JSON.parse('"\\0"').charCodeAt(0));
+    print(JSON.parse('"\\0"').charCodeAt(0));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -580,12 +574,12 @@ forward slash escape
  * produces it).
  */
 
-print("forward slash escape");
+print('forward slash escape');
 
 try {
-  print(JSON.parse('"\\/"'));
+    print(JSON.parse('"\\/"'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -596,13 +590,13 @@ SyntaxError
 
 /* JSONString does not accept hex escapes, ECMAScript strings do. */
 
-print("hex escape");
+print('hex escape');
 
 try {
-  print(eval('"\\x41"'));
-  print(JSON.parse('"\\x41"'));
+    print(eval('"\\x41"'));
+    print(JSON.parse('"\\x41"'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -610,12 +604,12 @@ null literal
 null
 ===*/
 
-print("null literal");
+print('null literal');
 
 try {
-  print(JSON.parse("null"));
+    print(JSON.parse('null'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -624,18 +618,18 @@ true
 false
 ===*/
 
-print("boolean literal");
+print('boolean literal');
 
 try {
-  print(JSON.parse("true"));
+    print(JSON.parse('true'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(JSON.parse("false"));
+    print(JSON.parse('false'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -649,22 +643,22 @@ null
  * e.g. true -> "true" -> true.
  */
 
-print("tostring coercion of true/false/null");
+print('tostring coercion of true/false/null');
 
 try {
-  print(JSON.parse(true));
+    print(JSON.parse(true));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(JSON.parse(false));
+    print(JSON.parse(false));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(JSON.parse(null));
+    print(JSON.parse(null));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

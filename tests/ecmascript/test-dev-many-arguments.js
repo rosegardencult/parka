@@ -130,51 +130,47 @@ failure for: 1000 -> RangeError
 ===*/
 
 function createSource(n) {
-  var res = [];
-  var i;
+    var res = [];
+    var i;
 
-  res.push("(function manyargs(");
-  for (i = 0; i < n; i++) {
-    if (i > 0) {
-      res.push(",");
+    res.push('(function manyargs(');
+    for (i = 0; i < n; i++) {
+        if (i > 0) { res.push(','); }
+        res.push('arg' + i);
     }
-    res.push("arg" + i);
-  }
-  res.push(") {");
-  for (i = 0; i < n; i++) {
-    res.push('print("arg' + i + '", arg' + i + ");");
-  }
-  res.push("})");
-  res.push("(");
-  for (i = 0; i < n; i++) {
-    if (i > 0) {
-      res.push(",");
+    res.push(') {');
+    for (i = 0; i < n; i++) {
+        res.push('print("arg' + i + '", arg' + i + ');');
     }
-    res.push('"my-arg-' + i + '"');
-  }
-  res.push(")");
-  return res.join("");
+    res.push('})');
+    res.push('(');
+    for (i = 0; i < n; i++) {
+        if (i > 0) { res.push(','); }
+        res.push('"my-arg-' + i + '"');
+    }
+    res.push(')');
+    return res.join('');
 }
 
 function wrappedTest(n) {
-  var src = createSource(n);
-  try {
-    eval(src);
-    print("success for:", n);
-  } catch (e) {
-    print("failure for:", n, "->", e.name);
-  }
+    var src = createSource(n);
+    try {
+        eval(src);
+        print('success for:', n);
+    } catch (e) {
+        print('failure for:', n, '->', e.name);
+    }
 }
 
 function test() {
-  wrappedTest(1);
-  wrappedTest(10);
-  wrappedTest(100);
-  wrappedTest(1000);
+    wrappedTest(1);
+    wrappedTest(10);
+    wrappedTest(100);
+    wrappedTest(1000);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

@@ -10,16 +10,16 @@ undefined
 /* Ensure that strict mode is detected even if followed by a 'use asm'. */
 
 function declarationTest() {
-  "use asm";
-  "use strict";
+    "use asm";
+    "use strict";
 
-  print(typeof this); // strict: 'undefined', non-strict: 'object'
+    print(typeof this);  // strict: 'undefined', non-strict: 'object'
 }
 
 try {
-  declarationTest.call(undefined);
+    declarationTest.call(undefined);
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -31,27 +31,27 @@ try {
  */
 
 function DiagModule(stdlib) {
-  "use asm";
+    "use asm";
 
-  var sqrt = stdlib.Math.sqrt;
+    var sqrt = stdlib.Math.sqrt;
 
-  function square(x) {
-    x = +x;
-    return +(x * x);
-  }
+    function square(x) {
+        x = +x;
+        return +(x*x);
+    }
 
-  function diag(x, y) {
-    x = +x;
-    y = +y;
-    return +sqrt(square(x) + square(y));
-  }
+    function diag(x, y) {
+        x = +x;
+        y = +y;
+        return +sqrt(square(x) + square(y));
+    }
 
-  return { diag: diag };
+    return { diag: diag };
 }
 
 try {
-  var mod = DiagModule(this); // this = global object
-  print(mod.diag(3, 4)); // -> 5
+    var mod = DiagModule(this);  // this = global object
+    print(mod.diag(3, 4));  // -> 5
 } catch (e) {
-  print(e);
+    print(e);
 }

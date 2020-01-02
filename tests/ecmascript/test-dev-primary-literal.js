@@ -22,51 +22,51 @@ foo
  */
 
 try {
-  print(null);
+    print(null);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(true);
+    print(true);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(false);
+    print(false);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(123);
+    print(123);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(0x41);
+    print(0x41);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  // = 4*8+1 = 33
-  print(041);
+    // = 4*8+1 = 33
+    print(041);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 // XXX: 077, 088, 099 -> V8 accepts 088 and 099 as decimal literals
 try {
-  print("foo");
+    print("foo");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print("foo");
+    print('foo');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

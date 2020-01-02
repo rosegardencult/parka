@@ -273,13 +273,13 @@ object true
 ===*/
 
 function mkObj() {
-  var obj = {};
-  Duktape.fin(obj, function myFinalizer(o, heapDestruct) {
-    print(typeof o, heapDestruct);
-    var dummy1 = mkObj();
-    var dummy2 = mkObj();
-  });
-  return obj;
+    var obj = {};
+    Duktape.fin(obj, function myFinalizer(o, heapDestruct) {
+        print(typeof o, heapDestruct);
+        var dummy1 = mkObj();
+        var dummy2 = mkObj();
+    });
+    return obj;
 }
 
 var ref = mkObj();

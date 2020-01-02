@@ -18,7 +18,7 @@ rounded constant test
 
 /* Rounded constant test. */
 
-print("rounded constant test");
+print('rounded constant test');
 printRounded6(Math.E);
 printRounded6(Math.LN10);
 printRounded6(Math.LN2);
@@ -44,7 +44,7 @@ exact constant test
  * against Rhino.
  */
 
-print("exact constant test");
+print('exact constant test');
 printExact(Math.E);
 printExact(Math.LN10);
 printExact(Math.LN2);

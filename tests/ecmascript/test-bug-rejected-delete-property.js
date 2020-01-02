@@ -12,17 +12,17 @@ false
 ===*/
 
 function test() {
-  // must be non-strict so that delete failure is silent
+    // must be non-strict so that delete failure is silent
 
-  var str = "foo";
+    var str = 'foo';
 
-  print(delete str.nonexistent);
-  print(delete str.length);
-  print(delete str[1]);
+    print(delete str.nonexistent);
+    print(delete str.length);
+    print(delete str[1]);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

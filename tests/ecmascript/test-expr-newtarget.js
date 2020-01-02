@@ -30,50 +30,51 @@ inner undefined
 var bound;
 
 function MyFunc() {
-  print("MyFunc called");
-  print(typeof new.target);
-  print(new.target === MyFunc);
-  print(
-    new /* comment */.target === bound // another comment
-  );
+    print('MyFunc called');
+    print(typeof new.target);
+    print(new
+        .
+            target === MyFunc);
+    print(new /* comment */ .  // another comment
+          target === bound);
 }
 
 function test() {
-  bound = MyFunc.bind(null, 123);
+    bound = MyFunc.bind(null, 123);
 
-  MyFunc();
-  new MyFunc();
+    MyFunc();
+    new MyFunc();
 
-  bound();
-  new bound();
+    bound();
+    new bound();
 
-  function foo() {
-    print("foo called");
-    if (new.target) {
-      print(new.target.target);
-    } else {
-      print("undefined");
+    function foo() {
+        print('foo called');
+        if (new.target) {
+            print(new.target.target);
+        } else {
+            print('undefined');
+        }
     }
-  }
-  foo.target = "target-prop-value";
-  foo();
-  new foo();
+    foo.target = 'target-prop-value';
+    foo();
+    new foo();
 
-  // Inner function doesn't see outer function new.target.
+    // Inner function doesn't see outer function new.target.
 
-  function outer() {
-    print("outer", typeof new.target);
+    function outer() {
+        print('outer', typeof new.target);
 
-    function inner() {
-      print("inner", typeof new.target);
+        function inner() {
+            print('inner', typeof new.target);
+        }
+        inner();
     }
-    inner();
-  }
-  new outer();
+    new outer();
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

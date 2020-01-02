@@ -18,9 +18,9 @@ hello world
 ===*/
 
 if (1) {
-  print("hello world"); /* automatic newline */
+    print("hello world");   /* automatic newline */
 } else {
-  print("not quite");
+    print("not quite");
 }
 
 /*===

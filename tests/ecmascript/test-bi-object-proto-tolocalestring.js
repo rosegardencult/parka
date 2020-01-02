@@ -4,42 +4,40 @@ string proto-toString
 TypeError
 ===*/
 
-print("basic");
+print('basic');
 
 function basicTest() {
-  var proto, obj;
+    var proto, obj;
 
-  function test(o) {
-    var t;
+    function test(o) {
+        var t;
 
-    try {
-      t = Object.prototype.toLocaleString.call(o);
-      print(typeof t, t);
-    } catch (e) {
-      print(e.name);
+        try {
+            t = Object.prototype.toLocaleString.call(o);
+            print(typeof t, t);
+        } catch (e) {
+            print(e.name);
+        }
     }
-  }
 
-  // toLocaleString() inherited from Object.prototype, causes
-  // proto.toString() to be called eventually
+    // toLocaleString() inherited from Object.prototype, causes
+    // proto.toString() to be called eventually
 
-  proto = Object.create(Object.constructor);
-  proto.toString = function() {
-    return "proto-toString";
-  };
-  obj = Object.create(proto);
-  test(obj);
+    proto = Object.create(Object.constructor);
+    proto.toString = function() { return 'proto-toString'; };
+    obj = Object.create(proto);
+    test(obj);
 
-  // non-calleble toString()
+    // non-calleble toString()
 
-  proto.toString = 123;
-  test(obj);
+    proto.toString = 123;
+    test(obj);
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -54,32 +52,32 @@ string 1,2
 string [object Object]
 ===*/
 
-print("coercion");
+print('coercion');
 
 function coercionTest() {
-  function test(o) {
-    var t;
+    function test(o) {
+        var t;
 
-    try {
-      t = Object.prototype.toLocaleString.call(o);
-      print(typeof t, t);
-    } catch (e) {
-      print(e.name);
+        try {
+            t = Object.prototype.toLocaleString.call(o);
+            print(typeof t, t);
+        } catch (e) {
+            print(e.name);
+        }
     }
-  }
 
-  test(undefined);
-  test(null);
-  test(true);
-  test(false);
-  test(123);
-  test("foo");
-  test([1, 2]);
-  test({ foo: 1, bar: 1 });
+    test(undefined);
+    test(null);
+    test(true);
+    test(false);
+    test(123);
+    test('foo');
+    test([1,2]);
+    test({ foo: 1, bar: 1 });
 }
 
 try {
-  coercionTest();
+    coercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

@@ -20,19 +20,19 @@ returned
 ===*/
 
 function deepInnerFunctionTest() {
-  var txt = "";
-  var i;
+    var txt = '';
+    var i;
 
-  for (i = 0; i < 1000; i++) {
-    txt = "function func" + i + "() { " + txt + " }";
-  }
-  //print(txt);
-  eval(txt);
+    for (i = 0; i < 1000; i++) {
+        txt = 'function func' + i + '() { ' + txt + ' }';
+    }
+    //print(txt);
+    eval(txt);
 }
 
 try {
-  deepInnerFunctionTest();
-  print("returned");
+    deepInnerFunctionTest();
+    print('returned');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

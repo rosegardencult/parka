@@ -9,45 +9,43 @@
 ===*/
 
 function test() {
-  Object.defineProperties(Object.prototype, {
-    nonConfigurable: {
-      value: "ancestor",
-      writable: true,
-      enumerable: false,
-      configurable: false
-    },
-    nonWritable: {
-      value: "ancestor",
-      writable: false,
-      enumerable: false,
-      configurable: true
-    },
-    nonConfigurableNonWritable: {
-      value: "ancestor",
-      writable: false,
-      enumerable: false,
-      configurable: false
-    },
-    nonConfigurableSetter: {
-      set: function(v) {
-        print("SETTER CALLED!");
-      },
-      enumerable: false,
-      configurable: false
-    }
-  });
+    Object.defineProperties(Object.prototype, {
+        nonConfigurable: {
+            value: 'ancestor',
+            writable: true,
+            enumerable: false,
+            configurable: false
+        },
+        nonWritable: {
+            value: 'ancestor',
+            writable: false,
+            enumerable: false,
+            configurable: true
+        },
+        nonConfigurableNonWritable: {
+            value: 'ancestor',
+            writable: false,
+            enumerable: false,
+            configurable: false
+        },
+        nonConfigurableSetter: {
+            set: function (v) { print('SETTER CALLED!'); },
+            enumerable: false,
+            configurable: false
+        }
+    });
 
-  var obj = {
-    nonConfigurable: 123,
-    nonWritable: 234,
-    nonConfigurableNonWritable: 345,
-    nonConfigurableSetter: 456
-  };
-  print(JSON.stringify(obj));
+    var obj = {
+        nonConfigurable: 123,
+        nonWritable: 234,
+        nonConfigurableNonWritable: 345,
+        nonConfigurableSetter: 456
+    };
+    print(JSON.stringify(obj));
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

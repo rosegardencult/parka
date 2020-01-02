@@ -23,6 +23,6 @@ obj.baz = 700;
 
 var keys = Reflect.ownKeys(obj);
 print(keys.length);
-keys.forEach(function(v) {
-  print(obj[v]);
+keys.forEach(function (v) {
+    print(obj[v]);
 });

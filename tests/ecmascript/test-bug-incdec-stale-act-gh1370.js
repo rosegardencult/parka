@@ -8,10 +8,9 @@ RangeError
 ===*/
 
 try {
-  (function foo() {
-    foo--;
-    foo();
-  })();
+    (function foo() {
+       foo--; foo();
+    })();
 } catch (e) {
-  print(e.name); // eventual RangeError
+    print(e.name);  // eventual RangeError
 }

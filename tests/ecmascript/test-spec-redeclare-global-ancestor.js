@@ -23,60 +23,50 @@
 var tmp;
 
 Object.defineProperties(Object.prototype, {
-  test_configurable_function: {
-    value: function() {
-      print("original");
+    test_configurable_function: {
+        value: function() { print('original') },
+        writable: false,
+        enumerable: false,
+        configurable: true
     },
-    writable: false,
-    enumerable: false,
-    configurable: true
-  },
-  test_configurable_value: {
-    value: 123,
-    writable: false,
-    enumerable: false,
-    configurable: true
-  },
-  test_configurable_accessor: {
-    get: function() {
-      print("getter");
+    test_configurable_value: {
+        value: 123,
+        writable: false,
+        enumerable: false,
+        configurable: true
     },
-    set: function() {
-      print("setter");
+    test_configurable_accessor: {
+        get: function() { print('getter') },
+        set: function() { print('setter') },
+        enumerable: false,
+        configurable: true
     },
-    enumerable: false,
-    configurable: true
-  },
-  test_nonconfigurable_compatible_value: {
-    // non-configurable, but is not an accessor, and is writable and enumerable
-    // (steps 5.e.iii - 5.e.iv)
-    value: 321,
-    writable: true,
-    enumerable: true,
-    configurable: false
-  },
-  test_nonconfigurable_incompatible_value1: {
-    value: 1001,
-    writable: false,
-    enumerable: true,
-    configurable: false
-  },
-  test_nonconfigurable_incompatible_value2: {
-    value: 1002,
-    writable: true,
-    enumerable: false,
-    configurable: false
-  },
-  test_nonconfigurable_accessor: {
-    get: function() {
-      print("getter");
+    test_nonconfigurable_compatible_value: {
+        // non-configurable, but is not an accessor, and is writable and enumerable
+        // (steps 5.e.iii - 5.e.iv)
+        value: 321,
+        writable: true,
+        enumerable: true,
+        configurable: false
     },
-    set: function() {
-      print("setter");
+    test_nonconfigurable_incompatible_value1: {
+        value: 1001,
+        writable: false,
+        enumerable: true,
+        configurable: false
     },
-    enumerable: false,
-    configurable: false
-  }
+    test_nonconfigurable_incompatible_value2: {
+        value: 1002,
+        writable: true,
+        enumerable: false,
+        configurable: false
+    },
+    test_nonconfigurable_accessor: {
+        get: function() { print('getter') },
+        set: function() { print('setter') },
+        enumerable: false,
+        configurable: false
+    }
 });
 
 /*===
@@ -92,28 +82,28 @@ setter
 /* Configurable plain value or accessor: allow redeclaration */
 
 try {
-  eval("function test_configurable_function() { print('replacement'); }");
-  test_configurable_function();
-  Object.prototype.test_configurable_function();
+    eval("function test_configurable_function() { print('replacement'); }");
+    test_configurable_function();
+    Object.prototype.test_configurable_function();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("function test_configurable_value() { print('replacement'); }");
-  test_configurable_value();
-  print(Object.prototype.test_configurable_value);
+    eval("function test_configurable_value() { print('replacement'); }");
+    test_configurable_value();
+    print(Object.prototype.test_configurable_value);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("function test_configurable_accessor() { print('replacement'); }");
-  test_configurable_accessor();
-  tmp = Object.prototype.test_configurable_accessor;
-  Object.prototype.test_configurable_accessor = 1;
+    eval("function test_configurable_accessor() { print('replacement'); }");
+    test_configurable_accessor();
+    tmp = Object.prototype.test_configurable_accessor;
+    Object.prototype.test_configurable_accessor = 1;
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -126,13 +116,11 @@ replacement
  */
 
 try {
-  eval(
-    "function test_nonconfigurable_compatible_value() { print('replacement'); }"
-  );
-  test_nonconfigurable_compatible_value();
-  print(Object.prototype.test_nonconfigurable_compatible_value);
+    eval("function test_nonconfigurable_compatible_value() { print('replacement'); }");
+    test_nonconfigurable_compatible_value();
+    print(Object.prototype.test_nonconfigurable_compatible_value);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -151,44 +139,30 @@ setter
 /* Non-configurable incompatible values: TypeError and no modification */
 
 try {
-  eval(
-    "function test_nonconfigurable_incompatible_value1() { print('replacement'); }"
-  );
-  print("never here");
+    eval("function test_nonconfigurable_incompatible_value1() { print('replacement'); }");
+    print('never here');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval(
-    "function test_nonconfigurable_incompatible_value2() { print('replacement'); }"
-  );
-  print("never here");
+    eval("function test_nonconfigurable_incompatible_value2() { print('replacement'); }");
+    print('never here');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("function test_nonconfigurable_accessor() { print('replacement'); }");
-  print("never here");
+    eval("function test_nonconfigurable_accessor() { print('replacement'); }");
+    print('never here');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 // verify that nothing was declared in the global object
-print(
-  Object.getOwnPropertyDescriptor(
-    this,
-    "test_nonconfigurable_incompatible_value1"
-  )
-);
-print(
-  Object.getOwnPropertyDescriptor(
-    this,
-    "test_nonconfigurable_incompatible_value2"
-  )
-);
-print(Object.getOwnPropertyDescriptor(this, "test_nonconfigurable_accessor"));
+print(Object.getOwnPropertyDescriptor(this, 'test_nonconfigurable_incompatible_value1'));
+print(Object.getOwnPropertyDescriptor(this, 'test_nonconfigurable_incompatible_value2'));
+print(Object.getOwnPropertyDescriptor(this, 'test_nonconfigurable_accessor'));
 
 // and that nothing changed in the ancestor
 print(Object.prototype.test_nonconfigurable_incompatible_value1);

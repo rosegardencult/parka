@@ -26,61 +26,61 @@
 ===*/
 
 try {
-  foo;
+    foo;
 } catch (e) {
-  print(e.lineNumber);
+    print(e.lineNumber);
 }
 
 try {
-  foo;
+    foo;
 } catch (e) {
-  print(e.lineNumber);
+    print(e.lineNumber);
 }
 
 try {
-  foo;
+    foo;
 } catch (e) {
-  print(e.lineNumber);
+    print(e.lineNumber);
 }
 
 try {
-  foo;
+    foo;
 } catch (e) {
-  print(e.lineNumber);
+    print(e.lineNumber);
 }
 
 try {
-  foo;
+    foo;
 } catch (e) {
-  print(e.lineNumber);
+    print(e.lineNumber);
 }
 
 try {
-  foo;
+    foo;
 } catch (e) {
-  print(e.lineNumber);
+    print(e.lineNumber);
 }
 
 try {
-  foo;
+    foo;
 } catch (e) {
-  print(e.lineNumber);
+    print(e.lineNumber);
 }
 
 try {
-  foo;
+    foo;
 } catch (e) {
-  print(e.lineNumber);
+    print(e.lineNumber);
 }
 
 try {
-  foo;
+    foo;
 } catch (e) {
-  print(e.lineNumber);
+    print(e.lineNumber);
 }
 
 try {
-  foo;
+    foo;
 } catch (e) {
-  print(e.lineNumber);
+    print(e.lineNumber);
 }

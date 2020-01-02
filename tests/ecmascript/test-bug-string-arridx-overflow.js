@@ -7,14 +7,14 @@
 ===*/
 
 function test() {
-  var arr = [];
-  arr["7394299990"] = 1; // not in 32-bit range, should not affect arr.length
+    var arr = [];
+    arr['7394299990'] = 1;  // not in 32-bit range, should not affect arr.length
 
-  print(arr.length);
+    print(arr.length);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

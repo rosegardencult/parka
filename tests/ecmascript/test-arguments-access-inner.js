@@ -9,16 +9,16 @@ foo bar quux
 ===*/
 
 function f() {
-  var foo = arguments;
-  function g() {
-    print(foo[0], foo[1], foo[2]);
-  }
-  return g;
+    var foo = arguments;
+    function g() {
+        print(foo[0], foo[1], foo[2]);
+    }
+    return g;
 }
 
 try {
-  t = f("foo", "bar", "quux");
-  t();
+    t = f('foo', 'bar', 'quux');
+    t();
 } catch (e) {
-  print(e);
+    print(e);
 }

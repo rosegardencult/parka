@@ -48,76 +48,50 @@ false
 ===*/
 
 function arrayBufferIsViewTest() {
-  print(typeof ArrayBuffer);
-  print(typeof ArrayBuffer.isView);
-  print(ArrayBuffer.isView());
+    print(typeof ArrayBuffer);
+    print(typeof ArrayBuffer.isView);
+    print(ArrayBuffer.isView());
 
-  var b1 = createPlainBuffer(Duktape.dec("hex", "414243")); // plain
-  var b2 = new Buffer("ABCDEFGH");
-  var b3 = new ArrayBuffer(16); // ensure compatible with alignment
-  var v0 = new DataView(b3);
-  var v1 = new Int8Array(b3);
-  var v2 = new Uint8Array(b3);
-  var v3 = new Uint8ClampedArray(b3);
-  var v4 = new Int16Array(b3);
-  var v5 = new Uint16Array(b3);
-  var v6 = new Int32Array(b3);
-  var v7 = new Uint32Array(b3);
-  var v8 = new Float32Array(b3);
-  var v9 = new Float64Array(b3);
-  var w0 = new Int8Array(v0);
-  var w1 = new Int8Array(v1);
-  var w2 = new Int8Array(v2);
-  var w3 = new Int8Array(v3);
-  var w4 = new Int8Array(v4);
-  var w5 = new Int8Array(v5);
-  var w6 = new Int8Array(v6);
-  var w7 = new Int8Array(v7);
-  var w8 = new Int8Array(v8);
-  var w9 = new Int8Array(v9);
-  [
-    undefined,
-    null,
-    true,
-    123,
-    "foo",
-    { foo: "bar" },
-    ["foo", "bar"],
-    b1,
-    b2,
-    b3,
-    v0,
-    v1,
-    v2,
-    v3,
-    v4,
-    v5,
-    v6,
-    v7,
-    v8,
-    v9,
-    w0,
-    w1,
-    w2,
-    w3,
-    w4,
-    w5,
-    w6,
-    w7,
-    w8,
-    w9
-  ].forEach(function(v, idx) {
-    try {
-      print(idx, typeof v, ArrayBuffer.isView(v));
-    } catch (e) {
-      print(idx, typeof v, e);
-    }
-  });
+    var b1 = createPlainBuffer(Duktape.dec('hex', '414243'));  // plain
+    var b2 = new Buffer('ABCDEFGH');
+    var b3 = new ArrayBuffer(16);  // ensure compatible with alignment
+    var v0 = new DataView(b3);
+    var v1 = new Int8Array(b3);
+    var v2 = new Uint8Array(b3);
+    var v3 = new Uint8ClampedArray(b3);
+    var v4 = new Int16Array(b3);
+    var v5 = new Uint16Array(b3);
+    var v6 = new Int32Array(b3);
+    var v7 = new Uint32Array(b3);
+    var v8 = new Float32Array(b3);
+    var v9 = new Float64Array(b3);
+    var w0 = new Int8Array(v0);
+    var w1 = new Int8Array(v1);
+    var w2 = new Int8Array(v2);
+    var w3 = new Int8Array(v3);
+    var w4 = new Int8Array(v4);
+    var w5 = new Int8Array(v5);
+    var w6 = new Int8Array(v6);
+    var w7 = new Int8Array(v7);
+    var w8 = new Int8Array(v8);
+    var w9 = new Int8Array(v9);
+    [
+        undefined, null, true, 123, 'foo', { foo: 'bar' }, [ 'foo', 'bar' ],
+        b1, b2, b3,
+        v0, v1, v2, v3, v4, v5, v6, v7, v8, v9,
+        w0, w1, w2, w3, w4, w5, w6, w7, w8, w9
+    ].forEach(function (v, idx) {
+        try {
+            print(idx, typeof v, ArrayBuffer.isView(v));
+        } catch (e) {
+            print(idx, typeof v, e);
+        }
+    });
 }
 
 try {
-  print("ArrayBuffer isView() test");
-  arrayBufferIsViewTest();
+    print('ArrayBuffer isView() test');
+    arrayBufferIsViewTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

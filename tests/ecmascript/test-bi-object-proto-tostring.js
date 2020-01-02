@@ -21,37 +21,34 @@ proxied
 ===*/
 
 function basicTest() {
-  function test(v) {
-    print(Object.prototype.toString.call(v));
-  }
+    function test(v) {
+        print(Object.prototype.toString.call(v));
+    }
 
-  test(undefined);
-  test(null);
-  test(true);
-  test(false);
-  test(123);
-  test("foo");
-  test([1, 2]);
-  test({ foo: 1, bar: 2 });
-  test(function() {});
-  test(/foo/);
-  test(new Date());
-  test(new Error("foo"));
-  test(JSON);
-  test(Math);
-  test(function f() {
-    var indirect = eval;
-    return indirect("this");
-  }); // indirect eval -> this=global
-  print("proxied");
-  test(new Proxy([1, 2, 3], {}));
-  //test(new Proxy(new Proxy([ 1, 2, 3 ], {}), {}));
-  test(new Proxy({ foo: "bar" }, {}));
-  test(new Proxy(Math.cos, {}));
+    test(undefined);
+    test(null);
+    test(true);
+    test(false);
+    test(123);
+    test('foo');
+    test([1,2]);
+    test({ foo: 1, bar: 2 });
+    test(function(){});
+    test(/foo/);
+    test(new Date());
+    test(new Error('foo'));
+    test(JSON);
+    test(Math);
+    test(function f() { var indirect = eval; return indirect('this'); });  // indirect eval -> this=global
+    print('proxied');
+    test(new Proxy([ 1, 2, 3 ], {}));
+    //test(new Proxy(new Proxy([ 1, 2, 3 ], {}), {}));
+    test(new Proxy({ foo: 'bar' }, {}));
+    test(new Proxy(Math.cos, {}));
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

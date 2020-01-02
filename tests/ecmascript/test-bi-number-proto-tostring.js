@@ -55,14 +55,14 @@
 ---*/
 
 function test(this_value, args) {
-  var t;
+    var t;
 
-  try {
-    t = Number.prototype.toString.apply(this_value, args);
-    print(typeof t, t);
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        t = Number.prototype.toString.apply(this_value, args);
+        print(typeof t, t);
+    } catch (e) {
+        print(e.name);
+    }
 }
 
 /*===
@@ -144,73 +144,54 @@ RangeError
 36 -0.weeeeeeeeeh -0.ssssssssst -0.p777777777 -0.llllllllllj -0.i -0.eeeeeeeeeeh -0.asssssssssr -0.77777777779 -0.3lllllllllm 0 0.3lllllllllm 0.77777777779 0.asssssssssr 0.eeeeeeeeeeh 0.i 0.llllllllllj 0.p777777777 0.ssssssssst 0.weeeeeeeeeh
 ===*/
 
-print("basic");
+print('basic');
 
 function basicTest() {
-  var frac_values;
+    var frac_values;
 
-  // radix not present or undefined -> radix 10
+    // radix not present or undefined -> radix 10
 
-  test(new Number(12345), []);
-  test(new Number(12345), [undefined]);
+    test(new Number(12345), []);
+    test(new Number(12345), [ undefined ]);
 
-  // in contrast, radix null will coerce to 0, which will cause a RangeError
+    // in contrast, radix null will coerce to 0, which will cause a RangeError
 
-  test(new Number(12345), [null]);
+    test(new Number(12345), [ null ]);
 
-  // radix is ToInteger() coerced (not ToUint32() coerced), so these will
-  // cause a RangeError
+    // radix is ToInteger() coerced (not ToUint32() coerced), so these will
+    // cause a RangeError
 
-  test(new Number(12345), [-256 * 256 * 256 * 256 + 10]);
-  test(new Number(12345), [256 * 256 * 256 * 256 + 10]);
+    test(new Number(12345), [ -256*256*256*256 + 10 ]);
+    test(new Number(12345), [ 256*256*256*256 + 10 ]);
 
-  // test all valid radix values for a reasonable integer range
+    // test all valid radix values for a reasonable integer range
 
-  for (r = 2; r <= 36; r++) {
-    tmp = [];
-    for (i = -100; i <= 100; i++) {
-      tmp.push(new Number(i).toString(r));
+    for (r = 2; r <= 36; r++) {
+        tmp = [];
+        for (i = -100; i <= 100; i++) {
+            tmp.push(new Number(i).toString(r));
+        }
+        print(r, tmp.join(' '));
     }
-    print(r, tmp.join(" "));
-  }
 
-  // test all valid radix values for a set of fractional values
-  // (note that exact results are NOT required by the spec)
+    // test all valid radix values for a set of fractional values
+    // (note that exact results are NOT required by the spec)
 
-  frac_values = [
-    -0.9,
-    -0.8,
-    -0.7,
-    -0.6,
-    -0.5,
-    -0.4,
-    -0.3,
-    -0.2,
-    -0.1,
-    0.0,
-    0.1,
-    0.2,
-    0.3,
-    0.4,
-    0.5,
-    0.6,
-    0.7,
-    0.8,
-    0.9
-  ];
-  for (r = 2; r <= 36; r++) {
-    tmp = [];
-    for (i = 0; i < frac_values.length; i++) {
-      tmp.push(new Number(frac_values[i]).toString(r));
+    frac_values = [ -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0.0,
+                    0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 ];
+    for (r = 2; r <= 36; r++) {
+        tmp = [];
+        for (i = 0; i < frac_values.length; i++) {
+            tmp.push(new Number(frac_values[i]).toString(r));
+        }
+        print(r, tmp.join(' '));
     }
-    print(r, tmp.join(" "));
-  }
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -245,64 +226,56 @@ string 5808
 string 5808
 ===*/
 
-print("coercion");
+print('coercion');
 
 function coercionTest() {
-  // this coercion; only plain number and Number objects allowed
+    // this coercion; only plain number and Number objects allowed
 
-  test(undefined, [16]);
-  test(true, [16]);
-  test(false, [16]);
-  test(123, [16]);
-  test("123", [16]);
-  test([123], [16]);
-  test([1, 2], [16]);
-  test({ foo: 1, bar: 2 }, [16]);
-  test(new Number(123), [16]);
+    test(undefined, [ 16 ]);
+    test(true, [ 16 ]);
+    test(false, [ 16 ]);
+    test(123, [ 16 ]);
+    test('123', [ 16 ]);
+    test([123], [ 16 ]);
+    test([1,2], [ 16 ]);
+    test({ foo: 1, bar: 2 }, [ 16 ]);
+    test(new Number(123), [ 16 ]);
 
-  // radix coercion
+    // radix coercion
 
-  test(new Number(12345), []); // -> treat as radix 10 (explicitly required)
-  test(new Number(12345), [undefined]); // -> treat as radix 10 (explicitly required)
-  test(new Number(12345), [null]); // ToInteger(null) = 0 -> RangeError
-  test(new Number(12345), [true]); // ToInteger(true) = 1 -> RangeError
-  test(new Number(12345), [false]); // ToInteger(false) = 0 -> RangeError
-  test(new Number(12345), [12]); // ToInteger(12) = 12 -> OK
-  test(new Number(12345), ["12"]); // ToInteger('12') = 12 -> OK
-  test(new Number(12345), [[12]]); // ToInteger([12]) -> ToInteger("12") = 12 -> OK (!)
-  test(new Number(12345), [[1, 2]]); // ToInteger([1,2]) -> ToInteger("1,2") = 0 -> RangeError
-  test(new Number(12345), [{ foo: 1, bar: 2 }]); // ToInteger(...) -> 0 -> RangeError
+    test(new Number(12345), []);             // -> treat as radix 10 (explicitly required)
+    test(new Number(12345), [ undefined ]);  // -> treat as radix 10 (explicitly required)
+    test(new Number(12345), [ null ]);       // ToInteger(null) = 0 -> RangeError
+    test(new Number(12345), [ true ]);       // ToInteger(true) = 1 -> RangeError
+    test(new Number(12345), [ false ]);      // ToInteger(false) = 0 -> RangeError
+    test(new Number(12345), [ 12 ]);         // ToInteger(12) = 12 -> OK
+    test(new Number(12345), [ '12' ]);       // ToInteger('12') = 12 -> OK
+    test(new Number(12345), [ [12] ]);       // ToInteger([12]) -> ToInteger("12") = 12 -> OK (!)
+    test(new Number(12345), [ [1,2] ]);      // ToInteger([1,2]) -> ToInteger("1,2") = 0 -> RangeError
+    test(new Number(12345), [ { foo: 1, bar: 2 } ]);  // ToInteger(...) -> 0 -> RangeError
 
-  // radix coercion uses ToInteger()
+    // radix coercion uses ToInteger()
 
-  test(new Number(12345), [2.1]); // -> 2 = valid
-  test(new Number(12345), [2]);
+    test(new Number(12345), [ 2.1 ]);   // -> 2 = valid
+    test(new Number(12345), [ 2 ]);
 
-  test(new Number(12345), [36.9]); // -> 36 = valid
-  test(new Number(12345), [36]);
+    test(new Number(12345), [ 36.9 ]);  // -> 36 = valid
+    test(new Number(12345), [ 36 ]);
 
-  test(new Number(12345), [-256 * 256 * 256 * 256 + 10]); // invalid (not same as 10)
-  test(new Number(12345), [256 * 256 * 256 * 256 + 10]); // invalid (not same as 10)
+    test(new Number(12345), [ -256*256*256*256 + 10 ]);  // invalid (not same as 10)
+    test(new Number(12345), [ 256*256*256*256 + 10 ]);   // invalid (not same as 10)
 
-  // radix coercion, side effects
+    // radix coercion, side effects
 
-  test(new Number(12345), [
-    {
-      toString: function() {
-        print("radix toString");
-        return 16;
-      },
-      valueOf: function() {
-        print("radix valueOf");
-        return 13.9;
-      } // -> 13
-    }
-  ]);
-  test(new Number(12345), [13]);
+    test(new Number(12345), [ {
+        toString: function() { print('radix toString'); return 16; },
+        valueOf: function() { print('radix valueOf'); return 13.9; }  // -> 13
+    } ]);
+    test(new Number(12345), [ 13 ]);
 }
 
 try {
-  coercionTest();
+    coercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

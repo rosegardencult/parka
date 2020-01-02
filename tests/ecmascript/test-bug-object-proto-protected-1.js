@@ -13,37 +13,39 @@ shouldsucceed bar
 ===*/
 
 function test() {
-  var obj;
+    var obj;
 
-  Object.defineProperty(Object.prototype, "prop1", {
-    value: "inherit",
-    writable: false,
-    enumerable: true,
-    configurable: true
-  });
-  print("defineProperty success");
+    Object.defineProperty(Object.prototype,
+                          'prop1',
+                          {
+                              value: 'inherit',
+                              writable: false,
+                              enumerable: true,
+                              configurable: true
+                          });
+    print('defineProperty success');
 
-  // No problem here
-  obj = {};
-  print(obj.prop1, obj.prop2);
+    // No problem here
+    obj = {};
+    print(obj.prop1, obj.prop2);
 
-  // Again should succeed
-  obj = { prop1: "foo", prop2: "bar" };
-  print(obj.prop1, obj.prop2);
+    // Again should succeed
+    obj = { prop1: 'foo', prop2: 'bar' };
+    print(obj.prop1, obj.prop2);
 
-  // Assignment should not work unless an own property already exists
-  obj = {};
-  obj.prop1 = "foo"; // failure is silent
-  obj.prop2 = "bar";
-  print(obj.prop1, obj.prop2);
+    // Assignment should not work unless an own property already exists
+    obj = {};
+    obj.prop1 = 'foo';  // failure is silent
+    obj.prop2 = 'bar';
+    print(obj.prop1, obj.prop2);
 
-  obj = { prop1: "foo", prop2: "bar" };
-  obj.prop1 = "shouldsucceed";
-  print(obj.prop1, obj.prop2);
+    obj = { prop1: 'foo', prop2: 'bar' };
+    obj.prop1 = 'shouldsucceed';
+    print(obj.prop1, obj.prop2);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

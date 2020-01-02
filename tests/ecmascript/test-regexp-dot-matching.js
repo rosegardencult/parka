@@ -11,15 +11,12 @@ null
 ===*/
 
 try {
-  r = /f../;
-  t = r.exec("foo");
-  print(t);
-  t = r.exec("fii");
-  print(t);
-  t = r.exec("fi\n");
-  print(t); // no match because line terminator
+    r = /f../;
+    t = r.exec('foo'); print(t);
+    t = r.exec('fii'); print(t);
+    t = r.exec('fi\n'); print(t);  // no match because line terminator
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /* XXX: add more cases */

@@ -9,10 +9,8 @@
 ---*/
 
 function encValue(v) {
-  if (typeof v === "function") {
-    return "function";
-  }
-  return String(v);
+    if (typeof v === 'function') { return 'function'; }
+    return String(v);
 }
 
 /*===
@@ -65,49 +63,44 @@ true
 ===*/
 
 function typedArrayConstructorPropertiesTest() {
-  var props = [
-    "name",
-    "length",
-    "prototype",
+    var props = [
+        'name',
+        'length',
+        'prototype',
 
-    // This is not readily apparent in Khronos specification because
-    // this property is listed as a member of TypedArray instance.
-    // But the example in Section 10 uses "Float32.BYTES_PER_ELEMENT"
-    // and V8 also provides this.
+        // This is not readily apparent in Khronos specification because
+        // this property is listed as a member of TypedArray instance.
+        // But the example in Section 10 uses "Float32.BYTES_PER_ELEMENT"
+        // and V8 also provides this.
 
-    "BYTES_PER_ELEMENT"
-  ];
+        'BYTES_PER_ELEMENT'
+    ];
 
-  var consNames = [
-    "Int8Array",
-    "Uint8Array",
-    "Uint8ClampedArray",
-    "Int16Array",
-    "Uint16Array",
-    "Int32Array",
-    "Uint32Array",
-    "Float32Array",
-    "Float64Array"
-  ];
+    var consNames = [
+        'Int8Array', 'Uint8Array', 'Uint8ClampedArray',
+        'Int16Array', 'Uint16Array',
+        'Int32Array', 'Uint32Array',
+        'Float32Array', 'Float64Array'
+    ];
 
-  consNames.forEach(function(consname) {
-    props.forEach(function(propname) {
-      try {
-        var obj = eval(consname);
-        var val = obj[propname];
-        print(consname, propname, propname in obj, typeof val, encValue(val));
-      } catch (e) {
-        print(e.stack || e);
-      }
+    consNames.forEach(function (consname) {
+        props.forEach(function (propname) {
+            try {
+                var obj = eval(consname);
+                var val = obj[propname];
+                print(consname, propname, propname in obj, typeof val, encValue(val));
+            } catch (e) {
+                print(e.stack || e);
+            }
+        });
+
+        print(eval(consname).prototype.constructor === eval(consname));
     });
-
-    print(eval(consname).prototype.constructor === eval(consname));
-  });
 }
 
 try {
-  print("TypedArray constructor properties test");
-  typedArrayConstructorPropertiesTest();
+    print('TypedArray constructor properties test');
+    typedArrayConstructorPropertiesTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

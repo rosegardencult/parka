@@ -17,21 +17,19 @@ DoubleError: error in error handling
 ===*/
 
 try {
-  function recurse() {
-    var dummy;
-    recurse();
-    dummy = 1;
-  }
+    function recurse() {
+        var dummy;
+        recurse();
+        dummy = 1;
+    }
 
-  Duktape.errCreate = function(e) {
-    recurse();
-    return e;
-  };
+    Duktape.errCreate = function(e) {
+        recurse();
+        return e;
+    };
 
-  function f() {
+    function f() { f(); }
     f();
-  }
-  f();
-} catch (e) {
-  print(e);
+} catch(e) {
+    print(e);
 }

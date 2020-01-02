@@ -3,10 +3,8 @@
  */
 
 function encValue(x) {
-  if (typeof x === "function") {
-    return "function";
-  }
-  return String(x);
+    if (typeof x === 'function') { return 'function'; }
+    return String(x);
 }
 
 /*===
@@ -60,71 +58,71 @@ true
 ===*/
 
 function nodejsBufferPrototypePropertiesTest() {
-  var props = [
-    "constructor",
+    var props = [
+        'constructor',
 
-    "write",
-    "toString",
-    "toJSON",
-    "equals",
-    "compare",
-    "copy",
-    "slice",
-    "fill",
+        'write',
+        'toString',
+        'toJSON',
+        'equals',
+        'compare',
+        'copy',
+        'slice',
+        'fill',
 
-    "writeUIntLE",
-    "writeUIntBE",
-    "writeIntLE",
-    "writeIntBE",
+        'writeUIntLE',
+        'writeUIntBE',
+        'writeIntLE',
+        'writeIntBE',
 
-    "readUIntLE",
-    "readUIntBE",
-    "readIntLE",
-    "readIntBE",
+        'readUIntLE',
+        'readUIntBE',
+        'readIntLE',
+        'readIntBE',
 
-    "writeUInt8",
-    "writeUInt16LE",
-    "writeUInt16BE",
-    "writeUInt32LE",
-    "writeUInt32BE",
-    "writeInt8",
-    "writeInt16LE",
-    "writeInt16BE",
-    "writeInt32LE",
-    "writeInt32BE",
-    "writeFloatLE",
-    "writeFloatBE",
-    "writeDoubleLE",
-    "writeDoubleBE",
+        'writeUInt8',
+        'writeUInt16LE',
+        'writeUInt16BE',
+        'writeUInt32LE',
+        'writeUInt32BE',
+        'writeInt8',
+        'writeInt16LE',
+        'writeInt16BE',
+        'writeInt32LE',
+        'writeInt32BE',
+        'writeFloatLE',
+        'writeFloatBE',
+        'writeDoubleLE',
+        'writeDoubleBE',
 
-    "readUInt8",
-    "readUInt16LE",
-    "readUInt16BE",
-    "readUInt32LE",
-    "readUInt32BE",
-    "readInt8",
-    "readInt16LE",
-    "readInt16BE",
-    "readInt32LE",
-    "readInt32BE",
-    "readFloatLE",
-    "readFloatBE",
-    "readDoubleLE",
-    "readDoubleBE"
-  ];
+        'readUInt8',
+        'readUInt16LE',
+        'readUInt16BE',
+        'readUInt32LE',
+        'readUInt32BE',
+        'readInt8',
+        'readInt16LE',
+        'readInt16BE',
+        'readInt32LE',
+        'readInt32BE',
+        'readFloatLE',
+        'readFloatBE',
+        'readDoubleLE',
+        'readDoubleBE'
+    ];
 
-  props.forEach(function(propname) {
-    var obj = Buffer.prototype;
-    var val = obj[propname];
-    print(propname, propname in obj, typeof val, encValue(val));
-  });
+    props.forEach(function (propname) {
+        var obj = Buffer.prototype;
+        var val = obj[propname];
+        print(propname, propname in obj, typeof val, encValue(val));
+    });
 
-  print(Buffer.prototype.constructor === Buffer);
+    print(Buffer.prototype.constructor === Buffer);
 }
 
 try {
-  print("Node.js Buffer prototype properties test");
-  nodejsBufferPrototypePropertiesTest();
+    print('Node.js Buffer prototype properties test');
+    nodejsBufferPrototypePropertiesTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

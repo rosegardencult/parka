@@ -19,21 +19,14 @@ Final x: 50
 
 var obj = {};
 var my_x;
-Object.defineProperty(obj, "x", {
-  set: function(v) {
-    print("Write x:", v);
-    my_x = v;
-    return true;
-  },
-  get: function() {
-    print("Read x:", my_x);
-    return my_x;
-  }
+Object.defineProperty(obj, 'x', {
+    set: function (v) { print('Write x:', v); my_x = v; return true; },
+    get: function () { print('Read x:', my_x); return my_x; }
 });
 
 with (obj) {
-  x = 10;
-  print("TEST");
-  x += x *= 4;
+    x = 10;
+    print('TEST');
+    x += (x *= 4);
 }
-print("Final x:", obj.x);
+print('Final x:', obj.x);

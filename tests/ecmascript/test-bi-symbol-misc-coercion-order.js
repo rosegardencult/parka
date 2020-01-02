@@ -12,28 +12,22 @@ TypeError
 done
 ===*/
 
-var P = new Proxy(
-  {},
-  {
-    get: function(a, b, c) {
-      console.log(String(b));
-      return void 0;
-    }
-  }
-);
+var P = new Proxy({}, {
+    get: function (a,b,c) { console.log(String(b)); return void 0; }
+});
 
-print("String(P)");
+print('String(P)');
 try {
-  print(String(P));
+    print(String(P));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
-print("Number(P)");
+print('Number(P)');
 try {
-  print(Number(P));
+    print(Number(P));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
-print("done");
+print('done');

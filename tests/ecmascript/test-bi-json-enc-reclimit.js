@@ -24,64 +24,64 @@ RangeError
  */
 
 function objectRecursionTest(n) {
-  var obj = "bar";
-  var i;
+    var obj = 'bar';
+    var i;
 
-  for (i = 0; i < n; i++) {
-    obj = { foo: obj };
-  }
+    for (i = 0; i < n; i++) {
+        obj = { foo: obj };
+    }
 
-  print(JSON.stringify(obj));
+    print(JSON.stringify(obj));
 }
 
 function arrayRecursionTest(n) {
-  var obj = "bar";
-  var i;
+    var obj = 'bar';
+    var i;
 
-  for (i = 0; i < n; i++) {
-    obj = [obj];
-  }
+    for (i = 0; i < n; i++) {
+        obj = [ obj ];
+    }
 
-  print(JSON.stringify(obj));
+    print(JSON.stringify(obj));
 }
 
 function objectAndArrayRecursionTest(n) {
-  var obj = "bar";
-  var i;
+    var obj = 'bar';
+    var i;
 
-  for (i = 0; i < n; i++) {
-    if (i % 2) {
-      obj = { foo: obj };
-    } else {
-      obj = [obj];
+    for (i = 0; i < n; i++) {
+        if (i % 2) {
+            obj = { foo: obj };
+        } else {
+            obj = [ obj ];
+        }
     }
-  }
 
-  print(JSON.stringify(obj));
+    print(JSON.stringify(obj));
 }
 
 try {
-  objectRecursionTest(10);
-  objectRecursionTest(80);
-  objectRecursionTest(2000);
+    objectRecursionTest(10);
+    objectRecursionTest(80);
+    objectRecursionTest(2000);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  arrayRecursionTest(10);
-  arrayRecursionTest(80);
-  arrayRecursionTest(2000);
+    arrayRecursionTest(10);
+    arrayRecursionTest(80);
+    arrayRecursionTest(2000);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  objectAndArrayRecursionTest(10);
-  objectAndArrayRecursionTest(80);
-  objectAndArrayRecursionTest(2000);
+    objectAndArrayRecursionTest(10);
+    objectAndArrayRecursionTest(80);
+    objectAndArrayRecursionTest(2000);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -96,24 +96,24 @@ try {
  */
 
 function noRecursionTest(n) {
-  var obj = [];
-  var i;
+    var obj = [];
+    var i;
 
-  for (i = 0; i < n; i++) {
-    if (i % 2) {
-      obj.push([1, { foo: 1 }]);
-    } else {
-      obj.push({ foo: 1, bar: [1, 2] });
+    for (i = 0; i < n; i++) {
+        if (i % 2) {
+            obj.push([1, { foo: 1 }]);
+        } else {
+            obj.push({ foo: 1, bar: [1, 2] });
+        }
     }
-  }
 
-  print(JSON.stringify(obj));
+    print(JSON.stringify(obj));
 }
 
 try {
-  noRecursionTest(10);
-  noRecursionTest(100);
-  noRecursionTest(1000);
+    noRecursionTest(10);
+    noRecursionTest(100);
+    noRecursionTest(1000);
 } catch (e) {
-  print(e.name, e);
+    print(e.name, e);
 }

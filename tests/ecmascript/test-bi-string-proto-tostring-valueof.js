@@ -14,50 +14,45 @@ TypeError
 ===*/
 
 function toStringValueOfTest() {
-  function t(x, noval) {
-    var t1 = x.toString();
-    var t2 = x.valueOf();
-    print(
-      typeof t1,
-      typeof t2,
-      noval ? -1 : t1.length,
-      noval ? -1 : t2.length,
-      noval ? "noval" : t1,
-      noval ? "noval" : t2,
-      t1 === t2
-    );
-  }
+    function t(x, noval) {
+        var t1 = x.toString();
+        var t2 = x.valueOf();
+        print(typeof t1, typeof t2,
+              (noval ? -1 : t1.length), (noval ? -1 : t2.length),
+              (noval ? 'noval' : t1), (noval ? 'noval' : t2),
+              t1 === t2)
+    }
 
-  t(new String());
-  t(new String(undefined));
-  t(new String(null));
-  t(new String(true));
-  t(new String(false));
-  t(new String(123.0));
-  t(new String("foo"));
-  t(new String([1, 2]));
-  t(new String({ foo: 1, bar: 2 }));
+    t(new String());
+    t(new String(undefined));
+    t(new String(null));
+    t(new String(true));
+    t(new String(false));
+    t(new String(123.0));
+    t(new String('foo'));
+    t(new String([1,2]));
+    t(new String({ foo: 1, bar: 2 }));
 
-  // avoid printing the exact value, as it is implementation dependent
-  t(new String(function() {}), true);
+    // avoid printing the exact value, as it is implementation dependent
+    t(new String(function (){}), true);
 }
 
 try {
-  toStringValueOfTest();
+    toStringValueOfTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 try {
-  // not generic, require TypeError
-  String.prototype.toString.call({});
+    // not generic, require TypeError
+    String.prototype.toString.call({});
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  // not generic, require TypeError
-  String.prototype.valueOf.call({});
+    // not generic, require TypeError
+    String.prototype.valueOf.call({});
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

@@ -7,7 +7,7 @@
  */
 
 function printThisProperty(propName) {
-  print(this[propName]);
+    print(this[propName]);
 }
 
 /*===
@@ -18,29 +18,29 @@ bar
 
 /* 'this' */
 
-var this_obj = { foo: "bar" };
+var this_obj = { 'foo': 'bar' };
 
 this.is_global = true;
 
 try {
-  // global object
-  print(this.Number.POSITIVE_INFINITY);
+    // global object
+    print(this.Number.POSITIVE_INFINITY);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  // global object
-  printThisProperty("is_global");
+    // global object
+    printThisProperty('is_global');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  // forced binding
-  printThisProperty.call(this_obj, "foo");
+    // forced binding
+    printThisProperty.call(this_obj, 'foo');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -50,7 +50,7 @@ try {
 
 try {
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -76,62 +76,62 @@ false
  */
 
 try {
-  print(null);
+    print(null);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(true);
+    print(true);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(false);
+    print(false);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(123);
+    print(123);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(0x41);
+    print(0x41);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  // = 4*8+1 = 33
-  print(eval("041"));
+    // = 4*8+1 = 33
+    print(eval("041"));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  // 077 = 7*8 + 7 = 63
-  print(eval("077"));
+    // 077 = 7*8 + 7 = 63
+    print(eval("077"));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  // 088 is an invalid NumericLiteral in ES5; ES2015 allows it to be parsed
-  // as decimal and both V8 and Spidermonkey do so.
-  print(eval("088"));
+    // 088 is an invalid NumericLiteral in ES5; ES2015 allows it to be parsed
+    // as decimal and both V8 and Spidermonkey do so.
+    print(eval("088"));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  // 099 is similar to 088
-  print(eval("099"));
+    // 099 is similar to 088
+    print(eval("099"));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -142,8 +142,9 @@ try {
 
 var arr;
 
-arr = [1, 2, 3];
+arr = [1,2,3];
 print(arr);
+
 
 /*===
 1 2
@@ -153,7 +154,7 @@ print(arr);
 
 var obj;
 
-obj = { foo: 1, bar: 2 };
+obj = { foo:1, bar:2 };
 print(obj.foo, obj.bar);
 
 /*===

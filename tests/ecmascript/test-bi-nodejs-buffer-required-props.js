@@ -120,98 +120,53 @@ length: true
 ===*/
 
 function propertiesTest() {
-  var b;
+    var b;
 
-  function check(val, names) {
-    print("value exists: " + (val !== undefined));
-    names.forEach(function(k) {
-      print(k + ": " + Object.prototype.hasOwnProperty.call(val, k));
-    });
-  }
+    function check(val, names) {
+        print('value exists: ' + (val !== undefined));
+        names.forEach(function (k) {
+            print(k + ': ' + Object.prototype.hasOwnProperty.call(val, k));
+        });
+    }
 
-  var Buffer_props = [
-    "isEncoding",
-    "isBuffer",
-    "byteLength",
-    "concat",
-    "compare"
-  ];
-  var Buffer_prototype_props = [
-    "write",
-    "writeUIntLE",
-    "writeUIntBE",
-    "writeIntLE",
-    "writeIntBE",
-    "readUIntLE",
-    "readUIntBE",
-    "readIntLE",
-    "readIntBE",
-    "toString",
-    "toJSON",
-    "equals",
-    "compare",
-    "copy",
-    "slice",
-    "readUInt8",
-    "readUInt16LE",
-    "readUInt16BE",
-    "readUInt32LE",
-    "readUInt32BE",
-    "readInt8",
-    "readInt16LE",
-    "readInt16BE",
-    "readInt32LE",
-    "readInt32BE",
-    "readFloatLE",
-    "readFloatBE",
-    "readDoubleLE",
-    "readDoubleBE",
-    "writeUInt8",
-    "writeUInt16LE",
-    "writeUInt16BE",
-    "writeUInt32LE",
-    "writeUInt32BE",
-    "writeInt8",
-    "writeInt16LE",
-    "writeInt16BE",
-    "writeInt32LE",
-    "writeInt32BE",
-    "writeFloatLE",
-    "writeFloatBE",
-    "writeDoubleLE",
-    "writeDoubleBE",
-    "fill"
-  ];
-  var Buffer_instance_props = [
-    // 'parent' is not tested for, not currently implemented
-    "length",
-    "0",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9"
-  ];
+    var Buffer_props = [
+        'isEncoding', 'isBuffer', 'byteLength', 'concat', 'compare'
+    ];
+    var Buffer_prototype_props = [
+        'write',
+        'writeUIntLE', 'writeUIntBE', 'writeIntLE', 'writeIntBE',
+        'readUIntLE', 'readUIntBE', 'readIntLE', 'readIntBE',
+        'toString', 'toJSON',
+        'equals', 'compare', 'copy', 'slice',
+        'readUInt8', 'readUInt16LE', 'readUInt16BE', 'readUInt32LE', 'readUInt32BE',
+        'readInt8', 'readInt16LE', 'readInt16BE', 'readInt32LE', 'readInt32BE',
+        'readFloatLE', 'readFloatBE', 'readDoubleLE', 'readDoubleBE',
+        'writeUInt8', 'writeUInt16LE', 'writeUInt16BE', 'writeUInt32LE', 'writeUInt32BE',
+        'writeInt8', 'writeInt16LE', 'writeInt16BE', 'writeInt32LE', 'writeInt32BE',
+        'writeFloatLE', 'writeFloatBE', 'writeDoubleLE', 'writeDoubleBE',
+        'fill'
+    ];
+    var Buffer_instance_props = [
+        // 'parent' is not tested for, not currently implemented
+        'length',
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+    ];
 
-  print("Buffer");
-  check(Buffer, Buffer_props);
+    print('Buffer');
+    check(Buffer, Buffer_props);
 
-  print("Buffer.prototype");
-  check(Buffer.prototype, Buffer_prototype_props);
+    print('Buffer.prototype');
+    check(Buffer.prototype, Buffer_prototype_props);
 
-  print("Buffer instance");
-  b = new Buffer(10);
-  check(b, Buffer_prototype_props); // these are NOT present
-  check(b, Buffer_instance_props);
+    print('Buffer instance');
+    b = new Buffer(10);
+    check(b, Buffer_prototype_props);  // these are NOT present
+    check(b, Buffer_instance_props);
 }
 
 try {
-  print("properties test");
-  propertiesTest();
+    print('properties test');
+    propertiesTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

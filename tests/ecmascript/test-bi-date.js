@@ -9,22 +9,22 @@ NaN
 ===*/
 
 function test() {
-  var d;
+    var d;
 
-  // Date objects have no instance properties, internal primitive
-  // value preserves argument but fractional milliseconds are coerced
-  // with ToInteger (towards zero).  Negative zero handling may differ
-  // between implementations and is tested by test-bi-date-timeclip.js.
-  d = new Date(100000000123.75);
-  print(d.toISOString());
-  print(d.valueOf());
+    // Date objects have no instance properties, internal primitive
+    // value preserves argument but fractional milliseconds are coerced
+    // with ToInteger (towards zero).  Negative zero handling may differ
+    // between implementations and is tested by test-bi-date-timeclip.js.
+    d = new Date(100000000123.75);
+    print(d.toISOString());
+    print(d.valueOf());
 
-  // prototype [[PrimitiveValue]] is NaN
-  print(Date.prototype.valueOf());
+    // prototype [[PrimitiveValue]] is NaN
+    print(Date.prototype.valueOf());
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

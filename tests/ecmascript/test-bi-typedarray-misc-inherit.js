@@ -14,20 +14,20 @@ TypeError
 ===*/
 
 function test() {
-  var x = new Uint8Array(10);
-  var y = {};
-  Object.setPrototypeOf(y, x);
+    var x = new Uint8Array(10);
+    var y = {};
+    Object.setPrototypeOf(y, x);
 
-  try {
-    print(y.subarray(1));
-  } catch (e) {
-    //print(e.stack);
-    print(e.name);
-  }
+    try {
+        print(y.subarray(1));
+    } catch (e) {
+        //print(e.stack);
+        print(e.name);
+    }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

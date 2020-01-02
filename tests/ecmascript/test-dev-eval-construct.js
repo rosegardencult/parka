@@ -3,7 +3,7 @@ TypeError
 ===*/
 
 try {
-  new eval("print(1+2)");
+    new eval('print(1+2)');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

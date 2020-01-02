@@ -18,9 +18,9 @@ aabbcc cc c
 ===*/
 
 /* first backref matches 'a', second matches 'b', causing a match failure */
-t = /((.)\2){3}/.exec("aabacc");
+t = /((.)\2){3}/.exec('aabacc')
 print(t, typeof t);
 
 /* each backref matches different char, last 'c' retained as capture */
-t = /((.)\2){3}/.exec("aabbcc");
+t = /((.)\2){3}/.exec('aabbcc')
 print(t[0], t[1], t[2]);

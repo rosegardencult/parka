@@ -17,12 +17,12 @@
  */
 
 try {
-  print("foo\u0000f".localeCompare("foo\u0000e"));
-  print("foo\u0000f".localeCompare("foo\u0000f"));
-  print("foo\u0000f".localeCompare("foo\u0000g"));
+    print('foo\u0000f'.localeCompare('foo\u0000e'));
+    print('foo\u0000f'.localeCompare('foo\u0000f'));
+    print('foo\u0000f'.localeCompare('foo\u0000g'));
 
-  print("".localeCompare("\u0000"));
-  print("\u0000".localeCompare(""));
+    print(''.localeCompare('\u0000'));
+    print('\u0000'.localeCompare(''));
 } catch (e) {
-  print(e);
+    print(e);
 }

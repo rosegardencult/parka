@@ -13,27 +13,27 @@ done
 ===*/
 
 function test() {
-  var obj = {};
-  obj.ref = {};
-  obj.ref.ref = obj; // Cycle
+    var obj = {};
+    obj.ref = {};
+    obj.ref.ref = obj;  // Cycle
 
-  Duktape.fin(obj, function(v) {
-    print("finalizer called");
-    v.ref = null;
-  });
+    Duktape.fin(obj, function (v) {
+       print('finalizer called');
+       v.ref = null;
+    });
 
-  print("gc 1");
-  Duktape.gc();
-  obj = null;
-  print("gc 2, finalizer execution");
-  Duktape.gc();
-  print("gc 3, nop");
-  Duktape.gc();
-  print("done");
+    print('gc 1');
+    Duktape.gc();
+    obj = null;
+    print('gc 2, finalizer execution');
+    Duktape.gc();
+    print('gc 3, nop');
+    Duktape.gc();
+    print('done');
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

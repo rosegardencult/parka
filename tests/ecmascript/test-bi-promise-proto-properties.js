@@ -18,10 +18,10 @@ done
 
 var proto = Promise.prototype;
 print(typeof proto);
-print(Test.getPropDescString(proto, "then"));
-print(Test.getPropDescString(proto, "catch"));
-print(Test.getPropDescString(proto, "constructor"));
+print(Test.getPropDescString(proto, 'then'));
+print(Test.getPropDescString(proto, 'catch'));
+print(Test.getPropDescString(proto, 'constructor'));
 print(Test.getPropDescString(proto, Symbol.toStringTag));
 print(proto.constructor === Promise);
 
-print("done");
+print('done');

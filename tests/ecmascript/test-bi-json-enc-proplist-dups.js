@@ -11,21 +11,21 @@
  */
 
 function dupTest1() {
-  var obj = { foo: 1, bar: 2, quux: 3, baz: 4 };
+    var obj = { foo: 1, bar: 2, quux: 3, baz: 4 };
 
-  print(JSON.stringify(obj, ["bar", "foo", "baz", "baz", "baz", "quux"]));
+    print(JSON.stringify(obj, [ 'bar', 'foo', 'baz', 'baz', 'baz', 'quux' ]));
 }
 
 function dupTest2() {
-  var obj = { foo: 1, bar: 2, quux: 3, baz: 4, "1": 5 };
+    var obj = { foo: 1, bar: 2, quux: 3, baz: 4, "1": 5 };
 
-  // dup check happens after coercion
-  print(JSON.stringify(obj, ["bar", 1, new Number(1), "1", "foo"]));
+    // dup check happens after coercion
+    print(JSON.stringify(obj, [ 'bar', 1, new Number(1), '1', 'foo' ]));
 }
 
 try {
-  dupTest1();
-  dupTest2();
+    dupTest1();
+    dupTest2();
 } catch (e) {
-  print(e);
+    print(e);
 }

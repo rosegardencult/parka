@@ -20,27 +20,27 @@ done
 ===*/
 
 function test(val) {
-  var t = CBOR.encode(val);
-  print(Duktape.enc("hex", t));
-  print(Duktape.enc("jx", CBOR.decode(t)));
+    var t = CBOR.encode(val);
+    print(Duktape.enc('hex', t));
+    print(Duktape.enc('jx', CBOR.decode(t)));
 }
 
 // Plain ASCII.
-test("foobar");
+test('foobar');
 
 // BMP.
-test("foo\u1234bar");
+test('foo\u1234bar');
 
 // Unpaired surrogate.
-test("foo\ud800bar");
-test("foo\udc00bar");
-test("foo\udc00d800bar");
+test('foo\ud800bar');
+test('foo\udc00bar');
+test('foo\udc00d800bar');
 
 // Paired surrogate.  Currently CBOR.encode() does not combine the
 // surrogate.
-test("foo\ud83d\udca9bar");
+test('foo\ud83d\udca9bar');
 
 // XXX: Add coverage when C API exists:
 // - BF A0: initial byte is a continuation byte
 
-print("done");
+print('done');

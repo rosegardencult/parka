@@ -26,7 +26,7 @@ var res;
  * whitespace is 0 and not a NaN (!); see E5 Section 9.3.1.
  */
 
-res = eval("{}+[]");
+res = eval('{}+[]');
 print(res, typeof res);
 
 /*===
@@ -54,8 +54,8 @@ print(res, typeof res);
  * of the parens.
  */
 
-res = eval("[]+{}");
+res = eval('[]+{}');
 print(res, typeof res);
 
-res = eval("({}+[])");
+res = eval('({}+[])');
 print(res, typeof res);

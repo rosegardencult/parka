@@ -14,61 +14,45 @@ TypeError
 ==*/
 
 function test() {
-  var bar = 234;
-  var obj;
+    var bar = 234;
+    var obj;
 
-  function getO() {
-    return "o";
-  }
+    function getO() { return 'o'; }
 
-  try {
-    obj = eval(
-      '({ ["fo" + getO()](a,b) { print("foo() sees foo as:", typeof foo); return a+b; } })'
-    );
-
-    print(obj.foo(2, 3));
-    print(typeof obj.foo);
-    pd = Object.getOwnPropertyDescriptor(obj.foo, "name");
-    print(
-      typeof pd.value,
-      pd.value,
-      pd.writable,
-      pd.enumerable,
-      pd.configurable
-    );
-    pd = Object.getOwnPropertyDescriptor(obj.foo, "length");
-    print(
-      typeof pd.value,
-      pd.value,
-      pd.writable,
-      pd.enumerable,
-      pd.configurable
-    );
-    pd = Object.getOwnPropertyDescriptor(obj.foo, "prototype");
-    print(typeof pd);
     try {
-      new obj.foo();
+        obj = eval('({ ["fo" + getO()](a,b) { print("foo() sees foo as:", typeof foo); return a+b; } })');
+
+        print(obj.foo(2,3));
+        print(typeof obj.foo);
+        pd = Object.getOwnPropertyDescriptor(obj.foo, 'name');
+        print(typeof pd.value, pd.value, pd.writable, pd.enumerable, pd.configurable);
+        pd = Object.getOwnPropertyDescriptor(obj.foo, 'length');
+        print(typeof pd.value, pd.value, pd.writable, pd.enumerable, pd.configurable);
+        pd = Object.getOwnPropertyDescriptor(obj.foo, 'prototype');
+        print(typeof pd);
+        try {
+            new obj.foo();
+        } catch (e) {
+            print(e.name);
+        }
     } catch (e) {
-      print(e.name);
+        print('computed name for method shorthand failed (not yet supported?)');
+        print(e.name);
     }
-  } catch (e) {
-    print("computed name for method shorthand failed (not yet supported?)");
-    print(e.name);
-  }
 
-  // A computed method name is useful in practice for symbol-named functions.
+    // A computed method name is useful in practice for symbol-named functions.
 
-  try {
-    obj = eval('({ [Symbol.for("aiee")](a,b) { return a+b; } })');
-    print(obj[Symbol.for("aiee")](2, 3));
-  } catch (e) {
-    print("computed name for method shorthand failed (not yet supported?)");
-    print(e.name);
-  }
+    try {
+        obj = eval('({ [Symbol.for("aiee")](a,b) { return a+b; } })');
+        print(obj[Symbol.for('aiee')](2, 3));
+    } catch (e) {
+        print('computed name for method shorthand failed (not yet supported?)');
+        print(e.name);
+    }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

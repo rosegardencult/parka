@@ -25,125 +25,106 @@ object 3 1 291 1 4660 1 65244
 object 3 1 291 1 4660 1 65244
 ===*/
 
-print("basic");
+print('basic');
 
 function basicTest() {
-  var t;
+    var t;
 
-  function p(x) {
-    print(typeof x, x.length, JSON.stringify(x));
-  }
+    function p(x) {
+        print(typeof x, x.length, JSON.stringify(x));
+    }
 
-  // Basic test
+    // Basic test
 
-  p("foo, bar, quux".split(","));
+    p('foo, bar, quux'.split(','));
 
-  // Undefined separator results in an array containing just 'this' as a
-  // string; it must not be coerced to 'undefined' (and then used as a
-  // separator string).
+    // Undefined separator results in an array containing just 'this' as a
+    // string; it must not be coerced to 'undefined' (and then used as a
+    // separator string).
 
-  p(new String("foo - undefined - bar").split());
-  p(new String("foo - undefined - bar").split(undefined));
+    p(new String('foo - undefined - bar').split());
+    p(new String('foo - undefined - bar').split(undefined));
 
-  // Empty separator splits a string into individual characters
+    // Empty separator splits a string into individual characters
 
-  p("foobar".split(""));
+    p('foobar'.split(''));
 
-  // Unicode characters cause different processing internally
+    // Unicode characters cause different processing internally
 
-  t = "a\u0345\u1234\ufedc".split("");
-  print(
-    typeof t,
-    t.length,
-    t[0].charCodeAt(0),
-    t[1].charCodeAt(0),
-    t[2].charCodeAt(0),
-    t[3].charCodeAt(0)
-  );
+    t = 'a\u0345\u1234\ufedc'.split('');
+    print(typeof t, t.length, t[0].charCodeAt(0), t[1].charCodeAt(0), t[2].charCodeAt(0), t[3].charCodeAt(0));
 
-  // Empty RegExp, also splits into individual characters
+    // Empty RegExp, also splits into individual characters
 
-  p("foobar".split(/(?:)/));
+    p('foobar'.split(/(?:)/));
 
-  // Only first RegExp match matters at a given position; this is
-  // equivalent to an empty regexp
+    // Only first RegExp match matters at a given position; this is
+    // equivalent to an empty regexp
 
-  p("foobar".split(/(?:)|./)); // first alt matches
-  p("foobar".split(/.|(?:)/));
+    p('foobar'.split(/(?:)|./));  // first alt matches
+    p('foobar'.split(/.|(?:)/));
 
-  // Simple two character separator
+    // Simple two character separator
 
-  p("foo::bar::quux".split("::"));
+    p('foo::bar::quux'.split('::'));
 
-  // If 'this' coerces to empty string, result depends on whether separator
-  // can match the empty string
+    // If 'this' coerces to empty string, result depends on whether separator
+    // can match the empty string
 
-  p("".split("")); // can match -> no elems
-  p("".split("a")); // cannot match -> ['']
-  p("".split(/a*/)); // can match -> no elems
-  p("".split(/a+/)); // cannot match -> ['']
+    p(''.split(''));     // can match -> no elems
+    p(''.split('a'));    // cannot match -> ['']
+    p(''.split(/a*/));   // can match -> no elems
+    p(''.split(/a+/));   // cannot match -> ['']
 
-  // RegExp captures are made part of the result array
+    // RegExp captures are made part of the result array
 
-  p("foo; bar;quux; baz".split(/(;)(\s?)/));
-  p("foo; bar, baz".split(/(;)|(,)/)); // unmatched -> undefined -> JSON null
+    p('foo; bar;quux; baz'.split(/(;)(\s?)/));
+    p('foo; bar, baz'.split(/(;)|(,)/));  // unmatched -> undefined -> JSON null
 
-  // Specific example from spec: evaluates to ['a','b']
+    // Specific example from spec: evaluates to ['a','b']
 
-  p("ab".split(/a*?/));
+    p('ab'.split(/a*?/));
 
-  // Specific example from spec: evaluates to ['', 'b']
+    // Specific example from spec: evaluates to ['', 'b']
 
-  p("ab".split(/a*/));
+    p('ab'.split(/a*/));
 
-  // Specific example from spec: note that 'undefined' values join as empty
+    // Specific example from spec: note that 'undefined' values join as empty
 
-  p("A<B>bold</B>and<CODE>coded</CODE>".split(/<(\/)?([^<>]+)>/));
+    p('A<B>bold</B>and<CODE>coded</CODE>'.split(/<(\/)?([^<>]+)>/));
 
-  // Trailer is added as an empty string if last match coincides with
-  // the end of the string.
+    // Trailer is added as an empty string if last match coincides with
+    // the end of the string.
 
-  p("foobar".split("bar"));
+    p('foobar'.split('bar'));
 
-  // Trailer may hit the limit
+    // Trailer may hit the limit
 
-  p("foobar".split("bar", 1)); // trailer dropped
-  p("foobar".split("bar", 2)); // trailer fits
+    p('foobar'.split('bar', 1));  // trailer dropped
+    p('foobar'.split('bar', 2));  // trailer fits
 
-  // Some non-BMP tests; important because both byte and char offsets
-  // are used internally.
+    // Some non-BMP tests; important because both byte and char offsets
+    // are used internally.
 
-  t = "\u0123\u1234\ufedc".split("");
-  print(
-    typeof t,
-    t.length,
-    t[0].length,
-    t[0].charCodeAt(0),
-    t[1].length,
-    t[1].charCodeAt(0),
-    t[2].length,
-    t[2].charCodeAt(0)
-  );
+    t = '\u0123\u1234\ufedc'.split('');
+    print(typeof t, t.length,
+          t[0].length, t[0].charCodeAt(0),
+          t[1].length, t[1].charCodeAt(0),
+          t[2].length, t[2].charCodeAt(0));
 
-  t = "\u0123\u1234\ufedc".split(/(?:)/);
-  print(
-    typeof t,
-    t.length,
-    t[0].length,
-    t[0].charCodeAt(0),
-    t[1].length,
-    t[1].charCodeAt(0),
-    t[2].length,
-    t[2].charCodeAt(0)
-  );
+    t = '\u0123\u1234\ufedc'.split(/(?:)/);
+    print(typeof t, t.length,
+          t[0].length, t[0].charCodeAt(0),
+          t[1].length, t[1].charCodeAt(0),
+          t[2].length, t[2].charCodeAt(0));
 
-  // XXX: add more non-BMP tests
+    // XXX: add more non-BMP tests
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -183,57 +164,57 @@ object 0 []
  * a huge amount of memory.  It is not tested now.
  */
 
-print("limit");
+print('limit');
 
 function limitTest() {
-  var i;
+    var i;
 
-  function p(x) {
-    print(typeof x, x.length, JSON.stringify(x));
-  }
+    function p(x) {
+        print(typeof x, x.length, JSON.stringify(x));
+    }
 
-  // zero limit
+    // zero limit
 
-  p("foo".split(undefined)); // undefined limit -> 2**32-1
-  p("foo".split(undefined, 0)); // normally returns array with string as is, limit 0 -> return []
+    p('foo'.split(undefined));     // undefined limit -> 2**32-1
+    p('foo'.split(undefined, 0));  // normally returns array with string as is, limit 0 -> return []
 
-  // limit, normal case
+    // limit, normal case
 
-  p("foo,bar,quux".split(","));
-  p("foo,bar,quux".split(",", 3));
-  p("foo,bar,quux".split(",", 2));
-  p("foo,bar,quux".split(",", 1));
-  p("foo,bar,quux".split(",", 0));
+    p('foo,bar,quux'.split(','));
+    p('foo,bar,quux'.split(',', 3));
+    p('foo,bar,quux'.split(',', 2));
+    p('foo,bar,quux'.split(',', 1));
+    p('foo,bar,quux'.split(',', 0));
 
-  // huge positive limit wraps through ToUint32()
-  p("foo,bar,quux,baz".split(",", 4294967296)); // = 0
-  p("foo,bar,quux,baz".split(",", 4294967297)); // = 1
-  p("foo,bar,quux,baz".split(",", 4294967298)); // = 2
+    // huge positive limit wraps through ToUint32()
+    p('foo,bar,quux,baz'.split(',', 4294967296));  // = 0
+    p('foo,bar,quux,baz'.split(',', 4294967297));  // = 1
+    p('foo,bar,quux,baz'.split(',', 4294967298));  // = 2
 
-  // negative limit goes through ToUint32() and becomes a positive one
-  // -1 -> 4294967295
-  // -4294967295 -> 1
-  // -4294967294 -> 2
+    // negative limit goes through ToUint32() and becomes a positive one
+    // -1 -> 4294967295
+    // -4294967295 -> 1
+    // -4294967294 -> 2
 
-  p("foo,bar,quux,baz".split(",", -1));
-  p("foo,bar,quux,baz".split(",", -4294967295));
-  p("foo,bar,quux,baz".split(",", -4294967294));
+    p('foo,bar,quux,baz'.split(',', -1));
+    p('foo,bar,quux,baz'.split(',', -4294967295));
+    p('foo,bar,quux,baz'.split(',', -4294967294));
 
-  // ToUint32() coerces fractions towards zero
-  p("foo,bar,quux,baz".split(",", 2.4)); // limit 2
-  p("foo,bar,quux,baz".split(",", 2.4 - 256 * 256 * 256 * 256)); // limit 3 (!)
+    // ToUint32() coerces fractions towards zero
+    p('foo,bar,quux,baz'.split(',', 2.4));                      // limit 2
+    p('foo,bar,quux,baz'.split(',', 2.4 - (256*256*256*256)));  // limit 3 (!)
 
-  // limit, happens in the middle of a capture
-  p("foo:123:bar:321:quux".split(/(\d)(\d)(\d)/));
-  for (i = 9; i >= 0; i--) {
-    p("foo:123:bar:321:quux".split(/(\d)(\d)(\d)/, i));
-  }
+    // limit, happens in the middle of a capture
+    p('foo:123:bar:321:quux'.split(/(\d)(\d)(\d)/));
+    for (i = 9; i >= 0; i--) {
+        p('foo:123:bar:321:quux'.split(/(\d)(\d)(\d)/, i));
+    }
 }
 
 try {
-  limitTest();
+    limitTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -261,58 +242,53 @@ after object string 12345
  * (such as lastIndex) are neither read or written.
  */
 
-print("regexp");
+print('regexp');
 
 function regExpTest() {
-  var re;
+    var re;
 
-  function test(this_val, sep_val, limit_val) {
-    var t;
+    function test(this_val, sep_val, limit_val) {
+        var t;
 
-    print(
-      "before",
-      typeof sep_val,
-      typeof sep_val.lastIndex,
-      sep_val.lastIndex
-    );
-    try {
-      t = String.prototype.split.call(this_val, sep_val, limit_val);
-      print(typeof t, t.length, JSON.stringify(t));
-    } catch (e) {
-      print(e.name);
+        print('before', typeof sep_val, typeof sep_val.lastIndex, sep_val.lastIndex);
+        try {
+            t = String.prototype.split.call(this_val, sep_val, limit_val);
+            print(typeof t, t.length, JSON.stringify(t));
+        } catch (e) {
+            print(e.name);
+        }
+        print('after', typeof sep_val, typeof sep_val.lastIndex, sep_val.lastIndex);
     }
-    print("after", typeof sep_val, typeof sep_val.lastIndex, sep_val.lastIndex);
-  }
 
-  // ignoreCase matcher
-  re = /z/i;
-  re.lastIndex = "12345";
-  test("foozbarZquux", re);
+    // ignoreCase matcher
+    re = /z/i;
+    re.lastIndex = '12345';
+    test('foozbarZquux', re);
 
-  // ignoreCase + captures; captures have original casing
-  re = /(z)/i;
-  re.lastIndex = "12345";
-  test("foozbarZquux", re);
+    // ignoreCase + captures; captures have original casing
+    re = /(z)/i;
+    re.lastIndex = '12345';
+    test('foozbarZquux', re);
 
-  // multiline matcher; use multiline '^' to detect
-  re = /^/; // single line match, does not match start of line
-  re.lastIndex = "12345";
-  test("foo\nbar\nquux", re);
+    // multiline matcher; use multiline '^' to detect
+    re = /^/;  // single line match, does not match start of line
+    re.lastIndex = '12345';
+    test('foo\nbar\nquux', re);
 
-  re = /^/m; // matches start of line, empty match, newlines will be part of match
-  re.lastIndex = "12345";
-  test("foo\nbar\nquux", re);
+    re = /^/m;  // matches start of line, empty match, newlines will be part of match
+    re.lastIndex = '12345';
+    test('foo\nbar\nquux', re);
 
-  // global matcher, no effect
-  re = /z/gi;
-  re.lastIndex = "12345";
-  test("foozbarZquux", re);
+    // global matcher, no effect
+    re = /z/gi;
+    re.lastIndex = '12345';
+    test('foozbarZquux', re);
 }
 
 try {
-  regExpTest();
+    regExpTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -341,90 +317,68 @@ toString() sep
 object 2 ["foo","bar"]
 ===*/
 
-print("coercion");
+print('coercion');
 
 function coercionTest() {
-  function test(this_val, sep_val, limit_val, arg_count) {
-    var t;
+    function test(this_val, sep_val, limit_val, arg_count) {
+        var t;
 
-    try {
-      if (arg_count === 0) {
-        t = String.prototype.split.call();
-      } else if (arg_count === 1) {
-        t = String.prototype.split.call(this_val);
-      } else if (arg_count === 2) {
-        t = String.prototype.split.call(this_val, sep_val);
-      } else {
-        t = String.prototype.split.call(this_val, sep_val, limit_val);
-      }
+        try {
+            if (arg_count === 0) {
+                t = String.prototype.split.call();
+            } else if (arg_count === 1) {
+                t = String.prototype.split.call(this_val);
+            } else if (arg_count === 2) {
+                t = String.prototype.split.call(this_val, sep_val);
+            } else {
+                t = String.prototype.split.call(this_val, sep_val, limit_val);
+            }
 
-      print(typeof t, t.length, JSON.stringify(t));
-    } catch (e) {
-      print(e.name);
+            print(typeof t, t.length, JSON.stringify(t));
+        } catch (e) {
+            print(e.name);
+        }
     }
-  }
 
-  // this coercion check
-  test(undefined, undefined, undefined, 0);
-  test(undefined, ",", 3);
-  test(null, ",", 3);
-  test(true, ",", 3);
-  test(false, ",", 3);
-  test(123, ",", 3);
-  test("quux", ",", 3);
-  test([1, 2, 3], ",", 3);
-  test({ foo: 1, bar: 2 }, " ", 3);
+    // this coercion check
+    test(undefined, undefined, undefined, 0);
+    test(undefined, ',', 3);
+    test(null, ',', 3);
+    test(true, ',', 3);
+    test(false, ',', 3);
+    test(123, ',', 3);
+    test('quux', ',', 3);
+    test([1,2,3], ',', 3);
+    test({ foo: 1, bar: 2 }, ' ', 3);
 
-  // limit coercion (most limit checks already done above)
-  test("foo,bar,quux,baz", ",", "3.9000e0");
+    // limit coercion (most limit checks already done above)
+    test('foo,bar,quux,baz', ',', '3.9000e0');
 
-  // separator coercion
-  test("fooundefinedbarundefinedquux", undefined); // undefined separator -> return input as only array elem (E5.1 Section 15.4.14, step 10)
-  test("foonullbarnullquux", null);
-  test("footruebartruequux", true);
-  test("foofalsebarfalsequux", false);
-  test("foo123bar123quux", 123);
-  test("fooXbarXquux", "X");
-  test("foo1,2bar1,2quux", [1, 2]);
-  test("foo[object Object]bar[object Object]quux", { foo: 1, bar: 2 });
+    // separator coercion
+    test('fooundefinedbarundefinedquux', undefined);   // undefined separator -> return input as only array elem (E5.1 Section 15.4.14, step 10)
+    test('foonullbarnullquux', null);
+    test('footruebartruequux', true);
+    test('foofalsebarfalsequux', false);
+    test('foo123bar123quux', 123);
+    test('fooXbarXquux', 'X');
+    test('foo1,2bar1,2quux', [1,2]);
+    test('foo[object Object]bar[object Object]quux', { foo: 1, bar: 2 });
 
-  // coercion order: 'this', limit, separator
-  test(
-    {
-      toString: function() {
-        print("toString() this");
-        return "foo,bar,quux,baz";
-      },
-      valueOf: function() {
-        print("valueOf() this");
-        return "Foo,Bar,Quux,Baz";
-      }
-    },
-    {
-      toString: function() {
-        print("toString() sep");
-        return ",";
-      },
-      valueOf: function() {
-        print("valueOf() sep");
-        return ";";
-      }
-    },
-    {
-      toString: function() {
-        print("toString() limit");
-        return 3;
-      },
-      valueOf: function() {
-        print("valueOf() limit");
-        return 2;
-      }
-    }
-  );
+    // coercion order: 'this', limit, separator
+    test({
+        toString: function() { print('toString() this'); return 'foo,bar,quux,baz'; },
+        valueOf: function() { print('valueOf() this'); return 'Foo,Bar,Quux,Baz'; }
+    }, {
+        toString: function() { print('toString() sep'); return ','; },
+        valueOf: function() { print('valueOf() sep'); return ';'; }
+    }, {
+        toString: function() { print('toString() limit'); return 3; },
+        valueOf: function() { print('valueOf() limit'); return 2; }
+    });
 }
 
 try {
-  coercionTest();
+    coercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

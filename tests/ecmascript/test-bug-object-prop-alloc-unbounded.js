@@ -46,49 +46,49 @@ entry count < 100: true
 ===*/
 
 function objectEntryPartResizeTest(doCompact) {
-  var sparse = { 0: 0 };
-  var i;
-  var t, entrySize, entryNext;
+    var sparse = { 0: 0 };
+    var i;
+    var t, entrySize, entryNext;
 
-  for (i = 1; i < 10000; i++) {
-    sparse[i] = i;
-    delete sparse[i - 1];
+    for (i = 1; i < 10000; i++) {
+        sparse[i] = i;
+        delete sparse[i - 1];
 
-    if (doCompact) {
-      /* If the object is forcibly compacted, the undesired entry
-       * part behavior disappears even in Duktape 0.11.0 and prior.
-       */
-      Duktape.compact(sparse);
+        if (doCompact) {
+            /* If the object is forcibly compacted, the undesired entry
+             * part behavior disappears even in Duktape 0.11.0 and prior.
+             */
+            Duktape.compact(sparse);
+        }
     }
-  }
 
-  /* Here the object entry part has been resized multiple times.  We
-   * don't know the exact size, but since there is only one used key
-   * we can more or less safely assume the entry part should be smaller
-   * than 100 entries.
-   *
-   * NOTE: the "entry next" value is not the count of non-NULL key
-   * entries in the entry part.  It's simply the next index to use
-   * when adding a new key, and is not necessarily 1 here.
-   */
+    /* Here the object entry part has been resized multiple times.  We
+     * don't know the exact size, but since there is only one used key
+     * we can more or less safely assume the entry part should be smaller
+     * than 100 entries.
+     *
+     * NOTE: the "entry next" value is not the count of non-NULL key
+     * entries in the entry part.  It's simply the next index to use
+     * when adding a new key, and is not necessarily 1 here.
+     */
 
-  entrySize = getObjectEntrySize(sparse);
-  entryNext = getObjectEntryNext(sparse);
-  print("entry count < 100:", entrySize < 100);
+    entrySize = getObjectEntrySize(sparse);
+    entryNext = getObjectEntryNext(sparse);
+    print('entry count < 100:', (entrySize < 100));
 
-  /* With the bug present, a compaction "fixes" the object. */
-  Duktape.compact(sparse);
+    /* With the bug present, a compaction "fixes" the object. */
+    Duktape.compact(sparse);
 
-  entrySize = getObjectEntrySize(sparse);
-  entryNext = getObjectEntryNext(sparse);
-  print("entry count < 100:", entrySize < 100);
+    entrySize = getObjectEntrySize(sparse);
+    entryNext = getObjectEntryNext(sparse);
+    print('entry count < 100:', (entrySize < 100));
 }
 
 try {
-  print("without compaction");
-  objectEntryPartResizeTest(false);
-  print("with compaction");
-  objectEntryPartResizeTest(true);
+    print('without compaction');
+    objectEntryPartResizeTest(false);
+    print('with compaction');
+    objectEntryPartResizeTest(true);
 } catch (e) {
-  print(e);
+    print(e);
 }

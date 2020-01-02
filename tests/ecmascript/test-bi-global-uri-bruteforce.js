@@ -14,23 +14,20 @@
 ---*/
 
 // indirect eval -> this is bound to the global object, E5 Section 10.4.2, step 1.a.
-var g = (function() {
-  var e = eval;
-  return e("this");
-})();
+var g = (function () { var e = eval; return e('this'); } )();
 
 /* Dump a string as decimal codepoints, ensures that tests produce ASCII only
  * outputs.
  */
 function dumpCodePoints(x) {
-  var i;
-  var res = [];
+    var i;
+    var res = [];
 
-  for (i = 0; i < x.length; i++) {
-    res.push(x.charCodeAt(i));
-  }
+    for (i = 0; i < x.length; i++) {
+        res.push(x.charCodeAt(i));
+    }
 
-  return res.join(" ");
+    return res.join(' ');
 }
 
 /*
@@ -38,32 +35,32 @@ function dumpCodePoints(x) {
  */
 
 function genString(start, count) {
-  var res = [];
-  var i, cp;
+    var res = [];
+    var i, cp;
 
-  for (i = 0; i < count; i++) {
-    cp = start + i;
-    res[i] = String.fromCharCode(cp);
-  }
+    for (i = 0; i < count; i++) {
+        cp = start + i;
+        res[i] = String.fromCharCode(cp);
+    }
 
-  return res.join("");
+    return res.join('');
 }
 
 /* Trivial string checksum used to summarize brute force output lines
  * (minimizes test case size).
  */
 function checkSumString(x) {
-  var i, n;
-  var res = 0;
-  var mult = [1, 3, 5, 7, 11, 13, 17, 19, 23];
+    var i, n;
+    var res = 0;
+    var mult = [ 1, 3, 5, 7, 11, 13, 17, 19, 23 ];
 
-  n = x.length;
-  for (i = 0; i < n; i++) {
-    res += x.charCodeAt(i) * mult[i % mult.length];
-    res = res >>> 0; // coerce to 32 bits
-  }
+    n = x.length;
+    for (i = 0; i < n; i++) {
+        res += x.charCodeAt(i) * mult[i % mult.length];
+        res = res >>> 0;  // coerce to 32 bits
+    }
 
-  return res;
+    return res;
 }
 
 /*===
@@ -204,49 +201,49 @@ encodeURIComponent BMP
  */
 
 function encodeURIBMPTest(is_uricomponent) {
-  var x1, x2, x3;
-  var got_urierror;
+    var x1, x2, x3;
+    var got_urierror;
 
-  // step 1024 (= 0x400), ensure that 0xd800...0xdfff aligns nicely
-  for (var i = 0; i < 65536; i += 1024) {
-    got_urierror = false;
-    try {
-      x1 = genString(i, 1024);
-      if (is_uricomponent) {
-        x2 = g.encodeURIComponent(x1);
-        x3 = g.decodeURIComponent(x2);
-      } else {
-        x2 = g.encodeURI(x1);
-        x3 = g.decodeURI(x2);
-      }
-      print(i, x1 === x3, checkSumString(x2));
-    } catch (e) {
-      if (e.name === "URIError") {
-        got_urierror = true;
-      } else {
-        throw e;
-      }
-    }
+    // step 1024 (= 0x400), ensure that 0xd800...0xdfff aligns nicely
+    for (var i = 0; i < 65536; i += 1024) {
+        got_urierror = false;
+        try {
+            x1 = genString(i, 1024);
+            if (is_uricomponent) {
+                x2 = g.encodeURIComponent(x1);
+                x3 = g.decodeURIComponent(x2);
+            } else {
+                x2 = g.encodeURI(x1);
+                x3 = g.decodeURI(x2);
+            }
+            print(i, (x1 === x3), checkSumString(x2));
+        } catch (e) {
+            if (e.name === 'URIError') {
+                got_urierror = true;
+            } else {
+                throw e;
+            }
+        }
 
-    if (i >= 0xd800 && i < 0xe000) {
-      // For surrogate pairs encoded 'naively' into UTF-8,
-      // URIError is required.
-      if (got_urierror) {
-        print(i, "URIError (expected)");
-      } else {
-        print(i, "URIError (unexpected)");
-      }
+        if (i >= 0xd800 && i < 0xe000) {
+            // For surrogate pairs encoded 'naively' into UTF-8,
+            // URIError is required.
+            if (got_urierror) {
+                print(i, 'URIError (expected)');
+            } else {
+                print(i, 'URIError (unexpected)');
+            }
+        }
     }
-  }
 }
 
 try {
-  print("encodeURI BMP");
-  encodeURIBMPTest(false);
-  print("encodeURIComponent BMP");
-  encodeURIBMPTest(true);
+    print('encodeURI BMP');
+    encodeURIBMPTest(false);
+    print('encodeURIComponent BMP');
+    encodeURIBMPTest(true);
 } catch (e) {
-  print(e.name, e);
+    print(e.name, e);
 }
 
 /*===
@@ -291,43 +288,43 @@ encodeURIComponent surrogate pairs
  */
 
 function encodeURISurrogatePairTest(is_uricomponent) {
-  var x1, x2, x3;
-  var lo, hi;
-  var tmp = [];
+    var x1, x2, x3;
+    var lo, hi;
+    var tmp = [];
 
-  for (var i = 0; i < 0x100000; i++) {
-    hi = 0xd800 + ((i >> 10) & 0x03ff);
-    lo = 0xdc00 + (i & 0x03ff);
+    for (var i = 0; i < 0x100000; i++) {
+        hi = 0xd800 + ((i >> 10) & 0x03ff);
+        lo = 0xdc00 + (i & 0x03ff);
 
-    tmp.push(String.fromCharCode(hi, lo));
-    if (tmp.length < 65536) {
-      continue;
+        tmp.push(String.fromCharCode(hi, lo));
+        if (tmp.length < 65536) {
+            continue;
+        }
+
+        x1 = tmp.join('');
+        if (is_uricomponent) {
+            x2 = g.encodeURIComponent(x1);
+            x3 = g.decodeURIComponent(x2);
+        } else {
+            x2 = g.encodeURI(x1);
+            x3 = g.decodeURI(x2);
+        }
+        print(checkSumString(x2));
+        tmp = [];
     }
 
-    x1 = tmp.join("");
-    if (is_uricomponent) {
-      x2 = g.encodeURIComponent(x1);
-      x3 = g.decodeURIComponent(x2);
-    } else {
-      x2 = g.encodeURI(x1);
-      x3 = g.decodeURI(x2);
+    if (tmp.length != 0) {
+        throw new Error('internal error');
     }
-    print(checkSumString(x2));
-    tmp = [];
-  }
-
-  if (tmp.length != 0) {
-    throw new Error("internal error");
-  }
 }
 
 try {
-  print("encodeURI surrogate pairs");
-  encodeURISurrogatePairTest(false);
-  print("encodeURIComponent surrogate pairs");
-  encodeURISurrogatePairTest(true);
+    print('encodeURI surrogate pairs');
+    encodeURISurrogatePairTest(false);
+    print('encodeURIComponent surrogate pairs');
+    encodeURISurrogatePairTest(true);
 } catch (e) {
-  print(e.name, e);
+    print(e.name, e);
 }
 /*===
 ===*/

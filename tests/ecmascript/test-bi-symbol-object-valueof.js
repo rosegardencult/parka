@@ -5,7 +5,7 @@ symbol
 true
 ===*/
 
-var symbol = Symbol("foo");
+var symbol = Symbol('foo');
 print(typeof symbol);
 var object = Object(symbol);
 print(typeof object);

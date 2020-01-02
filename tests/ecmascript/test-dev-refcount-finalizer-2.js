@@ -14,13 +14,8 @@ undefined
 
 /* Finalizer of a finalizer */
 
-var func1 = function(x) {
-  print("Finalizer's finalizer");
-};
-var func2 = function(x) {
-  print("Finalizer");
-  obj = x; /*rescue*/
-};
+var func1 = function(x) { print("Finalizer's finalizer"); };
+var func2 = function(x) { print("Finalizer"); obj = x; /*rescue*/ };
 var obj = {};
 
 Duktape.fin(obj, func2);
@@ -29,7 +24,7 @@ func1 = null;
 func2 = null;
 
 print(typeof obj);
-obj = null; // func2 will rescue
+obj = null;  // func2 will rescue
 print(typeof obj);
 
 // Refcount of func2 should drop to zero, which should cause func'2

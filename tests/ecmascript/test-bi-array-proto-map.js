@@ -1,18 +1,18 @@
 // double a number or concatenate a string with itself
 function retTwice(val, key, obj) {
-  print(typeof this, this, typeof val, val, typeof key, key, typeof obj, obj);
-  return val + val;
+    print(typeof this, this, typeof val, val, typeof key, key, typeof obj, obj);
+    return val + val;
 }
 
 function test(this_value, args) {
-  var t;
+    var t;
 
-  try {
-    t = Array.prototype.map.apply(this_value, args);
-    print(typeof t, t);
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        t = Array.prototype.map.apply(this_value, args);
+        print(typeof t, t);
+    } catch (e) {
+        print(e.name);
+    }
 }
 
 /*===
@@ -76,150 +76,97 @@ callback 10 9 1,2,3,4,5,6,7,8,9,10
 object ,,true,false,123,foo,1,2,[object Object],,
 ===*/
 
-print("basic");
+print('basic');
 
 function basicTest() {
-  var obj;
+    var obj;
 
-  // simple cases
+    // simple cases
 
-  test([], [retTwice]);
-  test([1], [retTwice]);
-  test([1, 2], [retTwice]);
+    test([], [ retTwice ]);
+    test([1], [ retTwice ]);
+    test([1,2], [ retTwice ]);
 
-  // dense
+    // dense
 
-  test([1, 2, 3, 4, 5], [retTwice]);
+    test([1,2,3,4,5], [ retTwice ]);
 
-  // sparse
+    // sparse
 
-  obj = [1];
-  obj[100] = 3;
-  obj[50] = 2;
-  test(obj, [retTwice]);
+    obj = [1];
+    obj[100] = 3;
+    obj[50] = 2;
+    test(obj, [ retTwice ]);
 
-  // sparse with trailing non-existent elements: for this case standard and
-  // real world behaviors differ, so this is covered by a separate test case:
-  // test-bi-array-proto-map-nonstd-trailing.js
+    // sparse with trailing non-existent elements: for this case standard and
+    // real world behaviors differ, so this is covered by a separate test case:
+    // test-bi-array-proto-map-nonstd-trailing.js
 
-  // non-array; careful to avoid trailing non-existent elements (tested
-  // separately)
+    // non-array; careful to avoid trailing non-existent elements (tested
+    // separately)
 
-  obj = { "0": "foo", "5": "bar", "20": "quux", "100": "baz", length: 21 };
-  test(obj, [retTwice]);
+    obj = { '0': 'foo', '5': 'bar', '20': 'quux', '100': 'baz', length: 21 };
+    test(obj, [ retTwice ]);
 
-  // error in callback propagates outwards
+    // error in callback propagates outwards
 
-  test(
-    [1, 2, 3],
-    [
-      function(val, key, obj) {
+    test([1,2,3], [ function(val, key, obj) {
         var e;
-        print("callback", val);
-        e = new Error("callback error");
-        e.name = "CallbackError";
+        print('callback', val);
+        e = new Error('callback error');
+        e.name = 'CallbackError';
         throw e;
-      }
-    ]
-  );
+    }]);
 
-  // this binding, non-strict callbacks gets a coerced binding
+    // this binding, non-strict callbacks gets a coerced binding
 
-  test(
-    [1, 2, 3],
-    [
-      function(val, key, obj) {
-        print("nonstrict", typeof this);
+    test([1,2,3], [ function(val, key, obj) {
+        print('nonstrict', typeof this);
         return val + 100;
-      }
-    ]
-  );
+    }]);
 
-  test(
-    [1, 2, 3],
-    [
-      function(val, key, obj) {
-        print("nonstrict", typeof this);
+    test([1,2,3], [ function(val, key, obj) {
+        print('nonstrict', typeof this);
         return val + 100;
-      },
-      null
-    ]
-  );
+    }, null]);
 
-  test(
-    [1, 2, 3],
-    [
-      function(val, key, obj) {
-        print("nonstrict", typeof this);
+    test([1,2,3], [ function(val, key, obj) {
+        print('nonstrict', typeof this);
         return val + 100;
-      },
-      "foo"
-    ]
-  );
+    }, 'foo']);
 
-  test(
-    [1, 2, 3],
-    [
-      function(val, key, obj) {
-        "use strict";
-        print("strict", typeof this, this);
+    test([1,2,3], [ function(val, key, obj) {
+        'use strict';
+        print('strict', typeof this, this);
         return val + 100;
-      }
-    ]
-  );
+    }]);
 
-  test(
-    [1, 2, 3],
-    [
-      function(val, key, obj) {
-        "use strict";
-        print("strict", typeof this, this);
+    test([1,2,3], [ function(val, key, obj) {
+        'use strict';
+        print('strict', typeof this, this);
         return val + 100;
-      },
-      null
-    ]
-  ); // Note: typeof null -> 'object'
+    }, null]);  // Note: typeof null -> 'object'
 
-  test(
-    [1, 2, 3],
-    [
-      function(val, key, obj) {
-        "use strict";
-        print("strict", typeof this, this);
+    test([1,2,3], [ function(val, key, obj) {
+        'use strict';
+        print('strict', typeof this, this);
         return val + 100;
-      },
-      "foo"
-    ]
-  );
+    }, 'foo']);
 
-  // return value is used as is; note that undefined and null both print
-  // as empty string when array toString() is called
+    // return value is used as is; note that undefined and null both print
+    // as empty string when array toString() is called
 
-  var testvalues = [
-    undefined,
-    null,
-    true,
-    false,
-    123,
-    "foo",
-    [1, 2],
-    { foo: 1, bar: 2 }
-  ];
-  test(
-    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    [
-      function(val, key, obj) {
-        print("callback", val, key, obj);
+    var testvalues = [ undefined, null, true, false, 123, 'foo', [1,2], { foo: 1, bar: 2 } ];
+    test([1,2,3,4,5,6,7,8,9,10], [ function (val, key, obj) {
+        print('callback', val, key, obj);
         return testvalues[key];
-      }
-    ]
-  );
+    } ]);
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -240,61 +187,52 @@ quux 2 [object Object]
 object mapped-foo,,mapped-quux
 ===*/
 
-print("mutation");
+print('mutation');
 
 function mutationTest() {
-  var obj;
+    var obj;
 
-  // added element not recognized
+    // added element not recognized
 
-  obj = ["foo", "bar", "quux"];
-  test(obj, [
-    function(val, key, obj) {
-      print(val, key, obj);
-      obj[3] = "baz";
-      return "mapped-" + val;
-    }
-  ]);
+    obj = [ 'foo', 'bar', 'quux' ];
+    test(obj, [ function (val, key, obj) {
+        print(val, key, obj);
+        obj[3] = 'baz';
+        return 'mapped-' + val;
+    }]);
 
-  // deleted element not processed
+    // deleted element not processed
 
-  obj = ["foo", "bar", "quux"];
-  test(obj, [
-    function(val, key, obj) {
-      print(val, key, obj);
-      delete obj[1];
-      return "mapped-" + val;
-    }
-  ]);
+    obj = [ 'foo', 'bar', 'quux' ];
+    test(obj, [ function (val, key, obj) {
+        print(val, key, obj);
+        delete obj[1];
+        return 'mapped-' + val;
+    }]);
 
-  // same for non-array
+    // same for non-array
 
-  obj = { "0": "foo", "1": "bar", "2": "quux", "3": "baz", length: 3 };
-  test(obj, [
-    function(val, key, obj) {
-      print(val, key, obj);
-      obj[4] = "quuux";
-      obj.length = 10;
-      return "mapped-" + val;
-    }
-  ]);
+    obj = { '0': 'foo', '1': 'bar', '2': 'quux', '3': 'baz', length: 3 };
+    test(obj, [ function (val, key, obj) {
+        print(val, key, obj);
+        obj[4] = 'quuux';
+        obj.length = 10;
+        return 'mapped-' + val;
+    }]);
 
-  obj = { "0": "foo", "1": "bar", "2": "quux", "3": "baz", length: 3 };
-  test(obj, [
-    function(val, key, obj) {
-      print(val, key, obj);
-      delete obj[3];
-      delete obj[1];
-      obj.length = 0;
-      return "mapped-" + val;
-    }
-  ]);
+    obj = { '0': 'foo', '1': 'bar', '2': 'quux', '3': 'baz', length: 3 };
+    test(obj, [ function (val, key, obj) {
+        print(val, key, obj);
+        delete obj[3]; delete obj[1];
+        obj.length = 0;
+        return 'mapped-' + val;
+    }]);
 }
 
 try {
-  mutationTest();
+    mutationTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -335,91 +273,60 @@ length valueOf
 TypeError
 ===*/
 
-print("coercion");
+print('coercion');
 
 function coercionTest() {
-  var obj;
+    var obj;
 
-  // this
+    // this
 
-  test(undefined, [retTwice]);
-  test(null, [retTwice]);
-  test(true, [retTwice]);
-  test(false, [retTwice]);
-  test(123, [retTwice]);
-  test("foo", [retTwice]);
-  test([1, 2, 3], [retTwice]);
-  test({ foo: 1, bar: 2 }, [retTwice]);
+    test(undefined, [ retTwice ]);
+    test(null, [ retTwice ]);
+    test(true, [ retTwice ]);
+    test(false, [ retTwice ]);
+    test(123, [ retTwice ]);
+    test('foo', [ retTwice ]);
+    test([1,2,3], [ retTwice ]);
+    test({ foo: 1, bar: 2 }, [ retTwice ]);
 
-  // length
+    // length
 
-  obj = {
-    "0": "foo",
-    "1": "bar",
-    "2": "quux",
-    "3": "baz",
-    "4": "quux",
-    length: "3.9"
-  };
-  test(obj, [retTwice]);
-  obj = {
-    "0": "foo",
-    "1": "bar",
-    "2": "quux",
-    "3": "baz",
-    "4": "quux",
-    length: 256 * 256 * 256 * 256 + 3.9
-  }; // coerces to 3
-  test(obj, [retTwice]);
-  obj = {
-    "0": "foo",
-    "1": "bar",
-    "2": "quux",
-    "3": "baz",
-    "4": "quux",
-    length: -256 * 256 * 256 * 256 + 3.9
-  }; // coerces to 4
-  test(obj, [retTwice]);
+    obj = { '0': 'foo', '1': 'bar', '2': 'quux', '3': 'baz', '4': 'quux', length: '3.9' };
+    test(obj, [ retTwice ]);
+    obj = { '0': 'foo', '1': 'bar', '2': 'quux', '3': 'baz', '4': 'quux', length: 256*256*256*256 + 3.9 };  // coerces to 3
+    test(obj, [ retTwice ]);
+    obj = { '0': 'foo', '1': 'bar', '2': 'quux', '3': 'baz', '4': 'quux', length: -256*256*256*256 + 3.9 };  // coerces to 4
+    test(obj, [ retTwice ]);
 
-  obj = {
-    "0": "foo",
-    "1": "bar",
-    "2": "quux",
-    length: {
-      toString: function() {
-        print("length toString");
-        return 4;
-      },
-      valueOf: function() {
-        print("length valueOf");
-        return 3;
-      }
-    }
-  };
-  test(obj, [retTwice]);
+    obj = { '0': 'foo', '1': 'bar', '2': 'quux', 'length': {
+        toString: function() {
+            print('length toString');
+            return 4;
+        },
+        valueOf: function() {
+            print('length valueOf');
+            return 3;
+        }
+    }};
+    test(obj, [ retTwice ]);
 
-  // callable check is done after length coercion
+    // callable check is done after length coercion
 
-  obj = {
-    "0": "foo",
-    "1": "bar",
-    "2": "quux",
-    length: {
-      toString: function() {
-        print("length toString");
-        return 4;
-      },
-      valueOf: function() {
-        print("length valueOf");
-        return 3;
-      }
-    }
-  };
-  test(obj, [null]);
+    obj = { '0': 'foo', '1': 'bar', '2': 'quux', 'length': {
+        toString: function() {
+            print('length toString');
+            return 4;
+        },
+        valueOf: function() {
+            print('length valueOf');
+            return 3;
+        }
+    }};
+    test(obj, [ null ]);
 }
 
 try {
-  coercionTest();
+    coercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

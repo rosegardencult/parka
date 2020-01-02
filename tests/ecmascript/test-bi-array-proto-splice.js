@@ -1,49 +1,49 @@
 // XXX: util
 function dumpValue(v) {
-  var i, n;
-  var clipped;
-  var tmp = [];
+    var i, n;
+    var clipped;
+    var tmp = [];
 
-  if (v === undefined) {
-    return "undefined";
-  } else if (v === null) {
-    return "null";
-  }
-
-  n = Math.floor(v.length);
-  if (n > 1000) {
-    n = 1000;
-    clipped = true;
-  }
-  for (i = 0; i < n; i++) {
-    if (v.hasOwnProperty(i)) {
-      tmp.push(v[i]);
-    } else {
-      tmp.push("nonexistent");
+    if (v === undefined) {
+        return 'undefined';
+    } else if (v === null) {
+        return 'null';
     }
-  }
-  if (clipped) {
-    tmp.push("...");
-  }
 
-  return typeof v + " " + v.length + " " + tmp.join(",");
+    n = Math.floor(v.length);
+    if (n > 1000) {
+        n = 1000;
+        clipped = true;
+    }
+    for (i = 0; i < n; i++) {
+        if (v.hasOwnProperty(i)) {
+            tmp.push(v[i]);
+        } else {
+            tmp.push('nonexistent');
+        }
+    }
+    if (clipped) {
+        tmp.push('...');
+    }
+
+    return typeof v + ' ' + v.length + ' ' + tmp.join(',');
 }
 
 function test(this_value, args, no_pre_post) {
-  var t;
+    var t;
 
-  try {
-    if (!no_pre_post) {
-      print("pre", dumpValue(this_value));
+    try {
+        if (!no_pre_post) {
+            print('pre', dumpValue(this_value));
+        }
+        t = Array.prototype.splice.apply(this_value, args);
+        print('res', dumpValue(t));
+    } catch (e) {
+        print(e.name);
     }
-    t = Array.prototype.splice.apply(this_value, args);
-    print("res", dumpValue(t));
-  } catch (e) {
-    print(e.name);
-  }
-  if (!no_pre_post) {
-    print("post", dumpValue(this_value));
-  }
+    if (!no_pre_post) {
+        print('post', dumpValue(this_value));
+    }
 }
 
 /*===
@@ -5354,126 +5354,78 @@ res object 2 1,2
 post object 1 3
 ===*/
 
-print("basic");
+print('basic');
 
 function basicTest() {
-  var obj;
-  var s, d;
-  var i;
-  var start_vals = [
-    Number.NEGATIVE_INFINITY,
-    -1e9,
-    -7,
-    -6,
-    -5,
-    -4,
-    -3,
-    -2,
-    -1,
-    -0,
-    +0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    1e9,
-    Number.POSITIVE_INFINITY,
-    Number.NaN
-  ];
-  var delcount_vals = [
-    Number.NEGATIVE_INFINITY,
-    -1e9,
-    -7,
-    -6,
-    -5,
-    -4,
-    -3,
-    -2,
-    -1,
-    -0,
-    +0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    1e9,
-    Number.POSITIVE_INFINITY,
-    Number.NaN
-  ];
+    var obj;
+    var s, d;
+    var i;
+    var start_vals = [ Number.NEGATIVE_INFINITY, -1e9, -7, -6, -5, -4, -3, -2, -1, -0, +0,
+                       1, 2, 3, 4, 5, 6, 7, 1e9, Number.POSITIVE_INFINITY, Number.NaN ];
+    var delcount_vals = [ Number.NEGATIVE_INFINITY, -1e9, -7, -6, -5, -4, -3, -2, -1, -0, +0,
+                          1, 2, 3, 4, 5, 6, 7, 1e9, Number.POSITIVE_INFINITY, Number.NaN ];
 
-  // dense
+    // dense
 
-  for (i = 0; i < start_vals.length; i++) {
-    for (j = 0; j < delcount_vals.length; j++) {
-      s = start_vals[i];
-      d = delcount_vals[j];
-      print("dense", i, j, s, d);
-      test([1, 2, 3, 4, 5], [s, d]);
+    for (i = 0; i < start_vals.length; i++) {
+        for (j = 0; j < delcount_vals.length; j++) {
+            s = start_vals[i]; d = delcount_vals[j];
+            print('dense', i, j, s, d);
+            test([1,2,3,4,5], [s,d]);
+        }
     }
-  }
 
-  // sparse
+    // sparse
 
-  for (i = 0; i < start_vals.length; i++) {
-    for (j = 0; j < delcount_vals.length; j++) {
-      s = start_vals[i];
-      d = delcount_vals[j];
-      print("sparse", i, j, s, d);
-      obj = [1];
-      obj[100] = "foo";
-      obj[1] = 2;
-      obj[2] = 3;
-      obj[3] = 4;
-      obj[4] = 5;
-      obj.length = 5;
-      test(obj, [s, d]);
+    for (i = 0; i < start_vals.length; i++) {
+        for (j = 0; j < delcount_vals.length; j++) {
+            s = start_vals[i]; d = delcount_vals[j];
+            print('sparse', i, j, s, d);
+            obj = [1];
+            obj[100] = 'foo';
+            obj[1] = 2; obj[2] = 3; obj[3] = 4; obj[4] = 5;
+            obj.length = 5;
+            test(obj, [s,d]);
+        }
     }
-  }
 
-  // non-object
+    // non-object
 
-  for (i = 0; i < start_vals.length; i++) {
-    for (j = 0; j < delcount_vals.length; j++) {
-      s = start_vals[i];
-      d = delcount_vals[j];
-      print("nonarray", i, j, s, d);
-      obj = { "0": 1, "1": 2, "2": 3, "3": 4, "4": 5, length: 5 };
-      test(obj, [s, d]);
+    for (i = 0; i < start_vals.length; i++) {
+        for (j = 0; j < delcount_vals.length; j++) {
+            s = start_vals[i]; d = delcount_vals[j];
+            print('nonarray', i, j, s, d);
+            obj = { '0': 1, '1': 2, '2': 3, '3': 4, '4': 5, length: 5 };
+            test(obj, [s,d]);
+        }
     }
-  }
 
-  // zero deleteCount without items
+    // zero deleteCount without items
 
-  test([], [0, 0]);
+    test([], [0, 0]);
 
-  // zero deleteCount with items
+    // zero deleteCount with items
 
-  test([1, 2, 3], [0, 0]);
+    test([1,2,3], [0, 0]);
 
-  // non-zero deleteCount without items
+    // non-zero deleteCount without items
 
-  test([], [0, 2]);
+    test([], [0, 2]);
 
-  // non-zero deleteCount with items
+    // non-zero deleteCount with items
 
-  test([1, 2, 3], [0, 2]);
+    test([1,2,3], [0, 2]);
 
-  // NOTE: don't test for missing deleteCount: the standard behavior for
-  // that is to treat deleteCount as undefined (same as 0) but the real
-  // world behavior is to splice to end of array.  This is covered by a
-  // separate testcase.
+    // NOTE: don't test for missing deleteCount: the standard behavior for
+    // that is to treat deleteCount as undefined (same as 0) but the real
+    // world behavior is to splice to end of array.  This is covered by a
+    // separate testcase.
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -5483,32 +5435,27 @@ TypeError
 post object 5 1,2,3,4,5
 ===*/
 
-print("protected");
+print('protected');
 
 function protectedTest() {
-  var obj;
+    var obj;
 
-  // XXX: protected elements, this test is incomplete
+    // XXX: protected elements, this test is incomplete
 
-  // 'length' gets written regardless of whether it would change,
-  // causing a TypeError if protected
+    // 'length' gets written regardless of whether it would change,
+    // causing a TypeError if protected
 
-  obj = { "0": 1, "1": 2, "2": 3, "3": 4, "4": 5 };
-  Object.defineProperties(obj, {
-    length: {
-      value: 5,
-      writable: false,
-      enumerable: false,
-      configurable: false
-    }
-  });
-  test(obj, [0, 0]); // no change, but length still written
+    obj = { '0': 1, '1': 2, '2': 3, '3': 4, '4': 5 };
+    Object.defineProperties(obj, {
+        'length': { value: 5, writable: false, enumerable: false, configurable: false }
+    });
+    test(obj, [0, 0]);  // no change, but length still written
 }
 
 try {
-  protectedTest();
+    protectedTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -5546,115 +5493,57 @@ deleteCount valueOf
 res object 2 2,3
 ===*/
 
-print("coercion");
+print('coercion');
 
 function coercionTest() {
-  var obj;
+    var obj;
 
-  // this coercion, arguments [0,0] are given to avoid the case where
-  // deleteCount is omitted (it has different standard and real world
-  // behavior and is covered by a separate testcase).
+    // this coercion, arguments [0,0] are given to avoid the case where
+    // deleteCount is omitted (it has different standard and real world
+    // behavior and is covered by a separate testcase).
 
-  test(undefined, [0, 0]);
-  test(null, [0, 0]);
-  test(true, [0, 0]);
-  test(false, [0, 0]);
-  test(123, [0, 0]);
-  test("quux", [0, 0]); // even though deleteCount=0 and no new items, 'length' is written, which causes TypeError
-  test([1, 2], [0, 0]);
-  test({ foo: 1, bar: 2 }, [0, 0]);
+    test(undefined, [0,0]);
+    test(null, [0,0]);
+    test(true, [0,0]);
+    test(false, [0,0]);
+    test(123, [0,0]);
+    test('quux', [0,0]);  // even though deleteCount=0 and no new items, 'length' is written, which causes TypeError
+    test([1,2], [0,0]);
+    test({ foo: 1, bar: 2 }, [0,0]);
 
-  // length coercion
+    // length coercion
 
-  obj = {
-    "0": 1,
-    "1": 2,
-    "2": 3,
-    "3": 4,
-    "4": 5,
-    "5": 6,
-    "6": 7,
-    length: "3.9"
-  };
-  test(obj, [0, 100], true);
+    obj = { '0': 1, '1': 2, '2': 3, '3': 4, '4': 5, '5': 6, '6': 7, length: '3.9' };
+    test(obj, [0, 100], true);
 
-  obj = {
-    "0": 1,
-    "1": 2,
-    "2": 3,
-    "3": 4,
-    "4": 5,
-    "5": 6,
-    "6": 7,
-    length: 256 * 256 * 256 * 256 + 3.9
-  };
-  test(obj, [0, 100], true);
+    obj = { '0': 1, '1': 2, '2': 3, '3': 4, '4': 5, '5': 6, '6': 7, length: 256*256*256*256 + 3.9 };
+    test(obj, [0, 100], true);
 
-  obj = {
-    "0": 1,
-    "1": 2,
-    "2": 3,
-    "3": 4,
-    "4": 5,
-    "5": 6,
-    "6": 7,
-    length: -256 * 256 * 256 * 256 + 3.9
-  };
-  test(obj, [0, 100], true);
+    obj = { '0': 1, '1': 2, '2': 3, '3': 4, '4': 5, '5': 6, '6': 7, length: -256*256*256*256 + 3.9 };
+    test(obj, [0, 100], true);
 
-  // coercion order: ToUint32(length), ToInteger(start), ToInteger(deleteCount)
+    // coercion order: ToUint32(length), ToInteger(start), ToInteger(deleteCount)
 
-  obj = {
-    "0": 1,
-    "1": 2,
-    "2": 3,
-    "3": 4,
-    "4": 5,
-    "5": 6,
-    "6": 7,
-    length: {
-      toString: function() {
-        print("length toString");
-        return -256 * 256 * 256 * 256 + 4;
-      },
-      valueOf: function() {
-        print("length valueOf");
-        return 256 * 256 * 256 * 256 + 5;
-      }
-    }
-  };
-  test(
-    obj,
-    [
-      {
-        toString: function() {
-          print("start toString");
-          return 2;
+    obj = { '0': 1, '1': 2, '2': 3, '3': 4, '4': 5, '5': 6, '6': 7, length: {
+        toString: function() { print('length toString'); return -256*256*256*256 + 4; },
+        valueOf: function() { print('length valueOf'); return 256*256*256*256 + 5; }
+    } };
+    test(obj, [
+        {
+            toString: function() { print('start toString'); return 2; },
+            valueOf: function() { print('start valueOf'); return 1; }
         },
-        valueOf: function() {
-          print("start valueOf");
-          return 1;
+        {
+            toString: function() { print('deleteCount toString'); return 3; },
+            valueOf: function() { print('deleteCount valueOf'); return 2; }
         }
-      },
-      {
-        toString: function() {
-          print("deleteCount toString");
-          return 3;
-        },
-        valueOf: function() {
-          print("deleteCount valueOf");
-          return 2;
-        }
-      }
-    ],
-    true
-  );
+    ], true);
 }
 
 try {
-  coercionTest();
+    coercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 // XXX: attributes test

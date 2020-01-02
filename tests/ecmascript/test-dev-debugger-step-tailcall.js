@@ -20,30 +20,30 @@ entered anotherFunction
  */
 
 function anotherFunction() {
-  var ret;
-  print("entered anotherFunction");
-  ret = "foo" + 123;
-  return ret;
+    var ret;
+    print('entered anotherFunction');
+    ret = 'foo' + 123;
+    return ret;
 }
 
 function test1() {
-  print("entered test1");
-  return anotherFunction();
+    print('entered test1');
+    return anotherFunction();
 }
 
 function test2() {
-  var ret;
+    var ret;
 
-  print("entered test2");
-  ret = anotherFunction();
-  return ret;
+    print('entered test2');
+    ret = anotherFunction();
+    return ret;
 }
 
 try {
-  test1();
-  test2();
+    test1();
+    test2();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -57,25 +57,25 @@ after bar
  */
 
 function foo() {
-  return 1;
+    return 1;
 }
 function bar() {
-  return foo();
+    return foo();
 }
 function test() {
-  print("before bar");
-  bar(); // step over this
-  print("after bar");
+    print('before bar');
+    bar();  // step over this
+    print('after bar');
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
 done
 ===*/
 
-print("done");
+print('done');

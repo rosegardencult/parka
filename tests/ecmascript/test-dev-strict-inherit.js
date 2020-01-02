@@ -16,30 +16,30 @@ true
  */
 
 function outer_strict() {
-  "use strict";
-  var foo = 1;
+    'use strict';
+    var foo = 1;
 
-  try {
-    print(!this);
-  } catch (e) {
-    print(e.name);
-  }
-
-  try {
-    print(eval("delete foo"));
-  } catch (e) {
-    print(e.name);
-  }
-
-  function inner() {
     try {
-      print(!this);
+        print(!this);
     } catch (e) {
-      print(e.name);
+        print(e.name);
     }
-  }
 
-  inner();
+    try {
+        print(eval("delete foo"));
+    } catch (e) {
+        print(e.name);
+    }
+
+    function inner() {
+        try {
+            print(!this);
+        } catch (e) {
+            print(e.name);
+        }
+    }
+
+    inner();
 }
 
 outer_strict();

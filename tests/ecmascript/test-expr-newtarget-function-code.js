@@ -4,12 +4,12 @@ function
 ===*/
 
 function test() {
-  print(typeof new.target);
+    print(typeof new.target);
 }
 
 try {
-  test();
-  new test();
+    test();
+    new test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

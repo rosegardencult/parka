@@ -9,12 +9,12 @@
 ===*/
 
 function test() {
-  print(parseInt("0123")); // no automatic octal detection
-  print(parseInt("0123", 8)); // parse octal with explicit radix
+    print(parseInt('0123'));     // no automatic octal detection
+    print(parseInt('0123', 8));  // parse octal with explicit radix
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

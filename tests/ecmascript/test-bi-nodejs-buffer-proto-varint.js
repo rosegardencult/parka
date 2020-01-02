@@ -610,201 +610,187 @@ RangeError
  */
 
 function variableSizeIntTest() {
-  var b = new Buffer(16);
-  var ret;
+    var b = new Buffer(16);
+    var ret;
 
-  // Zeroing is not guaranteed by Node.js, but Duktape guarantees that
-  // because the underlying buffer is zeroed by default.
-  printNodejsBuffer(b);
+    // Zeroing is not guaranteed by Node.js, but Duktape guarantees that
+    // because the underlying buffer is zeroed by default.
+    printNodejsBuffer(b);
 
-  b.fill(0x41);
-  printNodejsBuffer(b);
-  print(String(b));
-  print(Object.prototype.toString.call(b));
-  print(b.length);
+    b.fill(0x41);
+    printNodejsBuffer(b);
+    print(String(b));
+    print(Object.prototype.toString.call(b));
+    print(b.length);
 
-  b.fill(0x55);
-  printNodejsBuffer(b);
-  b.fill(0xaa, 8, 10);
-  printNodejsBuffer(b);
+    b.fill(0x55);
+    printNodejsBuffer(b);
+    b.fill(0xaa, 8, 10);
+    printNodejsBuffer(b);
 
-  // Variable size (u)int write
+    // Variable size (u)int write
 
-  for (i = 1; i <= 6; i++) {
-    // Use a positive value and check that is extends with zero
+    for (i = 1; i <= 6; i++) {
+        // Use a positive value and check that is extends with zero
+        b.fill(0x11);
+        ret = b.writeUIntLE(0xdeadbeefcafe, 3, i, true);
+        print(ret, printableNodejsBuffer(b));
+    }
+    for (i = 1; i <= 6; i++) {
+        // Use a positive value and check that is extends with zero
+        b.fill(0x11);
+        ret = b.writeUIntLE(0x99beefcafe, 3, i, true);
+        print(ret, printableNodejsBuffer(b));
+    }
+    for (i = 1; i <= 6; i++) {
+        b.fill(0x11);
+        ret = b.writeUIntBE(0xdeadbeefcafe, 3, i, true);
+        print(ret, printableNodejsBuffer(b));
+    }
+    for (i = 1; i <= 6; i++) {
+        b.fill(0x11);
+        ret = b.writeUIntBE(0x99beefcafe, 3, i, true);
+        print(ret, printableNodejsBuffer(b));
+    }
+    for (i = 1; i <= 6; i++) {
+        // Use a negative value and check that it sign extends
+        b.fill(0x11);
+        ret = b.writeIntLE(-0x1122334455, 3, i, true);
+        print(ret, printableNodejsBuffer(b));
+    }
+    for (i = 1; i <= 6; i++) {
+        b.fill(0x11);
+        ret = b.writeIntBE(-0x1122334455, 3, i, true);
+        print(ret, printableNodejsBuffer(b));
+    }
+
+    // Variable size (u)int read
+
     b.fill(0x11);
-    ret = b.writeUIntLE(0xdeadbeefcafe, 3, i, true);
-    print(ret, printableNodejsBuffer(b));
-  }
-  for (i = 1; i <= 6; i++) {
-    // Use a positive value and check that is extends with zero
-    b.fill(0x11);
-    ret = b.writeUIntLE(0x99beefcafe, 3, i, true);
-    print(ret, printableNodejsBuffer(b));
-  }
-  for (i = 1; i <= 6; i++) {
-    b.fill(0x11);
-    ret = b.writeUIntBE(0xdeadbeefcafe, 3, i, true);
-    print(ret, printableNodejsBuffer(b));
-  }
-  for (i = 1; i <= 6; i++) {
-    b.fill(0x11);
-    ret = b.writeUIntBE(0x99beefcafe, 3, i, true);
-    print(ret, printableNodejsBuffer(b));
-  }
-  for (i = 1; i <= 6; i++) {
-    // Use a negative value and check that it sign extends
-    b.fill(0x11);
-    ret = b.writeIntLE(-0x1122334455, 3, i, true);
-    print(ret, printableNodejsBuffer(b));
-  }
-  for (i = 1; i <= 6; i++) {
-    b.fill(0x11);
-    ret = b.writeIntBE(-0x1122334455, 3, i, true);
-    print(ret, printableNodejsBuffer(b));
-  }
+    b[3] = 0xff;
+    b[4] = 0x11;
+    b[5] = 0x22;
+    b[6] = 0x33;
+    b[7] = 0x44;
+    b[8] = 0xfe;
+    printNodejsBuffer(b);
+    for (i = 1; i <= 6; i++) {
+        print(i, b.readUIntLE(3, i, true).toString(16));
+    }
+    for (i = 1; i <= 6; i++) {
+        print(i, b.readUIntBE(3, i, true).toString(16));
+    }
+    for (i = 1; i <= 6; i++) {
+        print(i, b.readIntLE(3, i, true).toString(16));
+    }
+    for (i = 1; i <= 6; i++) {
+        print(i, b.readIntBE(3, i, true).toString(16));
+    }
 
-  // Variable size (u)int read
+    // Writing partially or fully out-of-bounds, valid/invalid length
+    //
+    // Node.js: when noAssert is false, a negative index causes a RangeError
+    // and no change to buffer (not even partial write).  But when the index
+    // is positive, within the buffer, but the write extends beyond the end
+    // of the buffer, a partial write is done.  (Because of problems with
+    // negative indices they've been left out of this test.)
+    //
+    // When noAssert is true, a RangeError is thrown in both cases, with no
+    // change to the buffer.
+    //
+    // Node.js behavior for bytelen doesn't seem to match the documentation.
+    // For bytelen zero, the behavior between LE/BE differs.  For bytelen >= 6
+    // writes are allowed and zeroes are written as expected.  Duktape checks
+    // are stricter so expect string is based on that.
 
-  b.fill(0x11);
-  b[3] = 0xff;
-  b[4] = 0x11;
-  b[5] = 0x22;
-  b[6] = 0x33;
-  b[7] = 0x44;
-  b[8] = 0xfe;
-  printNodejsBuffer(b);
-  for (i = 1; i <= 6; i++) {
-    print(i, b.readUIntLE(3, i, true).toString(16));
-  }
-  for (i = 1; i <= 6; i++) {
-    print(i, b.readUIntBE(3, i, true).toString(16));
-  }
-  for (i = 1; i <= 6; i++) {
-    print(i, b.readIntLE(3, i, true).toString(16));
-  }
-  for (i = 1; i <= 6; i++) {
-    print(i, b.readIntBE(3, i, true).toString(16));
-  }
+    [ true, false ].forEach(function (noAssert) {
+        [ 0, 10, 11, 16, 100 ].forEach(function (offset) {
+            [ 0, 6, 7, 10 ].forEach(function (bytelen) {
+                print('noAssert: ' + noAssert + ', offset: ' + offset + ', bytelen: ' + bytelen);
 
-  // Writing partially or fully out-of-bounds, valid/invalid length
-  //
-  // Node.js: when noAssert is false, a negative index causes a RangeError
-  // and no change to buffer (not even partial write).  But when the index
-  // is positive, within the buffer, but the write extends beyond the end
-  // of the buffer, a partial write is done.  (Because of problems with
-  // negative indices they've been left out of this test.)
-  //
-  // When noAssert is true, a RangeError is thrown in both cases, with no
-  // change to the buffer.
-  //
-  // Node.js behavior for bytelen doesn't seem to match the documentation.
-  // For bytelen zero, the behavior between LE/BE differs.  For bytelen >= 6
-  // writes are allowed and zeroes are written as expected.  Duktape checks
-  // are stricter so expect string is based on that.
+                try {
+                    b.fill(0x11);
+                    ret = b.writeUIntLE(0xcafedeadbeef, offset, bytelen, noAssert);
+                    print(ret, printableNodejsBuffer(b));
+                } catch (e) {
+                    print(e.name, printableNodejsBuffer(b));
+                }
 
-  [true, false].forEach(function(noAssert) {
-    [0, 10, 11, 16, 100].forEach(function(offset) {
-      [0, 6, 7, 10].forEach(function(bytelen) {
-        print(
-          "noAssert: " +
-            noAssert +
-            ", offset: " +
-            offset +
-            ", bytelen: " +
-            bytelen
-        );
+                try {
+                    b.fill(0x11);
+                    ret = b.writeUIntBE(0xcafedeadbeef, offset, bytelen, noAssert);
+                    print(ret, printableNodejsBuffer(b));
+                } catch (e) {
+                    print(e.name, printableNodejsBuffer(b));
+                }
 
-        try {
-          b.fill(0x11);
-          ret = b.writeUIntLE(0xcafedeadbeef, offset, bytelen, noAssert);
-          print(ret, printableNodejsBuffer(b));
-        } catch (e) {
-          print(e.name, printableNodejsBuffer(b));
-        }
+                try {
+                    b.fill(0x11);
+                    ret = b.writeIntLE(-0x7afedeadbeef, offset, bytelen, noAssert);
+                    print(ret, printableNodejsBuffer(b));
+                } catch (e) {
+                    print(e.name, printableNodejsBuffer(b));
+                }
 
-        try {
-          b.fill(0x11);
-          ret = b.writeUIntBE(0xcafedeadbeef, offset, bytelen, noAssert);
-          print(ret, printableNodejsBuffer(b));
-        } catch (e) {
-          print(e.name, printableNodejsBuffer(b));
-        }
-
-        try {
-          b.fill(0x11);
-          ret = b.writeIntLE(-0x7afedeadbeef, offset, bytelen, noAssert);
-          print(ret, printableNodejsBuffer(b));
-        } catch (e) {
-          print(e.name, printableNodejsBuffer(b));
-        }
-
-        try {
-          b.fill(0x11);
-          ret = b.writeIntBE(-0x7afedeadbeef, offset, bytelen, noAssert);
-          print(ret, printableNodejsBuffer(b));
-        } catch (e) {
-          print(e.name, printableNodejsBuffer(b));
-        }
-      });
+                try {
+                    b.fill(0x11);
+                    ret = b.writeIntBE(-0x7afedeadbeef, offset, bytelen, noAssert);
+                    print(ret, printableNodejsBuffer(b));
+                } catch (e) {
+                    print(e.name, printableNodejsBuffer(b));
+                }
+            });
+        });
     });
-  });
 
-  // Reading partially or fully out-of-bounds, invalid/valid length.
-  //
-  // Node.js seems to freeze for bytelen -1.  For bytelen 0 the results are
-  // weird: one byte is read with LE variant while a TypeError is thrown with
-  // the BE variant (!).  Duktape validation is stricter and test case expect
-  // string reflects that.
+    // Reading partially or fully out-of-bounds, invalid/valid length.
+    //
+    // Node.js seems to freeze for bytelen -1.  For bytelen 0 the results are
+    // weird: one byte is read with LE variant while a TypeError is thrown with
+    // the BE variant (!).  Duktape validation is stricter and test case expect
+    // string reflects that.
 
-  for (i = 0; i < b.length; i++) {
-    b[i] = 0x10 + i;
-  }
-  printNodejsBuffer(b);
+    for (i = 0; i < b.length; i++) {
+        b[i] = 0x10 + i;
+    }
+    printNodejsBuffer(b);
 
-  [true, false].forEach(function(noAssert) {
-    [-100, -6, -1, 0, 10, 11, 16, 100].forEach(function(offset) {
-      [0, 6, 7, 10].forEach(function(bytelen) {
-        print(
-          "noAssert: " +
-            noAssert +
-            ", offset: " +
-            offset +
-            ", bytelen: " +
-            bytelen
-        );
+    [ true, false ].forEach(function (noAssert) {
+        [ -100, -6, -1, 0, 10, 11, 16, 100 ].forEach(function (offset) {
+            [ 0, 6, 7, 10 ].forEach(function (bytelen) {
+                print('noAssert: ' + noAssert + ', offset: ' + offset + ', bytelen: ' + bytelen);
 
-        try {
-          print(b.readUIntLE(offset, bytelen, noAssert).toString(16));
-        } catch (e) {
-          print(e.name);
-        }
+                try {
+                    print(b.readUIntLE(offset, bytelen, noAssert).toString(16));
+                } catch (e) {
+                    print(e.name);
+                }
 
-        try {
-          print(b.readUIntBE(offset, bytelen, noAssert).toString(16));
-        } catch (e) {
-          print(e.name);
-        }
+                try {
+                    print(b.readUIntBE(offset, bytelen, noAssert).toString(16));
+                } catch (e) {
+                    print(e.name);
+                }
 
-        try {
-          print(b.readIntLE(offset, bytelen, noAssert).toString(16));
-        } catch (e) {
-          print(e.name);
-        }
+                try {
+                    print(b.readIntLE(offset, bytelen, noAssert).toString(16));
+                } catch (e) {
+                    print(e.name);
+                }
 
-        try {
-          print(b.readIntBE(offset, bytelen, noAssert).toString(16));
-        } catch (e) {
-          print(e.name);
-        }
-      });
+                try {
+                    print(b.readIntBE(offset, bytelen, noAssert).toString(16));
+                } catch (e) {
+                    print(e.name);
+                }
+            });
+        });
     });
-  });
 }
 
 try {
-  print("variable size int test");
-  variableSizeIntTest();
+    print('variable size int test');
+    variableSizeIntTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

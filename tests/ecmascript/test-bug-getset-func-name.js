@@ -15,29 +15,29 @@ set.name: foo
 ===*/
 
 function test() {
-  var foo = 123;
+    var foo = 123;
 
-  var obj = {
-    get foo() {
-      print("foo getter:", typeof foo, foo);
-      return "dummy";
-    },
-    set foo(v) {
-      print("foo setter:", typeof foo, foo);
-    }
-  };
+    var obj = {
+        get foo() {
+            print('foo getter:', typeof foo, foo);
+            return 'dummy';
+        },
+        set foo(v) {
+            print('foo setter:', typeof foo, foo);
+        }
+    };
 
-  var dummy = obj.foo;
-  obj.foo = "bar";
+    var dummy = obj.foo;
+    obj.foo = 'bar';
 
-  // Check that getter/setter functions still have a 'name' property.
-  var pd = Object.getOwnPropertyDescriptor(obj, "foo");
-  print("get.name:", pd.get.name);
-  print("set.name:", pd.set.name);
+    // Check that getter/setter functions still have a 'name' property.
+    var pd = Object.getOwnPropertyDescriptor(obj, 'foo');
+    print('get.name:', pd.get.name);
+    print('set.name:', pd.set.name);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

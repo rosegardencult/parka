@@ -7,18 +7,10 @@ BAR GET
  * getter properties.
  */
 
-var obj = {};
+var obj={};
 Object.defineProperties(obj, {
-  foo: {
-    get: function() {
-      print("FOO GET");
-    }
-  },
-  bar: {
-    get: function() {
-      print("BAR GET");
-    }
-  }
+    foo: { get: function() { print("FOO GET"); } },
+    bar: { get: function() { print("BAR GET"); } }
 });
 
 void obj.foo;

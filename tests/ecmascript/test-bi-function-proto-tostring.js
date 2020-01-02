@@ -17,23 +17,23 @@ SyntaxError
 ===*/
 
 function test() {
-  var scriptFunc = function foo() {};
-  var nativeFunc = Math.cos;
-  var boundFunc1 = scriptFunc.bind(null, 1);
-  var boundFunc2 = nativeFunc.bind(null, 1);
+    var scriptFunc = function foo() {};
+    var nativeFunc = Math.cos;
+    var boundFunc1 = scriptFunc.bind(null, 1);
+    var boundFunc2 = nativeFunc.bind(null, 1);
 
-  [scriptFunc, nativeFunc, boundFunc1, boundFunc2].forEach(function(v) {
-    try {
-      var res = eval(String(v));
-      print("never here:", typeof res);
-    } catch (e) {
-      print(e.name);
-    }
-  });
+    [ scriptFunc, nativeFunc, boundFunc1, boundFunc2 ].forEach(function (v) {
+        try {
+            var res = eval(String(v));
+            print('never here:', typeof res);
+        } catch (e) {
+            print(e.name);
+        }
+    });
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

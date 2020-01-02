@@ -29,64 +29,64 @@ RangeError
  */
 
 function objectRecursionTest(n) {
-  var txt = '"foo"';
-  var i;
+    var txt = '"foo"';
+    var i;
 
-  for (i = 0; i < n; i++) {
-    txt = '{"foo":' + txt + "}";
-  }
+    for (i = 0; i < n; i++) {
+        txt = "{\"foo\":" + txt + "}";
+    }
 
-  print(typeof JSON.parse(txt));
+    print(typeof JSON.parse(txt));
 }
 
 function arrayRecursionTest(n) {
-  var txt = '"bar"';
-  var i;
+    var txt = '"bar"';
+    var i;
 
-  for (i = 0; i < n; i++) {
-    txt = "[" + txt + "]";
-  }
+    for (i = 0; i < n; i++) {
+        txt = "[" + txt + "]";
+    }
 
-  print(typeof JSON.parse(txt));
+    print(typeof JSON.parse(txt));
 }
 
 function objectAndArrayRecursionTest(n) {
-  var txt = '"bar"';
-  var i;
+    var txt = '"bar"';
+    var i;
 
-  for (i = 0; i < n; i++) {
-    if (i % 2) {
-      txt = '{"foo":' + txt + "}";
-    } else {
-      txt = "[" + txt + "]";
+    for (i = 0; i < n; i++) {
+        if (i % 2) {
+            txt = "{\"foo\":" + txt + "}";
+        } else {
+            txt = "[" + txt + "]";
+        }
     }
-  }
 
-  print(typeof JSON.parse(txt));
+    print(typeof JSON.parse(txt));
 }
 
 try {
-  objectRecursionTest(10);
-  objectRecursionTest(80);
-  objectRecursionTest(2000);
+    objectRecursionTest(10);
+    objectRecursionTest(80);
+    objectRecursionTest(2000);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  arrayRecursionTest(10);
-  arrayRecursionTest(80);
-  arrayRecursionTest(2000);
+    arrayRecursionTest(10);
+    arrayRecursionTest(80);
+    arrayRecursionTest(2000);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  objectAndArrayRecursionTest(10);
-  objectAndArrayRecursionTest(80);
-  objectAndArrayRecursionTest(2000);
+    objectAndArrayRecursionTest(10);
+    objectAndArrayRecursionTest(80);
+    objectAndArrayRecursionTest(2000);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -104,25 +104,25 @@ try {
  */
 
 function noRecursionTest(n) {
-  var txt = [];
-  var i;
+    var txt = [];
+    var i;
 
-  for (i = 0; i < n; i++) {
-    if (i % 2) {
-      txt.push('[1, {"foo":1}]');
-    } else {
-      txt.push('{"foo":1, "bar":[1,2]}');
+    for (i = 0; i < n; i++) {
+        if (i % 2) {
+            txt.push("[1, {\"foo\":1}]");
+        } else {
+            txt.push("{\"foo\":1, \"bar\":[1,2]}");
+        }
     }
-  }
 
-  txt = "[" + txt.join(", ") + "]";
-  print(JSON.stringify(JSON.parse(txt)));
+    txt = "[" + txt.join(", ") + "]";
+    print(JSON.stringify(JSON.parse(txt)));
 }
 
 try {
-  noRecursionTest(10);
-  noRecursionTest(100);
-  noRecursionTest(1000);
+    noRecursionTest(10);
+    noRecursionTest(100);
+    noRecursionTest(1000);
 } catch (e) {
-  print(e.name, e);
+    print(e.name, e);
 }

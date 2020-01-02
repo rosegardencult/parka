@@ -15,18 +15,18 @@ object
 ===*/
 
 function Thing(value) {
-  print(typeof this);
-  this.value = value;
+    print(typeof this);
+    this.value = value;
 }
 
 function test() {
-  one = Thing.bind(null, 1);
-  var obj = new one();
-  print(obj.value);
+    one = Thing.bind(null, 1);
+    var obj = new one;
+    print(obj.value);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

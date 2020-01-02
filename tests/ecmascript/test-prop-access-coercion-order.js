@@ -16,11 +16,8 @@
  *
  */
 
-var t = {};
-t.toString = function() {
-  print("toString() called");
-  return "foo";
-};
+var t = {}
+t.toString = function() { print("toString() called"); return "foo"; };
 
 /*===
 TypeError
@@ -28,9 +25,9 @@ TypeError
 
 // CheckObjectCoercible fails, toString() doesn't get called
 try {
-  null[t] = "bar";
+    null[t] = 'bar';
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -41,9 +38,9 @@ bar
 // CheckObjectCoercible succeeds, toString() gets called
 
 try {
-  var o = {};
-  o[t] = "bar";
-  print(o.foo);
+    var o = {};
+    o[t] = 'bar';
+    print(o.foo);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

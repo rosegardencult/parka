@@ -11,13 +11,7 @@
 ---*/
 
 function printProps(x) {
-  print(
-    typeof x,
-    Object.prototype.toString.call(x),
-    x.length,
-    x.byteLength,
-    x.byteOffset
-  );
+    print(typeof x, Object.prototype.toString.call(x), x.length, x.byteLength, x.byteOffset);
 }
 
 /*===
@@ -107,66 +101,61 @@ TypeError
 ===*/
 
 function typedArrayConstructorCallTest(constructorCall) {
-  var b = new ArrayBuffer(16);
-  var v;
-  var evalstr;
-  var pd;
+    var b = new ArrayBuffer(16);
+    var v;
+    var evalstr;
+    var pd;
 
-  [
-    "Int8Array",
-    "Uint8Array",
-    "Uint8ClampedArray",
-    "Int16Array",
-    "Uint16Array",
-    "Int32Array",
-    "Uint32Array",
-    "Float32Array",
-    "Float64Array"
-  ].forEach(function(consname) {
-    if (constructorCall) {
-      evalstr = "new ";
-    } else {
-      evalstr = "";
-    }
-    evalstr += consname + "(b, 8, 1)";
-    try {
-      print(evalstr);
-      v = eval(evalstr);
+    [
+        'Int8Array',
+        'Uint8Array',
+        'Uint8ClampedArray',
+        'Int16Array',
+        'Uint16Array',
+        'Int32Array',
+        'Uint32Array',
+        'Float32Array',
+        'Float64Array'
+    ].forEach(function (consname) {
+        if (constructorCall) {
+            evalstr = 'new ';
+        } else {
+            evalstr = '';
+        }
+        evalstr += consname + '(b, 8, 1)';
+        try {
+            print(evalstr);
+            v = eval(evalstr);
 
-      print(String(v));
-      print(Object.prototype.toString.call(v));
+            print(String(v));
+            print(Object.prototype.toString.call(v));
 
-      printPrototypeChain(v);
+            printPrototypeChain(v);
 
-      pd = Object.getOwnPropertyDescriptor(eval(consname), "prototype") || {};
-      print(
-        pd.value === Object.getPrototypeOf(v),
-        pd.writable,
-        pd.enumerable,
-        pd.configurable
-      );
+            pd = Object.getOwnPropertyDescriptor(eval(consname), 'prototype') || {};
+            print(pd.value === Object.getPrototypeOf(v), pd.writable, pd.enumerable, pd.configurable);
 
-      // .toString() is inherited from Object.prototype
-      print(v.toString === Object.prototype.toString);
-      print(v.toString());
-    } catch (e) {
-      print(e.name);
-    }
-  });
+            // .toString() is inherited from Object.prototype
+            print(v.toString === Object.prototype.toString);
+            print(v.toString());
+        } catch (e) {
+            print(e.name);
+        }
+    });
 }
 
 try {
-  print("TypedArray constructor call test");
-  typedArrayConstructorCallTest(true);
+    print('TypedArray constructor call test');
+    typedArrayConstructorCallTest(true);
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 try {
-  print("TypedArray normal call test");
-  typedArrayConstructorCallTest(false);
+    print('TypedArray normal call test');
+    typedArrayConstructorCallTest(false);
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -1137,239 +1126,192 @@ false new Float64Array(arglist[0]) false 0 0 0
 ===*/
 
 function typedArrayArgumentBruteForceTest() {
-  var b = new ArrayBuffer(16);
-  var v;
-  var evalstr;
-  var i;
+    var b = new ArrayBuffer(16);
+    var v;
+    var evalstr;
+    var i;
 
-  // new TypedArray(buffer, [byteOffset], [length])
-
-  [
-    "Int8Array",
-    "Uint8Array",
-    "Uint8ClampedArray",
-    "Int16Array",
-    "Uint16Array",
-    "Int32Array",
-    "Uint32Array",
-    "Float32Array",
-    "Float64Array"
-  ].forEach(function(consname) {
-    // The arguments for TypedArray views are different from DataView:
-    //     - byteOffset must be a multiple of element byte size
-    //     - length refers to length in elements, not bytes
-    //       (the test values must provide combinations for 1, 2, 4, 8
-    //       element byte sizes)
-    //     - the "slice" must end inside the buffer; in particular the
-    //       last element can't be partial
+    // new TypedArray(buffer, [byteOffset], [length])
 
     [
-      [],
+        'Int8Array',
+        'Uint8Array',
+        'Uint8ClampedArray',
+        'Int16Array',
+        'Uint16Array',
+        'Int32Array',
+        'Uint32Array',
+        'Float32Array',
+        'Float64Array'
+    ].forEach(function (consname) {
+        // The arguments for TypedArray views are different from DataView:
+        //     - byteOffset must be a multiple of element byte size
+        //     - length refers to length in elements, not bytes
+        //       (the test values must provide combinations for 1, 2, 4, 8
+        //       element byte sizes)
+        //     - the "slice" must end inside the buffer; in particular the
+        //       last element can't be partial
 
-      // buffer must be an object and must have an internal
-      // [[ArrayBufferData]] slot (i.e. be an ArrayBuffer)
+        [
+            [],
 
-      [undefined],
-      [null],
-      [true],
-      [false],
-      [{}],
-      [b],
+            // buffer must be an object and must have an internal
+            // [[ArrayBufferData]] slot (i.e. be an ArrayBuffer)
 
-      // Offset must satisfy:
-      //     - ToNumber(offset) === ToInteger(ToNumber(offset))
-      //     - integer offset must be >= 0
-      //     - integer offset must be a multiple of element byte size
-      //     - integer offset must be <= buffer byteLength
-      //       (this check is implicit in the later steps)
+            [ undefined ],
+            [ null ],
+            [ true ],
+            [ false ],
+            [ {} ],
+            [ b ],
 
-      [b, undefined],
-      [b, null],
-      [b, true],
-      [b, false],
-      [
-        b,
-        {
-          valueOf: function() {
-            return 6;
-          }
-        }
-      ],
-      [
-        b,
-        {
-          valueOf: function() {
-            return 8;
-          }
-        }
-      ],
-      [b, -3.9],
-      [b, -3],
-      [b, -0],
-      [b, +0],
-      [b, 1],
-      [b, 2],
-      [b, 3],
-      [b, 4],
-      [b, 5],
-      [b, 6],
-      [b, 7],
-      [b, 8],
-      [b, 3.9],
-      [b, 15],
-      [b, 16],
-      [b, 17],
+            // Offset must satisfy:
+            //     - ToNumber(offset) === ToInteger(ToNumber(offset))
+            //     - integer offset must be >= 0
+            //     - integer offset must be a multiple of element byte size
+            //     - integer offset must be <= buffer byteLength
+            //       (this check is implicit in the later steps)
 
-      // Length must satisfy:
-      //     - if undefined, remaining bytes must divide evenly with
-      //       element byte size, length becomes viewByteLength / elementSize
-      //     - ToLength(length) * elementSize + byteOffset <= bufferByteLength
+            [ b, undefined ],
+            [ b, null ],
+            [ b, true ],
+            [ b, false ],
+            [ b, { valueOf: function () { return 6; } } ],
+            [ b, { valueOf: function () { return 8; } } ],
+            [ b, -3.9 ],
+            [ b, -3 ],
+            [ b, -0 ],
+            [ b, +0 ],
+            [ b, 1 ],
+            [ b, 2 ],
+            [ b, 3 ],
+            [ b, 4 ],
+            [ b, 5 ],
+            [ b, 6 ],
+            [ b, 7 ],
+            [ b, 8 ],
+            [ b, 3.9 ],
+            [ b, 15 ],
+            [ b, 16 ],
+            [ b, 17 ],
 
-      [b, +0, 0],
-      [b, +0, 1],
-      [b, +0, 2],
-      [b, +0, 3],
-      [b, +0, 4],
-      [b, +0, 5],
-      [b, +0, 6],
-      [b, +0, 7],
-      [b, +0, 8],
-      [b, +0, 9],
-      [b, +0, 10],
-      [b, +0, 11],
-      [b, +0, 12],
-      [b, +0, 13],
-      [b, +0, 14],
-      [b, +0, 15],
-      [b, +0, 16],
-      [b, +0, 17],
+            // Length must satisfy:
+            //     - if undefined, remaining bytes must divide evenly with
+            //       element byte size, length becomes viewByteLength / elementSize
+            //     - ToLength(length) * elementSize + byteOffset <= bufferByteLength
 
-      [b, 1, undefined],
-      [b, 1, null],
-      [b, 1, true],
-      [b, 1, false],
-      [
-        b,
-        {
-          valueOf: function() {
-            return 6;
-          }
-        },
-        {
-          valueOf: function() {
-            return 4;
-          }
-        }
-      ],
+            [ b, +0, 0 ],
+            [ b, +0, 1 ],
+            [ b, +0, 2 ],
+            [ b, +0, 3 ],
+            [ b, +0, 4 ],
+            [ b, +0, 5 ],
+            [ b, +0, 6 ],
+            [ b, +0, 7 ],
+            [ b, +0, 8 ],
+            [ b, +0, 9 ],
+            [ b, +0, 10 ],
+            [ b, +0, 11 ],
+            [ b, +0, 12 ],
+            [ b, +0, 13 ],
+            [ b, +0, 14 ],
+            [ b, +0, 15 ],
+            [ b, +0, 16 ],
+            [ b, +0, 17 ],
 
-      [b, 1, 0],
-      [b, 1, 1],
-      [b, 1, 14],
-      [b, 1, 15],
-      [b, 1, 16],
+            [ b, 1, undefined ],
+            [ b, 1, null ],
+            [ b, 1, true ],
+            [ b, 1, false ],
+            [ b, { valueOf: function () { return 6; } }, { valueOf: function () { return 4; } } ],
 
-      [b, 8, undefined],
-      [b, 8, null],
-      [b, 8, true],
-      [b, 8, false],
-      [
-        b,
-        {
-          valueOf: function() {
-            return 8;
-          }
-        },
-        {
-          valueOf: function() {
-            return 2;
-          }
-        }
-      ],
+            [ b, 1, 0 ],
+            [ b, 1, 1 ],
+            [ b, 1, 14 ],
+            [ b, 1, 15 ],
+            [ b, 1, 16 ],
 
-      [b, 4, 0],
-      [b, 4, 1],
-      [b, 4, 2],
-      [b, 4, 3],
-      [b, 4, 4],
-      [b, 4, 5],
-      [b, 4, 6],
-      [b, 4, 7],
-      [b, 4, 8],
-      [b, 4, 9],
-      [b, 4, 10],
-      [b, 4, 11],
-      [b, 4, 12],
-      [b, 4, 13],
-      [b, 4, 14],
-      [b, 4, 15],
-      [b, 4, 16],
+            [ b, 8, undefined ],
+            [ b, 8, null ],
+            [ b, 8, true ],
+            [ b, 8, false ],
+            [ b, { valueOf: function () { return 8; } }, { valueOf: function () { return 2; } } ],
 
-      [b, 8, 0],
-      [b, 8, 1],
-      [b, 8, 2],
-      [b, 8, 3],
-      [b, 8, 4],
-      [b, 8, 5],
-      [b, 8, 6],
-      [b, 8, 7],
-      [b, 8, 8],
-      [b, 8, 9],
-      [b, 8, 10],
-      [b, 8, 11],
-      [b, 8, 12],
-      [b, 8, 13],
-      [b, 8, 14],
-      [b, 8, 15],
-      [b, 8, 16],
+            [ b, 4, 0 ],
+            [ b, 4, 1 ],
+            [ b, 4, 2 ],
+            [ b, 4, 3 ],
+            [ b, 4, 4 ],
+            [ b, 4, 5 ],
+            [ b, 4, 6 ],
+            [ b, 4, 7 ],
+            [ b, 4, 8 ],
+            [ b, 4, 9 ],
+            [ b, 4, 10 ],
+            [ b, 4, 11 ],
+            [ b, 4, 12 ],
+            [ b, 4, 13 ],
+            [ b, 4, 14 ],
+            [ b, 4, 15 ],
+            [ b, 4, 16 ],
 
-      [b, 15, -3],
-      [b, 15, -1],
-      [b, 15, -0],
-      [b, 15, +0],
-      [b, 15, 1],
-      [b, 15, 2],
+            [ b, 8, 0 ],
+            [ b, 8, 1 ],
+            [ b, 8, 2 ],
+            [ b, 8, 3 ],
+            [ b, 8, 4 ],
+            [ b, 8, 5 ],
+            [ b, 8, 6 ],
+            [ b, 8, 7 ],
+            [ b, 8, 8 ],
+            [ b, 8, 9 ],
+            [ b, 8, 10 ],
+            [ b, 8, 11 ],
+            [ b, 8, 12 ],
+            [ b, 8, 13 ],
+            [ b, 8, 14 ],
+            [ b, 8, 15 ],
+            [ b, 8, 16 ],
 
-      [b, 16, 0],
-      [b, 16, 1],
+            [ b, 15, -3 ],
+            [ b, 15, -1 ],
+            [ b, 15, -0 ],
+            [ b, 15, +0 ],
+            [ b, 15, 1 ],
+            [ b, 15, 2 ],
 
-      [b, 17, 0],
-      [b, 17, 1],
+            [ b, 16, 0 ],
+            [ b, 16, 1 ],
 
-      // Additional argument is ignored
+            [ b, 17, 0 ],
+            [ b, 17, 1 ],
 
-      [b, 8, 1, "dummy"]
-    ].forEach(function(arglist) {
-      try {
-        evalstr = "new " + consname + "(";
-        for (i = 0; i < arglist.length; i++) {
-          if (i > 0) {
-            evalstr += ", ";
-          }
-          evalstr += "arglist[" + i + "]";
-        }
-        evalstr += ")";
+            // Additional argument is ignored
 
-        v = eval(evalstr);
-        print(
-          arglist,
-          evalstr,
-          v.buffer === b,
-          v.length,
-          v.byteOffset,
-          v.byteLength
-        );
-      } catch (e) {
-        print(arglist, e.name);
-      }
+            [ b, 8, 1, 'dummy' ]
+        ].forEach(function (arglist) {
+            try {
+                evalstr = 'new ' + consname + '(';
+                for (i = 0; i < arglist.length; i++) {
+                    if (i > 0) { evalstr += ', '; }
+                    evalstr += 'arglist[' + i + ']';
+                }
+                evalstr += ')';
+
+                v = eval(evalstr);
+                print(arglist, evalstr, v.buffer === b, v.length, v.byteOffset, v.byteLength);
+            } catch (e) {
+                print(arglist, e.name);
+            }
+        });
     });
-  });
 }
 
 try {
-  print("TypedArray argument bruteforce test");
-  typedArrayArgumentBruteForceTest();
+    print('TypedArray argument bruteforce test');
+    typedArrayArgumentBruteForceTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -1379,26 +1321,26 @@ TypeError
 ===*/
 
 function onlyConstructorCallTest() {
-  var v;
+    var v;
 
-  // Views must be called as constructor calls.
+    // Views must be called as constructor calls.
 
-  v = new Float32Array(3);
-  printProps(v);
+    v = new Float32Array(3);
+    printProps(v);
 
-  try {
-    v = Float32Array(3); // -> TypeError
-    printProps(v); // never here
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        v = Float32Array(3);  // -> TypeError
+        printProps(v);   // never here
+    } catch (e) {
+        print(e.name);
+    }
 }
 
 try {
-  print("only constructor call");
-  onlyConstructorCallTest();
+    print('only constructor call');
+    onlyConstructorCallTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -1408,23 +1350,23 @@ object [object ArrayBuffer] undefined 64 undefined
 ===*/
 
 function numberArgumentTest() {
-  var b, v;
+    var b, v;
 
-  // Number argument creates a new TypedArray with that many elements.
-  // Byte count will be a multiple of that.  There's an underlying
-  // ArrayBuffer which automatically gets created.
+    // Number argument creates a new TypedArray with that many elements.
+    // Byte count will be a multiple of that.  There's an underlying
+    // ArrayBuffer which automatically gets created.
 
-  v = new Float32Array(16);
-  printProps(v);
-  b = v.buffer;
-  printProps(b);
+    v = new Float32Array(16);
+    printProps(v);
+    b = v.buffer;
+    printProps(b);
 }
 
 try {
-  print("number argument");
-  numberArgumentTest();
+    print('number argument');
+    numberArgumentTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -1441,63 +1383,63 @@ RangeError
 ===*/
 
 function arrayBufferArgumentTest() {
-  var b, v;
+    var b, v;
 
-  b = new ArrayBuffer(20);
-  printProps(b);
+    b = new ArrayBuffer(20);
+    printProps(b);
 
-  // Without any other arguments, creates a view mapping the whole
-  // ArrayBuffer, assuming its length is a proper multiple of the
-  // element size.
+    // Without any other arguments, creates a view mapping the whole
+    // ArrayBuffer, assuming its length is a proper multiple of the
+    // element size.
 
-  v = new Uint32Array(b);
-  printProps(v);
-  print(v.buffer === b);
-
-  try {
-    v = new Float64Array(b); // 20/8 doesn't divide evenly -> RangeError
+    v = new Uint32Array(b);
     printProps(v);
     print(v.buffer === b);
-  } catch (e) {
-    print(e.name);
-  }
 
-  // Byte offset alone means the rest of the buffer is mapped; the offset
-  // must be a multiple of the element size and the buffer slice used must
-  // divide evenly.
+    try {
+        v = new Float64Array(b);  // 20/8 doesn't divide evenly -> RangeError
+        printProps(v);
+        print(v.buffer === b);
+    } catch (e) {
+        print(e.name);
+    }
 
-  try {
-    v = new Uint32Array(b, 2); // offset is not a multiple of 4 -> RangeError
-  } catch (e) {
-    print(e.name);
-  }
+    // Byte offset alone means the rest of the buffer is mapped; the offset
+    // must be a multiple of the element size and the buffer slice used must
+    // divide evenly.
 
-  v = new Uint32Array(b, 4);
-  printProps(v);
-  print(v.buffer === b);
+    try {
+        v = new Uint32Array(b, 2);  // offset is not a multiple of 4 -> RangeError
+    } catch (e) {
+        print(e.name);
+    }
 
-  try {
-    // Here the remainder (16 bytes) divides evenly by 8, but the offset
-    // is not a multiple of 8 -> RangeError
-    v = new Float64Array(b, 4);
-  } catch (e) {
-    print(e.name);
-  }
+    v = new Uint32Array(b, 4);
+    printProps(v);
+    print(v.buffer === b);
 
-  try {
-    // Here the offset is a multiple of 8, but the remainder (12) doesn't
-    // divide evenly -> RangeError.
-    v = new Float64Array(b, 8);
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        // Here the remainder (16 bytes) divides evenly by 8, but the offset
+        // is not a multiple of 8 -> RangeError
+        v = new Float64Array(b, 4);
+    } catch (e) {
+        print(e.name);
+    }
+
+    try {
+        // Here the offset is a multiple of 8, but the remainder (12) doesn't
+        // divide evenly -> RangeError.
+        v = new Float64Array(b, 8);
+    } catch (e) {
+        print(e.name);
+    }
 }
 
 try {
-  print("ArrayBuffer argument");
-  arrayBufferArgumentTest();
+    print('ArrayBuffer argument');
+    arrayBufferArgumentTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -1533,108 +1475,108 @@ false
 ===*/
 
 function typedArrayArgumentTest() {
-  // Conceptually a TypedArray argument works just like a plain Array
-  // argument: resulting view length depends on element (not byte) length
-  // of the input, and values are converted from one TypedArray to another.
-  // A new ArrayBuffer is always created (no slice/view).
-  //
-  // Internally the implementation uses a memcpy() when the elements are
-  // safe to byte copy, and explicit coercion otherwise.  See coercion
-  // compatibility comments for the TypedArray set() testcase.
+    // Conceptually a TypedArray argument works just like a plain Array
+    // argument: resulting view length depends on element (not byte) length
+    // of the input, and values are converted from one TypedArray to another.
+    // A new ArrayBuffer is always created (no slice/view).
+    //
+    // Internally the implementation uses a memcpy() when the elements are
+    // safe to byte copy, and explicit coercion otherwise.  See coercion
+    // compatibility comments for the TypedArray set() testcase.
 
-  var v1, v2;
+    var v1, v2;
 
-  // Uint8 -> Int8 coervcion is byte copy compatible.
+    // Uint8 -> Int8 coervcion is byte copy compatible.
 
-  v1 = new Uint8Array(4);
-  v1[0] = 0x00;
-  v1[1] = 0x7f;
-  v1[2] = 0x80;
-  v1[3] = 0x1ff;
-  printProps(v1);
+    v1 = new Uint8Array(4);
+    v1[0] = 0x00;
+    v1[1] = 0x7f;
+    v1[2] = 0x80;
+    v1[3] = 0x1ff;
+    printProps(v1);
 
-  v2 = new Int8Array(v1);
-  printProps(v2);
-  print(v2[0], v2[1], v2[2], v2[3]);
+    v2 = new Int8Array(v1);
+    printProps(v2);
+    print(v2[0], v2[1], v2[2], v2[3]);
 
-  print(typeof v1.buffer);
-  print(typeof v2.buffer);
-  print(v1.buffer === v2.buffer);
+    print(typeof v1.buffer);
+    print(typeof v2.buffer);
+    print(v1.buffer === v2.buffer);
 
-  // Int32 -> Uint8 coercion is not a byte copy so this causes an explicit
-  // conversion internally.
+    // Int32 -> Uint8 coercion is not a byte copy so this causes an explicit
+    // conversion internally.
 
-  v1 = new Int32Array(4);
-  v1[0] = -12345678;
-  v1[1] = 0xdeadbeef;
-  v1[2] = -1;
-  v1[3] = 0x55aa55aa;
-  printProps(v1);
+    v1 = new Int32Array(4);
+    v1[0] = -12345678;
+    v1[1] = 0xdeadbeef;
+    v1[2] = -1;
+    v1[3] = 0x55aa55aa;
+    printProps(v1);
 
-  v2 = new Uint8Array(v1);
-  printProps(v2);
-  print(v2[0], v2[1], v2[2], v2[3]);
+    v2 = new Uint8Array(v1);
+    printProps(v2);
+    print(v2[0], v2[1], v2[2], v2[3]);
 
-  print(typeof v1.buffer);
-  print(typeof v2.buffer);
-  print(v1.buffer === v2.buffer);
+    print(typeof v1.buffer);
+    print(typeof v2.buffer);
+    print(v1.buffer === v2.buffer);
 
-  // Similarly Uint8 -> Float64 is not a byte copy.
+    // Similarly Uint8 -> Float64 is not a byte copy.
 
-  v1 = new Uint8Array(4);
-  v1[0] = -12345678;
-  v1[1] = 0xdeadbeef;
-  v1[2] = -1;
-  v1[3] = 0x55aa55aa;
-  printProps(v1);
+    v1 = new Uint8Array(4);
+    v1[0] = -12345678;
+    v1[1] = 0xdeadbeef;
+    v1[2] = -1;
+    v1[3] = 0x55aa55aa;
+    printProps(v1);
 
-  v2 = new Float64Array(v1);
-  printProps(v2);
-  print(v2[0], v2[1], v2[2], v2[3]);
+    v2 = new Float64Array(v1);
+    printProps(v2);
+    print(v2[0], v2[1], v2[2], v2[3]);
 
-  print(typeof v1.buffer);
-  print(typeof v2.buffer);
-  print(v1.buffer === v2.buffer);
+    print(typeof v1.buffer);
+    print(typeof v2.buffer);
+    print(v1.buffer === v2.buffer);
 
-  // Int8 -> Uint8Clamped is also not a byte copy despite the element size
-  // being the same, because e.g. -1 coerces to 0x00.
+    // Int8 -> Uint8Clamped is also not a byte copy despite the element size
+    // being the same, because e.g. -1 coerces to 0x00.
 
-  v1 = new Int8Array(4);
-  v1[0] = -0x80;
-  v1[1] = -1;
-  v1[2] = 1;
-  v1[3] = 0x7f;
+    v1 = new Int8Array(4);
+    v1[0] = -0x80;
+    v1[1] = -1;
+    v1[2] = 1;
+    v1[3] = 0x7f;
 
-  v2 = new Uint8ClampedArray(v1);
-  printProps(v2);
-  print(v2[0], v2[1], v2[2], v2[3]);
+    v2 = new Uint8ClampedArray(v1);
+    printProps(v2);
+    print(v2[0], v2[1], v2[2], v2[3]);
 
-  print(typeof v1.buffer);
-  print(typeof v2.buffer);
-  print(v1.buffer === v2.buffer);
+    print(typeof v1.buffer);
+    print(typeof v2.buffer);
+    print(v1.buffer === v2.buffer);
 
-  // Uint8Clamped -> Int8 -is- a byte copy.
+    // Uint8Clamped -> Int8 -is- a byte copy.
 
-  v1 = new Uint8ClampedArray(4);
-  v1[0] = 0x00;
-  v1[1] = 0x7f;
-  v1[2] = 0x80;
-  v1[3] = 0xff;
+    v1 = new Uint8ClampedArray(4);
+    v1[0] = 0x00;
+    v1[1] = 0x7f;
+    v1[2] = 0x80;
+    v1[3] = 0xff;
 
-  v2 = new Int8Array(v1);
-  printProps(v2);
-  print(v2[0], v2[1], v2[2], v2[3]);
+    v2 = new Int8Array(v1);
+    printProps(v2);
+    print(v2[0], v2[1], v2[2], v2[3]);
 
-  print(typeof v1.buffer);
-  print(typeof v2.buffer);
-  print(v1.buffer === v2.buffer);
+    print(typeof v1.buffer);
+    print(typeof v2.buffer);
+    print(v1.buffer === v2.buffer);
 }
 
 try {
-  print("TypedArray argument");
-  typedArrayArgumentTest();
+    print('TypedArray argument');
+    typedArrayArgumentTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -1646,22 +1588,26 @@ object [object Int32Array] 6 24 0
 ===*/
 
 function plainArrayArgumentTest() {
-  var v;
+    var v;
 
-  v = new Uint8ClampedArray([-1000, -1, 0, 0x7f, 0x80, 0xff, 0x100, 1 / 0]);
-  printProps(v);
-  print(v[0], v[1], v[2], v[3], v[4], v[5], v[6], v[7]);
+    v = new Uint8ClampedArray([
+        -1000, -1, 0, 0x7f, 0x80, 0xff, 0x100, 1 / 0
+    ]);
+    printProps(v);
+    print(v[0], v[1], v[2], v[3], v[4], v[5], v[6], v[7]);
 
-  v = new Int32Array([-1 / 0, -123456789, -100, 100, 0x100deadbeef, 1 / 0]);
-  printProps(v);
-  print(v[0], v[1], v[2], v[3], v[4], v[5]);
+    v = new Int32Array([
+        -1 / 0, -123456789, -100, 100, 0x100deadbeef, 1 / 0
+    ]);
+    printProps(v);
+    print(v[0], v[1], v[2], v[3], v[4], v[5]);
 }
 
 try {
-  print("plain Array argument");
-  plainArrayArgumentTest();
+    print('plain Array argument');
+    plainArrayArgumentTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -1672,34 +1618,34 @@ object [object Uint16Array] 3 6 0
 ===*/
 
 function arrayLikeArgumentTest() {
-  var v;
+    var v;
 
-  // Array like arguments work as expected: 'length' is used to figure
-  // out the length, and elements are then read using number indices.
+    // Array like arguments work as expected: 'length' is used to figure
+    // out the length, and elements are then read using number indices.
 
-  v = new Uint16Array({
-    "0": 123,
-    "1": 321,
-    "2": -1
-  }); // no 'length' -> zero size result
-  printProps(v);
+    v = new Uint16Array({
+        '0': 123,
+        '1': 321,
+        '2': -1
+    });  // no 'length' -> zero size result
+    printProps(v);
 
-  v = new Uint16Array({
-    "0": 123,
-    "1": -1,
-    "2": 0xdeadbeef,
-    "3": 0x12345678,
-    length: 3 // index '3' is ignored
-  });
-  printProps(v);
-  print(v[0], v[1], v[2]); // value coercion
+    v = new Uint16Array({
+        '0': 123,
+        '1': -1,
+        '2': 0xdeadbeef,
+        '3': 0x12345678,
+        length: 3  // index '3' is ignored
+    });
+    printProps(v);
+    print(v[0], v[1], v[2]);  // value coercion
 }
 
 try {
-  print("Array-like argument");
-  arrayLikeArgumentTest();
+    print('Array-like argument');
+    arrayLikeArgumentTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -1711,47 +1657,47 @@ object [object Int16Array] 9 18 0
 ===*/
 
 function stringArgumentTest() {
-  // A plain string is now coerced to a number, so 'foo' ends up as a
-  // zero size result while '12' produces a 12-element view.
+    // A plain string is now coerced to a number, so 'foo' ends up as a
+    // zero size result while '12' produces a 12-element view.
 
-  var v;
+    var v;
 
-  try {
-    v = new Int16Array("foo");
-    printProps(v);
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        v = new Int16Array('foo');
+        printProps(v);
+    } catch (e) {
+        print(e.name);
+    }
 
-  try {
-    v = new Int16Array("12");
-    printProps(v);
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        v = new Int16Array('12');
+        printProps(v);
+    } catch (e) {
+        print(e.name);
+    }
 
-  // But a String object is "Array-like" and "works".  Oddly, because
-  // index values are characters (e.g. str[0] = 'f') they mostly coerce
-  // to zero, but a character value like '1' will coerce to a non-zero
-  // number!
-  //
-  // This is more accidental than intentional/useful behavior, but
-  // test for it anyway as it should fall out of the processing rules.
+    // But a String object is "Array-like" and "works".  Oddly, because
+    // index values are characters (e.g. str[0] = 'f') they mostly coerce
+    // to zero, but a character value like '1' will coerce to a non-zero
+    // number!
+    //
+    // This is more accidental than intentional/useful behavior, but
+    // test for it anyway as it should fall out of the processing rules.
 
-  try {
-    v = new Int16Array(new String("foo\u1234\ucafe1234"));
-    printProps(v);
-    print(v[0], v[1], v[2], v[3], v[4], v[5], v[6], v[7], v[8]);
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        v = new Int16Array(new String('foo\u1234\ucafe1234'));
+        printProps(v);
+        print(v[0], v[1], v[2], v[3], v[4], v[5], v[6], v[7], v[8]);
+    } catch (e) {
+        print(e.name);
+    }
 }
 
 try {
-  print("string argument");
-  stringArgumentTest();
+    print('string argument');
+    stringArgumentTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -1770,46 +1716,34 @@ object true |00666f6fffab| |000066006f006f00ff00ab00| object false false
  */
 
 function plainBufferArgumentTest() {
-  var buf, view;
+    var buf, view;
 
-  function test(buf, view) {
-    print(
-      typeof buf,
-      isPlainBuffer(buf),
-      Duktape.enc("jx", buf),
-      Duktape.enc("jx", view),
-      typeof view.buffer,
-      isPlainBuffer(view.buffer),
-      buf === view.buffer
-    );
-    view[0] = 0xffffffff; // demonstrate view underlying buffer is independent; endian neutral value
-    print(
-      Duktape.enc("jx", buf),
-      Duktape.enc("jx", view),
-      Object.prototype.toString.call(view.buffer)
-    );
-  }
+    function test(buf, view) {
+        print(typeof buf, isPlainBuffer(buf), Duktape.enc('jx', buf), Duktape.enc('jx', view), typeof view.buffer, isPlainBuffer(view.buffer), buf === view.buffer);
+        view[0] = 0xffffffff;  // demonstrate view underlying buffer is independent; endian neutral value
+        print(Duktape.enc('jx', buf), Duktape.enc('jx', view), Object.prototype.toString.call(view.buffer));
+    }
 
-  // Plain buffer treated like Uint8Array.
+    // Plain buffer treated like Uint8Array.
 
-  buf = Duktape.dec("hex", "00666f6fff");
-  view = new Uint8Array(buf);
-  test(buf, view);
+    buf = Duktape.dec('hex', '00666f6fff');
+    view = new Uint8Array(buf);
+    test(buf, view);
 
-  // Input is not even length, but treated as an initializer so it
-  // doesn't cause an error.
-  buf = Duktape.dec("hex", "00666f6fff");
-  view = new Int16Array(buf);
-  test(buf, view);
+    // Input is not even length, but treated as an initializer so it
+    // doesn't cause an error.
+    buf = Duktape.dec('hex', '00666f6fff');
+    view = new Int16Array(buf);
+    test(buf, view);
 
-  buf = Duktape.dec("hex", "00666f6fffab");
-  view = new Int16Array(buf);
-  test(buf, view);
+    buf = Duktape.dec('hex', '00666f6fffab');
+    view = new Int16Array(buf);
+    test(buf, view);
 }
 
 try {
-  print("plain buffer argument");
-  plainBufferArgumentTest();
+    print('plain buffer argument');
+    plainBufferArgumentTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

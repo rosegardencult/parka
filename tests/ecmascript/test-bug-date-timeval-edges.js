@@ -38,99 +38,93 @@ test3
  * range check in duk__get_local_tzoffset().
  */
 function test1() {
-  var tzMin;
-  var d;
+    var tzMin;
+    var d;
 
-  tzMin = new Date().getTimezoneOffset() * -1;
-  //print('tzMin:', tzMin);
+    tzMin= new Date().getTimezoneOffset() * (-1);
+    //print('tzMin:', tzMin);
 
-  d = new Date(
-    1970, // year
-    0, // month (Jan)
-    100000001, // days: 100M + 1 (one day over ECMAScript maximum)
-    0, // hour
-    0 + tzMin - 60, // minutes: one hour backwards from day 101M UTC
-    0, // seconds
-    -1
-  ); // milliseconds
+    d = new Date(1970,            // year
+                 0,               // month (Jan)
+                 100000001,       // days: 100M + 1 (one day over ECMAScript maximum)
+                 0,               // hour
+                 0 + tzMin - 60,  // minutes: one hour backwards from day 101M UTC
+                 0,               // seconds
+                 -1);             // milliseconds
 
-  print(d.valueOf());
-  print(d.toISOString());
+    print(d.valueOf());
+    print(d.toISOString());
 }
 
 /* Adapted from: ch15/15.9/15.9.5/15.9.5.43/15.9.5.43-0-12 */
 function test2() {
-  var tzMin;
-  var d;
+    var tzMin;
+    var d;
 
-  tzMin = new Date().getTimezoneOffset() * -1;
-  //print('tzMin:', tzMin);
+    tzMin= new Date().getTimezoneOffset() * (-1);
+    //print('tzMin:', tzMin);
 
-  d = new Date(
-    1970, // year
-    0, // month (Jan)
-    100000001, // days: 100M + 1 (one day over ECMAScript maximum)
-    0, // hour
-    0 + tzMin - 60, // minutes: one hour backwards from day 101M UTC
-    0, // seconds
-    0
-  ); // milliseconds
+    d = new Date(1970,            // year
+                 0,               // month (Jan)
+                 100000001,       // days: 100M + 1 (one day over ECMAScript maximum)
+                 0,               // hour
+                 0 + tzMin - 60,  // minutes: one hour backwards from day 101M UTC
+                 0,               // seconds
+                 0);              // milliseconds
 
-  print(d.valueOf());
-  print(d.toISOString());
+    print(d.valueOf());
+    print(d.toISOString());
 }
 
 function test3() {
-  /* toString(), which coerces to local time, caused an assert failure for
-   * similar reasons as with test1() and test2().  When converting an
-   * ECMAScript time value to local time, the implementation adds a local
-   * time offset before generating the parts (year, month, etc).  This
-   * temporary time value can be just outside ECMAScript range even if the
-   * original UTC time value is within the range.  A +/- 24h leeway was
-   * added to the assert in duk__timeval_to_parts() to fix the assert error.
-   */
+    /* toString(), which coerces to local time, caused an assert failure for
+     * similar reasons as with test1() and test2().  When converting an
+     * ECMAScript time value to local time, the implementation adds a local
+     * time offset before generating the parts (year, month, etc).  This
+     * temporary time value can be just outside ECMAScript range even if the
+     * original UTC time value is within the range.  A +/- 24h leeway was
+     * added to the assert in duk__timeval_to_parts() to fix the assert error.
+     */
 
-  [
-    -8640e12 - 1, // invalid
-    -8640e12, // smallest valid
-    -8640e12 + 1,
-    -1,
-    -0,
-    +0,
-    +1,
-    8640e12 - 1,
-    8640e12, // largest valid
-    8640e12 + 1
-  ] // invalid
-    .forEach(function(x) {
-      var d, ign;
-      try {
-        d = new Date(x);
-        print(x, d.toISOString());
-        ign = d.toString(); // this caused an assert failure once
-      } catch (e) {
-        print(x, e.name);
-      }
+    [ -8640e12 - 1,   // invalid
+      -8640e12,       // smallest valid
+      -8640e12 + 1,
+      -1,
+      -0,
+      +0,
+      +1,
+      8640e12 - 1,
+      8640e12,        // largest valid
+      8640e12 + 1 ]   // invalid
+    .forEach(function (x) {
+        var d, ign;
+        try {
+            d = new Date(x);
+            print(x, d.toISOString());
+            ign = d.toString();  // this caused an assert failure once
+        } catch (e) {
+            print(x, e.name);
+        }
     });
 }
 
 try {
-  print("test1");
-  test1();
+    print('test1');
+    test1();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 try {
-  print("test2");
-  test2();
+    print('test2');
+    test2();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 try {
-  print("test3");
-  test3();
+    print('test3');
+    test3();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

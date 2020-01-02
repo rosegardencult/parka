@@ -9,7 +9,7 @@ undefined
  */
 
 try {
-  print(typeof x);
+    print(typeof x);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

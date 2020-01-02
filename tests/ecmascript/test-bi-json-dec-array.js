@@ -5,9 +5,9 @@ SyntaxError
 /* Don't allow empty object with just comma */
 
 try {
-  print(JSON.parse("[,]"));
+    print(JSON.parse('[,]'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -17,10 +17,11 @@ SyntaxError
 /* Don't allow initial comma */
 
 try {
-  print(JSON.parse("[,1]"));
+    print(JSON.parse('[,1]'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
+
 
 /*===
 SyntaxError
@@ -32,9 +33,9 @@ SyntaxError
  */
 
 try {
-  print(JSON.parse("[1,]"));
+    print(JSON.parse('[1,]'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -44,7 +45,7 @@ SyntaxError
 /* Don't allow successive commas (elisions) */
 
 try {
-  print(JSON.parse("[1,,2]"));
+    print(JSON.parse('[1,,2]'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

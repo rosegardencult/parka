@@ -13,5 +13,5 @@
 foofoobar,foo
 ===*/
 
-var t = /(.{3})\1bar/.exec("foofoobar");
+var t = /(.{3})\1bar/.exec('foofoobar');
 print(t);

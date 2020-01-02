@@ -8,11 +8,11 @@ done
 ===*/
 
 try {
-  Duktape.errCreate = function(e) {
-    return Float64Array;
-  };
-  (100000).foo();
+    Duktape.errCreate = function(e) {
+        return Float64Array;
+    };
+    100000 .foo();
 } catch (e) {
-  print(e === Float64Array);
+    print(e === Float64Array);
 }
-print("done");
+print('done');

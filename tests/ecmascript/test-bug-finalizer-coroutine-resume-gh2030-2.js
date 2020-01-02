@@ -10,13 +10,13 @@ finalizer called
 f called
 ===*/
 
-Duktape.fin(Proxy, function() {
-  function f() {
-    print("f called");
-    performance(); // Throws.
-  }
-  print("finalizer called");
-  Duktape.Thread.resume(new Duktape.Thread(f));
+Duktape.fin(Proxy, function( ) {
+    function f() {
+        print('f called');
+        performance();  // Throws.
+    }
+    print('finalizer called');
+    Duktape.Thread.resume(new Duktape.Thread(f));
 });
 
-print("done");
+print('done');

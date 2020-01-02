@@ -48,46 +48,28 @@
  */
 
 function printProps(name) {
-  var indirectEval = eval;
-  var global = indirectEval("this;"); // indirect eval -> this = global object
-  var desc = Object.getOwnPropertyDescriptor(global, name);
-  if (desc.get || desc.set) {
-    // Note: typeof will invoke getter here
-    print(
-      name +
-        ": " +
-        "typeof=" +
-        typeof global[name] +
-        ", " +
-        "enumerable=" +
-        desc.enumerable +
-        ", " +
-        "configurable=" +
-        desc.configurable
-    );
-  } else {
-    print(
-      name +
-        ": " +
-        "typeof=" +
-        typeof global[name] +
-        ", " +
-        "writable=" +
-        desc.writable +
-        ", " +
-        "enumerable=" +
-        desc.enumerable +
-        ", " +
-        "configurable=" +
-        desc.configurable
-    );
-  }
+    var indirectEval = eval;
+    var global = indirectEval('this;');  // indirect eval -> this = global object
+    var desc = Object.getOwnPropertyDescriptor(global, name);
+    if (desc.get || desc.set) {
+        // Note: typeof will invoke getter here
+        print(name + ': ' +
+              'typeof=' + typeof global[name] + ', ' +
+              'enumerable=' + desc.enumerable + ', ' +
+              'configurable=' + desc.configurable);
+    } else {
+        print(name + ': ' +
+              'typeof=' + typeof global[name] + ', ' +
+              'writable=' + desc.writable + ', ' +
+              'enumerable=' + desc.enumerable + ', ' +
+              'configurable=' + desc.configurable);
+    }
 }
 
 function defineProp(name, attrs) {
-  var indirectEval = eval;
-  var global = indirectEval("this;"); // indirect eval -> this = global object
-  Object.defineProperty(global, name, attrs);
+    var indirectEval = eval;
+    var global = indirectEval('this;');  // indirect eval -> this = global object
+    Object.defineProperty(global, name, attrs);
 }
 
 /*===
@@ -102,16 +84,16 @@ RegExp: typeof=function, writable=true, enumerable=true, configurable=true
  * V8).
  */
 
-printProps("RegExp");
+printProps('RegExp');
 
 try {
-  eval("function RegExp() { return 123; }");
-  print(RegExp());
+    eval("function RegExp() { return 123; }");
+    print(RegExp());
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
-printProps("RegExp");
+printProps('RegExp');
 
 /*===
 NaN: typeof=number, writable=false, enumerable=false, configurable=false
@@ -121,17 +103,17 @@ NaN: typeof=number, writable=false, enumerable=false, configurable=false
 
 /* Existing non-configurable data property. */
 
-printProps("NaN");
+printProps('NaN');
 
 try {
-  // non-configurable and does not match requirements of step 5.e.iv -> TypeError */
-  eval("function NaN() { return 234; }");
-  print("never here");
+    // non-configurable and does not match requirements of step 5.e.iv -> TypeError */
+    eval("function NaN() { return 234; }");
+    print('never here');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
-printProps("NaN");
+printProps('NaN');
 
 /*===
 getter
@@ -145,29 +127,25 @@ configurableAccessor: typeof=function, writable=true, enumerable=true, configura
  * Need to create ourselves.
  */
 
-defineProp("configurableAccessor", {
-  get: function() {
-    print("getter");
-  },
-  set: function(x) {
-    print("setter");
-  },
-  enumerable: false,
-  configurable: true
-});
+defineProp('configurableAccessor', {
+    get: function() { print('getter'); },
+    set: function(x) { print('setter'); },
+    enumerable: false,
+    configurable: true
+})
 
 // Note: printProps() will invoke getter here (but not below)
 
-printProps("configurableAccessor");
+printProps('configurableAccessor');
 
 try {
-  eval("function configurableAccessor() { return 345; }");
-  print(configurableAccessor());
+    eval("function configurableAccessor() { return 345; }");
+    print(configurableAccessor());
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
-printProps("configurableAccessor");
+printProps('configurableAccessor');
 
 /*===
 getter
@@ -179,25 +157,21 @@ nonconfigurableAccessor: typeof=undefined, enumerable=false, configurable=false
 
 /* Existing non-configurable accessor. */
 
-defineProp("nonconfigurableAccessor", {
-  get: function() {
-    print("getter");
-  },
-  set: function(x) {
-    print("setter");
-  },
-  enumerable: false,
-  configurable: false
-});
+defineProp('nonconfigurableAccessor', {
+    get: function() { print('getter'); },
+    set: function(x) { print('setter'); },
+    enumerable: false,
+    configurable: false,
+})
 
 // Note: printProps() will invoke getter here and again below
 
-printProps("nonconfigurableAccessor");
+printProps('nonconfigurableAccessor');
 
 try {
-  eval("function nonconfigurableAccessor() { return 456; }");
+    eval("function nonconfigurableAccessor() { return 456; }");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
-printProps("nonconfigurableAccessor");
+printProps('nonconfigurableAccessor');

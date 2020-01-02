@@ -19,41 +19,39 @@ number
  */
 
 try {
-  /* Base case */
-  eval("(function foo() { print(typeof foo); })();");
+    /* Base case */
+    eval("(function foo() { print(typeof foo); })();");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  /* Var declaration shadows and is undefined, since variable
-   * declaration happens on entry but assignment only when
-   * statement is reached.
-   */
-  eval("(function foo() { print(typeof foo); var foo = 1; })();");
+    /* Var declaration shadows and is undefined, since variable
+     * declaration happens on entry but assignment only when
+     * statement is reached.
+     */
+    eval("(function foo() { print(typeof foo); var foo = 1; })();");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  /* Function declaration shadows and is defined as the inner
-   * function: function declarations happen on entry.
-   */
-  eval(
-    "(function foo() { print(typeof foo); foo(); function foo() { print('inner foo'); }; })();"
-  );
+     /* Function declaration shadows and is defined as the inner
+      * function: function declarations happen on entry.
+      */
+    eval("(function foo() { print(typeof foo); foo(); function foo() { print('inner foo'); }; })();");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  /* Argument shadows the function name binding, again simply
-   * because the function name binding exists "outside" the
-   * function scope.
-   */
-  eval("(function foo(foo) { print(typeof foo); })(1);");
+    /* Argument shadows the function name binding, again simply
+     * because the function name binding exists "outside" the
+     * function scope.
+     */
+    eval("(function foo(foo) { print(typeof foo); })(1);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -68,9 +66,9 @@ inner func
 /* An argument name shadows automatic 'arguments' binding */
 
 try {
-  eval("(function foo(arguments) { print(arguments); })(123);");
+    eval("(function foo(arguments) { print(arguments); })(123);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /* A function declaration inside the function shadows automatic 'arguments'
@@ -78,25 +76,21 @@ try {
  */
 
 try {
-  eval(
-    "(function foo() { function arguments() { print('inner func'); }; print(typeof arguments); arguments(); })();"
-  );
+    eval("(function foo() { function arguments() { print('inner func'); }; print(typeof arguments); arguments(); })();");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /* A variable declaration does NOT shadow the automatic 'arguments' binding. */
 
 try {
-  eval("(function foo() { var arguments; print(arguments[0]); })(1,2)");
+    eval("(function foo() { var arguments; print(arguments[0]); })(1,2)");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval(
-    "(function foo() { print(arguments[0]); var arguments = 10; print(arguments); })(1,2)"
-  );
+    eval("(function foo() { print(arguments[0]); var arguments = 10; print(arguments); })(1,2)");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

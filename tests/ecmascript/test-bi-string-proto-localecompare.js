@@ -42,54 +42,54 @@ number -1
 number 1
 ===*/
 
-print("basic");
+print('basic');
 
 function basicTest() {
-  function test(x, y) {
-    var s1 = new String(x);
-    var s2 = new String(y);
-    var t = s1.localeCompare(s2);
-    print(typeof t, t);
-  }
+    function test(x,y) {
+        var s1 = new String(x);
+        var s2 = new String(y);
+        var t = s1.localeCompare(s2);
+        print(typeof t, t);
+    }
 
-  // ascii baseline
-  test("foo", "bar");
-  test("foo", "foo");
-  test("foo", "quux");
+    // ascii baseline
+    test('foo', 'bar');
+    test('foo', 'foo');
+    test('foo', 'quux');
 
-  // unicode
-  test("foo\u1234bar\u0300", "foo\u1234bar\u003f");
-  test("foo\u1234bar\u0300", "foo\u1234bar\u02ff");
-  test("foo\u1234bar\u0300", "foo\u1234bar\u0300");
-  test("foo\u1234bar\u0300", "foo\u1234bar\u0301");
-  test("foo\u1234bar\u0300", "foo\u1234bar\u3456");
+    // unicode
+    test('foo\u1234bar\u0300', 'foo\u1234bar\u003f');
+    test('foo\u1234bar\u0300', 'foo\u1234bar\u02ff');
+    test('foo\u1234bar\u0300', 'foo\u1234bar\u0300');
+    test('foo\u1234bar\u0300', 'foo\u1234bar\u0301');
+    test('foo\u1234bar\u0300', 'foo\u1234bar\u3456');
 
-  test("foo\u1234bar\u0900", "foo\u1234bar\u003f");
-  test("foo\u1234bar\u0900", "foo\u1234bar\u08ff");
-  test("foo\u1234bar\u0900", "foo\u1234bar\u0900");
-  test("foo\u1234bar\u0900", "foo\u1234bar\u0901");
-  test("foo\u1234bar\u0900", "foo\u1234bar\u3456");
+    test('foo\u1234bar\u0900', 'foo\u1234bar\u003f');
+    test('foo\u1234bar\u0900', 'foo\u1234bar\u08ff');
+    test('foo\u1234bar\u0900', 'foo\u1234bar\u0900');
+    test('foo\u1234bar\u0900', 'foo\u1234bar\u0901');
+    test('foo\u1234bar\u0900', 'foo\u1234bar\u3456');
 
-  // length cases
-  test("xx", "x");
-  test("xx", "xx");
-  test("xx", "xxx");
+    // length cases
+    test('xx', 'x');
+    test('xx', 'xx');
+    test('xx', 'xxx');
 
-  // embedded NUL characters
-  test("foo\u0000f", "foo\u0000e");
-  test("foo\u0000f", "foo\u0000f");
-  test("foo\u0000f", "foo\u0000g");
+    // embedded NUL characters
+    test('foo\u0000f', 'foo\u0000e');
+    test('foo\u0000f', 'foo\u0000f');
+    test('foo\u0000f', 'foo\u0000g');
 
-  // empty strings
-  test("", "");
-  test("", "foo");
-  test("foo", "");
+    // empty strings
+    test('', '');
+    test('', 'foo');
+    test('foo', '');
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -148,51 +148,51 @@ number 1
 
 /* Argument and this coercion */
 
-print("coercion");
+print('coercion');
 
 function coercionTest() {
-  function test(x, y) {
-    var t;
+    function test(x,y) {
+        var t;
 
-    try {
-      t = String.prototype.localeCompare.call(x, y);
-      print(typeof t, t);
-    } catch (e) {
-      print(e.name);
+        try {
+            t = String.prototype.localeCompare.call(x, y);
+            print(typeof t, t);
+        } catch (e) {
+            print(e.name);
+        }
     }
-  }
 
-  print("this");
+    print('this');
 
-  test(undefined, "undefined");
-  test(undefined, "undefinec");
-  test(undefined, "undefinee");
+    test(undefined, 'undefined');
+    test(undefined, 'undefinec');
+    test(undefined, 'undefinee');
 
-  test(null, "null");
-  test(null, "nulk");
-  test(null, "nulm");
+    test(null, 'null');
+    test(null, 'nulk');
+    test(null, 'nulm');
 
-  test(true, "true");
-  test(true, "trud");
-  test(true, "truf");
+    test(true, 'true');
+    test(true, 'trud');
+    test(true, 'truf');
 
-  test(false, "false");
-  test(false, "falsd");
-  test(false, "falsf");
+    test(false, 'false');
+    test(false, 'falsd');
+    test(false, 'falsf');
 
-  test(123, "123");
-  test(123, "122");
-  test(123, "124");
+    test(123, '123');
+    test(123, '122');
+    test(123, '124');
 
-  test("foo", "foo");
-  test("foo", "fon");
-  test("foo", "fop");
+    test('foo', 'foo');
+    test('foo', 'fon');
+    test('foo', 'fop');
 
-  test([1, 2], "1,2");
-  test([1, 2], "1,1");
-  test([1, 2], "1,3");
+    test([1,2], '1,2');
+    test([1,2], '1,1');
+    test([1,2], '1,3');
 
-  /*
+    /*
         >>> ord(']')
         93
         >>> chr(92)
@@ -200,49 +200,49 @@ function coercionTest() {
         >>> chr(94)
         '^'
     */
-  test({ foo: 1, bar: 2 }, "[object Object]");
-  test({ foo: 1, bar: 2 }, "[object Object\u005c");
-  test({ foo: 1, bar: 2 }, "[object Object\u005e");
+    test({ foo: 1, bar: 2 }, '[object Object]');
+    test({ foo: 1, bar: 2 }, '[object Object\u005c');
+    test({ foo: 1, bar: 2 }, '[object Object\u005e');
 
-  print("argument");
+    print('argument');
 
-  test("undefined", undefined);
-  test("undefinec", undefined);
-  test("undefinee", undefined);
+    test('undefined', undefined);
+    test('undefinec', undefined);
+    test('undefinee', undefined);
 
-  test("null", null);
-  test("nulk", null);
-  test("nulm", null);
+    test('null', null);
+    test('nulk', null);
+    test('nulm', null);
 
-  test("true", true);
-  test("trud", true);
-  test("truf", true);
+    test('true', true);
+    test('trud', true);
+    test('truf', true);
 
-  test("false", false);
-  test("falsd", false);
-  test("falsf", false);
+    test('false', false);
+    test('falsd', false);
+    test('falsf', false);
 
-  test("123", 123);
-  test("122", 123);
-  test("124", 123);
+    test('123', 123);
+    test('122', 123);
+    test('124', 123);
 
-  test("foo", "foo");
-  test("fon", "foo");
-  test("fop", "foo");
+    test('foo', 'foo');
+    test('fon', 'foo');
+    test('fop', 'foo');
 
-  test("1,2", [1, 2]);
-  test("1,1", [1, 2]);
-  test("1,3", [1, 2]);
+    test('1,2', [1,2]);
+    test('1,1', [1,2]);
+    test('1,3', [1,2]);
 
-  test("[object Object]", { foo: 1, bar: 2 });
-  test("[object Object\u005c", { foo: 1, bar: 2 });
-  test("[object Object\u005e", { foo: 1, bar: 2 });
+    test('[object Object]', { foo: 1, bar: 2 });
+    test('[object Object\u005c', { foo: 1, bar: 2 });
+    test('[object Object\u005e', { foo: 1, bar: 2 });
 }
 
 try {
-  coercionTest();
+    coercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -260,21 +260,21 @@ number 1
  * comparisons (i.e. all strings "match" an undefined match string).
  */
 
-print("no that");
+print('no that');
 
 function noThatTest() {
-  function test(x) {
-    var t = String.prototype.localeCompare.call(x);
-    print(typeof t, t);
-  }
+    function test(x) {
+        var t = String.prototype.localeCompare.call(x);
+        print(typeof t, t);
+    }
 
-  test("undefined");
-  test("undefinec");
-  test("undefinee");
+    test('undefined');
+    test('undefinec');
+    test('undefinee');
 }
 
 try {
-  noThatTest();
+    noThatTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

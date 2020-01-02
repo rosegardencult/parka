@@ -22,23 +22,23 @@ true
 ===*/
 
 try {
-  print("" < "");
-  print("" <= "");
-  print("" > "");
-  print("" >= "");
-  print("" == "");
-  print("" != "");
-  print("" === "");
-  print("" !== "");
+    print('' < '');
+    print('' <= '');
+    print('' > '');
+    print('' >= '');
+    print('' == '');
+    print('' != '');
+    print('' === '');
+    print('' !== '');
 
-  print("" < "foo");
-  print("" <= "foo");
-  print("" > "foo");
-  print("" >= "foo");
-  print("" == "foo");
-  print("" != "foo");
-  print("" === "foo");
-  print("" !== "foo");
+    print('' < 'foo');
+    print('' <= 'foo');
+    print('' > 'foo');
+    print('' >= 'foo');
+    print('' == 'foo');
+    print('' != 'foo');
+    print('' === 'foo');
+    print('' !== 'foo');
 } catch (e) {
-  print(e);
+    print(e);
 }

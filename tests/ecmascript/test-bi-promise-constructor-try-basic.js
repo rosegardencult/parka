@@ -19,6 +19,6 @@ done
 print(typeof Promise.try);
 print(Promise.try.name);
 print(Promise.try.length);
-print(Test.getPropDescString(Promise, "try"));
+print(Test.getPropDescString(Promise, 'try'));
 
-print("done");
+print('done');

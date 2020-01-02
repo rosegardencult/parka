@@ -10,8 +10,8 @@ TypeError
 
 // Without a module loader, expected result is TypeError.
 try {
-  require("toString");
-  print("never here");
+    require('toString');
+    print('never here');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

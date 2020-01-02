@@ -34,9 +34,11 @@
 
 var n = 1;
 search: while (n < 100) {
-  n++;
+    n++;
 
-  for (var i = 2; i <= Math.sqrt(n); i += 1) if (n % i == 0) continue search;
+    for (var i = 2; i <= Math.sqrt(n); i += 1)
+        if (n % i == 0)
+            continue search;
 
-  print(n);
+     print(n);
 }

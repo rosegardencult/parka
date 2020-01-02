@@ -15,8 +15,8 @@ finalizer executed
 ===*/
 
 this.obj = {};
-Duktape.fin(this.obj, function() {
-  print("finalizer executed");
+Duktape.fin(this.obj, function () {
+    print('finalizer executed');
 });
 
 // this.obj is reachable, finish

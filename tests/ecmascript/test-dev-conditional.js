@@ -4,16 +4,17 @@
 ===*/
 
 try {
-  eval("print(true ? 1 : 2);");
+    eval("print(true ? 1 : 2);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("print(false ? 1 : 2);");
+    eval("print(false ? 1 : 2);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
+
 
 /*===
 SyntaxError
@@ -32,15 +33,15 @@ SyntaxError
  */
 
 try {
-  eval("print(true ? 1,2 : 3);");
+    eval("print(true ? 1,2 : 3);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("print(true ? 1 : 2,3);");
+    eval("print(true ? 1 : 2,3);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -50,9 +51,9 @@ try {
 /* Here comma works as a normal argument separator. */
 
 try {
-  eval("print(true ? 1 : 2, false ? 3 : 4);");
+    eval("print(true ? 1 : 2, false ? 3 : 4);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -73,25 +74,25 @@ G
  */
 
 try {
-  eval("print(true ? true ? 'C' : 'D' : true ? 'F' : 'G');");
+    eval("print(true ? true ? 'C' : 'D' : true ? 'F' : 'G');");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("print(true ? false ? 'C' : 'D' : true ? 'F' : 'G');");
+    eval("print(true ? false ? 'C' : 'D' : true ? 'F' : 'G');");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("print(false ? true ? 'C' : 'D' : true ? 'F' : 'G');");
+    eval("print(false ? true ? 'C' : 'D' : true ? 'F' : 'G');");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("print(false ? true ? 'C' : 'D' : false ? 'F' : 'G');");
+    eval("print(false ? true ? 'C' : 'D' : false ? 'F' : 'G');");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

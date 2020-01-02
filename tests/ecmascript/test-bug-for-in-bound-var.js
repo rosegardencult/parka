@@ -11,27 +11,28 @@
  * left-hand side if it was a register-bound variable.
  */
 
-var arr = ["foo", "bar"];
+var arr = ['foo', 'bar'];
 
 function f() {
-  for (global_iter in arr) {
-    print(global_iter, arr[global_iter]);
-  }
+    for (global_iter in arr) {
+        print(global_iter, arr[global_iter]);
+    }
 }
 
 function g() {
-  var local_iter;
+    var local_iter;
 
-  for (local_iter in arr) {
-    print(local_iter, arr[local_iter]);
-  }
+    for (local_iter in arr) {
+        print(local_iter, arr[local_iter]);
+    }
 }
 
 function h() {
-  for (var local_iter in arr) {
-    print(local_iter, arr[local_iter]);
-  }
+    for (var local_iter in arr) {
+        print(local_iter, arr[local_iter]);
+    }
 }
+
 
 f();
 g();

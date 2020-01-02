@@ -4,10 +4,7 @@
  *  Note: the case for 'f(3)' is duplicated on purpose.
  */
 
-function f(x) {
-  print("f() called with x=" + x);
-  return x;
-}
+function f(x) { print("f() called with x=" + x); return x; }
 
 /*===
 f() called with x=1
@@ -21,17 +18,13 @@ f() called with x=104
 
 /* Basic case without default clauses, match in the middle */
 
-print(
-  eval(
-    "switch (3) {\n" +
-      "  case f(1): f(100);\n" +
-      "  case f(2): f(101);\n" +
-      "  case f(3): f(102);\n" +
-      "  case f(4): f(103);\n" +
-      "  case f(3): f(104);\n" +
-      "}"
-  )
-);
+print(eval("switch (3) {\n" +
+           "  case f(1): f(100);\n" +
+           "  case f(2): f(101);\n" +
+           "  case f(3): f(102);\n" +
+           "  case f(4): f(103);\n" +
+           "  case f(3): f(104);\n" +
+           "}"));
 
 /*===
 f() called with x=1
@@ -45,18 +38,14 @@ f() called with x=104
 
 /* Default clause with a match after the default clause */
 
-print(
-  eval(
-    "switch (3) {\n" +
-      "  case f(1): f(100);\n" +
-      "  case f(2): f(101);\n" +
-      "  default:\n" +
-      "  case f(3): f(102);\n" +
-      "  case f(4): f(103);\n" +
-      "  case f(3): f(104);\n" +
-      "}"
-  )
-);
+print(eval("switch (3) {\n" +
+           "  case f(1): f(100);\n" +
+           "  case f(2): f(101);\n" +
+           "  default:\n" +
+           "  case f(3): f(102);\n" +
+           "  case f(4): f(103);\n" +
+           "  case f(3): f(104);\n" +
+           "}"));
 
 /*===
 f() called with x=1
@@ -70,18 +59,14 @@ f() called with x=104
 
 /* Default clause, with match before default clause */
 
-print(
-  eval(
-    "switch (2) {\n" +
-      "  case f(1): f(100);\n" +
-      "  case f(2): f(101);\n" +
-      "  default:\n" +
-      "  case f(3): f(102);\n" +
-      "  case f(4): f(103);\n" +
-      "  case f(3): f(104);\n" +
-      "}"
-  )
-);
+print(eval("switch (2) {\n" +
+           "  case f(1): f(100);\n" +
+           "  case f(2): f(101);\n" +
+           "  default:\n" +
+           "  case f(3): f(102);\n" +
+           "  case f(4): f(103);\n" +
+           "  case f(3): f(104);\n" +
+           "}"));
 
 /*===
 f() called with x=1
@@ -97,15 +82,11 @@ f() called with x=104
 
 /* Default clause without a match:: */
 
-print(
-  eval(
-    "switch (5) {\n" +
-      "  case f(1): f(100);\n" +
-      "  case f(2): f(101);\n" +
-      "  default: \n" +
-      "  case f(3): f(102);\n" +
-      "  case f(4): f(103);\n" +
-      "  case f(3): f(104);\n" +
-      "}"
-  )
-);
+print(eval("switch (5) {\n" +
+           "  case f(1): f(100);\n" +
+           "  case f(2): f(101);\n" +
+           "  default: \n" +
+           "  case f(3): f(102);\n" +
+           "  case f(4): f(103);\n" +
+           "  case f(3): f(104);\n" +
+           "}"));

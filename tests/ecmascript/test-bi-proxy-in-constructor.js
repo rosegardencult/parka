@@ -9,22 +9,22 @@ BAR
 ===*/
 
 function MyConstructor(x) {
-  this.foo = x;
-  return new Proxy(this, {
-    get: function(targ, key, recv) {
-      var val = targ[key];
-      return typeof val === "string" ? val.toUpperCase() : val;
-    }
-  });
+    this.foo = x;
+    return new Proxy(this, {
+        get: function (targ, key, recv) {
+            var val = targ[key];
+            return (typeof val === 'string' ? val.toUpperCase() : val);
+        }
+    });
 }
 
 function test() {
-  var o = new MyConstructor("bar");
-  print(o.foo);
+    var o = new MyConstructor('bar');
+    print(o.foo);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

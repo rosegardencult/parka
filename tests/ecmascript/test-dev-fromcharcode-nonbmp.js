@@ -23,25 +23,21 @@
 ===*/
 
 function test() {
-  var s = String.fromCharCode(0x10041);
-  print(s.length);
-  print(s.charCodeAt(0));
-  print(Duktape.enc("jx", s));
+    var s = String.fromCharCode(0x10041);
+    print(s.length);
+    print(s.charCodeAt(0));
+    print(Duktape.enc('jx', s));
 
-  var s = String.fromCharCode(
-    0xffffffff,
-    0xdeadbeef,
-    0x123456789 /* over 32-bit */
-  );
-  print(s.length);
-  print(s.charCodeAt(0));
-  print(s.charCodeAt(1));
-  print(s.charCodeAt(2));
-  print(Duktape.enc("jx", s));
+    var s = String.fromCharCode(0xffffffff, 0xdeadbeef, 0x123456789 /* over 32-bit */);
+    print(s.length);
+    print(s.charCodeAt(0));
+    print(s.charCodeAt(1));
+    print(s.charCodeAt(2));
+    print(Duktape.enc('jx', s));
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

@@ -11,16 +11,18 @@
 ===*/
 
 function f_basic1() {
-  var x;
+    var x
 
-  // parsed as "x = 1 + 2 + 3 + 4;"
-  x = 1 + 2 + 3 + 4;
-  print(x);
+    // parsed as "x = 1 + 2 + 3 + 4;"
+    x = 1 + 2 +
+        3 + 4
+    print(x)
 
-  // parsed as "x = 2 + 3 + 4 + 5;", because must parse longest
-  // possible valid expression
-  x = 2 + 3 + 4 + 5;
-  print(x);
+    // parsed as "x = 2 + 3 + 4 + 5;", because must parse longest
+    // possible valid expression
+    x = 2 + 3
+        + 4 + 5
+    print(x)
 }
 
 f_basic1();
@@ -31,9 +33,7 @@ f_basic1();
 
 // semicolon inserted at end of block, offending token is '}'
 // rule 1 of E5 Section 7.9.1
-function f_basic2() {
-  return 123;
-}
+function f_basic2() { return 123 }
 
 print(f_basic2());
 
@@ -43,9 +43,7 @@ print(f_basic2());
 
 // semicolon inserted at end of input
 // rule 2 of E5 Section 7.9.1
-function f_basic3() {
-  return eval("234");
-}
+function f_basic3() { return eval("234"); }
 
 print(f_basic3());
 
@@ -70,137 +68,134 @@ var x = 10;
 var y = 20;
 
 function f_postinc() {
-  print(x, y);
+    print(x, y);
 
-  // interpreted as "x; ++y;"
-  x;
-  ++y;
+    // interpreted as "x; ++y;"
+    x
+    ++y
 
-  print("->", x, y);
+    print('->', x, y);
 
-  // interpreted as "x++; y;"
-  x++;
-  y;
+    // interpreted as "x++; y;"
+    x++
+    y
 
-  print("->", x, y);
+    print('->', x, y);
 }
 
 function f_postdec() {
-  print(x, y);
+    print(x, y);
 
-  // interpreted as "x; --y;"
-  x;
-  --y;
+    // interpreted as "x; --y;"
+    x
+    --y
 
-  print("->", x, y);
+    print('->', x, y);
 
-  // interpreted as "x--; y;"
-  x--;
-  y;
+    // interpreted as "x--; y;"
+    x--
+    y
 
-  print("->", x, y);
+    print('->', x, y);
 }
 
 function f_continue() {
-  var done = false;
+    var done = false;
 
-  outer: for (;;) {
-    if (done) {
-      print("return from outer");
-      return;
-    }
-
+    outer:
     for (;;) {
-      if (done) {
-        print("return from inner");
-        return;
-      }
-      done = true;
+        if (done) {
+            print('return from outer');
+            return;
+        }
 
-      // interpreted as 'continue; outer;'
-      // continues inner loop -> exits from inner
-      // ('continue outer' would exit from outer)
-      continue;
-      outer;
+        for (;;) {
+            if (done) {
+                print('return from inner');
+                return;
+            }
+            done = true;
+
+            // interpreted as 'continue; outer;'
+            // continues inner loop -> exits from inner
+            // ('continue outer' would exit from outer)
+            continue
+            outer
+        }
     }
-  }
 }
 
 function f_break() {
-  outer: for (;;) {
+    outer:
     for (;;) {
-      // interpreted as 'break: outer'
-      break;
-      outer;
+        for (;;) {
+            // interpreted as 'break: outer'
+            break
+            outer
+        }
+
+        print('return from inner');
+        return;
     }
 
-    print("return from inner");
-    return;
-  }
-
-  print("return from outer");
+    print('return from outer');
 }
 
 function f_return() {
-  /* interpreted as "return; 123;" */
-  return;
-  123;
+    /* interpreted as "return; 123;" */
+    return
+    123;
 }
 
 /* Note: there is no empty variant for 'throw' (unlike for return, break,
  * and continue), so a line break between throw and its value is a
  * SyntaxError.
  */
-var src_throw =
-  "function() {\n" +
-  "    try {\n" +
-  "        // interpreted as 'throw; 123' instead of 'throw 123'\n" +
-  "        throw\n" +
-  "        123\n" +
-  "    } catch(e) {\n" +
-  "        print(e);\n" +
-  "    }\n" +
-  "}";
+var src_throw = "function() {\n" +
+                "    try {\n" +
+                "        // interpreted as 'throw; 123' instead of 'throw 123'\n" +
+                "        throw\n" +
+                "        123\n" +
+                "    } catch(e) {\n" +
+                "        print(e);\n" +
+                "    }\n" +
+                "}";
 
 try {
-  x = 10;
-  y = 20;
-  f_postinc();
+    x = 10; y = 20; f_postinc();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  x = 10;
-  y = 20;
-  f_postdec();
+    x = 10; y = 20; f_postdec();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  f_continue();
+    f_continue();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  f_break();
+    f_break();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(f_return());
+    print(f_return());
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  var f_throw = eval(src_throw);
-  f_throw();
+    var f_throw = eval(src_throw);
+    f_throw();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -213,15 +208,15 @@ SyntaxError
  */
 
 try {
-  eval("a+b\n++");
+    eval("a+b\n++");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("a+b\n--");
+    eval("a+b\n--");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /* XXX: check for completeness */

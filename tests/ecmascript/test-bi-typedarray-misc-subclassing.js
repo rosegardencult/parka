@@ -26,35 +26,33 @@ false
 ===*/
 
 function subarrayPrototypeInheritanceTest() {
-  var buf = new ArrayBuffer(16);
+    var buf = new ArrayBuffer(16);
 
-  // Custom prototype inherits from Uint32Array.prototype.
-  var proto = {
-    name: "MyUint32Array",
-    toString: function() {
-      return "MyBuffer";
-    }
-  };
-  Object.setPrototypeOf(proto, Uint32Array.prototype);
+    // Custom prototype inherits from Uint32Array.prototype.
+    var proto = {
+        name: 'MyUint32Array',
+        toString: function () { return 'MyBuffer'; }
+    };
+    Object.setPrototypeOf(proto, Uint32Array.prototype);
 
-  var v1 = new Uint32Array();
-  Object.setPrototypeOf(v1, proto);
-  print(typeof v1);
-  print(Object.prototype.toString.call(v1));
-  print(String(v1));
-  print(v1.name);
-  print(Object.getPrototypeOf(v1) === proto);
+    var v1 = new Uint32Array();
+    Object.setPrototypeOf(v1, proto);
+    print(typeof v1);
+    print(Object.prototype.toString.call(v1));
+    print(String(v1));
+    print(v1.name);
+    print(Object.getPrototypeOf(v1) === proto);
 
-  var v2 = v1.subarray(0);
-  print(typeof v2);
-  print(Object.prototype.toString.call(v2));
-  print(String(v2));
-  print(v2.name);
-  print(Object.getPrototypeOf(v2) === proto);
+    var v2 = v1.subarray(0);
+    print(typeof v2);
+    print(Object.prototype.toString.call(v2));
+    print(String(v2));
+    print(v2.name);
+    print(Object.getPrototypeOf(v2) === proto);
 }
 
 try {
-  subarrayPrototypeInheritanceTest();
+    subarrayPrototypeInheritanceTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

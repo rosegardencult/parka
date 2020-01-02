@@ -8,28 +8,28 @@
 ===*/
 
 function test() {
-  var bar = 234;
-  var obj;
+    var bar = 234;
+    var obj;
 
-  obj = {
-    foo: 123,
-    Math,
-    bar,
-    Math
-  };
-  print(JSON.stringify(obj));
+    obj = {
+        foo: 123,
+        Math,
+        bar,
+        Math
+    };
+    print(JSON.stringify(obj));
 
-  obj = {
-    foo: 123,
-    Math,
-    bar,
-    Math: 987
-  };
-  print(JSON.stringify(obj));
+    obj = {
+        foo: 123,
+        Math,
+        bar,
+        Math: 987
+    };
+    print(JSON.stringify(obj));
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

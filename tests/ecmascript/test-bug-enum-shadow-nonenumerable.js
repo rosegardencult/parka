@@ -27,68 +27,55 @@ child enums "prop": false
 
 /* Simple object case */
 function test1() {
-  var x = {};
-  var y = Object.create(x);
+    var x = {};
+    var y = Object.create(x);
 
-  Object.defineProperty(x, "prop", {
-    value: "foo",
-    writable: true,
-    enumerable: true,
-    configurable: false
-  });
+    Object.defineProperty(x, 'prop', {
+        value: 'foo', writable: true, enumerable: true, configurable: false
+    });
 
-  Object.defineProperty(y, "prop", {
-    value: "bar",
-    writable: true,
-    enumerable: false,
-    configurable: false
-  });
+    Object.defineProperty(y, 'prop', {
+        value: 'bar', writable: true, enumerable: false, configurable: false
+    });
 
-  print(x.prop);
-  print(y.prop);
+    print(x.prop);
+    print(y.prop);
 
-  var hasProp = false;
-  for (var name in y) {
-    if (name === "prop") {
-      hasProp = true;
+    var hasProp = false;
+    for (var name in y) {
+        if (name === 'prop') { hasProp = true; }
     }
-  }
-  print('y enums "prop":', hasProp);
+    print('y enums "prop":', hasProp);
 }
 
 /* Function case */
 function test2() {
-  var proto = { prop: "foo" };
-  var constructor = function() {};
-  constructor.prototype = proto;
+    var proto = { prop: 'foo' };
+    var constructor = function () {};
+    constructor.prototype = proto;
 
-  var child = new constructor();
-  Object.defineProperty(child, "prop", {
-    value: "bar",
-    writable: true,
-    enumerable: false,
-    configurable: false
-  });
+    var child = new constructor();
+    Object.defineProperty(child, 'prop', {
+        value: 'bar', writable: true, enumerable: false, configurable: false
+    });
 
-  var hasProp = false;
-  for (var name in child) {
-    if (name === "prop") {
-      hasProp = true;
+    var hasProp = false;
+    for (var name in child) {
+        if (name === 'prop') { hasProp = true; }
     }
-  }
-  print('child enums "prop":', hasProp);
+    print('child enums "prop":', hasProp);
 }
 
-print("test1");
+print('test1');
 try {
-  test1();
+    test1();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
-print("test2");
+print('test2');
 try {
-  test2();
+    test2();
 } catch (e) {
-  print(e);
+    print(e);
 }

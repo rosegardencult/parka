@@ -8,88 +8,80 @@
 
 // XXX: util
 function formatValue(v) {
-  if (typeof v === "function") {
-    // avoid implementation dependent string formatting
-    if (v.funcName) {
-      return "[function " + v.funcName + "]";
-    } else {
-      return Object.prototype.toString.call(v);
+    if (typeof v === 'function') {
+        // avoid implementation dependent string formatting
+        if (v.funcName) {
+            return '[function ' + v.funcName + ']';
+        } else {
+            return Object.prototype.toString.call(v);
+        }
     }
-  }
-  if (typeof v === "number") {
-    if (v === 0) {
-      if (1 / v === Number.NEGATIVE_INFINITY) {
-        // format negative zero specially to detect them in the output
-        return "-0";
-      }
+    if (typeof v === 'number') {
+        if (v === 0) {
+            if (1/v === Number.NEGATIVE_INFINITY) {
+                // format negative zero specially to detect them in the output
+                return '-0';
+            }
+        }
     }
-  }
-  return String(v);
+    return String(v);
 }
 
 function getDesc(obj, prop) {
-  var pd;
+    var pd;
 
-  if (typeof obj !== "object" || obj === null) {
-    // valueOf()
-    return prop + ": non-object (" + Object.prototype.toString.call(obj) + ")";
-  }
+    if (typeof obj !== 'object' || obj === null) {
+        // valueOf()
+        return prop + ': non-object (' + Object.prototype.toString.call(obj) + ')';
+    }
 
-  // ToString(prop) coercion
-  pd = Object.getOwnPropertyDescriptor(obj, prop);
+    // ToString(prop) coercion
+    pd = Object.getOwnPropertyDescriptor(obj, prop);
 
-  if (pd === undefined) {
-    // valueOf()
-    return prop + ": undefined";
-  }
+    if (pd === undefined) {
+        // valueOf()
+        return prop + ': undefined';
+    }
 
-  // ToPrimitive(prop) coercion without hint -> valueOf()
-  return (
-    prop +
-    ": " +
-    "value=" +
-    formatValue(pd.value) +
-    ", writable=" +
-    formatValue(pd.writable) +
-    ", enumerable=" +
-    formatValue(pd.enumerable) +
-    ", configurable=" +
-    formatValue(pd.configurable) +
-    ", typeof(get)=" +
-    formatValue(pd.get) +
-    ", typeof(set)=" +
-    formatValue(pd.set)
-  );
+    // ToPrimitive(prop) coercion without hint -> valueOf()
+    return prop + ': ' +
+           'value=' + formatValue(pd.value) +
+           ', writable=' + formatValue(pd.writable) +
+           ', enumerable=' + formatValue(pd.enumerable) +
+           ', configurable=' + formatValue(pd.configurable) +
+           ', typeof(get)=' + formatValue(pd.get) +
+           ', typeof(set)=' + formatValue(pd.set);
 }
 
 function printDesc(obj, prop) {
-  print(getDesc(obj, prop));
+    print(getDesc(obj, prop));
 }
 
 function testDef(obj, prop, attrs, arg_count) {
-  var t;
+    var t;
 
-  // coercion side effects
-  print("pre:  " + getDesc(obj, prop));
+    // coercion side effects
+    print('pre:  ' + getDesc(obj, prop));
 
-  try {
-    if (arg_count === 0) {
-      t = Object.defineProperty();
-    } else if (arg_count === 1) {
-      t = Object.defineProperty(obj);
-    } else if (arg_count === 2) {
-      t = Object.defineProperty(obj, prop);
-    } else {
-      t = Object.defineProperty(obj, prop, attrs);
+    try {
+        if (arg_count === 0) {
+            t = Object.defineProperty();
+        } else if (arg_count === 1) {
+            t = Object.defineProperty(obj);
+        } else if (arg_count === 2) {
+            t = Object.defineProperty(obj, prop);
+        } else {
+            t = Object.defineProperty(obj, prop, attrs);
+        }
+        print(typeof t, formatValue(t));
+    } catch (e) {
+        print(e.name);
     }
-    print(typeof t, formatValue(t));
-  } catch (e) {
-    print(e.name);
-  }
 
-  // coercion side effects
-  print("post: " + getDesc(obj, prop));
+    // coercion side effects
+    print('post: ' + getDesc(obj, prop));
 }
+
 
 /*===
 coercion
@@ -143,72 +135,51 @@ post: bar: non-object ([object Number])
 
 /* Coercion of 'this' and property name. */
 
-print("coercion");
+print('coercion');
 
 function coercionTest() {
-  var test = testDef;
+    var test = testDef;
 
-  // Type(O) checks
+    // Type(O) checks
 
-  test(undefined, undefined, undefined, 0);
-  test(undefined, "foo", {});
-  test(null, "foo", {});
-  test(true, "foo", {});
-  test(false, "foo", {});
-  test(123, "foo", {});
-  test("foo", "foo", {});
-  test([1, 2], "foo", {});
-  test({ foo: 1, bar: 2 }, "foo", {});
+    test(undefined, undefined, undefined, 0);
+    test(undefined, 'foo', {});
+    test(null, 'foo', {});
+    test(true, 'foo', {});
+    test(false, 'foo', {});
+    test(123, 'foo', {});
+    test('foo', 'foo', {});
+    test([1,2], 'foo', {});
+    test({ foo: 1, bar: 2 }, 'foo', {});
 
-  // ToString(P)
+    // ToString(P)
 
-  obj = {};
-  test(
-    obj,
-    {
-      toString: function() {
-        print("toString() prop");
-        return "foo";
-      },
-      valueOf: function() {
-        print("valueOf() prop");
-        return "bar";
-      }
-    },
-    { value: 1 },
-    3
-  );
-  printDesc(obj, "foo");
-  printDesc(obj, "bar");
+    obj = {};
+    test(obj, {
+        toString: function() { print('toString() prop'); return 'foo'; },
+        valueOf: function() { print('valueOf() prop'); return 'bar'; }
+    }, { value: 1 }, 3);
+    printDesc(obj, 'foo');
+    printDesc(obj, 'bar');
 
-  // ToString(123) -> '123'
+    // ToString(123) -> '123'
 
-  obj = {};
-  test(obj, 123, { value: 2 });
-  printDesc(obj, "123");
+    obj = {};
+    test(obj, 123, { value: 2 });
+    printDesc(obj, '123');
 
-  // Type(O) check precedes ToString(P) coercion
+    // Type(O) check precedes ToString(P) coercion
 
-  test(
-    123,
-    {
-      toString: function() {
-        print("toString() prop");
-        return "foo";
-      },
-      valueOf: function() {
-        print("valueOf() prop");
-        return "bar";
-      }
-    },
-    { value: 1 }
-  );
+    test(123, {
+        toString: function() { print('toString() prop'); return 'foo'; },
+        valueOf: function() { print('valueOf() prop'); return 'bar'; }
+    }, { value: 1 });
 }
 
 try {
-  coercionTest();
+    coercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -366,186 +337,90 @@ post: foo: value=foo, writable=true, enumerable=false, configurable=true, typeof
  * Detecting invalid descriptors.  E5.1 Section 8.10.5.
  */
 
-print("topropertydescriptor");
+print('topropertydescriptor');
 
 function toPropertyDescriptorTest() {
-  function test(desc) {
-    var obj = {};
-    testDef(obj, "foo", desc);
-  }
+    function test(desc) {
+        var obj = {};
+        testDef(obj, 'foo', desc);
+    }
 
-  // TypeError if not object
-  test(undefined);
-  test(null);
-  test(true);
-  test(false);
-  test(123);
-  test("foo");
+    // TypeError if not object
+    test(undefined);
+    test(null);
+    test(true);
+    test(false);
+    test(123);
+    test('foo');
 
-  // Steps 3-8: ToBoolean() coercions.
-  //
-  // Note that ToBoolean() has no side effects so we can't verify that
-  // it happens except by checking the resulting descriptor results.
-  //
-  //   undefined, null, NaN, +/-0, '' -> false
-  //   otherwise -> true
+    // Steps 3-8: ToBoolean() coercions.
+    //
+    // Note that ToBoolean() has no side effects so we can't verify that
+    // it happens except by checking the resulting descriptor results.
+    //
+    //   undefined, null, NaN, +/-0, '' -> false
+    //   otherwise -> true
 
-  test({
-    value: "foo",
-    writable: undefined,
-    enumerable: null,
-    configurable: Number.NaN
-  });
-  test({ value: "foo", writable: -0, enumerable: +0, configurable: "" });
-  test({
-    value: "foo",
-    writable: Number.NEGATIVE_INFINITY,
-    enumerable: Number.POSITIVE_INFINITY,
-    configurable: 1
-  });
-  test({ value: "foo", writable: true, enumerable: false, configurable: "x" });
-  test({ value: "foo", writable: "\u0000", enumerable: {}, configurable: [] });
-  test({
-    value: "foo",
-    writable: function() {},
-    enumerable: /foo/,
-    configurable: new Date()
-  });
+    test({ value: 'foo', writable: undefined, enumerable: null, configurable: Number.NaN });
+    test({ value: 'foo', writable: -0, enumerable: +0, configurable: '' });
+    test({ value: 'foo', writable: Number.NEGATIVE_INFINITY, enumerable: Number.POSITIVE_INFINITY, configurable: 1 });
+    test({ value: 'foo', writable: true, enumerable: false, configurable: 'x' });
+    test({ value: 'foo', writable: '\u0000', enumerable: {}, configurable: [] });
+    test({ value: 'foo', writable: function(){}, enumerable: /foo/, configurable: new Date() });
 
-  // Step 5: no Value coercion.
+    // Step 5: no Value coercion.
 
-  test({
-    value: undefined,
-    writable: true,
-    enumerable: true,
-    configurable: true
-  });
-  test({ value: null, writable: true, enumerable: true, configurable: true });
-  test({ value: true, writable: true, enumerable: true, configurable: true });
-  test({ value: false, writable: true, enumerable: true, configurable: true });
-  test({ value: 123, writable: true, enumerable: true, configurable: true });
-  test({ value: "foo", writable: true, enumerable: true, configurable: true });
-  test({ value: [1, 2], writable: true, enumerable: true, configurable: true });
-  test({
-    value: { foo: 1, bar: 2 },
-    writable: true,
-    enumerable: true,
-    configurable: true
-  });
-  test({
-    value: function() {},
-    writable: true,
-    enumerable: true,
-    configurable: true
-  });
+    test({ value: undefined, writable: true, enumerable: true, configurable: true });
+    test({ value: null, writable: true, enumerable: true, configurable: true });
+    test({ value: true, writable: true, enumerable: true, configurable: true });
+    test({ value: false, writable: true, enumerable: true, configurable: true });
+    test({ value: 123, writable: true, enumerable: true, configurable: true });
+    test({ value: 'foo', writable: true, enumerable: true, configurable: true });
+    test({ value: [1,2], writable: true, enumerable: true, configurable: true });
+    test({ value: { foo: 1, bar: 2 }, writable: true, enumerable: true, configurable: true });
+    test({ value: function(){}, writable: true, enumerable: true, configurable: true });
 
-  // Steps 7-8: get/set are checked to be callable.
+    // Steps 7-8: get/set are checked to be callable.
 
-  test({
-    get: undefined,
-    set: function() {},
-    enumerable: true,
-    configurable: true
-  });
-  test({ get: null, set: function() {}, enumerable: true, configurable: true });
-  test({ get: true, set: function() {}, enumerable: true, configurable: true });
-  test({
-    get: false,
-    set: function() {},
-    enumerable: true,
-    configurable: true
-  });
-  test({ get: 123, set: function() {}, enumerable: true, configurable: true });
-  test({
-    get: "foo",
-    set: function() {},
-    enumerable: true,
-    configurable: true
-  });
-  test({
-    get: [1, 2],
-    set: function() {},
-    enumerable: true,
-    configurable: true
-  });
-  test({
-    get: { foo: 1, bar: 2 },
-    set: function() {},
-    enumerable: true,
-    configurable: true
-  });
-  test({
-    get: function() {},
-    set: function() {},
-    enumerable: true,
-    configurable: true
-  });
+    test({ get: undefined, set: function(){}, enumerable: true, configurable: true });
+    test({ get: null, set: function(){}, enumerable: true, configurable: true });
+    test({ get: true, set: function(){}, enumerable: true, configurable: true });
+    test({ get: false, set: function(){}, enumerable: true, configurable: true });
+    test({ get: 123, set: function(){}, enumerable: true, configurable: true });
+    test({ get: 'foo', set: function(){}, enumerable: true, configurable: true });
+    test({ get: [1,2], set: function(){}, enumerable: true, configurable: true });
+    test({ get: { foo: 1, bar: 2 }, set: function(){}, enumerable: true, configurable: true });
+    test({ get: function(){}, set: function(){}, enumerable: true, configurable: true });
 
-  test({
-    set: undefined,
-    get: function() {},
-    enumerable: true,
-    configurable: true
-  });
-  test({ set: null, get: function() {}, enumerable: true, configurable: true });
-  test({ set: true, get: function() {}, enumerable: true, configurable: true });
-  test({
-    set: false,
-    get: function() {},
-    enumerable: true,
-    configurable: true
-  });
-  test({ set: 123, get: function() {}, enumerable: true, configurable: true });
-  test({
-    set: "foo",
-    get: function() {},
-    enumerable: true,
-    configurable: true
-  });
-  test({
-    set: [1, 2],
-    get: function() {},
-    enumerable: true,
-    configurable: true
-  });
-  test({
-    set: { foo: 1, bar: 2 },
-    get: function() {},
-    enumerable: true,
-    configurable: true
-  });
-  test({
-    set: function() {},
-    get: function() {},
-    enumerable: true,
-    configurable: true
-  });
+    test({ set: undefined, get: function(){}, enumerable: true, configurable: true });
+    test({ set: null, get: function(){}, enumerable: true, configurable: true });
+    test({ set: true, get: function(){}, enumerable: true, configurable: true });
+    test({ set: false, get: function(){}, enumerable: true, configurable: true });
+    test({ set: 123, get: function(){}, enumerable: true, configurable: true });
+    test({ set: 'foo', get: function(){}, enumerable: true, configurable: true });
+    test({ set: [1,2], get: function(){}, enumerable: true, configurable: true });
+    test({ set: { foo: 1, bar: 2 }, get: function(){}, enumerable: true, configurable: true });
+    test({ set: function(){}, get: function(){}, enumerable: true, configurable: true });
 
-  // Step 10, set/get vs. writable/value conflicts
-  test({ set: function() {}, writable: true });
-  test({ set: function() {}, value: 1 });
-  test({ set: function() {}, writable: true, value: 1 });
-  test({ get: function() {}, writable: true });
-  test({ get: function() {}, value: 1 });
-  test({ get: function() {}, writable: true, value: 1 });
-  test({ get: function() {}, set: function() {}, writable: true });
-  test({ get: function() {}, set: function() {}, value: 1 });
-  test({ get: function() {}, set: function() {}, writable: true, value: 1 });
+    // Step 10, set/get vs. writable/value conflicts
+    test({ set: function(){}, writable: true });
+    test({ set: function(){}, value: 1 });
+    test({ set: function(){}, writable: true, value: 1 });
+    test({ get: function(){}, writable: true });
+    test({ get: function(){}, value: 1 });
+    test({ get: function(){}, writable: true, value: 1 });
+    test({ get: function(){}, set: function(){}, writable: true });
+    test({ get: function(){}, set: function(){}, value: 1 });
+    test({ get: function(){}, set: function(){}, writable: true, value: 1 });
 
-  // Additional properties are ignored
-  test({
-    value: "foo",
-    writable: true,
-    enumerable: false,
-    configurable: true,
-    unknown: "property"
-  });
+    // Additional properties are ignored
+    test({ value: 'foo', writable: true, enumerable: false, configurable: true, unknown: 'property' });
 }
 
 try {
-  toPropertyDescriptorTest();
+    toPropertyDescriptorTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -558,18 +433,18 @@ true
  * in Object.prototype.
  */
 
-print("return value");
+print('return value');
 
 function returnValueTest() {
-  var obj = {};
+    var obj = {};
 
-  print(Object.defineProperty(obj, "foo", { value: 1 }) === obj);
+    print(Object.defineProperty(obj, 'foo', { value: 1 }) === obj);
 }
 
 try {
-  returnValueTest();
+    returnValueTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -582,21 +457,21 @@ foo: undefined
 
 /* Steps 1-3: no current value, object is not extensible. */
 
-print("no current, not extensible");
+print('no current, not extensible');
 
 function noCurrentNotExtensibleTest() {
-  var obj = {};
+    var obj = {};
 
-  Object.seal(obj);
+    Object.seal(obj);
 
-  testDef(obj, "foo", { value: 1 });
-  printDesc(obj, "foo");
+    testDef(obj, 'foo', { value: 1 });
+    printDesc(obj, 'foo');
 }
 
 try {
-  noCurrentNotExtensibleTest();
+    noCurrentNotExtensibleTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -607,25 +482,25 @@ post: foo: value=1, writable=false, enumerable=false, configurable=false, typeof
 foo: value=1, writable=false, enumerable=false, configurable=false, typeof(get)=undefined, typeof(set)=undefined
 ===*/
 
-print("no current, is extensible");
+print('no current, is extensible');
 
 /* Steps 1-4: no current value, object is extensible. */
 
 function noCurrentIsExtensibleTest() {
-  var obj = {};
+    var obj = {};
 
-  testDef(obj, "foo", { value: 1 });
+    testDef(obj, 'foo', { value: 1 });
 
-  // All other property attributes (writable, enumerable, configurable)
-  // will have default values, i.e., false
+    // All other property attributes (writable, enumerable, configurable)
+    // will have default values, i.e., false
 
-  printDesc(obj, "foo");
+    printDesc(obj, 'foo');
 }
 
 try {
-  noCurrentIsExtensibleTest();
+    noCurrentIsExtensibleTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -638,24 +513,24 @@ foo: value=1, writable=true, enumerable=true, configurable=true, typeof(get)=und
 
 /* Step 5: has current value, but descriptor is empty. */
 
-print("has current, desc empty");
+print('has current, desc empty');
 
 function hasCurrentDescEmptyTest() {
-  var obj = { foo: 1 };
+    var obj = { foo: 1 };
 
-  testDef(obj, "foo", {});
+    testDef(obj, 'foo', {});
 
-  // No changes; here property attributes will have default values
-  // object literals (i.e. writable, configurable, enumerable are
-  // all true).
+    // No changes; here property attributes will have default values
+    // object literals (i.e. writable, configurable, enumerable are
+    // all true).
 
-  printDesc(obj, "foo");
+    printDesc(obj, 'foo');
 }
 
 try {
-  hasCurrentDescEmptyTest();
+    hasCurrentDescEmptyTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -699,108 +574,50 @@ post: foo: value=undefined, writable=undefined, enumerable=false, configurable=f
  * when compared using SameValue (which distinguishes zero sign).
  */
 
-print("step6");
+print('step6');
 
 function step6Test() {
-  var obj;
+    var obj;
 
-  function fun1() {}
+    function fun1() {
+    }
 
-  function fun2() {}
+    function fun2() {
+    }
 
-  function fun3() {}
+    function fun3() {
+    }
 
-  var test = testDef;
+    var test = testDef;
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    value: +0,
-    writable: false,
-    enumerable: false,
-    configurable: false
-  });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        value: +0, writable: false, enumerable: false, configurable: false
+    });
 
-  test(obj, "foo", {
-    value: +0,
-    writable: false,
-    enumerable: false,
-    configurable: false
-  });
-  test(obj, "foo", {
-    value: -0,
-    writable: false,
-    enumerable: false,
-    configurable: false
-  }); // not allowed
-  test(obj, "foo", {
-    value: +0,
-    writable: true,
-    enumerable: false,
-    configurable: false
-  });
-  test(obj, "foo", {
-    value: +0,
-    writable: false,
-    enumerable: true,
-    configurable: false
-  });
-  test(obj, "foo", {
-    value: +0,
-    writable: false,
-    enumerable: false,
-    configurable: true
-  });
-  test(obj, "foo", {
-    value: +0,
-    writable: "",
-    enumerable: 0,
-    configurable: Number.NaN
-  }); // allowed, coercion happens before actual algorithm
+    test(obj, 'foo', { value: +0, writable: false, enumerable: false, configurable: false });
+    test(obj, 'foo', { value: -0, writable: false, enumerable: false, configurable: false });  // not allowed
+    test(obj, 'foo', { value: +0, writable: true, enumerable: false, configurable: false });
+    test(obj, 'foo', { value: +0, writable: false, enumerable: true, configurable: false });
+    test(obj, 'foo', { value: +0, writable: false, enumerable: false, configurable: true });
+    test(obj, 'foo', { value: +0, writable: '', enumerable: 0, configurable: Number.NaN });  // allowed, coercion happens before actual algorithm
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    get: fun1,
-    set: fun2,
-    enumerable: false,
-    configurable: false
-  });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        get: fun1, set: fun2, enumerable: false, configurable: false
+    });
 
-  test(obj, "foo", {
-    get: fun1,
-    set: fun2,
-    enumerable: false,
-    configurable: false
-  });
-  test(obj, "foo", {
-    get: fun3,
-    set: fun2,
-    enumerable: false,
-    configurable: false
-  });
-  test(obj, "foo", {
-    get: fun1,
-    set: fun3,
-    enumerable: false,
-    configurable: false
-  });
-  test(obj, "foo", {
-    get: fun1,
-    set: fun2,
-    enumerable: true,
-    configurable: false
-  });
-  test(obj, "foo", {
-    get: fun1,
-    set: fun2,
-    enumerable: false,
-    configurable: true
-  });
+    test(obj, 'foo', { get: fun1, set: fun2, enumerable: false, configurable: false });
+    test(obj, 'foo', { get: fun3, set: fun2, enumerable: false, configurable: false });
+    test(obj, 'foo', { get: fun1, set: fun3, enumerable: false, configurable: false });
+    test(obj, 'foo', { get: fun1, set: fun2, enumerable: true, configurable: false });
+    test(obj, 'foo', { get: fun1, set: fun2, enumerable: false, configurable: true });
 }
 
 try {
-  step6Test();
+    step6Test();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -836,58 +653,46 @@ post: foo: value=undefined, writable=undefined, enumerable=true, configurable=fa
  * (7.b) change enumerability status.
  */
 
-print("step7");
+print('step7');
 
 function step7Test() {
-  var obj;
+    var obj;
 
-  var test = testDef;
+    var test = testDef;
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    value: 1,
-    writable: true,
-    enumerable: false,
-    configurable: false
-  });
-  test(obj, "foo", { configurable: true });
-  test(obj, "foo", { enumerable: true });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        value: 1, writable: true, enumerable: false, configurable: false
+    });
+    test(obj, 'foo', { configurable: true });
+    test(obj, 'foo', { enumerable: true });
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    value: 1,
-    writable: true,
-    enumerable: true,
-    configurable: false
-  });
-  test(obj, "foo", { configurable: true });
-  test(obj, "foo", { enumerable: false });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        value: 1, writable: true, enumerable: true, configurable: false
+    });
+    test(obj, 'foo', { configurable: true });
+    test(obj, 'foo', { enumerable: false });
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    get: function() {},
-    set: function() {},
-    enumerable: false,
-    configurable: false
-  });
-  test(obj, "foo", { configurable: true });
-  test(obj, "foo", { enumerable: true });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        get: function(){}, set: function(){}, enumerable: false, configurable: false
+    });
+    test(obj, 'foo', { configurable: true });
+    test(obj, 'foo', { enumerable: true });
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    get: function() {},
-    set: function() {},
-    enumerable: true,
-    configurable: false
-  });
-  test(obj, "foo", { configurable: true });
-  test(obj, "foo", { enumerable: false });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        get: function(){}, set: function(){}, enumerable: true, configurable: false
+    });
+    test(obj, 'foo', { configurable: true });
+    test(obj, 'foo', { enumerable: false });
 }
 
 try {
-  step7Test();
+    step7Test();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -927,61 +732,46 @@ post: foo: value=1, writable=true, enumerable=true, configurable=false, typeof(g
  * have the same values -- but that case is caught by step 6.
  */
 
-print("step8");
+print('step8');
 
 function step8Test() {
-  var obj;
+    var obj;
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    value: 1,
-    writable: true,
-    enumerable: true,
-    configurable: true
-  });
-  testDef(obj, "foo", { configurable: false });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        value: 1, writable: true, enumerable: true, configurable: true
+    });
+    testDef(obj, 'foo', { configurable: false });
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    value: 1,
-    writable: true,
-    enumerable: true,
-    configurable: true
-  });
-  testDef(obj, "foo", { enumerable: false });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        value: 1, writable: true, enumerable: true, configurable: true
+    });
+    testDef(obj, 'foo', { enumerable: false });
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    value: 1,
-    writable: true,
-    enumerable: false,
-    configurable: true
-  });
-  testDef(obj, "foo", { enumerable: true });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        value: 1, writable: true, enumerable: false, configurable: true
+    });
+    testDef(obj, 'foo', { enumerable: true });
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    value: 1,
-    writable: true,
-    enumerable: true,
-    configurable: true
-  });
-  testDef(obj, "foo", { configurable: false, enumerable: false });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        value: 1, writable: true, enumerable: true, configurable: true
+    });
+    testDef(obj, 'foo', { configurable: false, enumerable: false });
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    value: 1,
-    writable: true,
-    enumerable: false,
-    configurable: true
-  });
-  testDef(obj, "foo", { configurable: false, enumerable: true });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        value: 1, writable: true, enumerable: false, configurable: true
+    });
+    testDef(obj, 'foo', { configurable: false, enumerable: true });
 }
 
 try {
-  step8Test();
+    step8Test();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -1016,104 +806,70 @@ post: foo: value=123, writable=false, enumerable=true, configurable=true, typeof
  * If existing property non-configurable, always rejected.
  */
 
-print("step9");
+print('step9');
 
 function step9Test() {
-  var obj;
+    var obj;
 
-  // non-configurable cases
+    // non-configurable cases
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    value: 1,
-    writable: true,
-    enumerable: true,
-    configurable: false
-  });
-  testDef(obj, "foo", { get: function() {}, set: function() {} });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        value: 1, writable: true, enumerable: true, configurable: false
+    });
+    testDef(obj, 'foo', { get: function(){}, set: function(){} });
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    get: function() {},
-    set: function() {},
-    enumerable: true,
-    configurable: false
-  });
-  testDef(obj, "foo", { value: 1 });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        get: function(){}, set: function(){}, enumerable: true, configurable: false
+    });
+    testDef(obj, 'foo', { value: 1 });
 
-  // configurable case: all attributes specified
+    // configurable case: all attributes specified
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    value: 1,
-    writable: true,
-    enumerable: true,
-    configurable: true
-  });
-  testDef(obj, "foo", {
-    get: function() {},
-    set: function() {},
-    enumerable: false,
-    configurable: false
-  });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        value: 1, writable: true, enumerable: true, configurable: true
+    });
+    testDef(obj, 'foo', { get: function(){}, set: function(){}, enumerable: false, configurable: false });
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    get: function() {},
-    set: function() {},
-    enumerable: true,
-    configurable: true
-  });
-  testDef(obj, "foo", {
-    value: 1,
-    writable: true,
-    enumerable: false,
-    configurable: false
-  });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        get: function(){}, set: function(){}, enumerable: true, configurable: true
+    });
+    testDef(obj, 'foo', { value: 1, writable: true, enumerable: false, configurable: false });
 
-  // configurable case: attribute defaults
+    // configurable case: attribute defaults
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    value: 1,
-    writable: true,
-    enumerable: true,
-    configurable: true
-  });
-  testDef(obj, "foo", { get: function() {} }); // set defaults to undefined
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        value: 1, writable: true, enumerable: true, configurable: true
+    });
+    testDef(obj, 'foo', { get: function(){} });  // set defaults to undefined
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    value: 1,
-    writable: true,
-    enumerable: true,
-    configurable: true
-  });
-  testDef(obj, "foo", { set: function() {} }); // get defaults to undefined
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        value: 1, writable: true, enumerable: true, configurable: true
+    });
+    testDef(obj, 'foo', { set: function(){} });  // get defaults to undefined
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    get: function() {},
-    set: function() {},
-    enumerable: true,
-    configurable: true
-  });
-  testDef(obj, "foo", { writable: true }); // value defaults to undefined
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        get: function(){}, set: function(){}, enumerable: true, configurable: true
+    });
+    testDef(obj, 'foo', { writable: true });  // value defaults to undefined
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    get: function() {},
-    set: function() {},
-    enumerable: true,
-    configurable: true
-  });
-  testDef(obj, "foo", { value: 123 }); // writable defaults to false
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        get: function(){}, set: function(){}, enumerable: true, configurable: true
+    });
+    testDef(obj, 'foo', { value: 123 });  // writable defaults to false
 }
 
 try {
-  step9Test();
+    step9Test();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -1155,123 +911,88 @@ post: foo: value=2, writable=false, enumerable=true, configurable=false, typeof(
  * if new and old values match with SameValue (otherwise reject).
  */
 
-print("step10");
+print('step10');
 
 function step10Test() {
-  var obj;
+    var obj;
 
-  // non-configurable: change from writable to non-writable (allowed)
+    // non-configurable: change from writable to non-writable (allowed)
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    value: 1,
-    writable: true,
-    enumerable: false,
-    configurable: false
-  });
-  testDef(obj, "foo", { writable: false });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        value: 1, writable: true, enumerable: false, configurable: false
+    });
+    testDef(obj, 'foo', { writable: false });
 
-  // non-configurable: attempt to change from non-writable to writable (rejected)
+    // non-configurable: attempt to change from non-writable to writable (rejected)
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    value: 1,
-    writable: false,
-    enumerable: false,
-    configurable: false
-  });
-  testDef(obj, "foo", { writable: true });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        value: 1, writable: false, enumerable: false, configurable: false
+    });
+    testDef(obj, 'foo', { writable: true });
 
-  // non-configurable: value is SameValue (allowed)
+    // non-configurable: value is SameValue (allowed)
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    value: 1,
-    writable: false,
-    enumerable: false,
-    configurable: false
-  });
-  testDef(obj, "foo", { value: 1 });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        value: 1, writable: false, enumerable: false, configurable: false
+    });
+    testDef(obj, 'foo', { value: 1 });
 
-  // non-configurable: value is not SameValue (rejected)
+    // non-configurable: value is not SameValue (rejected)
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    value: 1,
-    writable: false,
-    enumerable: false,
-    configurable: false
-  });
-  testDef(obj, "foo", { value: 2 });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        value: 1, writable: false, enumerable: false, configurable: false
+    });
+    testDef(obj, 'foo', { value: 2 });
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    value: +0,
-    writable: false,
-    enumerable: false,
-    configurable: false
-  });
-  testDef(obj, "foo", { value: -0 }); // rejected
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        value: +0, writable: false, enumerable: false, configurable: false
+    });
+    testDef(obj, 'foo', { value: -0 });  // rejected
 
-  // configurable -> allow all changes
+    // configurable -> allow all changes
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    value: 1,
-    writable: true,
-    enumerable: false,
-    configurable: true
-  });
-  testDef(obj, "foo", { writable: false });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        value: 1, writable: true, enumerable: false, configurable: true
+    });
+    testDef(obj, 'foo', { writable: false });
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    value: 1,
-    writable: true,
-    enumerable: false,
-    configurable: true
-  });
-  testDef(obj, "foo", { enumerable: true });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        value: 1, writable: true, enumerable: false, configurable: true
+    });
+    testDef(obj, 'foo', { enumerable: true });
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    value: 1,
-    writable: true,
-    enumerable: false,
-    configurable: true
-  });
-  testDef(obj, "foo", { configurable: false });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        value: 1, writable: true, enumerable: false, configurable: true
+    });
+    testDef(obj, 'foo', { configurable: false });
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    value: 1,
-    writable: true,
-    enumerable: false,
-    configurable: true
-  });
-  testDef(obj, "foo", { value: 2 });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        value: 1, writable: true, enumerable: false, configurable: true
+    });
+    testDef(obj, 'foo', { value: 2 });
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    value: 1,
-    writable: true,
-    enumerable: false,
-    configurable: true
-  });
-  testDef(obj, "foo", {
-    value: 2,
-    writable: false,
-    enumerable: true,
-    configurable: false
-  }); // all at the same time
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        value: 1, writable: true, enumerable: false, configurable: true
+    });
+    testDef(obj, 'foo', { value: 2, writable: false, enumerable: true, configurable: false }); // all at the same time
 
-  // Note: enumerability changes handled in earlier cases (steps 7-8)
+    // Note: enumerability changes handled in earlier cases (steps 7-8)
 }
 
 try {
-  step10Test();
+    step10Test();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -1322,152 +1043,108 @@ post: foo: value=undefined, writable=undefined, enumerable=true, configurable=fa
  * match existing values with SameValue (otherwise reject).
  */
 
-print("step11");
+print('step11');
 
 function step11Test() {
-  var obj;
+    var obj;
 
-  function f1() {}
-  function f2() {}
-  function f3() {}
+    function f1() { }
+    function f2() { }
+    function f3() { }
 
-  f1.funcName = "f1";
-  f2.funcName = "f2";
-  f3.funcName = "f3";
+    f1.funcName = 'f1';
+    f2.funcName = 'f2';
+    f3.funcName = 'f3';
 
-  // non-configurable: allow get/set if they are the same
+    // non-configurable: allow get/set if they are the same
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    get: f1,
-    set: f2,
-    enumerable: false,
-    configurable: false
-  });
-  testDef(obj, "foo", { set: f2 });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        get: f1, set: f2, enumerable: false, configurable: false
+    });
+    testDef(obj, 'foo', { set: f2 });
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    get: f1,
-    set: f2,
-    enumerable: false,
-    configurable: false
-  });
-  testDef(obj, "foo", { get: f1 });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        get: f1, set: f2, enumerable: false, configurable: false
+    });
+    testDef(obj, 'foo', { get: f1 });
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    get: f1,
-    set: f2,
-    enumerable: false,
-    configurable: false
-  });
-  testDef(obj, "foo", { get: f1, set: f2 });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        get: f1, set: f2, enumerable: false, configurable: false
+    });
+    testDef(obj, 'foo', { get: f1, set: f2 });
 
-  // non-configurable: reject if get/set and not same
+    // non-configurable: reject if get/set and not same
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    get: f1,
-    set: f2,
-    enumerable: false,
-    configurable: false
-  });
-  testDef(obj, "foo", { get: f2 });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        get: f1, set: f2, enumerable: false, configurable: false
+    });
+    testDef(obj, 'foo', { get: f2 });
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    get: f1,
-    set: f2,
-    enumerable: false,
-    configurable: false
-  });
-  testDef(obj, "foo", { set: f1 });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        get: f1, set: f2, enumerable: false, configurable: false
+    });
+    testDef(obj, 'foo', { set: f1 });
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    get: f1,
-    set: f2,
-    enumerable: false,
-    configurable: false
-  });
-  testDef(obj, "foo", { get: f1, set: f3 }); // get OK, set not
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        get: f1, set: f2, enumerable: false, configurable: false
+    });
+    testDef(obj, 'foo', { get: f1, set: f3 });  // get OK, set not
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    get: f1,
-    set: f2,
-    enumerable: false,
-    configurable: false
-  });
-  testDef(obj, "foo", { get: f3, set: f2 }); // set OK, get not
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        get: f1, set: f2, enumerable: false, configurable: false
+    });
+    testDef(obj, 'foo', { get: f3, set: f2 });  // set OK, get not
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    get: f1,
-    set: f2,
-    enumerable: false,
-    configurable: false
-  });
-  testDef(obj, "foo", { get: f3, set: f3 });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        get: f1, set: f2, enumerable: false, configurable: false
+    });
+    testDef(obj, 'foo', { get: f3, set: f3 });
 
-  // configurable: accept all changes
+    // configurable: accept all changes
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    get: f1,
-    set: f2,
-    enumerable: false,
-    configurable: true
-  });
-  testDef(obj, "foo", { get: f3 });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        get: f1, set: f2, enumerable: false, configurable: true
+    });
+    testDef(obj, 'foo', { get: f3 });
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    get: f1,
-    set: f2,
-    enumerable: false,
-    configurable: true
-  });
-  testDef(obj, "foo", { set: f3 });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        get: f1, set: f2, enumerable: false, configurable: true
+    });
+    testDef(obj, 'foo', { set: f3 });
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    get: f1,
-    set: f2,
-    enumerable: false,
-    configurable: true
-  });
-  testDef(obj, "foo", { enumerable: true });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        get: f1, set: f2, enumerable: false, configurable: true
+    });
+    testDef(obj, 'foo', { enumerable: true });
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    get: f1,
-    set: f2,
-    enumerable: false,
-    configurable: true
-  });
-  testDef(obj, "foo", { configurable: false });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        get: f1, set: f2, enumerable: false, configurable: true
+    });
+    testDef(obj, 'foo', { configurable: false });
 
-  obj = {};
-  Object.defineProperty(obj, "foo", {
-    get: f1,
-    set: f2,
-    enumerable: false,
-    configurable: true
-  });
-  testDef(obj, "foo", {
-    get: f3,
-    set: f3,
-    enumerable: true,
-    configurable: false
-  });
+    obj = {};
+    Object.defineProperty(obj, 'foo', {
+        get: f1, set: f2, enumerable: false, configurable: true
+    });
+    testDef(obj, 'foo', { get: f3, set: f3, enumerable: true, configurable: false });
 }
 
 try {
-  step11Test();
+    step11Test();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -1476,18 +1153,18 @@ step12
 
 /* Step 12-13: modify attributes, return true if not rejected. */
 
-print("step12");
+print('step12');
 
 function step12Test() {
-  var obj;
+    var obj;
 
-  // XXX: anything to test here which hasn't been covered above?
+    // XXX: anything to test here which hasn't been covered above?
 }
 
 try {
-  step12Test();
+    step12Test();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 // XXX: test special behavior (like arrays, arguments object, etc)

@@ -976,24 +976,24 @@
 ===*/
 
 function mkobj(n) {
-  var obj = { foo: "bar" };
-  while (n-- > 0) {
-    obj = { foo: obj };
-  }
-  return obj;
+    var obj = { foo: 'bar' };
+    while (n-- > 0) {
+        obj = { foo: obj };
+    }
+    return obj;
 }
 
 function test() {
-  // 0...16 should exercise current code paths sufficiently
-  for (var i = 0; i <= 16; i++) {
-    print(JSON.stringify(mkobj(i), null, 2));
-    print(JSON.stringify(mkobj(i), null, 4));
-    print(JSON.stringify(mkobj(i), null, "<abcdefghijklmnopq>")); // intentionally >10 chars, will be truncated to 10
-  }
+    // 0...16 should exercise current code paths sufficiently
+    for (var i = 0; i <= 16; i++) {
+        print(JSON.stringify(mkobj(i), null, 2));
+        print(JSON.stringify(mkobj(i), null, 4));
+        print(JSON.stringify(mkobj(i), null, '<abcdefghijklmnopq>'));  // intentionally >10 chars, will be truncated to 10
+    }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

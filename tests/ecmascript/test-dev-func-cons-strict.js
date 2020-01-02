@@ -9,18 +9,18 @@ false
  */
 
 function f() {
-  "use strict";
+    'use strict';
 
-  // non-strict: this=global -> !this=false
-  var g = new Function("print(!this)");
+    // non-strict: this=global -> !this=false
+    var g = new Function('print(!this)');
 
-  // strict: this=undefined -> !this=true
-  print(!this);
-  g();
+    // strict: this=undefined -> !this=true
+    print(!this);
+    g();
 }
 
 try {
-  f();
+    f();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

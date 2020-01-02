@@ -20,23 +20,23 @@ true true false
 
 var desc;
 var indirectEval = eval;
-var global = indirectEval("this"); // for Node
+var global = indirectEval("this");  // for Node
 
 // Note: since declarations are hoisted, the RegExp declaration below
 // will already have taken effect here.  The original RegExp binding
 // is writable and configurable, but not enumerable.
 
 print(typeof RegExp);
-desc = Object.getOwnPropertyDescriptor(global, "RegExp");
+desc = Object.getOwnPropertyDescriptor(global, 'RegExp');
 print(desc.writable, desc.enumerable, desc.configurable);
 
 function RegExp() {
-  return 123;
+    return 123;
 }
 
 // just checking that order does not matter
 print(typeof RegExp);
-desc = Object.getOwnPropertyDescriptor(global, "RegExp");
+desc = Object.getOwnPropertyDescriptor(global, 'RegExp');
 print(desc.writable, desc.enumerable, desc.configurable);
 
 print(RegExp());

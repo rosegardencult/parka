@@ -21,15 +21,11 @@ var t;
 t = eval("1+2");
 print(t, typeof t);
 
-function f1(a, b) {
-  a + b;
-}
-function f2(a, b) {
-  return a + b;
-}
+function f1(a,b) { a+b; }
+function f2(a,b) { return a+b; }
 
-t = f1(1, 2);
+t = f1(1,2);
 print(t, typeof t);
 
-t = f2(1, 2);
+t = f2(1,2);
 print(t, typeof t);

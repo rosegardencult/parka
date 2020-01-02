@@ -20,50 +20,48 @@
 
 /* Shared test values for "matrix tests". */
 var testValues = [
-  Number.NEGATIVE_INFINITY,
-  -1e100,
-  -0x100000000,
-  -0xffffffff,
-  -0x80000000,
-  -0x7fffffff,
-  -0x12345678,
-  -1,
-  -1e-100,
-  -0,
-  +0,
-  1e-100,
-  +1,
-  +0x12345678,
-  0x7ffffffff,
-  0x800000000,
-  0x100000000,
-  1e100,
-  Number.POSITIVE_INFINITY,
-  Number.NaN,
+    Number.NEGATIVE_INFINITY,
+    -1e100,
+    -0x100000000,
+    -0xffffffff,
+    -0x80000000,
+    -0x7fffffff,
+    -0x12345678,
+    -1,
+    -1e-100,
+    -0,
+    +0,
+    1e-100,
+    +1,
+    +0x12345678,
+    0x7ffffffff,
+    0x800000000,
+    0x100000000,
+    1e100,
+    Number.POSITIVE_INFINITY,
+    Number.NaN,
 
-  undefined,
-  null,
-  "1",
-  "+1",
-  "-1.5e1",
-  true,
-  false,
-  "1.5e1",
-  "2e3"
+    undefined,
+    null,
+    "1",
+    "+1",
+    "-1.5e1",
+    true,
+    false,
+    "1.5e1",
+    "2e3",
 ];
 
 function fmt(v) {
-  if (typeof v === "string") {
-    return "str:" + v; // happens with '+' operator and two string args
-  }
-  if (v == 0) {
-    if (1 / v < 0) {
-      return "-0";
+    if (typeof v === 'string') {
+        return 'str:' + v;  // happens with '+' operator and two string args
     }
-    return "0";
-  } else {
-    return String(v);
-  }
+    if (v == 0) {
+        if (1 / v < 0) { return '-0'; }
+        return '0';
+    } else {
+        return String(v);
+    }
 }
 
 /* Expect string is from Rhino. */
@@ -942,36 +940,33 @@ matrix test
 ===*/
 
 function matrixTest() {
-  var vals = testValues;
-  var i, j;
+    var vals = testValues;
+    var i, j;
 
-  for (i = 0; i < vals.length; i++) {
-    for (j = 0; j < vals.length; j++) {
-      print(
-        i,
-        j,
-        fmt(vals[i]),
-        fmt(vals[j]),
-        fmt(vals[i] + vals[j]),
-        fmt(vals[i] - vals[j]),
-        fmt(vals[i] * vals[j]),
-        fmt(vals[i] / vals[j]),
-        fmt(vals[i] % vals[j])
-      );
+    for (i = 0; i < vals.length; i++) {
+        for (j = 0; j < vals.length; j++) {
+            print(i, j, fmt(vals[i]), fmt(vals[j]),
+                  fmt(vals[i] + vals[j]),
+                  fmt(vals[i] - vals[j]),
+                  fmt(vals[i] * vals[j]),
+                  fmt(vals[i] / vals[j]),
+                  fmt(vals[i] % vals[j]));
+        }
     }
-  }
 
-  for (i = 0; i < vals.length; i++) {
-    print(i, fmt(vals[i]), fmt(+vals[i]), fmt(-vals[i]));
-  }
+    for (i = 0; i < vals.length; i++) {
+        print(i, fmt(vals[i]),
+              fmt(+vals[i]), fmt(-vals[i]));
+    }
 }
 
 try {
-  print("matrix test");
-  matrixTest();
+    print('matrix test');
+    matrixTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
+
 
 /*===
 multiply rounding to zero and infinity
@@ -982,29 +977,29 @@ Infinity number
 ===*/
 
 function multiplyRoundingTest() {
-  var t;
+    var t;
 
-  t = 1e200 * 1e200;
-  print(t, typeof t);
+    t = 1e200 * 1e200;
+    print (t, typeof t);
 
-  t = 1e200;
-  t *= 1e200;
-  t *= 1e-200;
-  t *= 1e-200;
-  print(t, typeof t);
+    t = 1e200;
+    t *= 1e200;
+    t *= 1e-200;
+    t *= 1e-200;
+    print (t, typeof t);
 
-  // same thing as above, '*' is left associative
-  t = 1e200 * 1e200 * 1e-200 * 1e-200;
-  print(t, typeof t);
+    // same thing as above, '*' is left associative
+    t = 1e200 * 1e200 * 1e-200 * 1e-200;
+    print (t, typeof t);
 
-  // (1e200 * 1e-200) == 1, then goes to zero
-  t = 1e200 * 1e-200 * 1e-200 * 1e-200;
-  print(t, typeof t, 1 / t);
+    // (1e200 * 1e-200) == 1, then goes to zero
+    t = 1e200 * 1e-200 * 1e-200 * 1e-200;
+    print (t, typeof t, 1 / t);
 }
 
 try {
-  print("multiply rounding to zero and infinity");
-  multiplyRoundingTest();
+    print('multiply rounding to zero and infinity');
+    multiplyRoundingTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

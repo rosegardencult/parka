@@ -5,15 +5,15 @@ foo
 ===*/
 
 function foo(e) {
-  print(e);
-
-  try {
-    throw "foo";
-  } catch (e) {
     print(e);
-  }
 
-  print(e);
+    try {
+        throw 'foo'
+    } catch (e) {
+        print(e);
+    }
+
+    print(e);
 }
 
 foo(123);

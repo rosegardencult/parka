@@ -30,50 +30,47 @@ tick 6
 var P, Q, R;
 var calls = [];
 
-setupPromiseUnhandledCallbacks(
-  function(p) {
-    print("unhandled/reject:", p.name);
-  },
-  function(p) {
-    print("unhandled/handle:", p.name);
-  }
-);
-
-function nop() {
-  print("nop called");
-}
-var T = Promise.resolve();
-T.name = "T";
-
-T.then(function() {
-  print("tick 1");
-  P = Promise.reject(123);
-  P.name = "P";
-  Q = Promise.reject(234);
-  Q.name = "Q";
-  R = Promise.reject(345);
-  R.name = "R";
+setupPromiseUnhandledCallbacks(function (p) {
+    print('unhandled/reject:', p.name);
+}, function (p) {
+    print('unhandled/handle:', p.name);
 });
 
-promiseNextTick(function() {
-  print("tick 2");
-  promiseNextTick(function() {
-    print("tick 3");
-    promiseNextTick(function() {
-      print("tick 4");
+function nop() {
+    print('nop called');
+}
+var T = Promise.resolve();
+T.name = 'T';
 
-      P.catch(nop);
-      Q.catch(nop);
+T.then(function () {
+    print('tick 1');
+    P = Promise.reject(123);
+    P.name = 'P';
+    Q = Promise.reject(234);
+    Q.name = 'Q';
+    R = Promise.reject(345);
+    R.name = 'R';
+});
 
-      var R2 = R.catch(123);
-      R2.name = "R2";
+promiseNextTick(function () {
+    print('tick 2');
+    promiseNextTick(function () {
+        print('tick 3');
+        promiseNextTick(function () {
+            print('tick 4');
 
-      promiseNextTick(function() {
-        print("tick 5");
-        promiseNextTick(function() {
-          print("tick 6");
+            P.catch(nop);
+            Q.catch(nop);
+
+            var R2 = R.catch(123);
+            R2.name = 'R2';
+
+            promiseNextTick(function () {
+                print('tick 5');
+                promiseNextTick(function () {
+                    print('tick 6');
+                });
+            });
         });
-      });
     });
-  });
 });

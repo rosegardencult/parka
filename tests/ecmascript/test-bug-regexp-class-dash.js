@@ -10,21 +10,21 @@ true
 ===*/
 
 function test() {
-  var re;
+    var re;
 
-  re = /^[a-zA-Z0-9_!#$%&'*+.^`|~-]+$/;
-  print(re.test("Content-Type"));
-  re = /^[a-zA-Z0-9_!#$%&'*+.^`|~\-]+$/;
-  print(re.test("Content-Type"));
+    re = /^[a-zA-Z0-9_!#$%&'*+.^`|~-]+$/;
+    print(re.test('Content-Type'));
+    re = /^[a-zA-Z0-9_!#$%&'*+.^`|~\-]+$/;
+    print(re.test('Content-Type'));
 
-  re = /[-]/;
-  print(re.test("-"));
-  re = /[\-]/;
-  print(re.test("-"));
+    re = /[-]/;
+    print(re.test('-'));
+    re = /[\-]/;
+    print(re.test('-'));
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

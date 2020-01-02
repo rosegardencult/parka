@@ -13,23 +13,21 @@ closure throw
  */
 
 function f() {
-  var e = 123;
-  var func;
+    var e = 123;
+    var func;
 
-  try {
-    throw "throw";
-  } catch (e) {
-    func = function() {
-      print("closure", e);
-    };
+    try {
+        throw 'throw';
+    } catch (e) {
+        func = function() { print('closure', e); }
+        func();
+    }
+
+    print(e);
     func();
-  }
+    print(e);
 
-  print(e);
-  func();
-  print(e);
-
-  return func;
+    return func;
 }
 
 f()();

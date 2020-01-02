@@ -25,72 +25,67 @@ number
 ===*/
 
 var testSource =
-  "/* test */\n" +
-  'var err = new Error("aiee");\n' +
-  "print(err.fileName);\n" +
-  "print(err.lineNumber);\n" +
-  "print(Duktape.act(-2).function.name);\n" +
-  "/*print(err.stack);*/\n" +
-  "var logger = new Duktape.Logger();\n" +
-  'logger.info("test");\n';
+    '/* test */\n' +
+    'var err = new Error("aiee");\n' +
+    'print(err.fileName);\n' +
+    'print(err.lineNumber);\n' +
+    'print(Duktape.act(-2).function.name);\n' +
+    '/*print(err.stack);*/\n' +
+    'var logger = new Duktape.Logger();\n' +
+    'logger.info("test");\n';
 
 function test() {
-  // Replace Duktape.Logger.prototype.raw to censor timestamps.
+    // Replace Duktape.Logger.prototype.raw to censor timestamps.
 
-  Duktape.Logger.prototype.raw = function(buf) {
-    print(
-      bufferToStringRaw(buf).replace(
-        /^\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d.*?Z/,
-        "TIME"
-      )
-    );
-  };
+    Duktape.Logger.prototype.raw = function (buf) {
+        print(bufferToStringRaw(buf).replace(/^\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d.*?Z/, 'TIME'));
+    };
 
-  // Default behavior, module wrapper .fileName is resolved module ID,
-  // .name is last component of resolved ID (module.filename and module.name
-  // are not set by default which triggers the default values).
+    // Default behavior, module wrapper .fileName is resolved module ID,
+    // .name is last component of resolved ID (module.filename and module.name
+    // are not set by default which triggers the default values).
 
-  Duktape.modSearch = function modSearch(id, require, exports, module) {
-    print(id, module.id, module.filename, module.name);
-    return testSource;
-  };
+    Duktape.modSearch = function modSearch(id, require, exports, module) {
+        print(id, module.id, module.filename, module.name);
+        return testSource;
+    };
 
-  print("default behavior");
-  var tmp = require("test/foo1/../foo2");
+    print('default behavior');
+    var tmp = require('test/foo1/../foo2');
 
-  // Override module.filename and module.name in modSearch().
+    // Override module.filename and module.name in modSearch().
 
-  Duktape.modSearch = function modSearch(id, require, exports, module) {
-    print(id, module.id, module.filename, module.name);
-    module.filename = "my_source.js"; // match source filename for example
-    module.name = "my_module";
-    return testSource;
-  };
+    Duktape.modSearch = function modSearch(id, require, exports, module) {
+        print(id, module.id, module.filename, module.name);
+        module.filename = 'my_source.js';  // match source filename for example
+        module.name = 'my_module';
+        return testSource;
+    };
 
-  print("override .name and .filename");
-  var tmp = require("test/bar1/../bar2");
+    print('override .name and .filename');
+    var tmp = require('test/bar1/../bar2');
 
-  // Test that the forced .name property of the module wrapper function
-  // does not introduce a shadowing binding -- this is important for
-  // semantics and works because the wrapper function is initially
-  // compiled as an anonymous function (which ensures the function doesn't
-  // get a "has a name binding" flag) and .name is then forced manually.
+    // Test that the forced .name property of the module wrapper function
+    // does not introduce a shadowing binding -- this is important for
+    // semantics and works because the wrapper function is initially
+    // compiled as an anonymous function (which ensures the function doesn't
+    // get a "has a name binding" flag) and .name is then forced manually.
 
-  var global = new Function("return this")();
-  global.myFileName = 123; // this should be visible
+    var global = new Function('return this')();
+    global.myFileName = 123;  // this should be visible
 
-  Duktape.modSearch = function modSearch(id, require, exports, module) {
-    print(id, module.id, module.filename, module.name);
-    module.filename = "myFileName";
-    return "print(typeof Math); print(typeof myFileName); print(myFileName);";
-  };
+    Duktape.modSearch = function modSearch(id, require, exports, module) {
+        print(id, module.id, module.filename, module.name);
+        module.filename = 'myFileName';
+        return 'print(typeof Math); print(typeof myFileName); print(myFileName);';
+    };
 
-  print(".name shadowing test");
-  var tmp = require("test/quux1/../quux2");
+    print('.name shadowing test');
+    var tmp = require('test/quux1/../quux2');
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

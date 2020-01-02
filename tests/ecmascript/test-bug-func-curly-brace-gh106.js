@@ -8,23 +8,23 @@ SyntaxError
 ===*/
 
 function test1() {
-  var src = "function foo() [}; foo;";
-  print(typeof eval(src));
+    var src = 'function foo() [}; foo;';
+    print(typeof eval(src));
 }
 
 function test2() {
-  var src = "(function () [})";
-  print(typeof eval(src));
+    var src = '(function () [})';
+    print(typeof eval(src));
 }
 
 try {
-  test1();
+    test1();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  test2();
+    test2();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

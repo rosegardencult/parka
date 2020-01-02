@@ -28,64 +28,39 @@
 ===*/
 
 function test() {
-  var obj = {};
-  Object.setPrototypeOf(obj, null);
+    var obj = {};
+    Object.setPrototypeOf(obj, null);
 
-  [
-    undefined,
-    null,
-    true,
-    false,
-    123.0,
-    "foo",
-    function myfunc() {},
+    [ undefined, null, true, false, 123.0, 'foo', function myfunc() {},
 
-    // For objects, coercion is ToString(ToPrimitive(obj, hint String))
+      // For objects, coercion is ToString(ToPrimitive(obj, hint String))
 
-    {},
-    obj,
-    {
-      toString: function() {
-        return "foo";
-      }
-    },
-    {
-      toString: function() {
-        return 123;
-      }
-    },
-    {
-      toString: function() {
-        return 123;
-      },
-      valueOf: function() {
-        return 234;
-      }
-    },
-    {
-      toString: "non-callable",
-      valueOf: function() {
-        return 234;
-      }
-    }
+      {},
+      obj,
+      { toString: function () { return 'foo'; } },
+      { toString: function () { return 123; } },
+      { toString: function () { return 123; },
+        valueOf: function () { return 234; } },
+      { toString: 'non-callable',
+        valueOf: function () { return 234; } },
 
-    // ToPrimitive() test covers a lot more variants.
-  ].forEach(function(v, i) {
-    try {
-      var t = String(v);
-      if (typeof v === "function" && typeof t === "string") {
-        // expect string hack (no longer needed in Duktape 1.5.0)
-        t = t.replace(/\//g, "|");
-      }
-      print(i, typeof t, t);
-    } catch (e) {
-      print(i, e.name);
-    }
-  });
+      // ToPrimitive() test covers a lot more variants.
+    ].forEach(function (v, i) {
+        try {
+            var t = String(v);
+            if (typeof v === 'function' && typeof t === 'string') {
+                // expect string hack (no longer needed in Duktape 1.5.0)
+                t = t.replace(/\//g, '|');
+            }
+            print(i, typeof t, t);
+        } catch (e) {
+            print(i, e.name);
+        }
+    });
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

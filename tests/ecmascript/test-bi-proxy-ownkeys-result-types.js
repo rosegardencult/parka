@@ -15,30 +15,22 @@ TypeError: invalid trap result
 ===*/
 
 function test() {
-  var P;
-  var target = { foo: 123, bar: 123 };
+    var P;
+    var target = { foo: 123, bar: 123 };
 
-  P = new Proxy(target, {
-    ownKeys: function() {
-      return ["foo", "bar"];
-    }
-  });
-  print(JSON.stringify(Object.keys(P)));
-
-  P = new Proxy(target, {
-    ownKeys: function() {
-      return ["foo", "bar", 123];
-    }
-  });
-  try {
+    P = new Proxy(target, { ownKeys: function () { return ['foo', 'bar' ]; } });
     print(JSON.stringify(Object.keys(P)));
-  } catch (e) {
-    print(e);
-  }
+
+    P = new Proxy(target, { ownKeys: function () { return ['foo', 'bar', 123 ]; } });
+    try {
+        print(JSON.stringify(Object.keys(P)));
+    } catch (e) {
+        print(e);
+    }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

@@ -61,48 +61,48 @@
 ===*/
 
 var count = 0;
-var kilo = Array.prototype.join.call({ length: 1024 + 1 }, "x");
-var meg = Array.prototype.join.call({ length: 1024 + 1 }, kilo); // 1 meg prefix
+var kilo = Array.prototype.join.call({ length: 1024 + 1 }, 'x');
+var meg = Array.prototype.join.call({ length: 1024 + 1 }, kilo);  // 1 meg prefix
 
 function createUniqueString() {
-  var res = meg + count++;
-  return res;
+    var res = meg + (count++);
+    return res;
 }
 
 function test1() {
-  // Goes through 16G of strings
-  for (var i = 0; i < 16; i++) {
-    print(i);
-    for (var j = 0; j < 1024; j++) {
-      var ignore = createUniqueString();
-      Duktape.gc();
+    // Goes through 16G of strings
+    for (var i = 0; i < 16; i++) {
+        print(i);
+        for (var j = 0; j < 1024; j++) {
+            var ignore = createUniqueString();
+            Duktape.gc();
+        }
     }
-  }
 }
 
 function test2() {
-  for (var i = 0; i < 16; i++) {
-    print(i);
-    for (var j = 0; j < 1024; j++) {
-      var obj1 = {};
-      var obj2 = { str: createUniqueString(), ref: obj1 };
-      obj1.ref = obj2; // circular reference, object contains string to collect
-      Duktape.gc(); // force collection once: string gets marked reachable
-      obj1 = undefined;
-      obj2 = undefined; // unreachable but not collected when refcounts enabled
-      Duktape.gc(); // force collection: should be collected but isn't
+    for (var i = 0; i < 16; i++) {
+        print(i);
+        for (var j = 0; j < 1024; j++) {
+            var obj1 = {};
+            var obj2 = { str: createUniqueString(), ref: obj1 };
+            obj1.ref = obj2;   // circular reference, object contains string to collect
+            Duktape.gc();      // force collection once: string gets marked reachable
+            obj1 = undefined;
+            obj2 = undefined;  // unreachable but not collected when refcounts enabled
+            Duktape.gc();      // force collection: should be collected but isn't
+        }
     }
-  }
 }
 
 try {
-  test1();
+    test1();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 try {
-  test2();
+    test2();
 } catch (e) {
-  print(e);
+    print(e);
 }

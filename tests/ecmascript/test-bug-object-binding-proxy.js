@@ -23,33 +23,33 @@ bar
 var dummyGlobal = 123;
 
 function test() {
-  var obj = { foo: "bar" };
-  var proxy = new Proxy(obj, {
-    get: function get(targ, key, recv) {
-      print("get " + key);
-      return targ[key];
-    },
-    has: function has(targ, key) {
-      print("has " + key);
-      return key in targ;
+    var obj = { foo: 'bar' };
+    var proxy = new Proxy(obj, {
+        get: function get(targ, key, recv) {
+            print('get ' + key);
+            return targ[key];
+        },
+        has: function has(targ, key) {
+            print('has ' + key);
+            return key in targ;
+        }
+    });
+
+    with (obj) {
+        print('in with (obj) statement');
+        print(dummyGlobal);
+        print(foo);
     }
-  });
 
-  with (obj) {
-    print("in with (obj) statement");
-    print(dummyGlobal);
-    print(foo);
-  }
-
-  with (proxy) {
-    print("in with (proxy) statement");
-    print(dummyGlobal);
-    print(foo);
-  }
+    with (proxy) {
+        print('in with (proxy) statement');
+        print(dummyGlobal);
+        print(foo);
+    }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

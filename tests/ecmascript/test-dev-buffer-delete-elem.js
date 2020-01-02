@@ -31,24 +31,24 @@ object
  */
 
 function test() {
-  "use strict";
+    'use strict';
 
-  var buf_obj, buf_plain;
+    var buf_obj, buf_plain;
 
-  buf_plain = Duktape.dec("hex", "deadbeef");
-  print(typeof buf_plain);
-  [-1, 0, 1, 2, 3, 4].forEach(function(i) {
-    try {
-      delete buf_plain[i];
-      print(i, "ok");
-    } catch (e) {
-      print(i, e.name);
-    }
-  });
+    buf_plain = Duktape.dec('hex', 'deadbeef');
+    print(typeof buf_plain);
+    [ -1, 0, 1, 2, 3, 4 ].forEach(function (i) {
+        try {
+            delete buf_plain[i];
+            print(i, 'ok');
+        } catch (e) {
+            print(i, e.name)
+        }
+    });
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

@@ -13,23 +13,23 @@ number 234
 ===*/
 
 print(typeof undefined, undefined);
-var pd = Object.getOwnPropertyDescriptor(this, "undefined");
+var pd = Object.getOwnPropertyDescriptor(this, 'undefined');
 print(typeof pd.value, pd.value, pd.writable, pd.enumerable, pd.configurable);
 
-undefined = 123; // silent failure
+undefined = 123;  // silent failure
 
 print(typeof undefined, undefined);
-var pd = Object.getOwnPropertyDescriptor(this, "undefined");
+var pd = Object.getOwnPropertyDescriptor(this, 'undefined');
 print(typeof pd.value, pd.value, pd.writable, pd.enumerable, pd.configurable);
 
 function test() {
-  var undefined = 234;
+    var undefined = 234;
 
-  print(typeof undefined, undefined);
+    print(typeof undefined, undefined);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

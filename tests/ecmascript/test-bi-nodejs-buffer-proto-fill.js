@@ -9,22 +9,14 @@
 // for clamping semantics differences.  Uncomment manually if
 // needed.
 function setHackFill() {
-  var orig = Buffer.prototype.fill;
-  Buffer.prototype.fill = function fill(value, offset, end) {
-    if (typeof offset === "number" && offset < 0) {
-      offset = 0;
-    }
-    if (typeof offset === "number" && offset >= this.length) {
-      offset = this.length;
-    }
-    if (typeof end === "number" && end < 0) {
-      end = 0;
-    }
-    if (typeof end === "number" && end >= this.length) {
-      end = this.length;
-    }
-    return orig.call(this, value, offset, end);
-  };
+    var orig = Buffer.prototype.fill;
+    Buffer.prototype.fill = function fill(value, offset, end) {
+        if (typeof offset === 'number' && offset < 0) { offset = 0; }
+        if (typeof offset === 'number' && offset >= this.length) { offset = this.length; }
+        if (typeof end === 'number' && end < 0) { end = 0; }
+        if (typeof end === 'number' && end >= this.length) { end = this.length; }
+        return orig.call(this, value, offset, end);
+    };
 }
 //setHackFill();  // uncomment manually
 
@@ -200,153 +192,94 @@ combinations
 ===*/
 
 function fillTest() {
-  var b = new Buffer(16);
+    var b = new Buffer(16);
 
-  print("basic");
+    print('basic');
 
-  // fill() returns the buffer, so that one can chain
-  b.fill(0x11).fill(0x22, 3, 5);
-  printNodejsBuffer(b);
+    // fill() returns the buffer, so that one can chain
+    b.fill(0x11).fill(0x22, 3, 5);
+    printNodejsBuffer(b);
 
-  b.fill(0x11);
-  b.fill();
-  printNodejsBuffer(b);
+    b.fill(0x11);
+    b.fill();
+    printNodejsBuffer(b);
 
-  b.fill(0x11);
-  b.fill(0x05, 3);
-  printNodejsBuffer(b);
+    b.fill(0x11);
+    b.fill(0x05, 3);
+    printNodejsBuffer(b);
 
-  b.fill(0x11);
-  b.fill(0x05, 3, 1);
-  printNodejsBuffer(b);
+    b.fill(0x11);
+    b.fill(0x05, 3, 1);
+    printNodejsBuffer(b);
 
-  b.fill(0x11);
-  b.fill(0x05, 3, 3);
-  printNodejsBuffer(b);
+    b.fill(0x11);
+    b.fill(0x05, 3, 3);
+    printNodejsBuffer(b);
 
-  b.fill(0x11);
-  b.fill(0x05, 3, 4);
-  printNodejsBuffer(b);
+    b.fill(0x11);
+    b.fill(0x05, 3, 4);
+    printNodejsBuffer(b);
 
-  // fill size zero, inside range
-  b.fill(0x11);
-  b.fill(0x05, 0, 0);
-  printNodejsBuffer(b);
+    // fill size zero, inside range
+    b.fill(0x11);
+    b.fill(0x05, 0, 0);
+    printNodejsBuffer(b);
 
-  // fill size zero, inside range
-  b.fill(0x11);
-  b.fill(0x05, 16, 16);
-  printNodejsBuffer(b);
+    // fill size zero, inside range
+    b.fill(0x11);
+    b.fill(0x05, 16, 16);
+    printNodejsBuffer(b);
 
-  // fill size zero, outside range
-  b.fill(0x11);
-  try {
-    b.fill(0x05, -1, -1);
-  } catch (e) {
-    print(e.name);
-  }
-  printNodejsBuffer(b);
+    // fill size zero, outside range
+    b.fill(0x11);
+    try {
+        b.fill(0x05, -1, -1);
+    } catch (e) {
+        print(e.name);
+    }
+    printNodejsBuffer(b);
 
-  // fill size zero, outside range
-  b.fill(0x11);
-  try {
-    b.fill(0x05, 17, 17);
-  } catch (e) {
-    print(e.name);
-  }
-  printNodejsBuffer(b);
+    // fill size zero, outside range
+    b.fill(0x11);
+    try {
+        b.fill(0x05, 17, 17);
+    } catch (e) {
+        print(e.name);
+    }
+    printNodejsBuffer(b);
 
-  b.fill(0x11);
-  b.fill(0x05, 3, 14.5); // truncated to 14
-  printNodejsBuffer(b);
+    b.fill(0x11);
+    b.fill(0x05, 3, 14.5);  // truncated to 14
+    printNodejsBuffer(b);
 
-  print("combinations");
-  [
-    undefined,
-    null,
-    true,
-    false,
-    0x61,
-    0x123,
-    -0x123456,
-    {
-      valueOf: function() {
-        return 0x41;
-      }
-    },
-    3.5,
-    3.9,
-    4,
-    4.5,
-    4.9,
-    5
-  ].forEach(function(value, idx1) {
-    [
-      undefined,
-      null,
-      true,
-      false,
-      -1,
-      0,
-      1,
-      15,
-      16,
-      17,
-      {
-        valueOf: function() {
-          return 10;
-        }
-      }
-    ].forEach(function(offset, idx2) {
-      var tmp = [];
+    print('combinations');
+    [ undefined, null, true, false, 0x61, 0x123, -0x123456,
+      { valueOf: function () { return 0x41; } },
+      3.5, 3.9, 4, 4.5, 4.9, 5 ].forEach(function (value, idx1) {
+        [ undefined, null, true, false, -1, 0, 1, 15, 16, 17,
+          { valueOf: function () { return 10; } } ].forEach(function (offset, idx2) {
+            var tmp = [];
 
-      [
-        undefined,
-        null,
-        true,
-        false,
-        -1,
-        0,
-        1,
-        15,
-        16,
-        17,
-        {
-          valueOf: function() {
-            return 10;
-          }
-        }
-      ].forEach(function(end, idx3) {
-        try {
-          b.fill(0x11);
-          b.fill(value, offset, end);
-          tmp.push(
-            value + " " + offset + " " + end + " " + printableNodejsBuffer(b)
-          );
-        } catch (e) {
-          tmp.push(
-            value +
-              " " +
-              offset +
-              " " +
-              end +
-              " " +
-              e.name +
-              " " +
-              printableNodejsBuffer(b)
-          );
-        }
-      });
+            [ undefined, null, true, false, -1, 0, 1, 15, 16, 17,
+              { valueOf: function () { return 10; } } ].forEach(function (end, idx3) {
+                try {
+                    b.fill(0x11);
+                    b.fill(value, offset, end);
+                    tmp.push(value + ' ' + offset + ' ' + end + ' ' + printableNodejsBuffer(b));
+                } catch (e) {
+                    tmp.push(value + ' ' + offset + ' ' + end + ' ' + e.name + ' ' + printableNodejsBuffer(b));
+                }
+            });
 
-      //print(tmp.join('\n'));
-      print(idx1, idx2, checksumString(tmp.join("\n")));
+            //print(tmp.join('\n'));
+            print(idx1, idx2, checksumString(tmp.join('\n')));
+        });
     });
-  });
 }
 
 try {
-  print("fill test");
-  fillTest();
+    print('fill test');
+    fillTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

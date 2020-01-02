@@ -39,15 +39,15 @@ var t;
 var i;
 
 for (i = 0; i < 25000; i++) {
-  if (i % 1000 == 0) {
-    print(i);
-  }
-  t = {};
-  t.ref = x;
-  x = t;
+    if ((i % 1000) == 0) {
+        print(i);
+    }
+    t = {};
+    t.ref = x;
+    x = t;
 }
 
-x = null; /* refcount to zero in the whole chain */
+x = null;  /* refcount to zero in the whole chain */
 
 /* XXX: some gc stats thing here? */
 print("still here");

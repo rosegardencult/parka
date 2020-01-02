@@ -45,718 +45,763 @@
  */
 
 function getGlobalObject() {
-  return this;
+    return this;
 }
 
 var obj_data = [
-  {
-    obj: getGlobalObject(),
-    name: "Global",
-    proto: "Object.prototype", // implementation defined
-    //  Smjs: Object.prototype
-    //  Rhino: Object.prototype
-    //  Node (V8): *not* Object.prototype, but Object.prototype is in prototype chain
-    class: "global", // implementation defined
-    //  Smjs: 'global'
-    //  Rhino: 'global'
-    //  V8: 'global'
-    props: [
-      { key: "NaN", attrs: "" },
-      { key: "Infinity", attrs: "" },
-      { key: "undefined", attrs: "" },
-      { key: "eval", attrs: "wc" },
-      { key: "parseInt", attrs: "wc" },
-      { key: "parseFloat", attrs: "wc" },
-      { key: "isNaN", attrs: "wc" },
-      { key: "isFinite", attrs: "wc" },
-      { key: "decodeURI", attrs: "wc" },
-      { key: "decodeURIComponent", attrs: "wc" },
-      { key: "encodeURI", attrs: "wc" },
-      { key: "encodeURIComponent", attrs: "wc" },
-      { key: "Object", attrs: "wc" },
-      { key: "Function", attrs: "wc" },
-      { key: "Array", attrs: "wc" },
-      { key: "String", attrs: "wc" },
-      { key: "Boolean", attrs: "wc" },
-      { key: "Number", attrs: "wc" },
-      { key: "Date", attrs: "wc" },
-      { key: "RegExp", attrs: "wc" },
-      { key: "Error", attrs: "wc" },
-      { key: "EvalError", attrs: "wc" },
-      { key: "RangeError", attrs: "wc" },
-      { key: "ReferenceError", attrs: "wc" },
-      { key: "SyntaxError", attrs: "wc" },
-      { key: "TypeError", attrs: "wc" },
-      { key: "URIError", attrs: "wc" }
-    ],
-    noprops: [{ key: "length" }]
-  },
-  {
-    obj: Object,
-    name: "Object",
-    proto: "Function.prototype",
-    class: "Function",
-    props: [
-      { key: "length", attrs: "c", value: 1 },
-      { key: "prototype", attrs: "" },
-      { key: "getPrototypeOf", attrs: "wc" },
-      { key: "getOwnPropertyDescriptor", attrs: "wc" },
-      { key: "getOwnPropertyNames", attrs: "wc" },
-      { key: "create", attrs: "wc" },
-      { key: "defineProperty", attrs: "wc" },
-      { key: "seal", attrs: "wc" },
-      { key: "freeze", attrs: "wc" },
-      { key: "preventExtensions", attrs: "wc" },
-      { key: "isSealed", attrs: "wc" },
-      { key: "isFrozen", attrs: "wc" },
-      { key: "isExtensible", attrs: "wc" },
-      { key: "keys", attrs: "wc" }
-    ],
-    noprops: []
-  },
-  {
-    obj: Object.prototype,
-    name: "Object.prototype",
-    proto: null,
-    class: "Object",
-    props: [
-      { key: "constructor", attrs: "wc" },
-      { key: "toString", attrs: "wc" },
-      { key: "toLocaleString", attrs: "wc" },
-      { key: "valueOf", attrs: "wc" },
-      { key: "hasOwnProperty", attrs: "wc" },
-      { key: "isPrototypeOf", attrs: "wc" },
-      { key: "propertyIsEnumerable", attrs: "wc" }
-    ],
-    noprops: [{ key: "length" }]
-  },
-  {
-    obj: Function,
-    name: "Function",
-    proto: "Function.prototype",
-    class: "Function",
-    props: [
-      { key: "length", attrs: "c", value: 1 },
-      { key: "prototype", attrs: "" }
-    ],
-    noprops: []
-  },
-  {
-    obj: Function.prototype,
-    name: "Function.prototype",
-    proto: "Object.prototype",
-    class: "Function", // E5 Section 15.3.4
-    props: [
-      { key: "length", attrs: "c", value: 0 },
-      { key: "constructor", attrs: "wc" },
-      { key: "toString", attrs: "wc" },
-      { key: "apply", attrs: "wc" },
-      { key: "call", attrs: "wc" },
-      { key: "bind", attrs: "wc" }
-    ],
-    noprops: []
-  },
-  {
-    obj: Array,
-    name: "Array",
-    proto: "Function.prototype",
-    class: "Function",
-    props: [
-      { key: "length", attrs: "c", value: 1 },
-      { key: "prototype", attrs: "" },
-      { key: "isArray", attrs: "wc" }
-    ],
-    noprops: []
-  },
-  {
-    obj: Array.prototype,
-    name: "Array.prototype",
-    proto: "Object.prototype",
-    class: "Array",
-    props: [
-      { key: "length", attrs: "w", value: 0 }, // virtual attribute (Array.prototype is an array instance),
-      // E5 Sections 15.4.4, 15.4.5.2
-      { key: "constructor", attrs: "wc" },
-      { key: "toString", attrs: "wc" },
-      { key: "toLocaleString", attrs: "wc" },
-      { key: "concat", attrs: "wc" },
-      { key: "join", attrs: "wc" },
-      { key: "pop", attrs: "wc" },
-      { key: "push", attrs: "wc" },
-      { key: "reverse", attrs: "wc" },
-      { key: "shift", attrs: "wc" },
-      { key: "slice", attrs: "wc" },
-      { key: "sort", attrs: "wc" },
-      { key: "splice", attrs: "wc" },
-      { key: "unshift", attrs: "wc" },
-      { key: "indexOf", attrs: "wc" },
-      { key: "lastIndexOf", attrs: "wc" },
-      { key: "every", attrs: "wc" },
-      { key: "some", attrs: "wc" },
-      { key: "forEach", attrs: "wc" },
-      { key: "map", attrs: "wc" },
-      { key: "filter", attrs: "wc" },
-      { key: "reduce", attrs: "wc" },
-      { key: "reduceRight", attrs: "wc" }
-    ],
-    noprops: []
-  },
-  {
-    obj: String,
-    name: "String",
-    proto: "Function.prototype",
-    class: "Function",
-    props: [
-      { key: "length", attrs: "c", value: 1 },
-      { key: "prototype", attrs: "" },
-      { key: "fromCharCode", attrs: "wc" }
-    ],
-    noprops: []
-  },
-  {
-    obj: String.prototype,
-    name: "String.prototype",
-    proto: "Object.prototype",
-    class: "String", // E5 Section 15.5.4
-    props: [
-      { key: "length", attrs: "", value: 0 }, // virtual attribute (String.prototype is a String instance),
-      // E5 Sections 15.5.4, 15.5.5.1; immutable
-      { key: "constructor", attrs: "wc" },
-      { key: "toString", attrs: "wc" },
-      { key: "valueOf", attrs: "wc" },
-      { key: "charAt", attrs: "wc" },
-      { key: "charCodeAt", attrs: "wc" },
-      { key: "concat", attrs: "wc" },
-      { key: "indexOf", attrs: "wc" },
-      { key: "lastIndexOf", attrs: "wc" },
-      { key: "localeCompare", attrs: "wc" },
-      { key: "match", attrs: "wc" },
-      { key: "replace", attrs: "wc" },
-      { key: "search", attrs: "wc" },
-      { key: "slice", attrs: "wc" },
-      { key: "split", attrs: "wc" },
-      { key: "substring", attrs: "wc" },
-      { key: "toLowerCase", attrs: "wc" },
-      { key: "toLocaleLowerCase", attrs: "wc" },
-      { key: "toUpperCase", attrs: "wc" },
-      { key: "toLocaleUpperCase", attrs: "wc" },
-      { key: "trim", attrs: "wc" }
-    ],
-    noprops: []
-  },
-  {
-    obj: Boolean,
-    name: "Boolean",
-    proto: "Function.prototype",
-    class: "Function",
-    props: [
-      { key: "length", attrs: "c", value: 1 },
-      { key: "prototype", attrs: "" }
-    ],
-    noprops: []
-  },
-  {
-    obj: Boolean.prototype,
-    name: "Boolean.prototype",
-    proto: "Object.prototype",
-    class: "Boolean", // E5 Section 15.6.4
-    props: [
-      { key: "constructor", attrs: "wc" },
-      { key: "toString", attrs: "wc" },
-      { key: "valueOf", attrs: "wc" }
-    ],
-    noprops: [{ key: "length" }]
-  },
-  {
-    obj: Number,
-    name: "Number",
-    proto: "Function.prototype",
-    class: "Function",
-    props: [
-      { key: "length", attrs: "c", value: 1 },
-      { key: "prototype", attrs: "" },
-      { key: "MAX_VALUE", attrs: "" },
-      { key: "MIN_VALUE", attrs: "" },
-      { key: "NaN", attrs: "" },
-      { key: "NEGATIVE_INFINITY", attrs: "" },
-      { key: "POSITIVE_INFINITY", attrs: "" }
-    ],
-    noprops: []
-  },
-  {
-    obj: Number.prototype,
-    name: "Number.prototype",
-    proto: "Object.prototype",
-    class: "Number", // E5 Section 15.7.4
-    props: [
-      { key: "constructor", attrs: "wc" },
-      { key: "toString", attrs: "wc" },
-      { key: "toLocaleString", attrs: "wc" },
-      { key: "valueOf", attrs: "wc" },
-      { key: "toFixed", attrs: "wc" },
-      { key: "toExponential", attrs: "wc" },
-      { key: "toPrecision", attrs: "wc" }
-    ],
-    noprops: [{ key: "length" }]
-  },
-  {
-    obj: Math,
-    name: "Math",
-    proto: "Object.prototype",
-    class: "Math",
-    props: [
-      { key: "E", attrs: "" },
-      { key: "LN10", attrs: "" },
-      { key: "LN2", attrs: "" },
-      { key: "LOG2E", attrs: "" },
-      { key: "LOG10E", attrs: "" },
-      { key: "PI", attrs: "" },
-      { key: "SQRT1_2", attrs: "" },
-      { key: "SQRT2", attrs: "" },
-      { key: "abs", attrs: "wc" },
-      { key: "acos", attrs: "wc" },
-      { key: "asin", attrs: "wc" },
-      { key: "atan", attrs: "wc" },
-      { key: "atan2", attrs: "wc" },
-      { key: "ceil", attrs: "wc" },
-      { key: "cos", attrs: "wc" },
-      { key: "exp", attrs: "wc" },
-      { key: "floor", attrs: "wc" },
-      { key: "log", attrs: "wc" },
-      { key: "max", attrs: "wc" },
-      { key: "min", attrs: "wc" },
-      { key: "pow", attrs: "wc" },
-      { key: "random", attrs: "wc" },
-      { key: "round", attrs: "wc" },
-      { key: "sin", attrs: "wc" },
-      { key: "sqrt", attrs: "wc" },
-      { key: "tan", attrs: "wc" }
-    ],
-    noprops: [{ key: "length" }]
-  },
-  {
-    obj: Date,
-    name: "Date",
-    proto: "Function.prototype",
-    class: "Function",
-    props: [
-      { key: "length", attrs: "c", value: 7 }, // E5 Section 15.9.4
-      { key: "prototype", attrs: "" },
-      { key: "parse", attrs: "wc" },
-      { key: "UTC", attrs: "wc" },
-      { key: "now", attrs: "wc" }
-    ],
-    noprops: []
-  },
-  {
-    obj: Date.prototype,
-    name: "Date.prototype",
-    proto: "Object.prototype",
-    class: "Date", // E5 Section 15.9.5
-    props: [
-      { key: "constructor", attrs: "wc" },
-      { key: "toString", attrs: "wc" },
-      { key: "toDateString", attrs: "wc" },
-      { key: "toTimeString", attrs: "wc" },
-      { key: "toLocaleDateString", attrs: "wc" },
-      { key: "toLocaleTimeString", attrs: "wc" },
-      { key: "valueOf", attrs: "wc" },
-      { key: "getTime", attrs: "wc" },
-      { key: "getFullYear", attrs: "wc" },
-      { key: "getUTCFullYear", attrs: "wc" },
-      { key: "getMonth", attrs: "wc" },
-      { key: "getUTCMonth", attrs: "wc" },
-      { key: "getDate", attrs: "wc" },
-      { key: "getUTCDate", attrs: "wc" },
-      { key: "getDay", attrs: "wc" },
-      { key: "getUTCDay", attrs: "wc" },
-      { key: "getHours", attrs: "wc" },
-      { key: "getUTCHours", attrs: "wc" },
-      { key: "getMinutes", attrs: "wc" },
-      { key: "getUTCMinutes", attrs: "wc" },
-      { key: "getSeconds", attrs: "wc" },
-      { key: "getUTCSeconds", attrs: "wc" },
-      { key: "getMilliseconds", attrs: "wc" },
-      { key: "getUTCMilliseconds", attrs: "wc" },
-      { key: "getTimezoneOffset", attrs: "wc" },
-      { key: "setTime", attrs: "wc" },
-      { key: "setMilliseconds", attrs: "wc" },
-      { key: "setUTCMilliseconds", attrs: "wc" },
-      { key: "setSeconds", attrs: "wc" },
-      { key: "setUTCSeconds", attrs: "wc" },
-      { key: "setMinutes", attrs: "wc" },
-      { key: "setUTCMinutes", attrs: "wc" },
-      { key: "setHours", attrs: "wc" },
-      { key: "setUTCHours", attrs: "wc" },
-      { key: "setDate", attrs: "wc" },
-      { key: "setUTCDate", attrs: "wc" },
-      { key: "setMonth", attrs: "wc" },
-      { key: "setUTCMonth", attrs: "wc" },
-      { key: "setFullYear", attrs: "wc" },
-      { key: "setUTCFullYear", attrs: "wc" },
-      { key: "toUTCString", attrs: "wc" },
-      { key: "toISOString", attrs: "wc" },
-      { key: "toJSON", attrs: "wc" }
-    ],
-    noprops: [{ key: "length" }]
-  },
-  {
-    obj: RegExp,
-    name: "RegExp",
-    proto: "Function.prototype",
-    class: "Function",
-    props: [
-      { key: "length", attrs: "c", value: 2 }, // E5 Section 15.10.5
-      { key: "prototype", attrs: "" }
-    ],
-    noprops: []
-  },
-  {
-    obj: RegExp.prototype,
-    name: "RegExp.prototype",
-    proto: "Object.prototype",
-    class: "Object", // 'RegExp' in E5 Section 15.10.6 -> changed to 'Object' in ES2015
-    props: [
-      { key: "constructor", attrs: "wc" },
-      { key: "exec", attrs: "wc" },
-      { key: "test", attrs: "wc" },
-      { key: "toString", attrs: "wc" }
-    ],
-    noprops: [{ key: "length" }]
-  },
-  {
-    obj: Error,
-    name: "Error",
-    proto: "Function.prototype",
-    class: "Function",
-    props: [
-      { key: "length", attrs: "c", value: 1 },
-      { key: "prototype", attrs: "" }
-    ],
-    noprops: []
-  },
-  {
-    obj: Error.prototype,
-    name: "Error.prototype",
-    proto: "Object.prototype",
-    class: "Error",
-    props: [
-      { key: "constructor", attrs: "wc" },
-      { key: "name", attrs: "wc" },
-      { key: "message", attrs: "wc" },
-      { key: "toString", attrs: "wc" }
-    ],
-    noprops: [{ key: "length" }]
-  },
-  {
-    obj: EvalError,
-    name: "EvalError",
-    proto: "Error",
-    class: "Function",
-    props: [
-      { key: "length", attrs: "c", value: 1 },
-      { key: "prototype", attrs: "" }
-    ],
-    noprops: []
-  },
-  {
-    obj: EvalError.prototype,
-    name: "EvalError.prototype",
-    proto: "Error.prototype",
-    class: "Error",
-    props: [
-      { key: "constructor", attrs: "wc" },
-      { key: "name", attrs: "wc" },
-      { key: "message", attrs: "wc" }
-    ],
-    noprops: [{ key: "length" }]
-  },
-  {
-    obj: RangeError,
-    name: "RangeError",
-    proto: "Error",
-    class: "Function",
-    props: [
-      { key: "length", attrs: "c", value: 1 },
-      { key: "prototype", attrs: "" }
-    ],
-    noprops: []
-  },
-  {
-    obj: RangeError.prototype,
-    name: "RangeError.prototype",
-    proto: "Error.prototype",
-    class: "Error",
-    props: [
-      { key: "constructor", attrs: "wc" },
-      { key: "name", attrs: "wc" },
-      { key: "message", attrs: "wc" }
-    ],
-    noprops: [{ key: "length" }]
-  },
-  {
-    obj: ReferenceError,
-    name: "ReferenceError",
-    proto: "Error",
-    class: "Function",
-    props: [
-      { key: "length", attrs: "c", value: 1 },
-      { key: "prototype", attrs: "" }
-    ],
-    noprops: []
-  },
-  {
-    obj: ReferenceError.prototype,
-    name: "ReferenceError.prototype",
-    proto: "Error.prototype",
-    class: "Error",
-    props: [
-      { key: "constructor", attrs: "wc" },
-      { key: "name", attrs: "wc" },
-      { key: "message", attrs: "wc" }
-    ],
-    noprops: [{ key: "length" }]
-  },
-  {
-    obj: SyntaxError,
-    name: "SyntaxError",
-    proto: "Error",
-    class: "Function",
-    props: [
-      { key: "length", attrs: "c", value: 1 },
-      { key: "prototype", attrs: "" }
-    ],
-    noprops: []
-  },
-  {
-    obj: SyntaxError.prototype,
-    name: "SyntaxError.prototype",
-    proto: "Error.prototype",
-    class: "Error",
-    props: [
-      { key: "constructor", attrs: "wc" },
-      { key: "name", attrs: "wc" },
-      { key: "message", attrs: "wc" }
-    ],
-    noprops: [{ key: "length" }]
-  },
-  {
-    obj: TypeError,
-    name: "TypeError",
-    proto: "Error",
-    class: "Function",
-    props: [
-      { key: "length", attrs: "c", value: 1 },
-      { key: "prototype", attrs: "" }
-    ],
-    noprops: []
-  },
-  {
-    obj: TypeError.prototype,
-    name: "TypeError.prototype",
-    proto: "Error.prototype",
-    class: "Error",
-    props: [
-      { key: "constructor", attrs: "wc" },
-      { key: "name", attrs: "wc" },
-      { key: "message", attrs: "wc" }
-    ],
-    noprops: [{ key: "length" }]
-  },
-  {
-    obj: URIError,
-    name: "URIError",
-    proto: "Error",
-    class: "Function",
-    props: [
-      { key: "length", attrs: "c", value: 1 },
-      { key: "prototype", attrs: "" }
-    ],
-    noprops: []
-  },
-  {
-    obj: URIError.prototype,
-    name: "URIError.prototype",
-    proto: "Error.prototype",
-    class: "Error",
-    props: [
-      { key: "constructor", attrs: "wc" },
-      { key: "name", attrs: "wc" },
-      { key: "message", attrs: "wc" }
-    ],
-    noprops: [{ key: "length" }]
-  },
-  {
-    obj: JSON,
-    name: "JSON",
-    proto: "Object.prototype",
-    class: "JSON",
-    props: [
-      { key: "parse", attrs: "wc" },
-      { key: "stringify", attrs: "wc" }
-    ],
-    noprops: [{ key: "length" }]
-  }
+    {
+        obj: getGlobalObject(),
+        name: 'Global',
+        proto: 'Object.prototype',    // implementation defined
+                                      //  Smjs: Object.prototype
+                                      //  Rhino: Object.prototype
+                                      //  Node (V8): *not* Object.prototype, but Object.prototype is in prototype chain
+        class: 'global',              // implementation defined
+                                      //  Smjs: 'global'
+                                      //  Rhino: 'global'
+                                      //  V8: 'global'
+        props: [
+            { key: 'NaN', attrs: '' },
+            { key: 'Infinity', attrs: '' },
+            { key: 'undefined', attrs: '' },
+            { key: 'eval', attrs: 'wc' },
+            { key: 'parseInt', attrs: 'wc' },
+            { key: 'parseFloat', attrs: 'wc' },
+            { key: 'isNaN', attrs: 'wc' },
+            { key: 'isFinite', attrs: 'wc' },
+            { key: 'decodeURI', attrs: 'wc' },
+            { key: 'decodeURIComponent', attrs: 'wc' },
+            { key: 'encodeURI', attrs: 'wc' },
+            { key: 'encodeURIComponent', attrs: 'wc' },
+            { key: 'Object', attrs: 'wc' },
+            { key: 'Function', attrs: 'wc' },
+            { key: 'Array', attrs: 'wc' },
+            { key: 'String', attrs: 'wc' },
+            { key: 'Boolean', attrs: 'wc' },
+            { key: 'Number', attrs: 'wc' },
+            { key: 'Date', attrs: 'wc' },
+            { key: 'RegExp', attrs: 'wc' },
+            { key: 'Error', attrs: 'wc' },
+            { key: 'EvalError', attrs: 'wc' },
+            { key: 'RangeError', attrs: 'wc' },
+            { key: 'ReferenceError', attrs: 'wc' },
+            { key: 'SyntaxError', attrs: 'wc' },
+            { key: 'TypeError', attrs: 'wc' },
+            { key: 'URIError', attrs: 'wc' },
+        ],
+        noprops: [
+            { key: 'length' },
+        ],
+    },
+    {
+        obj: Object,
+        name: 'Object',
+        proto: 'Function.prototype',
+        class: 'Function',
+        props: [
+            { key: 'length', attrs: 'c', value: 1 },
+            { key: 'prototype', attrs: '' },
+            { key: 'getPrototypeOf', attrs: 'wc' },
+            { key: 'getOwnPropertyDescriptor', attrs: 'wc' },
+            { key: 'getOwnPropertyNames', attrs: 'wc' },
+            { key: 'create', attrs: 'wc' },
+            { key: 'defineProperty', attrs: 'wc' },
+            { key: 'seal', attrs: 'wc' },
+            { key: 'freeze', attrs: 'wc' },
+            { key: 'preventExtensions', attrs: 'wc' },
+            { key: 'isSealed', attrs: 'wc' },
+            { key: 'isFrozen', attrs: 'wc' },
+            { key: 'isExtensible', attrs: 'wc' },
+            { key: 'keys', attrs: 'wc' },
+        ],
+        noprops: [
+        ],
+    },
+    {
+        obj: Object.prototype,
+        name: 'Object.prototype',
+        proto: null,
+        class: 'Object',
+        props: [
+            { key: 'constructor', 'attrs': 'wc' },
+            { key: 'toString', 'attrs': 'wc' },
+            { key: 'toLocaleString', 'attrs': 'wc' },
+            { key: 'valueOf', 'attrs': 'wc' },
+            { key: 'hasOwnProperty', 'attrs': 'wc' },
+            { key: 'isPrototypeOf', 'attrs': 'wc' },
+            { key: 'propertyIsEnumerable', 'attrs': 'wc' },
+        ],
+        noprops: [
+            { key: 'length' },
+        ],
+    },
+    {
+        obj: Function,
+        name: 'Function',
+        proto: 'Function.prototype',
+        class: 'Function',
+        props: [
+            { key: 'length', attrs: 'c', value: 1 },
+            { key: 'prototype', 'attrs': '' }
+        ],
+        noprops: [
+        ],
+    },
+    {
+        obj: Function.prototype,
+        name: 'Function.prototype',
+        proto: 'Object.prototype',
+        class: 'Function',  // E5 Section 15.3.4
+        props: [
+            { key: 'length', 'attrs': 'c', value: 0 },
+            { key: 'constructor', 'attrs': 'wc' },
+            { key: 'toString', 'attrs': 'wc' },
+            { key: 'apply', 'attrs': 'wc' },
+            { key: 'call', 'attrs': 'wc' },
+            { key: 'bind', 'attrs': 'wc' },
+        ],
+        noprops: [
+        ],
+    },
+    {
+        obj: Array,
+        name: 'Array',
+        proto: 'Function.prototype',
+        class: 'Function',
+        props: [
+            { key: 'length', attrs: 'c', value: 1 },
+            { key: 'prototype', 'attrs': '' },
+            { key: 'isArray', 'attrs': 'wc' },
+        ],
+        noprops: [
+        ],
+    },
+    {
+        obj: Array.prototype,
+        name: 'Array.prototype',
+        proto: 'Object.prototype',
+        class: 'Array',
+        props: [
+            { key: 'length', 'attrs': 'w', value: 0 },  // virtual attribute (Array.prototype is an array instance),
+                                                        // E5 Sections 15.4.4, 15.4.5.2
+            { key: 'constructor', 'attrs': 'wc' },
+            { key: 'toString', 'attrs': 'wc' },
+            { key: 'toLocaleString', 'attrs': 'wc' },
+            { key: 'concat', 'attrs': 'wc' },
+            { key: 'join', 'attrs': 'wc' },
+            { key: 'pop', 'attrs': 'wc' },
+            { key: 'push', 'attrs': 'wc' },
+            { key: 'reverse', 'attrs': 'wc' },
+            { key: 'shift', 'attrs': 'wc' },
+            { key: 'slice', 'attrs': 'wc' },
+            { key: 'sort', 'attrs': 'wc' },
+            { key: 'splice', 'attrs': 'wc' },
+            { key: 'unshift', 'attrs': 'wc' },
+            { key: 'indexOf', 'attrs': 'wc' },
+            { key: 'lastIndexOf', 'attrs': 'wc' },
+            { key: 'every', 'attrs': 'wc' },
+            { key: 'some', 'attrs': 'wc' },
+            { key: 'forEach', 'attrs': 'wc' },
+            { key: 'map', 'attrs': 'wc' },
+            { key: 'filter', 'attrs': 'wc' },
+            { key: 'reduce', 'attrs': 'wc' },
+            { key: 'reduceRight', 'attrs': 'wc' },
+        ],
+        noprops: [
+        ],
+    },
+    {
+        obj: String,
+        name: 'String',
+        proto: 'Function.prototype',
+        class: 'Function',
+        props: [
+            { key: 'length', attrs: 'c', value: 1 },
+            { key: 'prototype', 'attrs': '' },
+            { key: 'fromCharCode', 'attrs': 'wc' },
+        ],
+        noprops: [
+        ],
+    },
+    {
+        obj: String.prototype,
+        name: 'String.prototype',
+        proto: 'Object.prototype',
+        class: 'String',  // E5 Section 15.5.4
+        props: [
+            { key: 'length', 'attrs': '', value: 0 },    // virtual attribute (String.prototype is a String instance),
+                                                         // E5 Sections 15.5.4, 15.5.5.1; immutable
+            { key: 'constructor', 'attrs': 'wc' },
+            { key: 'toString', 'attrs': 'wc' },
+            { key: 'valueOf', 'attrs': 'wc' },
+            { key: 'charAt', 'attrs': 'wc' },
+            { key: 'charCodeAt', 'attrs': 'wc' },
+            { key: 'concat', 'attrs': 'wc' },
+            { key: 'indexOf', 'attrs': 'wc' },
+            { key: 'lastIndexOf', 'attrs': 'wc' },
+            { key: 'localeCompare', 'attrs': 'wc' },
+            { key: 'match', 'attrs': 'wc' },
+            { key: 'replace', 'attrs': 'wc' },
+            { key: 'search', 'attrs': 'wc' },
+            { key: 'slice', 'attrs': 'wc' },
+            { key: 'split', 'attrs': 'wc' },
+            { key: 'substring', 'attrs': 'wc' },
+            { key: 'toLowerCase', 'attrs': 'wc' },
+            { key: 'toLocaleLowerCase', 'attrs': 'wc' },
+            { key: 'toUpperCase', 'attrs': 'wc' },
+            { key: 'toLocaleUpperCase', 'attrs': 'wc' },
+            { key: 'trim', 'attrs': 'wc' },
+        ],
+        noprops: [
+        ],
+    },
+    {
+        obj: Boolean,
+        name: 'Boolean',
+        proto: 'Function.prototype',
+        class: 'Function',
+        props: [
+            { key: 'length', attrs: 'c', value: 1 },
+            { key: 'prototype', 'attrs': '' },
+        ],
+        noprops: [
+        ],
+    },
+    {
+        obj: Boolean.prototype,
+        name: 'Boolean.prototype',
+        proto: 'Object.prototype',
+        class: 'Boolean',  // E5 Section 15.6.4
+        props: [
+            { key: 'constructor', 'attrs': 'wc' },
+            { key: 'toString', 'attrs': 'wc' },
+            { key: 'valueOf', 'attrs': 'wc' },
+        ],
+        noprops: [
+            { key: 'length' },
+        ],
+    },
+    {
+        obj: Number,
+        name: 'Number',
+        proto: 'Function.prototype',
+        class: 'Function',
+        props: [
+            { key: 'length', attrs: 'c', value: 1 },
+            { key: 'prototype', 'attrs': '' },
+            { key: 'MAX_VALUE', 'attrs': '' },
+            { key: 'MIN_VALUE', 'attrs': '' },
+            { key: 'NaN', 'attrs': '' },
+            { key: 'NEGATIVE_INFINITY', 'attrs': '' },
+            { key: 'POSITIVE_INFINITY', 'attrs': '' },
+        ],
+        noprops: [
+        ],
+    },
+    {
+        obj: Number.prototype,
+        name: 'Number.prototype',
+        proto: 'Object.prototype',
+        class: 'Number',  // E5 Section 15.7.4
+        props: [
+            { key: 'constructor', 'attrs': 'wc' },
+            { key: 'toString', 'attrs': 'wc' },
+            { key: 'toLocaleString', 'attrs': 'wc' },
+            { key: 'valueOf', 'attrs': 'wc' },
+            { key: 'toFixed', 'attrs': 'wc' },
+            { key: 'toExponential', 'attrs': 'wc' },
+            { key: 'toPrecision', 'attrs': 'wc' },
+        ],
+        noprops: [
+            { key: 'length' },
+        ],
+    },
+    {
+        obj: Math,
+        name: 'Math',
+        proto: 'Object.prototype',
+        class: 'Math',
+        props: [
+            { key: 'E', 'attrs': '' },
+            { key: 'LN10', 'attrs': '' },
+            { key: 'LN2', 'attrs': '' },
+            { key: 'LOG2E', 'attrs': '' },
+            { key: 'LOG10E', 'attrs': '' },
+            { key: 'PI', 'attrs': '' },
+            { key: 'SQRT1_2', 'attrs': '' },
+            { key: 'SQRT2', 'attrs': '' },
+            { key: 'abs', 'attrs': 'wc' },
+            { key: 'acos', 'attrs': 'wc' },
+            { key: 'asin', 'attrs': 'wc' },
+            { key: 'atan', 'attrs': 'wc' },
+            { key: 'atan2', 'attrs': 'wc' },
+            { key: 'ceil', 'attrs': 'wc' },
+            { key: 'cos', 'attrs': 'wc' },
+            { key: 'exp', 'attrs': 'wc' },
+            { key: 'floor', 'attrs': 'wc' },
+            { key: 'log', 'attrs': 'wc' },
+            { key: 'max', 'attrs': 'wc' },
+            { key: 'min', 'attrs': 'wc' },
+            { key: 'pow', 'attrs': 'wc' },
+            { key: 'random', 'attrs': 'wc' },
+            { key: 'round', 'attrs': 'wc' },
+            { key: 'sin', 'attrs': 'wc' },
+            { key: 'sqrt', 'attrs': 'wc' },
+            { key: 'tan', 'attrs': 'wc' },
+        ],
+        noprops: [
+            { key: 'length' },
+        ],
+    },
+    {
+        obj: Date,
+        name: 'Date',
+        proto: 'Function.prototype',
+        class: 'Function',
+        props: [
+            { key: 'length', attrs: 'c', value: 7 },  // E5 Section 15.9.4
+            { key: 'prototype', 'attrs': '' },
+            { key: 'parse', 'attrs': 'wc' },
+            { key: 'UTC', 'attrs': 'wc' },
+            { key: 'now', 'attrs': 'wc' },
+        ],
+        noprops: [
+        ],
+    },
+    {
+        obj: Date.prototype,
+        name: 'Date.prototype',
+        proto: 'Object.prototype',
+        class: 'Date',  // E5 Section 15.9.5
+        props: [
+            { key: 'constructor', 'attrs': 'wc' },
+            { key: 'toString', 'attrs': 'wc' },
+            { key: 'toDateString', 'attrs': 'wc' },
+            { key: 'toTimeString', 'attrs': 'wc' },
+            { key: 'toLocaleDateString', 'attrs': 'wc' },
+            { key: 'toLocaleTimeString', 'attrs': 'wc' },
+            { key: 'valueOf', 'attrs': 'wc' },
+            { key: 'getTime', 'attrs': 'wc' },
+            { key: 'getFullYear', 'attrs': 'wc' },
+            { key: 'getUTCFullYear', 'attrs': 'wc' },
+            { key: 'getMonth', 'attrs': 'wc' },
+            { key: 'getUTCMonth', 'attrs': 'wc' },
+            { key: 'getDate', 'attrs': 'wc' },
+            { key: 'getUTCDate', 'attrs': 'wc' },
+            { key: 'getDay', 'attrs': 'wc' },
+            { key: 'getUTCDay', 'attrs': 'wc' },
+            { key: 'getHours', 'attrs': 'wc' },
+            { key: 'getUTCHours', 'attrs': 'wc' },
+            { key: 'getMinutes', 'attrs': 'wc' },
+            { key: 'getUTCMinutes', 'attrs': 'wc' },
+            { key: 'getSeconds', 'attrs': 'wc' },
+            { key: 'getUTCSeconds', 'attrs': 'wc' },
+            { key: 'getMilliseconds', 'attrs': 'wc' },
+            { key: 'getUTCMilliseconds', 'attrs': 'wc' },
+            { key: 'getTimezoneOffset', 'attrs': 'wc' },
+            { key: 'setTime', 'attrs': 'wc' },
+            { key: 'setMilliseconds', 'attrs': 'wc' },
+            { key: 'setUTCMilliseconds', 'attrs': 'wc' },
+            { key: 'setSeconds', 'attrs': 'wc' },
+            { key: 'setUTCSeconds', 'attrs': 'wc' },
+            { key: 'setMinutes', 'attrs': 'wc' },
+            { key: 'setUTCMinutes', 'attrs': 'wc' },
+            { key: 'setHours', 'attrs': 'wc' },
+            { key: 'setUTCHours', 'attrs': 'wc' },
+            { key: 'setDate', 'attrs': 'wc' },
+            { key: 'setUTCDate', 'attrs': 'wc' },
+            { key: 'setMonth', 'attrs': 'wc' },
+            { key: 'setUTCMonth', 'attrs': 'wc' },
+            { key: 'setFullYear', 'attrs': 'wc' },
+            { key: 'setUTCFullYear', 'attrs': 'wc' },
+            { key: 'toUTCString', 'attrs': 'wc' },
+            { key: 'toISOString', 'attrs': 'wc' },
+            { key: 'toJSON', 'attrs': 'wc' },
+        ],
+        noprops: [
+            { key: 'length' },
+        ],
+    },
+    {
+        obj: RegExp,
+        name: 'RegExp',
+        proto: 'Function.prototype',
+        class: 'Function',
+        props: [
+            { key: 'length', attrs: 'c', value: 2 },  // E5 Section 15.10.5
+            { key: 'prototype', 'attrs': '' },
+        ],
+        noprops: [
+        ],
+    },
+    {
+        obj: RegExp.prototype,
+        name: 'RegExp.prototype',
+        proto: 'Object.prototype',
+        class: 'Object',  // 'RegExp' in E5 Section 15.10.6 -> changed to 'Object' in ES2015
+        props: [
+            { key: 'constructor', 'attrs': 'wc' },
+            { key: 'exec', 'attrs': 'wc' },
+            { key: 'test', 'attrs': 'wc' },
+            { key: 'toString', 'attrs': 'wc' },
+        ],
+        noprops: [
+            { key: 'length' },
+        ],
+    },
+    {
+        obj: Error,
+        name: 'Error',
+        proto: 'Function.prototype',
+        class: 'Function',
+        props: [
+            { key: 'length', 'attrs': 'c', value: 1 },
+            { key: 'prototype', 'attrs': '' },
+        ],
+        noprops: [
+        ],
+    },
+    {
+        obj: Error.prototype,
+        name: 'Error.prototype',
+        proto: 'Object.prototype',
+        class: 'Error',
+        props: [
+            { key: 'constructor', 'attrs': 'wc' },
+            { key: 'name', 'attrs': 'wc' },
+            { key: 'message', 'attrs': 'wc' },
+            { key: 'toString', 'attrs': 'wc' },
+        ],
+        noprops: [
+            { key: 'length' },
+        ],
+    },
+    {
+        obj: EvalError,
+        name: 'EvalError',
+        proto: 'Error',
+        class: 'Function',
+        props: [
+            { key: 'length', 'attrs': 'c', value: 1 },
+            { key: 'prototype', 'attrs': '' },
+        ],
+        noprops: [
+        ],
+    },
+    {
+        obj: EvalError.prototype,
+        name: 'EvalError.prototype',
+        proto: 'Error.prototype',
+        class: 'Error',
+        props: [
+            { key: 'constructor', 'attrs': 'wc' },
+            { key: 'name', 'attrs': 'wc' },
+            { key: 'message', 'attrs': 'wc' },
+        ],
+        noprops: [
+            { key: 'length' },
+        ],
+    },
+    {
+        obj: RangeError,
+        name: 'RangeError',
+        proto: 'Error',
+        class: 'Function',
+        props: [
+            { key: 'length', 'attrs': 'c', value: 1 },
+            { key: 'prototype', 'attrs': '' },
+        ],
+        noprops: [
+        ],
+    },
+    {
+        obj: RangeError.prototype,
+        name: 'RangeError.prototype',
+        proto: 'Error.prototype',
+        class: 'Error',
+        props: [
+            { key: 'constructor', 'attrs': 'wc' },
+            { key: 'name', 'attrs': 'wc' },
+            { key: 'message', 'attrs': 'wc' },
+        ],
+        noprops: [
+            { key: 'length' },
+        ],
+    },
+    {
+        obj: ReferenceError,
+        name: 'ReferenceError',
+        proto: 'Error',
+        class: 'Function',
+        props: [
+            { key: 'length', 'attrs': 'c', value: 1 },
+            { key: 'prototype', 'attrs': '' },
+        ],
+        noprops: [
+        ],
+    },
+    {
+        obj: ReferenceError.prototype,
+        name: 'ReferenceError.prototype',
+        proto: 'Error.prototype',
+        class: 'Error',
+        props: [
+            { key: 'constructor', 'attrs': 'wc' },
+            { key: 'name', 'attrs': 'wc' },
+            { key: 'message', 'attrs': 'wc' },
+        ],
+        noprops: [
+            { key: 'length' },
+        ],
+    },
+    {
+        obj: SyntaxError,
+        name: 'SyntaxError',
+        proto: 'Error',
+        class: 'Function',
+        props: [
+            { key: 'length', 'attrs': 'c', value: 1 },
+            { key: 'prototype', 'attrs': '' },
+        ],
+        noprops: [
+        ],
+    },
+    {
+        obj: SyntaxError.prototype,
+        name: 'SyntaxError.prototype',
+        proto: 'Error.prototype',
+        class: 'Error',
+        props: [
+            { key: 'constructor', 'attrs': 'wc' },
+            { key: 'name', 'attrs': 'wc' },
+            { key: 'message', 'attrs': 'wc' },
+        ],
+        noprops: [
+            { key: 'length' },
+        ],
+    },
+    {
+        obj: TypeError,
+        name: 'TypeError',
+        proto: 'Error',
+        class: 'Function',
+        props: [
+            { key: 'length', 'attrs': 'c', value: 1 },
+            { key: 'prototype', 'attrs': '' },
+        ],
+        noprops: [
+        ],
+    },
+    {
+        obj: TypeError.prototype,
+        name: 'TypeError.prototype',
+        proto: 'Error.prototype',
+        class: 'Error',
+        props: [
+            { key: 'constructor', 'attrs': 'wc' },
+            { key: 'name', 'attrs': 'wc' },
+            { key: 'message', 'attrs': 'wc' },
+        ],
+        noprops: [
+            { key: 'length' },
+        ],
+    },
+    {
+        obj: URIError,
+        name: 'URIError',
+        proto: 'Error',
+        class: 'Function',
+        props: [
+            { key: 'length', 'attrs': 'c', value: 1 },
+            { key: 'prototype', 'attrs': '' },
+        ],
+        noprops: [
+        ],
+    },
+    {
+        obj: URIError.prototype,
+        name: 'URIError.prototype',
+        proto: 'Error.prototype',
+        class: 'Error',
+        props: [
+            { key: 'constructor', 'attrs': 'wc' },
+            { key: 'name', 'attrs': 'wc' },
+            { key: 'message', 'attrs': 'wc' },
+        ],
+        noprops: [
+            { key: 'length' },
+        ],
+    },
+    {
+        obj: JSON,
+        name: 'JSON',
+        proto: 'Object.prototype',
+        class: 'JSON',
+        props: [
+            { key: 'parse', attrs: 'wc' },
+            { key: 'stringify', attrs: 'wc' },
+        ],
+        noprops: [
+            { key: 'length' },
+        ],
+    },
 ];
 
 // E5 Section 15.2.4.2
 function getObjectClass(obj) {
-  // trickery to bind 'this' properly
-  var func = Object.prototype.toString.bind(obj);
+    // trickery to bind 'this' properly
+    var func = Object.prototype.toString.bind(obj);
 
-  var t = func();
-  var r = /^\[object\s(.*?)\]$/;
-  var m = r.exec(t);
-  if (!m) {
-    return "none";
-  } else {
-    return m[1];
-  }
+    var t = func();
+    var r = /^\[object\s(.*?)\]$/;
+    var m = r.exec(t);
+    if (!m) {
+        return 'none';
+    } else {
+        return m[1];
+    }
 }
 
 function getObjectByName(objName) {
-  var i;
-  for (i = 0; i < obj_data.length; i++) {
-    var obj = obj_data[i];
-    if (obj.name == objName) {
-      return obj;
+    var i;
+    for (i = 0; i < obj_data.length; i++) {
+        var obj = obj_data[i];
+        if (obj.name == objName) {
+            return obj;
+        }
     }
-  }
-  return null;
+    return null;
 }
 
 function printObject(obj) {
-  var i;
-  var t = "OBJECT:";
+    var i;
+    var t = 'OBJECT:';
 
-  t += " ";
-  t += '"' + obj.name + '"';
+    t += ' ';
+    t += '"' + obj.name + '"';
 
-  t += " ";
-  if (Object.isSealed(obj.obj)) {
-    t += "sealed";
-  } else {
-    t += "!sealed";
-  }
-
-  t += " ";
-  if (Object.isFrozen(obj.obj)) {
-    t += "frozen";
-  } else {
-    t += "!frozen";
-  }
-
-  t += " ";
-  if (Object.isExtensible(obj.obj)) {
-    t += "extensible";
-  } else {
-    t += "!extensible";
-  }
-
-  print(t);
-
-  var iproto = Object.getPrototypeOf(obj.obj);
-  var p_obj = null;
-  if (obj.proto) {
-    p_obj = getObjectByName(obj.proto);
-  }
-  t = "PROTOTYPE: ";
-  if (p_obj) {
-    t += '"' + p_obj.name + '"';
-  } else {
-    t += "null";
-  }
-  if (
-    (iproto === null && p_obj === null) ||
-    (p_obj !== null && p_obj.obj === iproto)
-  ) {
-    // ok
-  } else {
-    t += " INCORRECT";
-  }
-
-  print(t);
-
-  t = "CLASS: ";
-  var cl = getObjectClass(obj.obj);
-  t += cl;
-  if (obj.class !== cl) {
-    t += " INCORRECT, expected: " + obj.class;
-  }
-  print(t);
-
-  for (i = 0; i < obj.props.length; i++) {
-    var p = obj.props[i];
-    var pd = Object.getOwnPropertyDescriptor(obj.obj, p.key);
-    var at = "";
-
-    t = "PROPERTY: ";
-    t += '"' + p.key + '"';
-
-    if (!pd) {
-      t += " ";
-      t += "MISSING";
-      print(t);
-      continue;
-    }
-
-    t += " ";
-    if (pd.writable) {
-      at += "w";
-      t += "writable";
+    t += ' ';
+    if (Object.isSealed(obj.obj)) {
+        t += 'sealed';
     } else {
-      t += "!writable";
+        t += '!sealed';
     }
 
-    t += " ";
-    if (pd.enumerable) {
-      at += "e";
-      t += "enumerable";
+    t += ' ';
+    if (Object.isFrozen(obj.obj)) {
+        t += 'frozen';
     } else {
-      t += "!enumerable";
+        t += '!frozen';
     }
 
-    t += " ";
-    if (pd.configurable) {
-      at += "c";
-      t += "configurable";
+    t += ' ';
+    if (Object.isExtensible(obj.obj)) {
+        t += 'extensible';
     } else {
-      t += "!configurable";
+        t += '!extensible';
     }
 
-    if (at != p.attrs) {
-      t += " ";
-      t += "ATTRIBUTES-INCORRECT";
+    print (t);
+
+    var iproto = Object.getPrototypeOf(obj.obj);
+    var p_obj = null;
+    if (obj.proto) {
+        p_obj = getObjectByName(obj.proto);
     }
-
-    if (p.value !== undefined) {
-      if (p.value !== pd.value) {
-        t += " VALUE-INCORRECT";
-      }
-    }
-
-    print(t);
-  }
-
-  for (i = 0; i < obj.noprops.length; i++) {
-    var p = obj.noprops[i];
-    var pd = Object.getOwnPropertyDescriptor(obj.obj, p.key);
-
-    t = "NOPROPERTY: ";
-
-    t += '"' + p.key + '"';
-
-    t += " ";
-    if (pd) {
-      t += "UNEXPECTEDLY-FOUND";
-      t += " ";
-      t += JSON.stringify(pd);
+    t = 'PROTOTYPE: ';
+    if (p_obj) {
+        t += '"' + p_obj.name + '"';
     } else {
-      // ok
+        t += 'null';
+    }
+    if ((iproto === null && p_obj === null) || (p_obj !== null && p_obj.obj === iproto)) {
+        // ok
+    } else {
+        t += ' INCORRECT';
     }
 
-    print(t);
-  }
+    print (t);
+
+    t = 'CLASS: ';
+    var cl = getObjectClass(obj.obj);
+    t += cl;
+    if (obj.class !== cl) {
+        t += ' INCORRECT, expected: ' + obj.class;
+    }
+    print (t);
+
+    for (i = 0; i < obj.props.length; i++) {
+        var p = obj.props[i];
+        var pd = Object.getOwnPropertyDescriptor(obj.obj, p.key);
+        var at = '';
+
+        t = 'PROPERTY: ';
+        t += '"' + p.key + '"';
+
+        if (!pd) {
+            t += ' ';
+            t += 'MISSING'
+            print(t);
+            continue;
+        }
+
+        t += ' ';
+        if (pd.writable) {
+            at += 'w';
+            t += 'writable';
+        } else {
+            t += '!writable';
+        }
+
+        t += ' ';
+        if (pd.enumerable) {
+            at += 'e';
+            t += 'enumerable';
+        } else {
+            t += '!enumerable';
+        }
+
+        t += ' ';
+        if (pd.configurable) {
+            at += 'c';
+            t += 'configurable';
+        } else {
+            t += '!configurable';
+        }
+
+        if (at != p.attrs) {
+            t += ' ';
+            t += 'ATTRIBUTES-INCORRECT';
+        }
+
+        if (p.value !== undefined) {
+            if (p.value !== pd.value) {
+                t += ' VALUE-INCORRECT';
+            }
+        }
+
+        print (t);
+    }
+
+    for (i = 0; i < obj.noprops.length; i++) {
+        var p = obj.noprops[i];
+        var pd = Object.getOwnPropertyDescriptor(obj.obj, p.key);
+
+        t = 'NOPROPERTY: ';
+
+        t += '"' + p.key + '"';
+
+        t += ' ';
+        if (pd) {
+            t += 'UNEXPECTEDLY-FOUND';
+            t += ' ';
+            t += JSON.stringify(pd);
+        } else {
+            // ok
+        }
+
+        print (t);
+    }
 }
 
 /*===
@@ -1154,18 +1199,18 @@ NOPROPERTY: "length"
 /* XXX: the expected value needs to be verified against the specification */
 
 function checkBuiltins() {
-  var i;
-  for (i = 0; i < obj_data.length; i++) {
-    var t = obj_data[i];
-    if (i > 0) {
-      print("");
+    var i;
+    for (i = 0; i < obj_data.length; i++) {
+        var t = obj_data[i];
+        if (i > 0) {
+            print('');
+        };
+        printObject(t);
     }
-    printObject(t);
-  }
 }
 
 try {
-  checkBuiltins();
+    checkBuiltins();
 } catch (e) {
-  print(e.name, e.message);
+    print(e.name, e.message);
 }

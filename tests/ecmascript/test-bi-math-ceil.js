@@ -24,7 +24,7 @@ printExact(Math.ceil(123.000001));
 printExact(Math.ceil(-123));
 printExact(Math.ceil(-122.999999));
 
-printExact(Math.ceil(4294967306.5)); // value higher than 32 bits
+printExact(Math.ceil(4294967306.5));  // value higher than 32 bits
 
 printExact(Math.ceil(NaN));
 printExact(Math.ceil(+0));

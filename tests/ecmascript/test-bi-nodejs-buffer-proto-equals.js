@@ -165,78 +165,67 @@ node.js Buffer equals() test
 ===*/
 
 function nodejsBufferEqualsTest() {
-  var b1, b2, b3, b4;
-  var values;
-  var tmp = [];
+    var b1, b2, b3, b4;
+    var values;
+    var tmp = [];
 
-  b1 = new Buffer("foo");
-  b2 = new Buffer("foo");
-  b3 = new Buffer("foo1");
-  b4 = new Buffer("bar");
+    b1 = new Buffer('foo');
+    b2 = new Buffer('foo');
+    b3 = new Buffer('foo1');
+    b4 = new Buffer('bar');
 
-  values = [
-    undefined,
-    null,
-    true,
-    false,
-    123,
-    "foo",
-    "foo1",
-    "bar",
-    b1,
-    b2,
-    b3,
-    b4
-  ];
+    values = [
+        undefined,
+        null,
+        true,
+        false,
+        123,
+        'foo', 'foo1', 'bar',
+        b1, b2, b3, b4
+    ];
 
-  // Not sure about correct semantics because Node.js v0.12.1 crashes
-  // when 'this' is not a Buffer.
-  //
-  // But reasonable semantics might be:
-  //     - If 'this' is not a Buffer, TypeError.
-  //     - If argument is not a Buffer, TypeError.
-  //     - Compare buffers.
+    // Not sure about correct semantics because Node.js v0.12.1 crashes
+    // when 'this' is not a Buffer.
+    //
+    // But reasonable semantics might be:
+    //     - If 'this' is not a Buffer, TypeError.
+    //     - If argument is not a Buffer, TypeError.
+    //     - Compare buffers.
 
-  values.forEach(function(v1, i1) {
-    if (i1 > 0) {
-      tmp.push("\n");
-    }
-    values.forEach(function(v2, i2) {
-      try {
-        // Avoid Node.js issue to get an except string:
-        //
-        // $ node
-        // > Buffer.prototype.equals.call(undefined, new Buffer(4))
-        // Segmentation fault (core dumped)
-        //
-        // Seems to happen when 'this' is not a buffer but argument is.
+    values.forEach(function (v1, i1) {
+        if (i1 > 0) { tmp.push('\n'); }
+        values.forEach(function (v2, i2) {
+            try {
+                // Avoid Node.js issue to get an except string:
+                //
+                // $ node
+                // > Buffer.prototype.equals.call(undefined, new Buffer(4))
+                // Segmentation fault (core dumped)
+                //
+                // Seems to happen when 'this' is not a buffer but argument is.
 
-        if (
-          typeof process === "object" &&
-          process.version !== undefined &&
-          !(v1 instanceof Buffer)
-        ) {
-          print(i1, i2, "TypeError");
-          tmp.push("!");
-        } else {
-          var eq = Buffer.prototype.equals.call(v1, v2);
-          print(i1, i2, eq);
-          tmp.push(eq ? "1" : "0");
-        }
-      } catch (e) {
-        print(i1, i2, e.name);
-        tmp.push("!");
-      }
+                if (typeof process === 'object' && process.version !== undefined && !(v1 instanceof Buffer)) {
+                    print(i1, i2, 'TypeError');
+                    tmp.push('!');
+                } else {
+                    var eq = Buffer.prototype.equals.call(v1, v2);
+                    print(i1, i2, eq);
+                    tmp.push(eq ? '1' : '0');
+                }
+            } catch (e) {
+                print(i1, i2, e.name);
+                tmp.push('!');
+            }
+        });
     });
-  });
-  print(tmp.join(""));
+    print(tmp.join(''));
 }
 
 // Note: Buffer.equals() does not exist.
 
 try {
-  print("node.js Buffer equals() test");
-  nodejsBufferEqualsTest();
+    print('node.js Buffer equals() test');
+    nodejsBufferEqualsTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

@@ -18,23 +18,23 @@ inner returned
  */
 
 function funcCallTest() {
-  function inner() {
-    print("inner called");
-    for (i = -1; (t = Duktape.act(i)) != null; i--) {
-      print(i, t.lineNumber);
+    function inner() {
+        print('inner called');
+        for (i = -1; (t = Duktape.act(i)) != null; i--) {
+            print(i, t.lineNumber);
+        }
+        return 123;
     }
-    return 123;
-  }
 
-  print("calling inner");
-  inner();
-  print("inner returned");
+    print('calling inner');
+    inner();
+    print('inner returned');
 }
 
 try {
-  funcCallTest();
+    funcCallTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -54,25 +54,25 @@ done
  */
 
 function sideEffectTest() {
-  var obj = {};
-  Object.defineProperty(obj, "prop", {
-    get: function() {
-      var i, t;
-      print("getter called");
-      for (i = -1; (t = Duktape.act(i)) != null; i--) {
-        print(i, t.lineNumber);
-      }
-      return 123;
-    }
-  });
+    var obj = {};
+    Object.defineProperty(obj, 'prop', {
+        get: function () {
+            var i, t;
+            print('getter called');
+            for (i = -1; (t = Duktape.act(i)) != null; i--) {
+                print(i, t.lineNumber);
+            }
+            return 123;
+        }
+    });
 
-  print("testing");
-  print(obj.prop);
-  print("done");
+    print('testing');
+    print(obj.prop);
+    print('done');
 }
 
 try {
-  sideEffectTest();
+    sideEffectTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

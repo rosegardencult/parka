@@ -12,21 +12,21 @@ fn called
 done
 ===*/
 
-var global = new Function("return this")();
+var global = new Function('return this')();
 
 // Redeclare from eval without initializer, should be no-op.
 
-global.fn = function() {
-  print("fn called");
+global.fn = function () {
+    print('fn called');
 };
 
-(0, eval)("var fn;");
+(0, eval)('var fn;');
 
 print(typeof fn);
 try {
-  fn();
+    fn();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 // Related issue: redeclare Math from global code, should be no-op.
@@ -35,4 +35,4 @@ print(Math);
 var Math;
 print(Math);
 
-print("done");
+print('done');

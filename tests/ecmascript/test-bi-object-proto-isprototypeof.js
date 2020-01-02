@@ -33,53 +33,53 @@ false
 false
 ===*/
 
-print("basic");
+print('basic');
 
 function basicTest() {
-  var obj1, obj2, obj3, obj4;
-  var test1;
-  var objs = [];
-  var i, j;
+    var obj1, obj2, obj3, obj4;
+    var test1;
+    var objs = [];
+    var i, j;
 
-  // prototype chain: obj1 <- obj2 <- obj3 <- obj4
-  obj1 = {};
-  obj1.name = "obj1";
-  obj2 = Object.create(obj1);
-  obj2.name = "obj2";
-  obj3 = Object.create(obj2);
-  obj3.name = "obj3";
-  obj4 = Object.create(obj3);
-  obj4.name = "obj4";
+    // prototype chain: obj1 <- obj2 <- obj3 <- obj4
+    obj1 = {};
+    obj1.name = 'obj1';
+    obj2 = Object.create(obj1);
+    obj2.name = 'obj2';
+    obj3 = Object.create(obj2);
+    obj3.name = 'obj3';
+    obj4 = Object.create(obj3);
+    obj4.name = 'obj4';
 
-  objs.push(obj1);
-  objs.push(obj2);
-  objs.push(obj3);
-  objs.push(obj4);
+    objs.push(obj1);
+    objs.push(obj2);
+    objs.push(obj3);
+    objs.push(obj4);
 
-  // unrelated object
-  test1 = { name: "test1" };
+    // unrelated object
+    test1 = { name: 'test1' };
 
-  objs.push(test1);
+    objs.push(test1);
 
-  for (i = 0; i < objs.length; i++) {
-    for (j = 0; j < objs.length; j++) {
-      print(i, objs[i].name, j, objs[j].name, objs[i].isPrototypeOf(objs[j]));
+    for (i = 0; i < objs.length; i++) {
+        for (j = 0; j < objs.length; j++) {
+            print(i, objs[i].name, j, objs[j].name, objs[i].isPrototypeOf(objs[j]));
+        }
     }
-  }
 
-  // whenever 'V' is a non-object, result is false
-  print(obj1.isPrototypeOf(undefined));
-  print(obj1.isPrototypeOf(null));
-  print(obj1.isPrototypeOf(true));
-  print(obj1.isPrototypeOf(false));
-  print(obj1.isPrototypeOf(123));
-  print(obj1.isPrototypeOf("foo"));
+    // whenever 'V' is a non-object, result is false
+    print(obj1.isPrototypeOf(undefined));
+    print(obj1.isPrototypeOf(null));
+    print(obj1.isPrototypeOf(true));
+    print(obj1.isPrototypeOf(false));
+    print(obj1.isPrototypeOf(123));
+    print(obj1.isPrototypeOf('foo'));
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -162,55 +162,38 @@ coercion
  * false is returned regardless of whether 'this' is invalid.
  */
 
-print("coercion");
+print('coercion');
 
 function coercionTest() {
-  var values = [
-    undefined,
-    null,
-    true,
-    false,
-    123,
-    "foo",
-    [1, 2],
-    { foo: 1, bar: 2 }
-  ];
-  var i, j;
+    var values = [ undefined, null, true, false, 123, 'foo', [1,2], { foo: 1, bar: 2 } ];
+    var i, j;
 
-  function test(this_val, arg, is_noarg) {
-    var t;
+    function test(this_val, arg, is_noarg) {
+        var t;
 
-    try {
-      if (is_noarg) {
-        t = Object.prototype.isPrototypeOf.call(this_val);
-      } else {
-        t = Object.prototype.isPrototypeOf.call(this_val, arg);
-      }
-      print(
-        Object.prototype.toString.call(this_val),
-        Object.prototype.toString.call(arg),
-        "ok"
-      );
-    } catch (e) {
-      print(
-        Object.prototype.toString.call(this_val),
-        Object.prototype.toString.call(arg),
-        e.name
-      );
+        try {
+            if (is_noarg) {
+                t = Object.prototype.isPrototypeOf.call(this_val);
+            } else {
+                t = Object.prototype.isPrototypeOf.call(this_val, arg);
+            }
+            print(Object.prototype.toString.call(this_val), Object.prototype.toString.call(arg), 'ok');
+        } catch (e) {
+            print(Object.prototype.toString.call(this_val), Object.prototype.toString.call(arg), e.name);
+        }
     }
-  }
 
-  for (i = 0; i < values.length; i++) {
-    test(values[i], undefined, true);
+    for (i = 0; i < values.length; i++) {
+        test(values[i], undefined, true);
 
-    for (j = 0; j < values.length; j++) {
-      test(values[i], values[j]);
+        for (j = 0; j < values.length; j++) {
+            test(values[i], values[j]);
+        }
     }
-  }
 }
 
 try {
-  coercionTest();
+    coercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

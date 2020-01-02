@@ -13,10 +13,10 @@ finalize [object Object]
 ===*/
 
 function finalizer(o) {
-  print("finalize", o);
+    print('finalize', o);
 }
 
-var obj = { name: "obj" };
+var obj = { name: 'obj' };
 Duktape.fin(obj, finalizer);
 var proxy = new Proxy(obj, {});
 // proxy = null;  // would trigger refzero finalization, which ignores Proxy objects
@@ -32,4 +32,4 @@ var proxy = new Proxy(obj, {});
  * This was fixed in Duktape 0.12.0.
  */
 
-print("about to exit");
+print('about to exit');

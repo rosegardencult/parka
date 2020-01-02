@@ -29,74 +29,74 @@ non-array
 ===*/
 
 function testArray() {
-  var a;
+    var a;
 
-  // 0xffffffff is maximum 'normal' length for an Array, e.g. assigning
-  // to offset 0xffffffff gets no special behavior to avoid bumping length
-  // to 0x100000000.  However, Array.prototype.push() has no such limitation.
-  // Check for -noncompliant- but real world compatible behavior to refuse a
-  // push which would causes a non-32-bit length.
+    // 0xffffffff is maximum 'normal' length for an Array, e.g. assigning
+    // to offset 0xffffffff gets no special behavior to avoid bumping length
+    // to 0x100000000.  However, Array.prototype.push() has no such limitation.
+    // Check for -noncompliant- but real world compatible behavior to refuse a
+    // push which would causes a non-32-bit length.
 
-  a = [];
-  a.length = 0xffffffff;
-  try {
-    a.push("foo");
-  } catch (e) {
-    print(e.name);
-  }
-  print(a.length, a[0xffffffff]);
+    a = [];
+    a.length = 0xffffffff;
+    try {
+        a.push('foo');
+    } catch (e) {
+        print(e.name);
+    }
+    print(a.length, a[0xffffffff]);
 
-  // Same happens for lower 'length' values when there are enough push()
-  // arguments.  Note that when the push() algorithm writes elements using
-  // numeric indices, array exotic behavior gets triggered for indices
-  // in the range [0,0xfffffffe] so that 'length' gets updated here to
-  // 0xffffffff.  Items above this range -will- get written to the array
-  // but won't trigger a RangeError.  Only the final explicit 'length'
-  // write causes a RangeError; all items get written!
+    // Same happens for lower 'length' values when there are enough push()
+    // arguments.  Note that when the push() algorithm writes elements using
+    // numeric indices, array exotic behavior gets triggered for indices
+    // in the range [0,0xfffffffe] so that 'length' gets updated here to
+    // 0xffffffff.  Items above this range -will- get written to the array
+    // but won't trigger a RangeError.  Only the final explicit 'length'
+    // write causes a RangeError; all items get written!
 
-  a = [];
-  a.length = 0xfffffffd;
-  try {
-    a.push("foo", "bar", "quux", "baz");
-  } catch (e) {
-    print(e.name);
-  }
-  print(a.length, a[0xfffffffd], a[0xfffffffe], a[0xffffffff], a[0x100000000]);
+    a = [];
+    a.length = 0xfffffffd;
+    try {
+        a.push('foo', 'bar', 'quux', 'baz');
+    } catch (e) {
+        print(e.name);
+    }
+    print(a.length, a[0xfffffffd], a[0xfffffffe], a[0xffffffff], a[0x100000000]);
 
-  // Boundary cases should work.
+    // Boundary cases should work.
 
-  a = [];
-  a.length = 0xfffffffd;
-  a.push("foo", "bar");
-  print(a.length, a[0xfffffffd], a[0xfffffffe]);
+    a = [];
+    a.length = 0xfffffffd;
+    a.push('foo', 'bar');
+    print(a.length, a[0xfffffffd], a[0xfffffffe]);
 }
 
 function testNonArray() {
-  var a;
+    var a;
 
-  a = { length: 0xffffffff };
-  Array.prototype.push.call(a, "foo");
-  print(a.length, a[0xffffffff]);
+    a = { length: 0xffffffff };
+    Array.prototype.push.call(a, 'foo');
+    print(a.length, a[0xffffffff]);
 
-  a = { length: 0xfffffffd };
-  Array.prototype.push.call(a, "foo", "bar", "quux", "baz");
-  print(a.length, a[0xfffffffd], a[0xfffffffe], a[0xffffffff], a[0x100000000]);
+    a = { length: 0xfffffffd };
+    Array.prototype.push.call(a, 'foo', 'bar', 'quux', 'baz');
+    print(a.length, a[0xfffffffd], a[0xfffffffe], a[0xffffffff], a[0x100000000]);
 
-  a = { length: 0xfffffffd };
-  Array.prototype.push.call(a, "foo", "bar");
-  print(a.length, a[0xfffffffd], a[0xfffffffe]);
+    a = { length: 0xfffffffd };
+    Array.prototype.push.call(a, 'foo', 'bar');
+    print(a.length, a[0xfffffffd], a[0xfffffffe]);
 }
 
-print("array");
+print('array');
 try {
-  testArray();
+    testArray();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
-print("non-array");
+print('non-array');
 try {
-  testNonArray();
+    testNonArray();
 } catch (e) {
-  print(e);
+    print(e);
 }

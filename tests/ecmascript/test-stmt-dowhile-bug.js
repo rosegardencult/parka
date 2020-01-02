@@ -11,7 +11,7 @@ false
 ===*/
 
 try {
-  print(eval("do{print('loop')}while(false)false"));
+    print(eval("do{print('loop')}while(false)false"));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

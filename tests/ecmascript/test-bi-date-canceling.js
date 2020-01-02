@@ -4,24 +4,24 @@
 ===*/
 
 function hugeCancelingComponents() {
-  var d = new Date(0);
-  print(d.toISOString());
+    var d = new Date(0);
+    print(d.toISOString());
 
-  // This call does not change the internal time value of the Date:
-  // the second and millisecond counts will be converted with
-  // ToInteger() and will cancel out before TimeClip() is applied.
-  //
-  // Note, in particular, that huge components (which are outside
-  // even 64-bit range) must not lead to an invalid time value if
-  // they "cancel out".  For the implementation, this means that
-  // Date setters must operate with doubles.
+    // This call does not change the internal time value of the Date:
+    // the second and millisecond counts will be converted with
+    // ToInteger() and will cancel out before TimeClip() is applied.
+    //
+    // Note, in particular, that huge components (which are outside
+    // even 64-bit range) must not lead to an invalid time value if
+    // they "cancel out".  For the implementation, this means that
+    // Date setters must operate with doubles.
 
-  d.setUTCSeconds(1e120, -1e123);
-  print(d.toISOString());
+    d.setUTCSeconds(1e120,-1e123)
+    print(d.toISOString());
 }
 
 try {
-  hugeCancelingComponents();
+    hugeCancelingComponents();
 } catch (e) {
-  print(e);
+    print(e);
 }

@@ -324,146 +324,55 @@ finished
 ===*/
 
 function recursive(n) {
-  /* Large register frame and an inner function ensures that when the
-   * activation unwinds the lexical scope is copied a lot of variables
-   * which requires the scope object's property table to grow (if not
-   * pregrown).
-   */
-  var x00 = 100,
-    x01 = 101,
-    x02 = 102,
-    x03 = 103,
-    x04 = 104,
-    x05 = 105,
-    x06 = 106,
-    x07 = 107,
-    x08 = 108,
-    x09 = 109;
-  var x11 = 110,
-    x11 = 111,
-    x12 = 112,
-    x13 = 113,
-    x14 = 114,
-    x15 = 115,
-    x16 = 116,
-    x17 = 117,
-    x18 = 118,
-    x19 = 119;
-  var x20 = 120,
-    x21 = 121,
-    x22 = 122,
-    x23 = 123,
-    x24 = 124,
-    x25 = 125,
-    x26 = 126,
-    x27 = 127,
-    x28 = 128,
-    x29 = 129;
-  var x30 = 130,
-    x31 = 131,
-    x32 = 132,
-    x33 = 133,
-    x34 = 134,
-    x35 = 135,
-    x36 = 136,
-    x37 = 137,
-    x38 = 138,
-    x39 = 139;
-  var x40 = 140,
-    x41 = 141,
-    x42 = 142,
-    x43 = 143,
-    x44 = 144,
-    x45 = 145,
-    x46 = 146,
-    x47 = 147,
-    x48 = 148,
-    x49 = 149;
-  var x50 = 150,
-    x51 = 151,
-    x52 = 152,
-    x53 = 153,
-    x54 = 154,
-    x55 = 155,
-    x56 = 156,
-    x57 = 157,
-    x58 = 158,
-    x59 = 159;
-  var x60 = 160,
-    x61 = 161,
-    x62 = 162,
-    x63 = 163,
-    x64 = 164,
-    x65 = 165,
-    x66 = 166,
-    x67 = 167,
-    x68 = 168,
-    x69 = 169;
-  var x70 = 170,
-    x71 = 171,
-    x72 = 172,
-    x73 = 173,
-    x74 = 174,
-    x75 = 175,
-    x76 = 176,
-    x77 = 177,
-    x78 = 178,
-    x79 = 179;
-  var x80 = 180,
-    x81 = 181,
-    x82 = 182,
-    x83 = 183,
-    x84 = 184,
-    x85 = 185,
-    x86 = 186,
-    x87 = 187,
-    x88 = 188,
-    x89 = 189;
-  var x90 = 190,
-    x91 = 191,
-    x92 = 192,
-    x93 = 193,
-    x94 = 194,
-    x95 = 195,
-    x96 = 196,
-    x97 = 197,
-    x98 = 198,
-    x99 = 199;
+    /* Large register frame and an inner function ensures that when the
+     * activation unwinds the lexical scope is copied a lot of variables
+     * which requires the scope object's property table to grow (if not
+     * pregrown).
+     */
+    var x00 = 100, x01 = 101, x02 = 102, x03 = 103, x04 = 104, x05 = 105, x06 = 106, x07 = 107, x08 = 108, x09 = 109;
+    var x11 = 110, x11 = 111, x12 = 112, x13 = 113, x14 = 114, x15 = 115, x16 = 116, x17 = 117, x18 = 118, x19 = 119;
+    var x20 = 120, x21 = 121, x22 = 122, x23 = 123, x24 = 124, x25 = 125, x26 = 126, x27 = 127, x28 = 128, x29 = 129;
+    var x30 = 130, x31 = 131, x32 = 132, x33 = 133, x34 = 134, x35 = 135, x36 = 136, x37 = 137, x38 = 138, x39 = 139;
+    var x40 = 140, x41 = 141, x42 = 142, x43 = 143, x44 = 144, x45 = 145, x46 = 146, x47 = 147, x48 = 148, x49 = 149;
+    var x50 = 150, x51 = 151, x52 = 152, x53 = 153, x54 = 154, x55 = 155, x56 = 156, x57 = 157, x58 = 158, x59 = 159;
+    var x60 = 160, x61 = 161, x62 = 162, x63 = 163, x64 = 164, x65 = 165, x66 = 166, x67 = 167, x68 = 168, x69 = 169;
+    var x70 = 170, x71 = 171, x72 = 172, x73 = 173, x74 = 174, x75 = 175, x76 = 176, x77 = 177, x78 = 178, x79 = 179;
+    var x80 = 180, x81 = 181, x82 = 182, x83 = 183, x84 = 184, x85 = 185, x86 = 186, x87 = 187, x88 = 188, x89 = 189;
+    var x90 = 190, x91 = 191, x92 = 192, x93 = 193, x94 = 194, x95 = 195, x96 = 196, x97 = 197, x98 = 198, x99 = 199;
 
-  print("outer", n);
+    print('outer', n);
 
-  // Inner function currently causes Duktape to save the outer scope.
-  // Reference all the variables so that they will be kept in unwound
-  // even if the scope copying is optimized (not in Duktape 1.4.0 yet
-  // but planned).
-  function inner() {
-    print("inner", n);
-    print(
-      x00 + x01 + x02 + x03 + x04 + x05 + x06 + x07 + x08 + x09,
-      x11 + x11 + x12 + x13 + x14 + x15 + x16 + x17 + x18 + x19,
-      x20 + x21 + x22 + x23 + x24 + x25 + x26 + x27 + x28 + x29,
-      x30 + x31 + x32 + x33 + x34 + x35 + x36 + x37 + x38 + x39,
-      x40 + x41 + x42 + x43 + x44 + x45 + x46 + x47 + x48 + x49,
-      x50 + x51 + x52 + x53 + x54 + x55 + x56 + x57 + x58 + x59,
-      x60 + x61 + x62 + x63 + x64 + x65 + x66 + x67 + x68 + x69,
-      x70 + x71 + x72 + x73 + x74 + x75 + x76 + x77 + x78 + x79,
-      x80 + x81 + x82 + x83 + x84 + x85 + x86 + x87 + x88 + x89,
-      x90 + x91 + x92 + x93 + x94 + x95 + x96 + x97 + x98 + x99
-    );
-  }
-  inner();
+    // Inner function currently causes Duktape to save the outer scope.
+    // Reference all the variables so that they will be kept in unwound
+    // even if the scope copying is optimized (not in Duktape 1.4.0 yet
+    // but planned).
+    function inner() {
+        print('inner', n);
+        print(x00 + x01 + x02 + x03 + x04 + x05 + x06 + x07 + x08 + x09,
+              x11 + x11 + x12 + x13 + x14 + x15 + x16 + x17 + x18 + x19,
+              x20 + x21 + x22 + x23 + x24 + x25 + x26 + x27 + x28 + x29,
+              x30 + x31 + x32 + x33 + x34 + x35 + x36 + x37 + x38 + x39,
+              x40 + x41 + x42 + x43 + x44 + x45 + x46 + x47 + x48 + x49,
+              x50 + x51 + x52 + x53 + x54 + x55 + x56 + x57 + x58 + x59,
+              x60 + x61 + x62 + x63 + x64 + x65 + x66 + x67 + x68 + x69,
+              x70 + x71 + x72 + x73 + x74 + x75 + x76 + x77 + x78 + x79,
+              x80 + x81 + x82 + x83 + x84 + x85 + x86 + x87 + x88 + x89,
+              x90 + x91 + x92 + x93 + x94 + x95 + x96 + x97 + x98 + x99);
+    }
+    inner();
 
-  // Recurse until out-of-memory (or out of patience).
-  if (n > 0) {
-    recursive(n - 1);
-  } else {
-  }
+    // Recurse until out-of-memory (or out of patience).
+    if (n > 0) {
+        recursive(n - 1);
+    } else {
+        ;
+    }
 }
 
 function test() {
-  recursive(100);
+    recursive(100);
 }
 
 // No try-catch to avoid memory allocations.
-test();
-print("finished");
+test()
+print('finished');

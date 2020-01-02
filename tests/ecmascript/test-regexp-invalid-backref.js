@@ -9,10 +9,10 @@ SyntaxError
 
 /* E5 Section 15.10.2.9: n > NCapturingParens */
 try {
-  eval("/\\1/.exec('foo');");
-  print("no exception");
+    eval("/\\1/.exec('foo');");
+    print("no exception");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /* Same error but never executed by regexp engine because an
@@ -26,8 +26,8 @@ try {
  * so eval is used.
  */
 try {
-  eval("/foo|\\1/.exec('foo');");
-  print("no exception");
+    eval("/foo|\\1/.exec('foo');");
+    print("no exception");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

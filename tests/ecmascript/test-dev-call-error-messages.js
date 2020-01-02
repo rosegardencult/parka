@@ -27,61 +27,54 @@ TypeError: 234 not callable (property 'bar' of [object Object])
 var global = 321;
 
 function test() {
-  var tmp;
-  var dummy = 123;
-  var obj = { bar: 234 };
+    var tmp;
+    var dummy = 123;
+    var obj = { bar: 234 };
 
-  // Basic cases
-  try {
-    undefined(); // literal
-  } catch (e) {
-    print(e);
-  }
-  try {
-    dummy(); // register-mapped variable
-  } catch (e) {
-    print(e);
-  }
-  try {
-    global(); // global variable, slow path lookup
-  } catch (e) {
-    print(e);
-  }
-  try {
-    obj.foo(); // object property, nonexistent
-  } catch (e) {
-    print(e);
-  }
-  try {
-    obj.bar(); // object property, exists but not callable
-  } catch (e) {
-    print(e);
-  }
-
-  // Summarization of different value types is already covered by
-  // test-dev-prop-error-messages.js, but cover a few values here.
-
-  [
-    undefined,
-    null,
-    true,
-    false,
-    123,
-    "a\u1234string",
-    [1, 2, 3],
-    { foo: "bar" }
-  ].forEach(function(v) {
+    // Basic cases
     try {
-      v();
+        (undefined)();  // literal
     } catch (e) {
-      tmp = Duktape.enc("jx", String(e)); // JX encode to get ASCII
-      print(tmp);
+        print(e);
     }
-  });
+    try {
+        dummy();  // register-mapped variable
+    } catch (e) {
+        print(e);
+    }
+    try {
+        global();  // global variable, slow path lookup
+    } catch (e) {
+        print(e);
+    }
+    try {
+        obj.foo();  // object property, nonexistent
+    } catch (e) {
+        print(e);
+    }
+    try {
+        obj.bar();  // object property, exists but not callable
+    } catch (e) {
+        print(e);
+    }
+
+    // Summarization of different value types is already covered by
+    // test-dev-prop-error-messages.js, but cover a few values here.
+
+    [
+        undefined, null, true, false, 123, 'a\u1234string', [ 1, 2, 3 ], { foo: 'bar' }
+    ].forEach(function (v) {
+        try {
+            v();
+        } catch (e) {
+            tmp = Duktape.enc('jx', String(e));  // JX encode to get ASCII
+            print(tmp);
+        }
+    });
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

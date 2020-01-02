@@ -9,24 +9,24 @@ call
 foo this: boundthis args: argx argy argz undefined
 ===*/
 
-function foo(x, y, z, w) {
-  print("foo", "this:", this, "args:", x, y, z, w);
+function foo(x,y,z,w) {
+    print('foo', 'this:', this, 'args:', x, y, z, w);
 }
 
 function test() {
-  var f1, f2;
+    var f1, f2;
 
-  print("apply");
-  f1 = foo.bind.apply(foo, ["boundthis", "argx", "argy", "argz"]);
-  f1();
+    print('apply');
+    f1 = foo.bind.apply(foo, [ 'boundthis', 'argx', 'argy', 'argz' ]);
+    f1();
 
-  print("call");
-  f2 = foo.bind.call(foo, "boundthis", "argx", "argy", "argz");
-  f2();
+    print('call');
+    f2 = foo.bind.call(foo, 'boundthis', 'argx', 'argy', 'argz');
+    f2();
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

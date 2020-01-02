@@ -12,10 +12,8 @@
 ---*/
 
 function str(x) {
-  if (typeof x === "function") {
-    return "[function]";
-  }
-  return String(x);
+    if (typeof x === 'function') { return '[function]'; }
+    return String(x);
 }
 
 /*===
@@ -42,75 +40,45 @@ number NaN object undefined 0 undefined undefined
 ===*/
 
 function arrayBufferConstructorTest() {
-  /*
-   *  TypedArray spec only provides: new ArrayBuffer(unsigned long length).
-   *
-   *  Duktape uses a ToInteger() coercion for the argument so it accepts a
-   *  wider range of arguments.
-   */
+    /*
+     *  TypedArray spec only provides: new ArrayBuffer(unsigned long length).
+     *
+     *  Duktape uses a ToInteger() coercion for the argument so it accepts a
+     *  wider range of arguments.
+     */
 
-  [
-    "NONE",
-    undefined,
-    null,
-    true,
-    false,
-    "foo",
-    "123",
-    ["123"],
-    { foo: "bar" },
-    function func() {},
-    {
-      valueOf: function() {
-        return 321;
-      }
-    },
-    -1 / 0,
-    -1e9,
-    -1,
-    0,
-    1,
-    100,
-    1e6,
-    1 / 0,
-    0 / 0
-  ].forEach(function(arg) {
-    var b;
-    try {
-      if (arg === "NONE") {
-        b = new ArrayBuffer();
-      } else {
-        b = new ArrayBuffer(arg);
-      }
-      print(
-        typeof arg,
-        str(arg),
-        typeof b,
-        b.length,
-        b.byteLength,
-        b.byteOffset,
-        b.BYTES_PER_ELEMENT
-      );
+    [
+        'NONE', undefined, null, true, false, 'foo', '123', [ '123' ],
+        { foo: 'bar' }, function func() {},
+        { valueOf: function () { return 321; } },
+        -1 / 0, -1e9, -1, 0, 1, 100, 1e6, 1 / 0, 0 / 0
+    ].forEach(function (arg) {
+        var b;
+        try {
+            if (arg === 'NONE') {
+                b = new ArrayBuffer();
+            } else {
+                b = new ArrayBuffer(arg);
+            }
+            print(typeof arg, str(arg), typeof b, b.length, b.byteLength, b.byteOffset, b.BYTES_PER_ELEMENT);
 
-      if (typeof b.byteLength === "number") {
-        for (var i = 0; i < b.byteLength; i++) {
-          if (new Uint8Array(b)[i] != 0) {
-            throw new Error(
-              "arraybuffer not zeroed as expected, non-zero byte at index: " + i
-            );
-          }
+            if (typeof b.byteLength === 'number') {
+                for (var i = 0; i < b.byteLength; i++) {
+                    if (new Uint8Array(b)[i] != 0) {
+                        throw new Error('arraybuffer not zeroed as expected, non-zero byte at index: ' + i);
+                    }
+                }
+            }
+        } catch (e) {
+            print(typeof arg, str(arg), e.name);
         }
-      }
-    } catch (e) {
-      print(typeof arg, str(arg), e.name);
-    }
-  });
+    });
 }
 
 try {
-  arrayBufferConstructorTest();
+    arrayBufferConstructorTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -120,14 +88,14 @@ TypeError
 /* ArrayBuffer cannot be called as a normal function. */
 
 function arrayBufferNormalCallTest() {
-  var buf = ArrayBuffer(10);
-  print(typeof buf); // Never here
+    var buf = ArrayBuffer(10);
+    print(typeof buf);  // Never here
 }
 
 try {
-  arrayBufferNormalCallTest();
+    arrayBufferNormalCallTest();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -144,50 +112,45 @@ TypeError
 ===*/
 
 function arrayBufferConstructorCallTest(constructorCall) {
-  var b;
-  var pd;
+    var b;
+    var pd;
 
-  if (constructorCall) {
-    b = new ArrayBuffer(16);
-  } else {
-    b = ArrayBuffer(16);
-  }
+    if (constructorCall) {
+        b = new ArrayBuffer(16);
+    } else {
+        b = ArrayBuffer(16);
+    }
 
-  print(String(b));
-  print(Object.prototype.toString.call(b));
+    print(String(b));
+    print(Object.prototype.toString.call(b));
 
-  // The required internal prototype is the initial value of
-  // ArrayBuffer.prototype (%ArrayBufferPrototype%), with
-  // writable = enumerable = configurable = false.
+    // The required internal prototype is the initial value of
+    // ArrayBuffer.prototype (%ArrayBufferPrototype%), with
+    // writable = enumerable = configurable = false.
 
-  print(Object.getPrototypeOf(b) === ArrayBuffer.prototype);
-  printPrototypeChain(b);
+    print(Object.getPrototypeOf(b) === ArrayBuffer.prototype);
+    printPrototypeChain(b);
 
-  pd = Object.getOwnPropertyDescriptor(ArrayBuffer, "prototype") || {};
-  print(
-    pd.value === Object.getPrototypeOf(b),
-    pd.writable,
-    pd.enumerable,
-    pd.configurable
-  );
+    pd = Object.getOwnPropertyDescriptor(ArrayBuffer, 'prototype') || {};
+    print(pd.value === Object.getPrototypeOf(b), pd.writable, pd.enumerable, pd.configurable);
 
-  // .toString() is inherited from Object.prototype
-  print(b.toString === Object.prototype.toString);
-  print(b.toString());
+    // .toString() is inherited from Object.prototype
+    print(b.toString === Object.prototype.toString);
+    print(b.toString());
 }
 
 try {
-  print("ArrayBuffer constructor call test");
-  arrayBufferConstructorCallTest(true);
+    print('ArrayBuffer constructor call test');
+    arrayBufferConstructorCallTest(true);
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 try {
-  print("ArrayBuffer normal call test");
-  arrayBufferConstructorCallTest(false);
+    print('ArrayBuffer normal call test');
+    arrayBufferConstructorCallTest(false);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -201,19 +164,19 @@ ArrayBuffer array-like test
  */
 
 function arrayBufferArrayLikeTest() {
-  // Because ToNumber([1, 2, 3]) is NaN, it ToLength() coerces to 0, and the
-  // result is a 0-length ArrayBuffer.
+    // Because ToNumber([1, 2, 3]) is NaN, it ToLength() coerces to 0, and the
+    // result is a 0-length ArrayBuffer.
 
-  var b = new ArrayBuffer([1, 2, 3]);
+    var b = new ArrayBuffer([ 1, 2, 3 ]);
 
-  print(b.byteLength);
+    print(b.byteLength);
 }
 
 try {
-  print("ArrayBuffer array-like test");
-  arrayBufferArrayLikeTest();
+    print('ArrayBuffer array-like test');
+    arrayBufferArrayLikeTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -243,89 +206,85 @@ NaN 0
  */
 
 function arrayBufferArgumentTest() {
-  var b;
-  var MB = 1024 * 1024;
+    var b;
+    var MB = 1024 * 1024;
 
-  [
-    "NONE",
+    [
+        'NONE',
 
-    // Undefined ToNumber() coerces to NaN and fails the final
-    // SameValueZero() comparison.
+        // Undefined ToNumber() coerces to NaN and fails the final
+        // SameValueZero() comparison.
 
-    undefined,
+        undefined,
 
-    // Null ToNumber() coerces to zero so it's accepted.
-    null,
+        // Null ToNumber() coerces to zero so it's accepted.
+        null,
 
-    // True ToNumber() coerces to 1 and false to 0, both accepted.
+        // True ToNumber() coerces to 1 and false to 0, both accepted.
 
-    true,
-    false,
+        true,
+        false,
 
-    // ES2015 requires that ToNumber(arg) match ToLength(ToNumber(arg))
-    // (using SameValueZero which ignores zero sign).  In other words,
-    // fractional input values cause a RangeError.  V8 doesn't follow
-    // this behavior but truncates instead.
+        // ES2015 requires that ToNumber(arg) match ToLength(ToNumber(arg))
+        // (using SameValueZero which ignores zero sign).  In other words,
+        // fractional input values cause a RangeError.  V8 doesn't follow
+        // this behavior but truncates instead.
 
-    3,
-    3.9,
+        3,
+        3.9,
 
-    // Negative values are coerced to zero by ToLength().  But, later on
-    // ToNumber(arg) and ToLength(ToNumber(arg)) are compared to ensure
-    // that they match with SameValueZero.  If not, a RangeError should
-    // happen.  So a negative value should RangeError.
+        // Negative values are coerced to zero by ToLength().  But, later on
+        // ToNumber(arg) and ToLength(ToNumber(arg)) are compared to ensure
+        // that they match with SameValueZero.  If not, a RangeError should
+        // happen.  So a negative value should RangeError.
 
-    -1,
-    -1.5,
+        -1,
+        -1.5,
 
-    // Negative zero is explicitly allowed by ES2015, the SameValueZero()
-    // comparison ignores zero sign.
+        // Negative zero is explicitly allowed by ES2015, the SameValueZero()
+        // comparison ignores zero sign.
 
-    -0,
-    +0,
+        -0,
+        +0,
 
-    // NaN is not allowed: it coerces to zero but won't pass the
-    // SameValueZero() comparison.
+        // NaN is not allowed: it coerces to zero but won't pass the
+        // SameValueZero() comparison.
 
-    0 / 0,
+        0 / 0,
 
-    // Test that 256MB allocation works
+        // Test that 256MB allocation works
 
-    256 * MB,
+        256 * MB,
 
-    // Test that 1GB allocation works -- note that this fails on V8/Node.js.
+        // Test that 1GB allocation works -- note that this fails on V8/Node.js.
 
-    1024 * MB,
+        1024 * MB,
 
-    // For now there's an internal maximum buffer length in Duktape.
-    // It is triggered at least by 2^32 so test for that.  Exceeding
-    // the limit causes a RangeError.  ES2015 doesn't specify what to do
-    // if an internal limit is reached but a RangeError seems suitable
-    // and matches V8.
+        // For now there's an internal maximum buffer length in Duktape.
+        // It is triggered at least by 2^32 so test for that.  Exceeding
+        // the limit causes a RangeError.  ES2015 doesn't specify what to do
+        // if an internal limit is reached but a RangeError seems suitable
+        // and matches V8.
 
-    4096 * MB,
-    {
-      valueOf: function() {
-        return 17;
-      }
-    }
-  ].forEach(function(arg) {
-    try {
-      if (arg === "NONE") {
-        b = new ArrayBuffer();
-      } else {
-        b = new ArrayBuffer(arg); // ToNumber() floors -> 3
-      }
-      print(arg, b.byteLength);
-    } catch (e) {
-      print(arg, e.name);
-    }
-  });
+        4096 * MB,
+        { valueOf: function () { return 17; } },
+    ].forEach(function (arg) {
+        try {
+            if (arg === 'NONE') {
+                b = new ArrayBuffer();
+            } else {
+                b = new ArrayBuffer(arg);  // ToNumber() floors -> 3
+            }
+            print(arg, b.byteLength);
+        } catch (e) {
+            print(arg, e.name);
+        }
+    });
 }
 
 try {
-  print("ArrayBuffer argument test");
-  arrayBufferArgumentTest();
+    print('ArrayBuffer argument test');
+    arrayBufferArgumentTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

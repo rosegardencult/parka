@@ -9,14 +9,14 @@ ABCD
 ===*/
 
 function basicTest() {
-  print("AbCd".toUpperCase());
-  print("\u00e4".toUpperCase().charCodeAt(0)); // U+00E4 (a with dots) -> U+00C4 (A with dots) = 196
+    print('AbCd'.toUpperCase());
+    print('\u00e4'.toUpperCase().charCodeAt(0));  // U+00E4 (a with dots) -> U+00C4 (A with dots) = 196
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -27,17 +27,18 @@ try {
  */
 
 function localeTest() {
-  var str, t;
+    var str, t;
 
-  // XXX: add context specific test and ensure context specific rules apply
-  // XXX: add locale specific test and ensure locale specific rules do not apply
+    // XXX: add context specific test and ensure context specific rules apply
+    // XXX: add locale specific test and ensure locale specific rules do not apply
 }
 
 try {
-  localeTest();
+    localeTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
+
 
 /*===
 TypeError
@@ -51,29 +52,29 @@ string 15 [OBJECT OBJECT]
 ===*/
 
 function coercionTest() {
-  function test(str) {
-    var t;
+    function test(str) {
+        var t;
 
-    try {
-      t = String.prototype.toUpperCase.call(str);
-      print(typeof t, t.length, t);
-    } catch (e) {
-      print(e.name);
+        try {
+            t = String.prototype.toUpperCase.call(str);
+            print(typeof t, t.length, t);
+        } catch (e) {
+            print(e.name);
+        }
     }
-  }
 
-  test(undefined);
-  test(null);
-  test(true);
-  test(false);
-  test(123.0);
-  test("FoObAr");
-  test([1, "fOO", "Bar"]);
-  test({ foo: 1, bar: 2 });
+    test(undefined);
+    test(null);
+    test(true);
+    test(false);
+    test(123.0);
+    test('FoObAr');
+    test([1,'fOO','Bar']);
+    test({ foo: 1, bar: 2 });
 }
 
 try {
-  coercionTest();
+    coercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

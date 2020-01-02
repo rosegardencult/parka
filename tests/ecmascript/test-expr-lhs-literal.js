@@ -15,58 +15,58 @@ ReferenceError
 ===*/
 
 try {
-  1 = 2;
-} catch (e) {
-  print(e.name);
+    1 = 2;
+} catch(e) {
+    print(e.name);
 }
 
 try {
-  "foo" = 3;
-} catch (e) {
-  print(e.name);
+    "foo" = 3;
+} catch(e) {
+    print(e.name);
 }
 
 try {
-  /* Note: parenthesis required to interpret as an object literal, and not a block */
-  ({ foo: 4 } = 5);
-} catch (e) {
-  print(e.name);
+    /* Note: parenthesis required to interpret as an object literal, and not a block */
+    ({ foo:4 }) = 5;
+} catch(e) {
+    print(e.name);
 }
 
 try {
-  [6, 7] = 8;
-} catch (e) {
-  print(e.name);
+    [6,7] = 8;
+} catch(e) {
+    print(e.name);
 }
 
 function test() {
-  try {
-    1 = 2;
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        1 = 2;
+    } catch(e) {
+        print(e.name);
+    }
 
-  try {
-    "foo" = 3;
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        "foo" = 3;
+    } catch(e) {
+        print(e.name);
+    }
 
-  try {
-    ({ foo: 4 } = 5);
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        ({ foo:4 }) = 5;
+    } catch(e) {
+        print(e.name);
+    }
 
-  try {
-    [6, 7] = 8;
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        [6,7] = 8;
+    } catch(e) {
+        print(e.name);
+    }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

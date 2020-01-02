@@ -13,31 +13,31 @@ TypeError
 ===*/
 
 try {
-  new Boolean(true)();
+    new Boolean(true)();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  new Number(1)();
+    new Number(1)();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  new String("1")();
+    new String('1')();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  new String()();
+    new String()();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  new this(); // global object
+    new this();  // global object
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

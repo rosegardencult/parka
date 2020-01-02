@@ -12,15 +12,15 @@
 ===*/
 
 try {
-  print(eval("03751234"));
+    print(eval('03751234'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(eval("077"));
+    print(eval('077'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -31,10 +31,10 @@ true
 /* Fraction period not necessarily followed by decimals. */
 
 try {
-  print(1);
-  print(1 === 1);
+    print(1.);
+    print(1. === 1);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -45,12 +45,12 @@ SyntaxError
 /* Specific requirement for parsing in ES2015 Section 11.8.3. */
 
 try {
-  print(eval("3 in {}"));
+    print(eval('3 in {}'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 try {
-  print(eval("3in {}"));
+    print(eval('3in {}'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

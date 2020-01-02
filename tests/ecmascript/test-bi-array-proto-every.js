@@ -1,17 +1,17 @@
 function retTrue(val, key, obj) {
-  print(typeof this, this, typeof val, val, typeof key, key, typeof obj, obj);
-  return true;
+    print(typeof this, this, typeof val, val, typeof key, key, typeof obj, obj);
+    return true;
 }
 
 function test(this_value, args) {
-  var t;
+    var t;
 
-  try {
-    t = Array.prototype.every.apply(this_value, args);
-    print(typeof t, t);
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        t = Array.prototype.every.apply(this_value, args);
+        print(typeof t, t);
+    } catch (e) {
+        print(e.name);
+    }
 }
 
 /*===
@@ -57,140 +57,91 @@ strict string foo
 boolean false
 ===*/
 
-print("basic");
+print('basic');
 
 function basicTest() {
-  var obj;
-  var count;
+    var obj;
+    var count;
 
-  // simple cases
+    // simple cases
 
-  test([], [retTrue]);
-  test([1], [retTrue]);
-  test([1, 2], [retTrue]);
+    test([], [ retTrue ]);
+    test([1], [ retTrue ]);
+    test([1,2], [ retTrue ]);
 
-  // dense
+    // dense
 
-  test([1, 2, 3, 4, 5], [retTrue]);
+    test([1,2,3,4,5], [ retTrue ]);
 
-  // sparse
+    // sparse
 
-  obj = [1];
-  obj[100] = 3;
-  obj[50] = 2;
-  test(obj, [retTrue]);
+    obj = [1];
+    obj[100] = 3;
+    obj[50] = 2;
+    test(obj, [ retTrue ]);
 
-  // non-array
+    // non-array
 
-  obj = { "0": "foo", "5": "bar", "20": "quux", "100": "baz", length: 35 };
-  test(obj, [retTrue]);
+    obj = { '0': 'foo', '5': 'bar', '20': 'quux', '100': 'baz', length: 35 };
+    test(obj, [ retTrue ]);
 
-  // first false terminates; return value is ToBoolean coerced (use ints here)
+    // first false terminates; return value is ToBoolean coerced (use ints here)
 
-  count = 3;
-  test(
-    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    [
-      function(val, key, obj) {
-        print("callback", key);
-        if (count == 0) {
-          return 0;
-        }
-        count--;
-        return 1;
-      }
-    ]
-  );
+    count = 3;
+    test([1,2,3,4,5,6,7,8,9,10], [ function(val, key, obj) {
+        print('callback', key); if (count == 0) { return 0; }; count--; return 1;
+    }]);
 
-  // error in callback propagates outwards
+    // error in callback propagates outwards
 
-  test(
-    [1, 2, 3],
-    [
-      function(val, key, obj) {
+    test([1,2,3], [ function(val, key, obj) {
         var e;
-        print("callback", val);
-        e = new Error("callback error");
-        e.name = "CallbackError";
+        print('callback', val);
+        e = new Error('callback error');
+        e.name = 'CallbackError';
         throw e;
-      }
-    ]
-  );
+    }]);
 
-  // this binding, non-strict callbacks gets a coerced binding
+    // this binding, non-strict callbacks gets a coerced binding
 
-  test(
-    [1, 2, 3],
-    [
-      function(val, key, obj) {
-        print("nonstrict", typeof this);
+    test([1,2,3], [ function(val, key, obj) {
+        print('nonstrict', typeof this);
         return false;
-      }
-    ]
-  );
+    }]);
 
-  test(
-    [1, 2, 3],
-    [
-      function(val, key, obj) {
-        print("nonstrict", typeof this);
+    test([1,2,3], [ function(val, key, obj) {
+        print('nonstrict', typeof this);
         return false;
-      },
-      null
-    ]
-  );
+    }, null]);
 
-  test(
-    [1, 2, 3],
-    [
-      function(val, key, obj) {
-        print("nonstrict", typeof this);
+    test([1,2,3], [ function(val, key, obj) {
+        print('nonstrict', typeof this);
         return false;
-      },
-      "foo"
-    ]
-  );
+    }, 'foo']);
 
-  test(
-    [1, 2, 3],
-    [
-      function(val, key, obj) {
-        "use strict";
-        print("strict", typeof this, this);
+    test([1,2,3], [ function(val, key, obj) {
+        'use strict';
+        print('strict', typeof this, this);
         return false;
-      }
-    ]
-  );
+    }]);
 
-  test(
-    [1, 2, 3],
-    [
-      function(val, key, obj) {
-        "use strict";
-        print("strict", typeof this, this);
+    test([1,2,3], [ function(val, key, obj) {
+        'use strict';
+        print('strict', typeof this, this);
         return false;
-      },
-      null
-    ]
-  ); // Note: typeof null -> 'object'
+    }, null]);  // Note: typeof null -> 'object'
 
-  test(
-    [1, 2, 3],
-    [
-      function(val, key, obj) {
-        "use strict";
-        print("strict", typeof this, this);
+    test([1,2,3], [ function(val, key, obj) {
+        'use strict';
+        print('strict', typeof this, this);
         return false;
-      },
-      "foo"
-    ]
-  );
+    }, 'foo']);
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -211,61 +162,52 @@ quux 2 [object Object]
 boolean true
 ===*/
 
-print("mutation");
+print('mutation');
 
 function mutationTest() {
-  var obj;
+    var obj;
 
-  // added element not recognized
+    // added element not recognized
 
-  obj = ["foo", "bar", "quux"];
-  test(obj, [
-    function(val, key, obj) {
-      print(val, key, obj);
-      obj[3] = "baz";
-      return true;
-    }
-  ]);
+    obj = [ 'foo', 'bar', 'quux' ];
+    test(obj, [ function (val, key, obj) {
+        print(val, key, obj);
+        obj[3] = 'baz';
+        return true;
+    }]);
 
-  // deleted element not processed
+    // deleted element not processed
 
-  obj = ["foo", "bar", "quux"];
-  test(obj, [
-    function(val, key, obj) {
-      print(val, key, obj);
-      delete obj[1];
-      return true;
-    }
-  ]);
+    obj = [ 'foo', 'bar', 'quux' ];
+    test(obj, [ function (val, key, obj) {
+        print(val, key, obj);
+        delete obj[1];
+        return true;
+    }]);
 
-  // same for non-array
+    // same for non-array
 
-  obj = { "0": "foo", "1": "bar", "2": "quux", "3": "baz", length: 3 };
-  test(obj, [
-    function(val, key, obj) {
-      print(val, key, obj);
-      obj[4] = "quuux";
-      obj.length = 10;
-      return true;
-    }
-  ]);
+    obj = { '0': 'foo', '1': 'bar', '2': 'quux', '3': 'baz', length: 3 };
+    test(obj, [ function (val, key, obj) {
+        print(val, key, obj);
+        obj[4] = 'quuux';
+        obj.length = 10;
+        return true;
+    }]);
 
-  obj = { "0": "foo", "1": "bar", "2": "quux", "3": "baz", length: 3 };
-  test(obj, [
-    function(val, key, obj) {
-      print(val, key, obj);
-      delete obj[3];
-      delete obj[1];
-      obj.length = 0;
-      return true;
-    }
-  ]);
+    obj = { '0': 'foo', '1': 'bar', '2': 'quux', '3': 'baz', length: 3 };
+    test(obj, [ function (val, key, obj) {
+        print(val, key, obj);
+        delete obj[3]; delete obj[1];
+        obj.length = 0;
+        return true;
+    }]);
 }
 
 try {
-  mutationTest();
+    mutationTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -311,121 +253,77 @@ callback 4 3 1,2,3,4,5,6,7,8,9,10
 boolean false
 ===*/
 
-print("coercion");
+print('coercion');
 
 function coercionTest() {
-  var obj;
+    var obj;
 
-  // this
+    // this
 
-  test(undefined, [retTrue]);
-  test(null, [retTrue]);
-  test(true, [retTrue]);
-  test(false, [retTrue]);
-  test(123, [retTrue]);
-  test("foo", [retTrue]);
-  test([1, 2, 3], [retTrue]);
-  test({ foo: 1, bar: 2 }, [retTrue]);
+    test(undefined, [ retTrue ]);
+    test(null, [ retTrue ]);
+    test(true, [ retTrue ]);
+    test(false, [ retTrue ]);
+    test(123, [ retTrue ]);
+    test('foo', [ retTrue ]);
+    test([1,2,3], [ retTrue ]);
+    test({ foo: 1, bar: 2 }, [ retTrue ]);
 
-  // length
+    // length
 
-  obj = {
-    "0": "foo",
-    "1": "bar",
-    "2": "quux",
-    "3": "baz",
-    "4": "quux",
-    length: "3.9"
-  };
-  test(obj, [retTrue]);
-  obj = {
-    "0": "foo",
-    "1": "bar",
-    "2": "quux",
-    "3": "baz",
-    "4": "quux",
-    length: 256 * 256 * 256 * 256 + 3.9
-  }; // coerces to 3
-  test(obj, [retTrue]);
-  obj = {
-    "0": "foo",
-    "1": "bar",
-    "2": "quux",
-    "3": "baz",
-    "4": "quux",
-    length: -256 * 256 * 256 * 256 + 3.9
-  }; // coerces to 4
-  test(obj, [retTrue]);
+    obj = { '0': 'foo', '1': 'bar', '2': 'quux', '3': 'baz', '4': 'quux', length: '3.9' };
+    test(obj, [ retTrue ]);
+    obj = { '0': 'foo', '1': 'bar', '2': 'quux', '3': 'baz', '4': 'quux', length: 256*256*256*256 + 3.9 };  // coerces to 3
+    test(obj, [ retTrue ]);
+    obj = { '0': 'foo', '1': 'bar', '2': 'quux', '3': 'baz', '4': 'quux', length: -256*256*256*256 + 3.9 };  // coerces to 4
+    test(obj, [ retTrue ]);
 
-  obj = {
-    "0": "foo",
-    "1": "bar",
-    "2": "quux",
-    length: {
-      toString: function() {
-        print("length toString");
-        return 4;
-      },
-      valueOf: function() {
-        print("length valueOf");
-        return 3;
-      }
-    }
-  };
-  test(obj, [retTrue]);
-
-  // callable check is done after length coercion
-
-  obj = {
-    "0": "foo",
-    "1": "bar",
-    "2": "quux",
-    length: {
-      toString: function() {
-        print("length toString");
-        return 4;
-      },
-      valueOf: function() {
-        print("length valueOf");
-        return 3;
-      }
-    }
-  };
-  test(obj, [null]);
-
-  // ToBoolean of callback return value
-
-  test(
-    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    [
-      function(val, key, obj) {
-        print("callback", val, key, obj);
-        if (key == 0) {
-          return 1.0;
-        } /*true*/ else if (key == 1) {
-          return "foo";
-        } /*true*/ else if (key == 2) {
-          // Note: object is always 'true', no coercion related calls are made
-          return {
-            toString: function() {
-              print("callback retval toString");
-              return 0;
-            },
-            valueOf: function() {
-              print("callback retval valueOf");
-              return key == 1 ? "" /*false*/ : "foo" /*true*/;
-            }
-          };
-        } else {
-          return ""; /*false*/
+    obj = { '0': 'foo', '1': 'bar', '2': 'quux', 'length': {
+        toString: function() {
+            print('length toString');
+            return 4;
+        },
+        valueOf: function() {
+            print('length valueOf');
+            return 3;
         }
-      }
-    ]
-  );
+    }};
+    test(obj, [ retTrue ]);
+
+    // callable check is done after length coercion
+
+    obj = { '0': 'foo', '1': 'bar', '2': 'quux', 'length': {
+        toString: function() {
+            print('length toString');
+            return 4;
+        },
+        valueOf: function() {
+            print('length valueOf');
+            return 3;
+        }
+    }};
+    test(obj, [ null ]);
+
+    // ToBoolean of callback return value
+
+    test([1,2,3,4,5,6,7,8,9,10], [ function (val, key, obj) {
+        print('callback', val, key, obj);
+        if (key == 0) { return 1.0; }  /*true*/
+        else if (key == 1) { return 'foo'; }  /*true*/
+        else if (key == 2) {
+            // Note: object is always 'true', no coercion related calls are made
+            return {
+                toString: function() { print('callback retval toString'); return 0; },
+                valueOf: function() { print('callback retval valueOf'); return key == 1 ? '' /*false*/ : 'foo' /*true*/; }
+            };
+        } else {
+            return '';  /*false*/
+        }
+    } ]);
 }
 
 try {
-  coercionTest();
+    coercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

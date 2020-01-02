@@ -24,63 +24,60 @@ false 0
 ===*/
 
 function arrayBufferSliceBasicTest() {
-  var b;
+    var b;
 
-  var buf = new ArrayBuffer(4);
-  var u8 = new Uint8Array(buf);
-  u8[0] = 0x41;
-  u8[1] = 0x42;
-  u8[2] = 0x43;
-  u8[3] = 0x44; // ABCD
+    var buf = new ArrayBuffer(4);
+    var u8 = new Uint8Array(buf);
+    u8[0] = 0x41; u8[1] = 0x42; u8[2] = 0x43; u8[3] = 0x44;  // ABCD
 
-  // No arguments, return copy.
-  b = buf.slice();
-  print(b === buf, b.byteLength, printableBuffer(b));
+    // No arguments, return copy.
+    b = buf.slice();
+    print(b === buf, b.byteLength, printableBuffer(b));
 
-  // Single argument, offset.
-  b = buf.slice(1);
-  print(b === buf, b.byteLength, printableBuffer(b));
+    // Single argument, offset.
+    b = buf.slice(1);
+    print(b === buf, b.byteLength, printableBuffer(b));
 
-  // Negative argument is interpreted from end of buffer.  This is not
-  // clearly specified in Khronos specification (it talks about clamping)
-  // but ES2015 clarifies handling for negative indices:
-  // http://www.ecma-international.org/ecma-262/6.0/index.html#sec-%typedarray%.prototype.slice
+    // Negative argument is interpreted from end of buffer.  This is not
+    // clearly specified in Khronos specification (it talks about clamping)
+    // but ES2015 clarifies handling for negative indices:
+    // http://www.ecma-international.org/ecma-262/6.0/index.html#sec-%typedarray%.prototype.slice
 
-  b = buf.slice(-1);
-  print(b === buf, b.byteLength, printableBuffer(b));
+    b = buf.slice(-1);
+    print(b === buf, b.byteLength, printableBuffer(b));
 
-  // Indices are clamped, after taking account the negative number handling.
+    // Indices are clamped, after taking account the negative number handling.
 
-  b = buf.slice(10);
-  print(b === buf, b.byteLength, printableBuffer(b));
+    b = buf.slice(10);
+    print(b === buf, b.byteLength, printableBuffer(b));
 
-  b = buf.slice(-100);
-  print(b === buf, b.byteLength, printableBuffer(b));
+    b = buf.slice(-100);
+    print(b === buf, b.byteLength, printableBuffer(b));
 
-  // End argument behaves similarly.
+    // End argument behaves similarly.
 
-  b = buf.slice(1, 3);
-  print(b === buf, b.byteLength, printableBuffer(b));
+    b = buf.slice(1, 3);
+    print(b === buf, b.byteLength, printableBuffer(b));
 
-  b = buf.slice(1, -1);
-  print(b === buf, b.byteLength, printableBuffer(b));
+    b = buf.slice(1, -1);
+    print(b === buf, b.byteLength, printableBuffer(b));
 
-  b = buf.slice(1, 10);
-  print(b === buf, b.byteLength, printableBuffer(b));
+    b = buf.slice(1, 10);
+    print(b === buf, b.byteLength, printableBuffer(b));
 
-  b = buf.slice(1, -100);
-  print(b === buf, b.byteLength, printableBuffer(b));
+    b = buf.slice(1, -100);
+    print(b === buf, b.byteLength, printableBuffer(b));
 
-  // Crossed indices result in a zero size buffer.
+    // Crossed indices result in a zero size buffer.
 
-  b = buf.slice(3, 2);
-  print(b === buf, b.byteLength, printableBuffer(b));
+    b = buf.slice(3, 2);
+    print(b === buf, b.byteLength, printableBuffer(b));
 }
 
 try {
-  arrayBufferSliceBasicTest();
+    arrayBufferSliceBasicTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -280,65 +277,53 @@ ArrayBuffer slice() bruteforce test
 ===*/
 
 function arrayBufferSliceBruteForceTest() {
-  /*
-   *  Some differences to Khronos spec:
-   *
-   *    - First argument defaults to zero if missing (mandatory in spec)
-   */
+    /*
+     *  Some differences to Khronos spec:
+     *
+     *    - First argument defaults to zero if missing (mandatory in spec)
+     */
 
-  var i;
+    var i;
 
-  var b0 = new ArrayBuffer(0);
-  b0.name = "b0";
+    var b0 = new ArrayBuffer(0);
+    b0.name = 'b0';
 
-  var b1 = new ArrayBuffer(4);
-  b1.name = "b1";
-  var u8 = new Uint8Array(b1);
-  for (i = 0; i < 4; i++) {
-    u8[i] = 0x41 + i;
-  } // ABCD
+    var b1 = new ArrayBuffer(4);
+    b1.name = 'b1';
+    var u8 = new Uint8Array(b1);
+    for (i = 0; i < 4; i++) { u8[i] = 0x41 + i; }  // ABCD
 
-  var b2 = new ArrayBuffer(8);
-  b2.name = "b2";
-  var u8 = new Uint8Array(b2);
-  for (i = 0; i < 8; i++) {
-    u8[i] = 0x61 + i;
-  } // abcdefgh
+    var b2 = new ArrayBuffer(8);
+    b2.name = 'b2';
+    var u8 = new Uint8Array(b2);
+    for (i = 0; i < 8; i++) { u8[i] = 0x61 + i; }  // abcdefgh
 
-  [123, b0, b1, b2].forEach(function(thisValue, idx1) {
-    ["NONE", -10, -1, 0, 1, 3.9, 7.1, 15].forEach(function(begin, idx2) {
-      ["NONE", -1, 0, 1.9, 5, 9].forEach(function(end, idx3) {
-        var b;
-        try {
-          if (begin === "NONE") {
-            b = thisValue.slice();
-          } else if (end === "NONE") {
-            b = thisValue.slice(begin);
-          } else {
-            b = thisValue.slice(begin, end);
-          }
-          print(
-            idx1,
-            idx2,
-            idx3,
-            typeof b,
-            b.length,
-            b.byteLength,
-            b.byteOffset,
-            b.BYTES_PER_ELEMENT,
-            printableBuffer(b)
-          );
-        } catch (e) {
-          print(idx1, idx2, idx3, e.name);
-        }
-      });
+    [ 123, b0, b1, b2 ].forEach(function (thisValue, idx1) {
+        [ 'NONE', -10, -1, 0, 1, 3.9, 7.1, 15 ].forEach(function (begin, idx2) {
+            [ 'NONE', -1, 0, 1.9, 5, 9 ].forEach(function (end, idx3) {
+                var b;
+                try {
+                    if (begin === 'NONE') {
+                        b = thisValue.slice();
+                    } else if (end === 'NONE') {
+                        b = thisValue.slice(begin);
+                    } else {
+                        b = thisValue.slice(begin, end);
+                    }
+                    print(idx1, idx2, idx3, typeof b, b.length, b.byteLength,
+                          b.byteOffset, b.BYTES_PER_ELEMENT,
+                          printableBuffer(b));
+                } catch (e) {
+                    print(idx1, idx2, idx3, e.name);
+                }
+            });
+        });
     });
-  });
 }
 
 try {
-  print("ArrayBuffer slice() bruteforce test");
-  arrayBufferSliceBruteForceTest();
+    print('ArrayBuffer slice() bruteforce test');
+    arrayBufferSliceBruteForceTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

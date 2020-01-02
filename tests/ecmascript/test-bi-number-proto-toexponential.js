@@ -14,20 +14,20 @@
  */
 
 function test(this_value, args, prefix_string) {
-  var t;
+    var t;
 
-  if (prefix_string === undefined) {
-    prefix_string = "";
-  } else {
-    prefix_string += " ";
-  }
+    if (prefix_string === undefined) {
+        prefix_string = '';
+    } else {
+        prefix_string += ' ';
+    }
 
-  try {
-    var t = Number.prototype.toExponential.apply(this_value, args);
-    print(prefix_string + typeof t, t);
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        var t = Number.prototype.toExponential.apply(this_value, args);
+        print(prefix_string + typeof t, t);
+    } catch (e) {
+        print(e.name);
+    }
 }
 
 /*===
@@ -512,58 +512,58 @@ RangeError
 18,21 string NaN
 ===*/
 
-print("basic");
+print('basic');
 
 function basicTest() {
-  var values = [
-    Number.NEGATIVE_INFINITY,
-    -1e100,
-    -1e21,
-    -0.98765e21,
-    -12345.678901234567890123456789,
-    -0.12345678901234567890123456789,
-    -0.12345678901234567890123456789e-20,
-    -0.12345678901234567890123456789e-120,
-    -0,
-    +0,
-    0.12345678901234567890123456789e-120,
-    0.12345678901234567890123456789e-20,
-    0.12345678901234567890123456789,
-    12345.678901234567890123456789,
-    0.98765e21,
-    1e21,
-    -1e100,
-    Number.POSITIVE_INFINITY,
-    Number.NaN
-  ];
+    var values = [
+        Number.NEGATIVE_INFINITY,
+        -1e100,
+        -1e21,
+        -0.98765e21,
+        -12345.6789012345678901234567890,
+        -0.123456789012345678901234567890,
+        -0.123456789012345678901234567890e-20,
+        -0.123456789012345678901234567890e-120,
+        -0,
+        +0,
+        0.123456789012345678901234567890e-120,
+        0.123456789012345678901234567890e-20,
+        0.123456789012345678901234567890,
+        12345.6789012345678901234567890,
+        0.98765e21,
+        1e21,
+        -1e100,
+        Number.POSITIVE_INFINITY,
+        Number.NaN
+    ];
 
-  // NaN and infinities are special cases; they are checked for *after*
-  // ToInteger(fractionDigits) but *before* checking the fractionDigits
-  // range.  V8 will throw a RangeError from these which seems incorrect.
+    // NaN and infinities are special cases; they are checked for *after*
+    // ToInteger(fractionDigits) but *before* checking the fractionDigits
+    // range.  V8 will throw a RangeError from these which seems incorrect.
 
-  test(new Number(Number.NaN), [100]);
-  test(new Number(Number.NEGATIVE_INFINITY), [100]);
-  test(new Number(Number.POSITIVE_INFINITY), [100]);
+    test(new Number(Number.NaN), [ 100 ]);
+    test(new Number(Number.NEGATIVE_INFINITY), [ 100 ]);
+    test(new Number(Number.POSITIVE_INFINITY), [ 100 ]);
 
-  // test a bunch of value and fractionDigits combinations
+    // test a bunch of value and fractionDigits combinations
 
-  for (i = 0; i < values.length; i++) {
-    // undefined fraction digits is a special case: use shortest digit count
-    test(new Number(values[i]), [undefined], i + ",undefined");
+    for (i = 0; i < values.length; i++) {
+        // undefined fraction digits is a special case: use shortest digit count
+        test(new Number(values[i]), [ undefined ], i + ',undefined');
 
-    // not-given fraction digits should behave like undefined
-    test(new Number(values[i]), [undefined], i + ",notgiven");
+        // not-given fraction digits should behave like undefined
+        test(new Number(values[i]), [ undefined ], i + ',notgiven');
 
-    for (f = -1; f <= 21; f++) {
-      test(new Number(values[i]), [f], i + "," + f);
+        for (f = -1; f <= 21; f++) {
+            test(new Number(values[i]), [ f ], i + ',' + f);
+        }
     }
-  }
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -601,55 +601,49 @@ RangeError
  * - fractionDigits range check
  */
 
-print("coercion");
+print('coercion');
 
 function coercionTest() {
-  var testnum = 12345.678901234567890123456789;
-  var fracObj;
+    var testnum = 12345.6789012345678901234567890;
+    var fracObj;
 
-  // this coercion
+    // this coercion
 
-  test(undefined, [10]);
-  test(null, [10]);
-  test(true, [10]);
-  test(false, [10]);
-  test(123, [10]);
-  test("foo", [10]);
-  test([1, 2], [10]);
-  test({ foo: 1, bar: 2 }, [10]);
-  test(new Number(123), [10]);
+    test(undefined, [ 10 ]);
+    test(null, [ 10 ]);
+    test(true, [ 10 ]);
+    test(false, [ 10 ]);
+    test(123, [ 10 ]);
+    test('foo', [ 10 ]);
+    test([1,2], [ 10 ]);
+    test({ foo: 1, bar: 2 }, [ 10 ]);
+    test(new Number(123), [ 10 ]);
 
-  // fractionDigits ToInteger() coercion
+    // fractionDigits ToInteger() coercion
 
-  test(new Number(testnum), ["3.9"]); // -> 3
-  test(new Number(testnum), [3]);
+    test(new Number(testnum), [ '3.9' ]);  // -> 3
+    test(new Number(testnum), [ 3 ]);
 
-  test(new Number(testnum), [-256 * 256 * 256 * 256 + 8]); // invalid, no 32-bit wrap
-  test(new Number(testnum), [256 * 256 * 256 * 256 + 8]); // invalid, same
+    test(new Number(testnum), [ -256*256*256*256 + 8 ]);  // invalid, no 32-bit wrap
+    test(new Number(testnum), [ 256*256*256*256 + 8 ]);   // invalid, same
 
-  // ToInteger(fractionDigits) coercion happens before NaN / infinity
-  // check, but before fractionDigits range check
+    // ToInteger(fractionDigits) coercion happens before NaN / infinity
+    // check, but before fractionDigits range check
 
-  fracObj = {
-    toString: function() {
-      print("fractionDigits toString");
-      return 1234;
-    }, // invalid
-    valueOf: function() {
-      print("fractionDigits valueOf");
-      return 2345;
-    } // invalid
-  };
+    fracObj = {
+        toString: function() { print('fractionDigits toString'); return 1234; },  // invalid
+        valueOf: function() { print('fractionDigits valueOf'); return 2345; }    // invalid
+    };
 
-  test(new Number(Number.NEGATIVE_INFINITY), [fracObj]);
-  test(new Number(Number.POSITIVE_INFINITY), [fracObj]);
-  test(new Number(Number.NaN), [fracObj]);
+    test(new Number(Number.NEGATIVE_INFINITY), [ fracObj ]);
+    test(new Number(Number.POSITIVE_INFINITY), [ fracObj ]);
+    test(new Number(Number.NaN), [ fracObj ]);
 
-  test(new Number(12345), [fracObj]); // for comparison -> RangeError
+    test(new Number(12345), [ fracObj ]);  // for comparison -> RangeError
 }
 
 try {
-  coercionTest();
+    coercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

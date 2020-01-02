@@ -12,35 +12,35 @@
 ---*/
 
 function encJx(val) {
-  return Duktape.enc("jx", val);
+    return Duktape.enc('jx', val);
 }
 
 function decJx(val) {
-  return Duktape.dec("jx", val);
+    return Duktape.dec('jx', val);
 }
 
 function safedecJx(val) {
-  try {
-    return decJx(val);
-  } catch (e) {
-    return e.name;
-  }
+    try {
+        return decJx(val);
+    } catch (e) {
+        return e.name;
+    }
 }
 
 function encJc(val) {
-  return Duktape.enc("jc", val);
+    return Duktape.enc('jc', val);
 }
 
 function decJc(val) {
-  return Duktape.dec("jc", val);
+    return Duktape.dec('jc', val);
 }
 
 function safedecJc(val) {
-  try {
-    return decJc(val);
-  } catch (e) {
-    return e.name;
-  }
+    try {
+        return decJc(val);
+    } catch (e) {
+        return e.name;
+    }
 }
 
 /*===
@@ -105,151 +105,138 @@ object functable
 ===*/
 
 function typeEncodeTest() {
-  var tmp;
-  var ptr;
-  var m_ptr_nonnull_jx = /^\([0-9a-fA-Fx:]+\)$/; // e.g. (0x1345890)
-  var m_ptr_nonnull_jc = /^\{\"_ptr\":\"[0-9a-fA-Fx:]+\"\}$/; // e.g. {"_ptr":"0x1345890"}
-  var func = function() {
-    print("hello world");
-  };
+    var tmp;
+    var ptr;
+    var m_ptr_nonnull_jx = /^\([0-9a-fA-Fx:]+\)$/;  // e.g. (0x1345890)
+    var m_ptr_nonnull_jc = /^\{\"_ptr\":\"[0-9a-fA-Fx:]+\"\}$/;  // e.g. {"_ptr":"0x1345890"}
+    var func = function() { print('hello world'); };
 
-  var values = [
-    undefined,
-    null,
-    true,
-    false,
-    123.0,
-    -0,
-    +0,
-    0 / 0,
-    -1 / 0,
-    1 / 0,
-    "foo",
-    [1, 2, 3],
-    { test_key: 123, "foo bar": 321 },
-    Duktape.dec("hex", "deadbeef"), // plain buf
-    Object(Duktape.dec("hex", "deadbeef")), // object buf
-    Duktape.Pointer(), // plain ptr; null pointer has a deterministic representation
-    new Duktape.Pointer(), // object ptr
-    function myfunc() {}
-  ];
+    var values = [
+        undefined, null, true, false, 123.0, -0, +0, 0 / 0, -1 / 0, 1 / 0,
+        'foo', [1,2,3], { test_key: 123, 'foo bar': 321 },
+        Duktape.dec('hex', 'deadbeef'),                      // plain buf
+        Object(Duktape.dec('hex', 'deadbeef')),              // object buf
+        Duktape.Pointer(),                                   // plain ptr; null pointer has a deterministic representation
+        new Duktape.Pointer(),                               // object ptr
+        function myfunc() {}
+    ];
 
-  // Test all primitive types except pointer, whose representation
-  // is platform specific, and function, whose representation may
-  // vary from version to version.
-  values.forEach(function(v) {
-    print(typeof v, encJx(v), encJc(v));
-  });
+    // Test all primitive types except pointer, whose representation
+    // is platform specific, and function, whose representation may
+    // vary from version to version.
+    values.forEach(function(v) {
+        print(typeof v, encJx(v), encJc(v));
+    });
 
-  // pointer: match against a pattern since the contents are otherwise
-  // platform dependent
+    // pointer: match against a pattern since the contents are otherwise
+    // platform dependent
 
-  ptr = Duktape.Pointer("dummy"); // non-null plain ptr
-  print(typeof ptr);
-  tmp = encJx(ptr);
-  print("jx non-null ptr", m_ptr_nonnull_jx.test(tmp));
-  tmp = encJc(ptr);
-  print("jc non-null ptr", m_ptr_nonnull_jc.test(tmp));
+    ptr = Duktape.Pointer('dummy');  // non-null plain ptr
+    print(typeof ptr);
+    tmp = encJx(ptr);
+    print('jx non-null ptr', m_ptr_nonnull_jx.test(tmp));
+    tmp = encJc(ptr);
+    print('jc non-null ptr', m_ptr_nonnull_jc.test(tmp));
 
-  ptr = new Duktape.Pointer("dummy"); // non-null object ptr
-  print(typeof ptr);
-  tmp = encJx(ptr);
-  print("jx non-null ptr", m_ptr_nonnull_jx.test(tmp));
-  tmp = encJc(ptr);
-  print("jc non-null ptr", m_ptr_nonnull_jc.test(tmp));
+    ptr = new Duktape.Pointer('dummy');  // non-null object ptr
+    print(typeof ptr);
+    tmp = encJx(ptr);
+    print('jx non-null ptr', m_ptr_nonnull_jx.test(tmp));
+    tmp = encJc(ptr);
+    print('jc non-null ptr', m_ptr_nonnull_jc.test(tmp));
 }
 
 function typeDecodeTest(dec) {
-  function dval(t) {
-    if (isPlainBuffer(t)) {
-      print(typeof t, Duktape.enc("hex", t));
-    } else if (typeof t == "pointer") {
-      if (t === Duktape.Pointer()) {
-        print(typeof t, "null");
-      } else {
-        print(typeof t, "nonnull");
-      }
-    } else if (typeof t == "object" && t !== null && t._func) {
-      print(typeof t, "functable"); // function always decodes back as a table
-    } else if (typeof t == "object" && t !== null) {
-      // although pointer values encode to platform dependent JC objects,
-      // they decode back as plain JSON objects without any interpretation,
-      // so we can print them also here.
-      print(typeof t, JSON.stringify(t));
-    } else {
-      print(typeof t, String(t));
+    function dval(t) {
+        if (isPlainBuffer(t)) {
+            print(typeof t, Duktape.enc('hex', t));
+        } else if (typeof t == 'pointer') {
+            if (t === Duktape.Pointer()) {
+                print(typeof t, 'null');
+            } else {
+                print(typeof t, 'nonnull');
+            }
+        } else if (typeof t == 'object' && t !== null && t._func) {
+            print(typeof t, 'functable');  // function always decodes back as a table
+        } else if (typeof t == 'object' && t !== null) {
+            // although pointer values encode to platform dependent JC objects,
+            // they decode back as plain JSON objects without any interpretation,
+            // so we can print them also here.
+            print(typeof t, JSON.stringify(t));
+        } else {
+            print(typeof t, String(t));
+        }
     }
-  }
 
-  var jxValues = [
-    "undefined",
-    "null",
-    "true",
-    "false",
-    "123",
-    "NaN",
-    "-Infinity",
-    "Infinity",
-    '"foo"',
-    "[1,2,3]",
-    '{test_key:"bar","foo bar":"quux"}',
-    "|deadbeef|",
-    encJx(Duktape.Pointer("dummy")), // pointer format is platform specific so use a pointer generated
-    // by Duktape; this is obviously not the best idea for testing
-    "(null)",
-    "{_func:true}"
-  ];
+    var jxValues = [
+        'undefined',
+        'null',
+        'true',
+        'false',
+        '123',
+        'NaN',
+        '-Infinity',
+        'Infinity',
+        '"foo"',
+        '[1,2,3]',
+        '{test_key:"bar","foo bar":"quux"}',
+        '|deadbeef|',
+        encJx(Duktape.Pointer('dummy')),  // pointer format is platform specific so use a pointer generated
+                                          // by Duktape; this is obviously not the best idea for testing
+        '(null)',
+        '{_func:true}'
+    ];
 
-  var jcValues = [
-    '{"_undef":true}',
-    "null",
-    "true",
-    "false",
-    "123",
-    '{"_nan":true}',
-    '{"_ninf":true}',
-    '{"_inf":true}',
-    '"foo"',
-    "[1,2,3]",
-    '{"test_key":"bar","foo bar":"quux"}',
-    '{"_buf":"deadbeef"}',
-    '{"_ptr":"(0x12345678)"}', // because this decodes into a normal object without
-    // pointer parsing, a specific value can be used here
-    '{"_ptr":"(null)"}',
-    '{"_func":true}'
-  ];
+    var jcValues = [
+        '{"_undef":true}',
+        'null',
+        'true',
+        'false',
+        '123',
+        '{"_nan":true}',
+        '{"_ninf":true}',
+        '{"_inf":true}',
+        '"foo"',
+        '[1,2,3]',
+        '{"test_key":"bar","foo bar":"quux"}',
+        '{"_buf":"deadbeef"}',
+        '{"_ptr":"(0x12345678)"}',  // because this decodes into a normal object without
+                                    // pointer parsing, a specific value can be used here
+        '{"_ptr":"(null)"}',
+        '{"_func":true}'
+    ];
 
-  print("jx");
-  jxValues.forEach(function(v) {
-    try {
-      dval(decJx(v));
-    } catch (e) {
-      print(e);
-    }
-  });
+    print('jx');
+    jxValues.forEach(function(v) {
+        try {
+            dval(decJx(v));
+        } catch (e) {
+            print(e);
+        }
+    });
 
-  print("jc");
-  jcValues.forEach(function(v) {
-    try {
-      dval(decJc(v));
-    } catch (e) {
-      print(e);
-    }
-  });
+    print('jc');
+    jcValues.forEach(function(v) {
+        try {
+            dval(decJc(v));
+        } catch (e) {
+            print(e);
+        }
+    });
 }
 
-print("primitive type encode");
+print('primitive type encode');
 try {
-  typeEncodeTest();
+    typeEncodeTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
-print("primitive type decode");
+print('primitive type decode');
 try {
-  typeDecodeTest();
+    typeDecodeTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -277,31 +264,31 @@ number 0 pos
  */
 
 function signedZeroTest() {
-  function prVal(v) {
-    print(typeof v, v, 1 / v > 0 ? "pos" : "neg");
-  }
+    function prVal(v) {
+        print(typeof v, v, (1 / v > 0 ? 'pos' : 'neg'));
+    }
 
-  print(JSON.stringify(-0));
-  print(JSON.stringify(+0));
-  print(Duktape.enc("jx", -0));
-  print(Duktape.enc("jx", +0));
-  print(Duktape.enc("jc", -0));
-  print(Duktape.enc("jc", +0));
+    print(JSON.stringify(-0));
+    print(JSON.stringify(+0));
+    print(Duktape.enc('jx', -0));
+    print(Duktape.enc('jx', +0));
+    print(Duktape.enc('jc', -0));
+    print(Duktape.enc('jc', +0));
 
-  prVal(JSON.parse("-0"));
-  prVal(JSON.parse("0"));
-  prVal(Duktape.dec("jx", "-0"));
-  prVal(Duktape.dec("jx", "0"));
-  prVal(Duktape.dec("jc", "-0"));
-  prVal(Duktape.dec("jc", "0"));
+    prVal(JSON.parse('-0'));
+    prVal(JSON.parse('0'));
+    prVal(Duktape.dec('jx', '-0'));
+    prVal(Duktape.dec('jx', '0'));
+    prVal(Duktape.dec('jc', '-0'));
+    prVal(Duktape.dec('jc', '0'));
 }
 
-print("signed zero");
+print('signed zero');
 
 try {
-  signedZeroTest();
+    signedZeroTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -328,64 +315,65 @@ SyntaxError
  */
 
 function characterEscapeEncodeTest() {
-  function mk(hex) {
-    return bufferToStringRaw(Duktape.dec("hex", hex));
-  }
+    function mk(hex) {
+        return bufferToStringRaw(Duktape.dec('hex', hex));
+    }
 
-  var values = [
-    "666f6f", // foo
-    "c3bc", // U+00FC
-    "eaaf8d", // U+ABCD
-    "f48fbb9c", // U+0010FEDC
-    "fe839eab9bbbaf" // U+DEADBEEF
-  ];
+    var values = [
+        '666f6f',         // foo
+        'c3bc',           // U+00FC
+        'eaaf8d',         // U+ABCD
+        'f48fbb9c',       // U+0010FEDC
+        'fe839eab9bbbaf'  // U+DEADBEEF
+    ];
 
-  values.forEach(function(v) {
-    var t = mk(v);
-    print(encJx(t), encJc(t));
-  });
+    values.forEach(function (v) {
+        var t = mk(v);
+        print(encJx(t), encJc(t));
+    });
 }
 
 function characterEscapeDecodeTest() {
-  function dump(val) {
-    return String(Duktape.enc("hex", val));
-  }
-
-  var values = [
-    '"\\n\\x0a\\x0A\\u000a\\u000A\\U0000000a\\U0000000A"',
-    '"\\xfe\\xFE\\u00fe\\u00FE\\U000000fe\\U000000FE"',
-    '"\\u12aF\\u12Af\\U000012aF\\U000012Af"',
-    '"\\UDeAdBeEf\\UdEaDbEeF"'
-  ];
-
-  // only makes sense for JX, but check the JC SyntaxError also
-
-  values.forEach(function(v) {
-    try {
-      print("jx", dump(decJx(v)));
-    } catch (e) {
-      print(e.name);
+    function dump(val) {
+        return String(Duktape.enc('hex', val));
     }
-    try {
-      print("jc", dump(decJc(v)));
-    } catch (e) {
-      print(e.name);
-    }
-  });
+
+    var values = [
+        '"\\n\\x0a\\x0A\\u000a\\u000A\\U0000000a\\U0000000A"',
+        '"\\xfe\\xFE\\u00fe\\u00FE\\U000000fe\\U000000FE"',
+        '"\\u12aF\\u12Af\\U000012aF\\U000012Af"',
+        '"\\UDeAdBeEf\\UdEaDbEeF"'
+    ];
+
+    // only makes sense for JX, but check the JC SyntaxError also
+
+    values.forEach(function (v) {
+        try {
+            print('jx', dump(decJx(v)));
+        } catch (e) {
+            print(e.name);
+        }
+        try {
+            print('jc', dump(decJc(v)));
+        } catch (e) {
+            print(e.name);
+        }
+
+    });
 }
 
-print("character escape encode");
+print('character escape encode');
 try {
-  characterEscapeEncodeTest();
+    characterEscapeEncodeTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
-print("character escape decode");
+print('character escape decode');
 try {
-  characterEscapeDecodeTest();
+    characterEscapeDecodeTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -470,37 +458,36 @@ jc "\uffff"
 ===*/
 
 function asciiOnlyTest() {
-  var i, j;
-  var tmp;
+    var i, j;
+    var tmp;
 
-  // go through first 512 codepoints exhaustively
-  for (i = 0; i < 32; i++) {
-    tmp = "";
-    for (j = 0; j < 16; j++) {
-      tmp += String.fromCharCode(i * 16 + j);
+    // go through first 512 codepoints exhaustively
+    for (i = 0; i < 32; i++) {
+        tmp = '';
+        for (j = 0; j < 16; j++) {
+            tmp += String.fromCharCode(i*16 + j);
+        }
+        print('jx', encJx(tmp));
+        print('jc', encJc(tmp));
+        if (i < 7) {  // ASCII range, does not contain 0x7f (which standard JSON doesn't escape)
+            print('json ', JSON.stringify(tmp));
+        }
     }
-    print("jx", encJx(tmp));
-    print("jc", encJc(tmp));
-    if (i < 7) {
-      // ASCII range, does not contain 0x7f (which standard JSON doesn't escape)
-      print("json ", JSON.stringify(tmp));
-    }
-  }
 
-  // then sample a few codepoints above (these are already tested to
-  // some extent by the character escape test case above)
-  [0x0567, 0x1234, 0xffff].forEach(function(cp) {
-    var t = String.fromCharCode(cp);
-    print("jx", encJx(t));
-    print("jc", encJc(t));
-  });
+    // then sample a few codepoints above (these are already tested to
+    // some extent by the character escape test case above)
+    [ 0x0567, 0x1234, 0xffff ].forEach(function (cp) {
+        var t = String.fromCharCode(cp);
+        print('jx', encJx(t));
+        print('jc', encJc(t));
+    });
 }
 
-print("ascii only output");
+print('ascii only output');
 try {
-  asciiOnlyTest();
+    asciiOnlyTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -528,81 +515,82 @@ jc SyntaxError
 ===*/
 
 function avoidKeyQuotesTest() {
-  var t, inp;
+    var t, inp;
 
-  var obj1 = {
-    $: true,
-    _: true,
-    a: true,
-    z: true,
-    A: true,
-    Z: true,
-    "0": false,
-    "9": false,
-    "": false // empty is specifically not accepted, although it would be unambiguous
-  };
-  var obj2 = {
-    $$: true,
-    __: true,
-    a$: true,
-    z_: true,
-    A0: true,
-    Z9: true,
-    "0$": false,
-    "1_": false,
-    "2a": false,
-    "3z": false,
-    "4A": false,
-    "5A": false,
-    "60": false,
-    "79": false
-  };
-  var obj3 = {
-    test: true,
-    test_key: true,
-    _test_key: true,
-    $test_key: true
-  };
-  var obj4 = {
-    "%foo": false,
-    "foo%": false,
-    "foo-bar": false,
-    "foo bar": false
-  };
+    var obj1 = {
+        $: true,
+        _: true,
+        a: true,
+        z: true,
+        A: true,
+        Z: true,
+        '0': false,
+        '9': false,
+        '': false   // empty is specifically not accepted, although it would be unambiguous
+    };
+    var obj2 = {
+        $$: true,
+        __: true,
+        a$: true,
+        z_: true,
+        A0: true,
+        Z9: true,
+        '0$': false,
+        '1_': false,
+        '2a': false,
+        '3z': false,
+        '4A': false,
+        '5A': false,
+        '60': false,
+        '79': false
+    };
+    var obj3 = {
+        test: true,
+        test_key: true,
+        _test_key: true,
+        $test_key: true,
+    };
+    var obj4 = {
+        '%foo': false,
+        'foo%': false,
+        'foo-bar': false,
+        'foo bar': false
+    };
 
-  // encode tests
+    // encode tests
 
-  [obj1, obj2, obj3, obj4].forEach(function(v) {
-    print("jx", encJx(v));
-    print("jc", encJc(v));
-  });
+    [ obj1, obj2, obj3, obj4 ].forEach(function (v) {
+        print('jx', encJx(v));
+        print('jc', encJc(v));
+    });
 
-  // decode tests, only make sense for JX but JC is also
-  // tried to display a SyntaxError.
+    // decode tests, only make sense for JX but JC is also
+    // tried to display a SyntaxError.
 
-  inp = "{ $: 1, _: 2, a: 3, z: 4, A: 5, Z: 6 }";
-  t = safedecJx(inp);
-  print(t["$"], t["_"], t["a"], t["z"], t["A"], t["Z"]);
-  print(safedecJc(inp));
+    inp = '{ $: 1, _: 2, a: 3, z: 4, A: 5, Z: 6 }';
+    t = safedecJx(inp);
+    print(t['$'], t['_'], t['a'], t['z'], t['A'], t['Z']);
+    print(safedecJc(inp));
 
-  inp = "{ test: 1, test_key: 2, _test_key: 3, $test_key: 4 }";
-  t = safedecJx(inp);
-  print(t["test"], t["test_key"], t["_test_key"], t["$test_key"]);
-  print(safedecJc(inp));
+    inp = '{ test: 1, test_key: 2, _test_key: 3, $test_key: 4 }';
+    t = safedecJx(inp);
+    print(t['test'], t['test_key'], t['_test_key'], t['$test_key']);
+    print(safedecJc(inp));
 
-  ["{ %foo: 1 }", "{ foo%: 1 }", "{ foo-bar: 1 }", "{ foo bar: 1 }"].forEach(
-    function(v) {
-      print("jx", safedecJx(v));
-      print("jc", safedecJc(v));
-    }
-  );
+    [ '{ %foo: 1 }',
+      '{ foo%: 1 }',
+      '{ foo-bar: 1 }',
+      '{ foo bar: 1 }' ].forEach(function (v) {
+        print('jx', safedecJx(v));
+        print('jc', safedecJc(v));
+    });
 }
 
-print("avoid key quotes");
+print('avoid key quotes');
 try {
-  avoidKeyQuotesTest();
+    avoidKeyQuotesTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -656,37 +644,34 @@ non-default encoding options
  */
 
 function nonDefaultEncodingTest() {
-  var val = {
-    foo: "bar",
-    bar: Duktape.dec("hex", "deadbeef"),
-    quux: [123, 0 / 0, 1 / 0, -1 / 0],
-    baz: function() {}
-  };
+    var val = {
+        foo: 'bar',
+        bar: Duktape.dec('hex', 'deadbeef'),
+        quux: [
+            123,
+            0 / 0,
+            1 / 0,
+            -1 / 0
+        ],
+        baz: function() {}
+    };
 
-  function ucStrings(k, v) {
-    if (typeof v === "string") {
-      return v.toUpperCase();
-    } else {
-      return v;
+    function ucStrings(k,v) {
+        if (typeof v === 'string') { return v.toUpperCase() } else { return v }
     }
-  }
 
-  print(Duktape.enc("jx", val, ucStrings /*replacer*/, 4 /*space*/));
-  print(
-    Duktape.enc("jx", val, ["foo", "bar", "quux"] /*replacer*/, "->" /*space*/)
-  ); // drop 'baz', use weird space
+    print(Duktape.enc('jx', val, ucStrings /*replacer*/, 4 /*space*/));
+    print(Duktape.enc('jx', val, [ 'foo', 'bar', 'quux' ] /*replacer*/, '->' /*space*/));  // drop 'baz', use weird space
 
-  print(Duktape.enc("jc", val, ucStrings /*replacer*/, 4 /*space*/));
-  print(
-    Duktape.enc("jc", val, ["foo", "bar", "quux"] /*replacer*/, "->" /*space*/)
-  ); // drop 'baz', use weird space
+    print(Duktape.enc('jc', val, ucStrings /*replacer*/, 4 /*space*/));
+    print(Duktape.enc('jc', val, [ 'foo', 'bar', 'quux' ] /*replacer*/, '->' /*space*/));  // drop 'baz', use weird space
 }
 
-print("non-default encoding options");
+print('non-default encoding options');
 try {
-  nonDefaultEncodingTest();
+    nonDefaultEncodingTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -702,40 +687,45 @@ BAR
  */
 
 function nonDefaultDecodingTest() {
-  var val = {
-    foo: "bar",
-    bar: Duktape.dec("hex", "deadbeef"),
-    quux: [123, 0 / 0, 1 / 0, -1 / 0],
-    baz: function() {}
-  };
-  var enc, dec;
+    var val = {
+        foo: 'bar',
+        bar: Duktape.dec('hex', 'deadbeef'),
+        quux: [
+            123,
+            0 / 0,
+            1 / 0,
+            -1 / 0
+        ],
+        baz: function() {}
+    };
+    var enc, dec;
 
-  function revive(k, v) {
-    if (k === "baz") {
-      return undefined; // delete 'baz'
+    function revive(k,v) {
+        if (k === 'baz') {
+            return undefined;  // delete 'baz'
+        }
+        if (typeof v === 'string') {
+            return v.toUpperCase();  // uppercase strings
+        }
+        return v;
     }
-    if (typeof v === "string") {
-      return v.toUpperCase(); // uppercase strings
-    }
-    return v;
-  }
 
-  enc = encJx(val);
-  dec = Duktape.dec("jx", enc, revive);
-  print(Object.getOwnPropertyNames(dec));
-  print(dec.foo);
+    enc = encJx(val);
+    dec = Duktape.dec('jx', enc, revive);
+    print(Object.getOwnPropertyNames(dec));
+    print(dec.foo);
 
-  enc = encJc(val);
-  dec = Duktape.dec("jc", enc, revive);
-  print(Object.getOwnPropertyNames(dec));
-  print(dec.foo);
+    enc = encJc(val);
+    dec = Duktape.dec('jc', enc, revive);
+    print(Object.getOwnPropertyNames(dec));
+    print(dec.foo);
 }
 
-print("non-default decoding options");
+print('non-default decoding options');
 try {
-  nonDefaultDecodingTest();
+    nonDefaultDecodingTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -760,25 +750,25 @@ jc "\u0000"
  */
 
 function invalidXutf8Test() {
-  var values = [
-    "e188", // last byte missing from U+1234 encoding (e188b4)
-    "c080" // non-shortest encoding for U+0000
-  ];
+    var values = [
+        'e188',     // last byte missing from U+1234 encoding (e188b4)
+        'c080',     // non-shortest encoding for U+0000
+    ];
 
-  // Because standard JSON does not escape non-ASCII codepoints, hex
-  // encode its output
-  values.forEach(function(v) {
-    var t = bufferToStringRaw(Duktape.dec("hex", v));
-    print(v);
-    print("json ", Duktape.enc("hex", JSON.stringify(t)));
-    print("jx", encJx(t));
-    print("jc", encJc(t));
-  });
+    // Because standard JSON does not escape non-ASCII codepoints, hex
+    // encode its output
+    values.forEach(function (v) {
+        var t = bufferToStringRaw(Duktape.dec('hex', v));
+        print(v);
+        print('json ', Duktape.enc('hex', JSON.stringify(t)));
+        print('jx', encJx(t));
+        print('jc', encJc(t));
+    });
 }
 
-print("invalid xutf-8");
+print('invalid xutf-8');
 try {
-  invalidXutf8Test();
+    invalidXutf8Test();
 } catch (e) {
-  print(e);
+    print(e);
 }

@@ -17,36 +17,31 @@
 ===*/
 
 function test() {
-  var buf = createPlainBuffer("abcd");
-  function id(k, v) {
-    return v;
-  }
+    var buf = createPlainBuffer('abcd');
+    function id(k, v) { return v; }
 
-  // Base case.
+    // Base case.
 
-  print(JSON.stringify(buf));
-  print(Duktape.enc("jx", buf));
-  print(Duktape.enc("jc", buf));
+    print(JSON.stringify(buf));
+    print(Duktape.enc('jx', buf));
+    print(Duktape.enc('jc', buf));
 
-  // Add .toJSON() and re-run, using fast path (assuming it's enabled).
+    // Add .toJSON() and re-run, using fast path (assuming it's enabled).
 
-  Object.prototype.toJSON = function(v) {
-    "use strict";
-    return "replaced";
-  };
-  print(JSON.stringify(buf));
-  print(Duktape.enc("jx", buf));
-  print(Duktape.enc("jc", buf));
+    Object.prototype.toJSON = function (v) { 'use strict'; return 'replaced'; }
+    print(JSON.stringify(buf));
+    print(Duktape.enc('jx', buf));
+    print(Duktape.enc('jc', buf));
 
-  // Disable fast path using an identity replacer.
+    // Disable fast path using an identity replacer.
 
-  print(JSON.stringify(buf, id));
-  print(Duktape.enc("jx", buf, id));
-  print(Duktape.enc("jc", buf, id));
+    print(JSON.stringify(buf, id));
+    print(Duktape.enc('jx', buf, id));
+    print(Duktape.enc('jc', buf, id));
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

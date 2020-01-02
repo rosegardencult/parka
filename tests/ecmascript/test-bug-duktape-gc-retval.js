@@ -9,7 +9,7 @@ true
 ===*/
 
 try {
-  print(Duktape.gc());
+    print(Duktape.gc());
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

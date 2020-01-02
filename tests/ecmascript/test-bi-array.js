@@ -23,30 +23,30 @@ string length number 6
 ===*/
 
 function dump(x) {
-  Object.getOwnPropertyNames(x).forEach(function(k) {
-    print(typeof k, k, typeof x[k], x[k]);
-  });
+    Object.getOwnPropertyNames(x).forEach(function (k) {
+        print(typeof k, k, typeof x[k], x[k]);
+    });
 }
 
 function test() {
-  var a;
+    var a;
 
-  a = [1, 2, 3];
-  dump(a);
-  a[10] = 999;
-  dump(a);
-  a.length = 2;
-  dump(a);
+    a = [ 1, 2, 3 ];
+    dump(a);
+    a[10] = 999;
+    dump(a);
+    a.length = 2;
+    dump(a);
 
-  a = new Array("foo", "bar", "quux");
-  dump(a);
+    a = new Array('foo', 'bar', 'quux');
+    dump(a);
 
-  a = new Array(6);
-  dump(a);
+    a = new Array(6);
+    dump(a);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

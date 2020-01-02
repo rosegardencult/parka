@@ -39,47 +39,47 @@ object $xx$
 ===*/
 
 function invalidDollarEscape() {
-  var re, m;
+    var re, m;
 
-  re = eval("/\\$/");
-  print(typeof re);
-  m = re.exec("foo$bar");
-  print(typeof m, m[0]);
+    re = eval("/\\$/");
+    print(typeof re);
+    m = re.exec('foo$bar');
+    print(typeof m, m[0]);
 
-  re = eval("/[\\$x]+/");
-  print(typeof re);
-  m = re.exec("$xx$");
-  print(typeof m, m[0]);
+    re = eval("/[\\$x]+/");
+    print(typeof re);
+    m = re.exec('$xx$');
+    print(typeof m, m[0]);
 }
 
 function validDollarEscape() {
-  var re, m;
+    var re, m;
 
-  re = eval("/\\u0024/");
-  print(typeof re);
-  m = re.exec("foo$bar");
-  print(typeof m, m[0]);
+    re = eval("/\\u0024/");
+    print(typeof re);
+    m = re.exec('foo$bar');
+    print(typeof m, m[0]);
 
-  re = eval("/[\\u0024x]+/");
-  print(typeof re);
-  m = re.exec("$xx$");
-  print(typeof m, m[0]);
+    re = eval("/[\\u0024x]+/");
+    print(typeof re);
+    m = re.exec('$xx$');
+    print(typeof m, m[0]);
 
-  // a literal dollar is also allowed inside character classes
-  re = eval("/[$x]+/");
-  print(typeof re);
-  m = re.exec("$xx$");
-  print(typeof m, m[0]);
+    // a literal dollar is also allowed inside character classes
+    re = eval("/[$x]+/");
+    print(typeof re);
+    m = re.exec('$xx$');
+    print(typeof m, m[0]);
 }
 
 try {
-  invalidDollarEscape();
+    invalidDollarEscape();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  validDollarEscape();
+    validDollarEscape();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

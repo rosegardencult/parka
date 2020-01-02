@@ -18,32 +18,32 @@
  */
 
 function propertyListAncestorTest() {
-  var obj = { foo: 1, bar: 2, quux: 3, baz: 4 };
-  var k;
-  var plist;
+    var obj = { foo: 1, bar: 2, quux: 3, baz: 4 };
+    var k;
+    var plist;
 
-  // baseline
-  print(JSON.stringify(obj, ["quux", "foo"]));
+    // baseline
+    print(JSON.stringify(obj, [ 'quux', 'foo' ]));
 
-  // this is not very common
-  Array.prototype[2] = "baz";
+    // this is not very common
+    Array.prototype[2] = 'baz';
 
-  // plist will contain "0" and "1", and will inherit "2"
-  plist = ["quux", "foo"];
-  for (var k in plist) {
-    print(k, plist[k]);
-  }
+    // plist will contain "0" and "1", and will inherit "2"
+    plist = [ 'quux', 'foo' ];
+    for (var k in plist) {
+        print(k, plist[k]);
+    }
 
-  // Now E5.1 Section 15.12.3, main algorithm, step 4.b.ii should presumably
-  // iterate indices "0" and "1" from the array and "2" from the ancestor.
-  // Note that 'length' plays no role in this.
-  //
-  // (Both Rhino and V8 fail this test.)
-  print(JSON.stringify(obj, plist));
+    // Now E5.1 Section 15.12.3, main algorithm, step 4.b.ii should presumably
+    // iterate indices "0" and "1" from the array and "2" from the ancestor.
+    // Note that 'length' plays no role in this.
+    //
+    // (Both Rhino and V8 fail this test.)
+    print(JSON.stringify(obj, plist));
 }
 
 try {
-  propertyListAncestorTest();
+    propertyListAncestorTest();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

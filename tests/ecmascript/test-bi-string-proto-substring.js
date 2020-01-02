@@ -363,45 +363,28 @@ NaN NaN string 0
 ===*/
 
 function basicTest() {
-  var numbers = [
-    Number.NEGATIVE_INFINITY,
-    -7,
-    -6,
-    -5,
-    -4,
-    -3,
-    -2,
-    -1,
-    -0,
-    +0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    Number.POSITIVE_INFINITY,
-    Number.NaN
-  ];
-  var i, j;
+    var numbers = [
+        Number.NEGATIVE_INFINITY, -7, -6, -5, -4, -3, -2, -1,
+        -0, +0, 1, 2, 3, 4, 5, 6, 7, Number.POSITIVE_INFINITY, Number.NaN
+    ];
+    var i, j;
 
-  function test(str, start, end) {
-    var t = str.substring(start, end);
-    print(start, end, typeof t, t.length, t);
-  }
-
-  for (i = 0; i < numbers.length; i++) {
-    for (j = 0; j < numbers.length; j++) {
-      test("foobar", numbers[i], numbers[j]);
+    function test(str, start, end) {
+        var t = str.substring(start, end);
+        print(start, end, typeof t, t.length, t);
     }
-  }
+
+    for (i = 0; i < numbers.length; i++) {
+        for (j = 0; j < numbers.length; j++) {
+            test('foobar', numbers[i], numbers[j]);
+        }
+    }
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -412,20 +395,20 @@ string 2 4660 98
 /* Non-BMP test. */
 
 function nonBmpTest() {
-  var str = new String("foo\u1234bar");
-  var t;
+    var str = new String('foo\u1234bar');
+    var t;
 
-  t = str.substring(5, 7);
-  print(typeof t, t.length, t.charCodeAt(0), t.charCodeAt(1));
+    t = str.substring(5, 7);
+    print(typeof t, t.length, t.charCodeAt(0), t.charCodeAt(1));
 
-  t = str.substring(5, 3);
-  print(typeof t, t.length, t.charCodeAt(0), t.charCodeAt(1));
+    t = str.substring(5, 3);
+    print(typeof t, t.length, t.charCodeAt(0), t.charCodeAt(1));
 }
 
 try {
-  nonBmpTest();
+    nonBmpTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -444,62 +427,36 @@ string 2 ba
 ===*/
 
 function coercionTest() {
-  function test(str, start, end) {
-    var t;
+    function test(str, start, end) {
+        var t;
 
-    try {
-      t = String.prototype.substring.call(str, start, end);
-      print(typeof t, t.length, t);
-    } catch (e) {
-      print(e.name);
+        try {
+            t = String.prototype.substring.call(str, start, end);
+            print(typeof t, t.length, t);
+        } catch (e) {
+            print(e.name);
+        }
     }
-  }
 
-  test(undefined, 2, 4);
-  test(null, 2, 4);
-  test(true, 2, 4);
-  test(false, 2, 4);
-  test(12345, 2, 4);
-  test("foobar", 2, 4);
-  test([1, 2, 3, 4], 2, 4);
-  test({ foo: 1, bar: 2 }, 2, 4);
+    test(undefined, 2, 4);
+    test(null, 2, 4);
+    test(true, 2, 4);
+    test(false, 2, 4);
+    test(12345, 2, 4);
+    test('foobar', 2, 4);
+    test([1,2,3,4], 2, 4);
+    test({ foo: 1, bar: 2}, 2, 4);
 
-  test(
-    {
-      toString: function() {
-        print("toString() this");
-        return "foobar";
-      },
-      valueOf: function() {
-        print("valueOf() this");
-        return "barfoo";
-      }
-    },
-    {
-      toString: function() {
-        print("toString() start");
-        return 2;
-      },
-      valueOf: function() {
-        print("valueOf() start");
-        return 3;
-      }
-    },
-    {
-      toString: function() {
-        print("toString() end");
-        return 4;
-      },
-      valueOf: function() {
-        print("valueOf() end");
-        return 5;
-      }
-    }
-  );
+    test({ toString: function() { print('toString() this'); return 'foobar' },
+           valueOf: function() { print('valueOf() this'); return 'barfoo' } },
+         { toString: function() { print('toString() start'); return 2; },
+           valueOf: function() { print('valueOf() start'); return 3; } },
+         { toString: function() { print('toString() end'); return 4; },
+           valueOf: function() { print('valueOf() end'); return 5; } });
 }
 
 try {
-  coercionTest();
+    coercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

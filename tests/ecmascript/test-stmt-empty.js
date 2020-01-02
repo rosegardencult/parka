@@ -13,15 +13,15 @@ undefined
  */
 
 function basicTest() {
-  print(eval(";"));
-  print(eval("if (1);else 2;"));
-  print(eval("if (1);else;"));
+    print(eval(";"));
+    print(eval("if (1);else 2;"));
+    print(eval("if (1);else;"));
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -46,35 +46,33 @@ SyntaxError
  */
 
 function semicolonTest1() {
-  // This is a SyntaxError because there is no newline before the offending
-  // EOF so automatic semicolon is not allowed.
-  print(eval("if (123)"));
+    // This is a SyntaxError because there is no newline before the offending
+    // EOF so automatic semicolon is not allowed.
+    print(eval("if (123)"));
 }
 
 function semicolonTest2() {
-  // Here an automatic semicolon would otherwise be allowed (there is a
-  // newline before the offending semicolon) but the empty statement
-  // special case rejects this too.
-  print(eval("if (123)\n"));
+    // Here an automatic semicolon would otherwise be allowed (there is a
+    // newline before the offending semicolon) but the empty statement
+    // special case rejects this too.
+    print(eval("if (123)\n"));
 }
 
 function semicolonTest3() {
-  // No newline before offending '}', SyntaxError.
-  print(eval("(function () { if (123) })()"));
+    // No newline before offending '}', SyntaxError.
+    print(eval("(function () { if (123) })()"));
 }
 
 function semicolonTest4() {
-  // Automatic semicolon would otherwise be allowed, but the empty statement
-  // special case rejects it.
-  print(eval("(function () { if (123)\n})()"));
+    // Automatic semicolon would otherwise be allowed, but the empty statement
+    // special case rejects it.
+    print(eval("(function () { if (123)\n})()"));
 }
 
-[semicolonTest1, semicolonTest2, semicolonTest3, semicolonTest4].forEach(
-  function(fn) {
+[ semicolonTest1, semicolonTest2, semicolonTest3, semicolonTest4 ].forEach(function (fn) {
     try {
-      fn();
+        fn();
     } catch (e) {
-      print(e.name);
+        print(e.name);
     }
-  }
-);
+});

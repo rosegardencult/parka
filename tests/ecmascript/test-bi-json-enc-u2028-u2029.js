@@ -43,35 +43,35 @@
 ===*/
 
 function u2028u2029test() {
-  var res = JSON.stringify("foo\u2028\u2029bar");
-  var i, n, c;
+    var res = JSON.stringify("foo\u2028\u2029bar");
+    var i, n, c;
 
-  for (i = 0, n = res.length; i < n; i++) {
-    c = res.charCodeAt(i);
-    print(i, c, c >= 0x20 && c <= 0x7e ? String.fromCharCode(c) : "non-ascii");
-  }
+    for (i = 0, n = res.length; i < n; i++) {
+        c = res.charCodeAt(i);
+        print(i, c, c >= 0x20 && c <= 0x7e ? String.fromCharCode(c) : 'non-ascii');
+    }
 
-  /* The standard behavior is interesting in that if you serialize a
-   * string containing U+2028 or U+2029, you won't be able to eval it
-   * back in because the characters are considered LineTerminators and
-   * a string literal is considered to be unterminated.
-   */
+    /* The standard behavior is interesting in that if you serialize a
+     * string containing U+2028 or U+2029, you won't be able to eval it
+     * back in because the characters are considered LineTerminators and
+     * a string literal is considered to be unterminated.
+     */
 
-  try {
-    print(eval(JSON.stringify("foo\u2028bar")).length);
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        print(eval(JSON.stringify('foo\u2028bar')).length);
+    } catch (e) {
+        print(e.name);
+    }
 
-  try {
-    print(eval(JSON.stringify("foo\u2028bar")).length);
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        print(eval(JSON.stringify('foo\u2028bar')).length);
+    } catch (e) {
+        print(e.name);
+    }
 }
 
 try {
-  u2028u2029test();
+    u2028u2029test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

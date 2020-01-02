@@ -22,43 +22,41 @@ foo
 
 /* Rhino and smjs fail this */
 try {
-  /* match against ToString(undefined) = 'undefined' */
-  t = r1.exec();
-  print(t[0]);
+    /* match against ToString(undefined) = 'undefined' */
+    t = r1.exec();
+    print(t[0]);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  /* same as above */
-  t = r1.exec(undefined);
-  print(t[0]);
+    /* same as above */
+    t = r1.exec(undefined);
+    print(t[0]);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  /* match against ToString(null) = 'null' */
-  t = r2.exec(null);
-  print(t[0]);
+    /* match against ToString(null) = 'null' */
+    t = r2.exec(null);
+    print(t[0]);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  t = r3.exec(5);
-  print(t[0]);
+    t = r3.exec(5);
+    print(t[0]);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  a = {};
-  a.toString = function() {
-    return "foobar";
-  };
-  t = r4.exec(a);
-  print(t[0]);
+    a = {};
+    a.toString = function() { return 'foobar'; };
+    t = r4.exec(a);
+    print(t[0]);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

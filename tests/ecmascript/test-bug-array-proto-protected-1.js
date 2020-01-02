@@ -16,36 +16,38 @@ defineProperty success
 ===*/
 
 function test() {
-  var arr;
+    var arr;
 
-  Object.defineProperty(Array.prototype, "0", {
-    value: "inherit",
-    writable: false,
-    enumerable: true,
-    configurable: true
-  });
-  print("defineProperty success");
+    Object.defineProperty(Array.prototype,
+                          '0',
+                          {
+                              value: 'inherit',
+                              writable: false,
+                              enumerable: true,
+                              configurable: true
+                          });
+    print('defineProperty success');
 
-  // No problem here: '0' not accessed
-  arr = [];
-  print(arr.length, arr[0], arr[1]);
+    // No problem here: '0' not accessed
+    arr = [];
+    print(arr.length, arr[0], arr[1]);
 
-  // Again should succeed
-  var arr = ["foo", "bar"];
-  print(arr.length, arr[0], arr[1]);
+    // Again should succeed
+    var arr = ['foo', 'bar'];
+    print(arr.length, arr[0], arr[1]);
 
-  // Assignment should not work unless an own property already exists
-  arr = [];
-  arr[0] = "shouldfail"; // failure is silent
-  print(arr.length, arr[0], arr[1]);
+    // Assignment should not work unless an own property already exists
+    arr = [];
+    arr[0] = 'shouldfail';  // failure is silent
+    print(arr.length, arr[0], arr[1]);
 
-  arr = ["foo", "bar"];
-  arr[0] = "shouldsucceed";
-  print(arr.length, arr[0], arr[1]);
+    arr = ['foo', 'bar'];
+    arr[0] = 'shouldsucceed';
+    print(arr.length, arr[0], arr[1]);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

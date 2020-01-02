@@ -14,27 +14,27 @@ undefined
 ===*/
 
 function foo() {
-  var args = arguments;
-  print(typeof arguments);
-  print(arguments.length);
-  print(arguments[0]);
-  print(arguments[1]);
-  print(arguments[2]);
-  print(arguments[3]);
-  print(arguments[4]);
-  print(arguments[5]);
+    var args = arguments;
+    print(typeof arguments);
+    print(arguments.length);
+    print(arguments[0]);
+    print(arguments[1]);
+    print(arguments[2]);
+    print(arguments[3]);
+    print(arguments[4]);
+    print(arguments[5]);
 }
 
-function bar(a, b, c, d) {
-  return foo(a, b, c);
+function bar(a,b,c,d) {
+    return foo(a,b,c);
 }
 
 function test() {
-  bar("foo", "bar", "quux", "baz", "quuux", "baz");
+    bar('foo', 'bar', 'quux', 'baz', 'quuux', 'baz');
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

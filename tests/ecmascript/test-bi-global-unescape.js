@@ -3,74 +3,37 @@
  * (minimizes test case size).
  */
 function checkSumString(x) {
-  var i, n;
-  var res = 0;
-  var mult = [1, 3, 5, 7, 11, 13, 17, 19, 23];
+    var i, n;
+    var res = 0;
+    var mult = [ 1, 3, 5, 7, 11, 13, 17, 19, 23 ];
 
-  n = x.length;
-  for (i = 0; i < n; i++) {
-    res += x.charCodeAt(i) * mult[i % mult.length];
-    res = res >>> 0; // coerce to 32 bits
-  }
+    n = x.length;
+    for (i = 0; i < n; i++) {
+        res += x.charCodeAt(i) * mult[i % mult.length];
+        res = res >>> 0;  // coerce to 32 bits
+    }
 
-  return res;
+    return res;
 }
 
 // XXX: util
 function getCodePoints(x) {
-  var res = [];
-  var i, n;
+    var res = [];
+    var i, n;
 
-  n = x.length;
-  for (i = 0; i < n; i++) {
-    res.push(x.charCodeAt(i));
-  }
+    n = x.length;
+    for (i = 0; i < n; i++) {
+        res.push(x.charCodeAt(i));
+    }
 
-  return res.join(" ");
+    return res.join(' ');
 }
 
 // indirect eval -> this is bound to the global object, E5 Section 10.4.2, step 1.a.
-var g = (function() {
-  var e = eval;
-  return e("this");
-})();
+var g = (function () { var e = eval; return e('this'); } )();
 
-var ucnybbles = [
-  "0",
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "A",
-  "B",
-  "C",
-  "D",
-  "E",
-  "F"
-];
-var lcnybbles = [
-  "0",
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "a",
-  "b",
-  "c",
-  "d",
-  "e",
-  "f"
-];
+var ucnybbles = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' ];
+var lcnybbles = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' ];
 
 /*===
 basic
@@ -90,82 +53,74 @@ basic
 %u escapes
 ===*/
 
-print("basic");
+print('basic');
 
 function basicTest() {
-  var i;
-  var tmp;
+    var i;
+    var tmp;
 
-  // simple test of the 8-bit range
-  tmp = [];
-  for (i = 0; i < 256; i++) {
-    tmp.push(String.fromCharCode(i));
-  }
-  tmp = tmp.join("");
-  print(getCodePoints(g.unescape(tmp)));
+    // simple test of the 8-bit range
+    tmp = [];
+    for (i = 0; i < 256; i++) {
+        tmp.push(String.fromCharCode(i));
+    }
+    tmp = tmp.join('');
+    print(getCodePoints(g.unescape(tmp)));
 
-  // % must be followed by 'u' and 4 hex digits to make a unicode escape
-  print(getCodePoints(g.unescape("%u123")));
-  print(getCodePoints(g.unescape("%u123g")));
-  print(getCodePoints(g.unescape("%u123G")));
-  print(getCodePoints(g.unescape("%U1234"))); // uppercase 'u' not accepted
-  print(getCodePoints(g.unescape("%u123f"))); // valid
-  print(getCodePoints(g.unescape("%u123F"))); // valid
+    // % must be followed by 'u' and 4 hex digits to make a unicode escape
+    print(getCodePoints(g.unescape('%u123')));
+    print(getCodePoints(g.unescape('%u123g')));
+    print(getCodePoints(g.unescape('%u123G')));
+    print(getCodePoints(g.unescape('%U1234')));  // uppercase 'u' not accepted
+    print(getCodePoints(g.unescape('%u123f')));  // valid
+    print(getCodePoints(g.unescape('%u123F')));  // valid
 
-  // % must be followed by 'x' and 2 hex digits to make a short escape
-  print(getCodePoints(g.unescape("%1")));
-  print(getCodePoints(g.unescape("%1g")));
-  print(getCodePoints(g.unescape("%1G")));
-  print(getCodePoints(g.unescape("%1f"))); // valid
-  print(getCodePoints(g.unescape("%1F"))); // valid
+    // % must be followed by 'x' and 2 hex digits to make a short escape
+    print(getCodePoints(g.unescape('%1')));
+    print(getCodePoints(g.unescape('%1g')));
+    print(getCodePoints(g.unescape('%1G')));
+    print(getCodePoints(g.unescape('%1f')));  // valid
+    print(getCodePoints(g.unescape('%1F')));  // valid
 
-  // check that all 2-byte escapes work
-  print("%x escapes");
-  for (i = 0; i < 256; i++) {
-    tmp = "%" + ucnybbles[i >> 4] + ucnybbles[i & 0x0f];
-    res = g.unescape(tmp);
-    if (res.length !== 1 || res.charCodeAt(0) !== i) {
-      print("unescape error for %xx at index i:", i);
+    // check that all 2-byte escapes work
+    print('%x escapes');
+    for (i = 0; i < 256; i++) {
+        tmp = '%' + ucnybbles[i >> 4] + ucnybbles[i & 0x0f];
+        res = g.unescape(tmp);
+        if (res.length !== 1 || res.charCodeAt(0) !== i) {
+            print('unescape error for %xx at index i:', i);
+        }
+
+        tmp = '%' + lcnybbles[i >> 4] + lcnybbles[i & 0x0f];
+        res = g.unescape(tmp);
+        if (res.length !== 1 || res.charCodeAt(0) !== i) {
+            print('unescape error for %xx at index i:', i);
+        }
     }
 
-    tmp = "%" + lcnybbles[i >> 4] + lcnybbles[i & 0x0f];
-    res = g.unescape(tmp);
-    if (res.length !== 1 || res.charCodeAt(0) !== i) {
-      print("unescape error for %xx at index i:", i);
-    }
-  }
+    // check that all 4-byte escapes work
+    print('%u escapes');
+    for (i = 0; i < 65536; i++) {
+        tmp = '%u' + ucnybbles[(i >> 12) & 0x0f] + ucnybbles[(i >> 8) & 0x0f] +
+                     ucnybbles[(i >> 4) & 0x0f] + ucnybbles[i & 0x0f];
+        res = g.unescape(tmp);
+        if (res.length !== 1 || res.charCodeAt(0) !== i) {
+            print('unescape error for %uxxxx at index i:', i);
+        }
 
-  // check that all 4-byte escapes work
-  print("%u escapes");
-  for (i = 0; i < 65536; i++) {
-    tmp =
-      "%u" +
-      ucnybbles[(i >> 12) & 0x0f] +
-      ucnybbles[(i >> 8) & 0x0f] +
-      ucnybbles[(i >> 4) & 0x0f] +
-      ucnybbles[i & 0x0f];
-    res = g.unescape(tmp);
-    if (res.length !== 1 || res.charCodeAt(0) !== i) {
-      print("unescape error for %uxxxx at index i:", i);
+        tmp = '%u' + lcnybbles[(i >> 12) & 0x0f] + lcnybbles[(i >> 8) & 0x0f] +
+                     lcnybbles[(i >> 4) & 0x0f] + lcnybbles[i & 0x0f];
+        res = g.unescape(tmp);
+        if (res.length !== 1 || res.charCodeAt(0) !== i) {
+            print('unescape error for %uxxxx at index i:', i);
+        }
     }
-
-    tmp =
-      "%u" +
-      lcnybbles[(i >> 12) & 0x0f] +
-      lcnybbles[(i >> 8) & 0x0f] +
-      lcnybbles[(i >> 4) & 0x0f] +
-      lcnybbles[i & 0x0f];
-    res = g.unescape(tmp);
-    if (res.length !== 1 || res.charCodeAt(0) !== i) {
-      print("unescape error for %uxxxx at index i:", i);
-    }
-  }
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -236,27 +191,27 @@ bruteforce
 64512 731132896
 ===*/
 
-print("bruteforce");
+print('bruteforce');
 
 function bruteForceTest() {
-  var i;
-  var tmp;
+    var i;
+    var tmp;
 
-  // decode every character (including '%', because the characters
-  // following it won't make a valid escape, it will decode as itself)
-  for (i = 0; i < 65536; i += 1024) {
-    tmp = [];
-    for (j = 0; j < 1024; j++) {
-      tmp.push(String.fromCharCode(i + j));
+    // decode every character (including '%', because the characters
+    // following it won't make a valid escape, it will decode as itself)
+    for (i = 0; i < 65536; i += 1024) {
+        tmp = [];
+        for (j = 0; j < 1024; j++) {
+            tmp.push(String.fromCharCode(i + j));
+        }
+        tmp = tmp.join('');
+
+        print(i, checkSumString(g.unescape(tmp)));
     }
-    tmp = tmp.join("");
-
-    print(i, checkSumString(g.unescape(tmp)));
-  }
 }
 
 try {
-  bruteForceTest();
+    bruteForceTest();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

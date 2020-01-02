@@ -16,20 +16,20 @@ input 4
 ===*/
 
 function test(inp) {
-  try {
-    eval(inp);
-    print("never here");
-  } catch (e) {
-    //print(e.stack);
-    print(e.fileName, e.lineNumber);
-  }
+    try {
+        eval(inp);
+        print('never here');
+    } catch (e) {
+        //print(e.stack);
+        print(e.fileName, e.lineNumber);
+    }
 }
 
 try {
-  // Test for specific line numbers; these may change at some point due to compiler details
-  test('"foo');
-  test('\n"foo');
-  test("\n\n1\n+");
+    // Test for specific line numbers; these may change at some point due to compiler details
+    test('"foo');
+    test('\n"foo');
+    test('\n\n1\n+');
 } catch (e) {
-  print(e);
+    print(e);
 }

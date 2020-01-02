@@ -67,74 +67,71 @@ F0123456789abcdefABCDE f0123456789abcdefabcde
 ===*/
 
 function testLengths() {
-  var i, j, len;
-  var res1, res2;
-  var csum = 0;
-  var valid = "0123456789abcdefABCDEF";
-  var nybbles = "0123456789abcdef";
-  var success = 0,
-    failure = 0;
-  var tmp, res;
+    var i, j, len;
+    var res1, res2;
+    var csum = 0;
+    var valid = '0123456789abcdefABCDEF';
+    var nybbles = '0123456789abcdef';
+    var success = 0, failure = 0;
+    var tmp, res;
 
-  print(Duktape.enc("jx", Duktape.dec("hex", createPlainBuffer(""))));
-  print(Duktape.enc("jx", Duktape.dec("hex", "")));
+    print(Duktape.enc('jx', Duktape.dec('hex', createPlainBuffer(''))));
+    print(Duktape.enc('jx', Duktape.dec('hex', '')));
 
-  for (len = 2; len <= 32; len++) {
-    print(len, csum);
-    buf = createPlainBuffer(len);
-    for (i = 0; i < len; i++) {
-      buf[i] = valid.charCodeAt(i % valid.length);
+    for (len = 2; len <= 32; len++) {
+        print(len, csum);
+        buf = createPlainBuffer(len);
+        for(i = 0; i < len; i++) {
+            buf[i] = valid.charCodeAt(i % valid.length);
+        }
+
+        for (i = 0; i < 65536; i++) {
+            buf[len - 2] = i >>> 8;
+            buf[len - 1] = i & 0xff;
+
+            try {
+                res1 = Duktape.enc('jx', Duktape.dec('hex', buf));
+                success++;
+            } catch (e) {
+                res1 = e.name;
+                failure++;
+            }
+            try {
+                res2 = Duktape.enc('jx', Duktape.dec('hex', bufferToStringRaw(buf)));
+            } catch (e) {
+                res2 = e.name;
+            }
+
+            if (res1 !== res2) { throw new Error('encode results differ'); }
+
+            csum += checksumString(res1);
+        }
     }
 
-    for (i = 0; i < 65536; i++) {
-      buf[len - 2] = i >>> 8;
-      buf[len - 1] = i & 0xff;
+    print('final', csum);
+    print('success', success, 'failure', failure);
 
-      try {
-        res1 = Duktape.enc("jx", Duktape.dec("hex", buf));
-        success++;
-      } catch (e) {
-        res1 = e.name;
-        failure++;
-      }
-      try {
-        res2 = Duktape.enc("jx", Duktape.dec("hex", bufferToStringRaw(buf)));
-      } catch (e) {
-        res2 = e.name;
-      }
+    // Scrolling 22-char decode window, two 8-char fast loops + 6 leftover
+    // chars.  March all valid characters through all positions.
 
-      if (res1 !== res2) {
-        throw new Error("encode results differ");
-      }
-
-      csum += checksumString(res1);
+    for (i = 0; i < valid.length; i++) {
+        tmp = '';
+        for (j = 0; j < 22; j++) {
+            tmp += valid[(i + j) % valid.length];
+        }
+        buf = Duktape.dec('hex', tmp);
+        res = [];
+        for (j = 0; j < buf.length; j++) {
+            res.push(nybbles[buf[j] >>> 4]);
+            res.push(nybbles[buf[j] & 0x0f]);
+        }
+        res = res.join('');
+        print(tmp, res);
     }
-  }
-
-  print("final", csum);
-  print("success", success, "failure", failure);
-
-  // Scrolling 22-char decode window, two 8-char fast loops + 6 leftover
-  // chars.  March all valid characters through all positions.
-
-  for (i = 0; i < valid.length; i++) {
-    tmp = "";
-    for (j = 0; j < 22; j++) {
-      tmp += valid[(i + j) % valid.length];
-    }
-    buf = Duktape.dec("hex", tmp);
-    res = [];
-    for (j = 0; j < buf.length; j++) {
-      res.push(nybbles[buf[j] >>> 4]);
-      res.push(nybbles[buf[j] & 0x0f]);
-    }
-    res = res.join("");
-    print(tmp, res);
-  }
 }
 
 try {
-  testLengths();
+    testLengths();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

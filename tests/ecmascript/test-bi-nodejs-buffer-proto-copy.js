@@ -296,202 +296,141 @@ fox ABCoxFGH
 ===*/
 
 function nodejsBufferCopyTest() {
-  var b1, b2;
+    var b1, b2;
 
-  // A few simple manual tests
-  b1 = new Buffer("fox");
-  b2 = new Buffer("ABCDEFGH");
-  b1.copy(b2);
-  print(b1, b2);
-  b2 = new Buffer("ABCDEFGH");
-  b1.copy(b2, 0);
-  print(b1, b2);
-  b2 = new Buffer("ABCDEFGH");
-  b1.copy(b2, 1);
-  print(b1, b2);
-  b2 = new Buffer("ABCDEFGH");
-  b1.copy(b2, 2);
-  print(b1, b2);
-  b2 = new Buffer("ABCDEFGH");
-  b1.copy(b2, 3);
-  print(b1, b2);
-  b2 = new Buffer("ABCDEFGH");
-  b1.copy(b2, 4);
-  print(b1, b2);
-  b2 = new Buffer("ABCDEFGH");
-  b1.copy(b2, 5);
-  print(b1, b2);
-  b2 = new Buffer("ABCDEFGH");
-  b1.copy(b2, 6);
-  print(b1, b2);
-  b2 = new Buffer("ABCDEFGH");
-  b1.copy(b2, 7);
-  print(b1, b2);
-  b2 = new Buffer("ABCDEFGH");
-  b1.copy(b2, 8);
-  print(b1, b2);
-  b2 = new Buffer("ABCDEFGH");
-  b1.copy(b2, 3, 1, 0);
-  print(b1, b2);
-  b2 = new Buffer("ABCDEFGH");
-  b1.copy(b2, 3, 1, 1);
-  print(b1, b2);
-  b2 = new Buffer("ABCDEFGH");
-  b1.copy(b2, 3, 1, 2);
-  print(b1, b2);
-  b2 = new Buffer("ABCDEFGH");
-  b1.copy(b2, 3, 1, 3);
-  print(b1, b2);
-  b2 = new Buffer("ABCDEFGH");
-  b1.copy(b2, 3, 1, 4);
-  print(b1, b2);
-  b2 = new Buffer("ABCDEFGH");
-  b1.copy(b2, 3, 1, 8);
-  print(b1, b2);
+    // A few simple manual tests
+    b1 = new Buffer('fox');
+    b2 = new Buffer('ABCDEFGH'); b1.copy(b2); print(b1, b2);
+    b2 = new Buffer('ABCDEFGH'); b1.copy(b2, 0); print(b1, b2);
+    b2 = new Buffer('ABCDEFGH'); b1.copy(b2, 1); print(b1, b2);
+    b2 = new Buffer('ABCDEFGH'); b1.copy(b2, 2); print(b1, b2);
+    b2 = new Buffer('ABCDEFGH'); b1.copy(b2, 3); print(b1, b2);
+    b2 = new Buffer('ABCDEFGH'); b1.copy(b2, 4); print(b1, b2);
+    b2 = new Buffer('ABCDEFGH'); b1.copy(b2, 5); print(b1, b2);
+    b2 = new Buffer('ABCDEFGH'); b1.copy(b2, 6); print(b1, b2);
+    b2 = new Buffer('ABCDEFGH'); b1.copy(b2, 7); print(b1, b2);
+    b2 = new Buffer('ABCDEFGH'); b1.copy(b2, 8); print(b1, b2);
+    b2 = new Buffer('ABCDEFGH'); b1.copy(b2, 3, 1, 0); print(b1, b2);
+    b2 = new Buffer('ABCDEFGH'); b1.copy(b2, 3, 1, 1); print(b1, b2);
+    b2 = new Buffer('ABCDEFGH'); b1.copy(b2, 3, 1, 2); print(b1, b2);
+    b2 = new Buffer('ABCDEFGH'); b1.copy(b2, 3, 1, 3); print(b1, b2);
+    b2 = new Buffer('ABCDEFGH'); b1.copy(b2, 3, 1, 4); print(b1, b2);
+    b2 = new Buffer('ABCDEFGH'); b1.copy(b2, 3, 1, 8); print(b1, b2);
 
-  // A bunch of tests, copying from b1 to b2 or b1 to b1 (in-place).
+    // A bunch of tests, copying from b1 to b2 or b1 to b1 (in-place).
 
-  // Since target can be b1 or b2, ensure values are useful for both tests.
-  var targetOffset = [
-    "NONE",
-    undefined,
-    null,
-    true,
-    false,
-    -1,
-    0,
-    1,
-    2,
-    7,
-    11,
-    13.8,
-    15,
-    16,
-    17,
-    23,
-    24,
-    25
-  ];
+    // Since target can be b1 or b2, ensure values are useful for both tests.
+    var targetOffset = [
+        'NONE',
+        undefined,
+        null,
+        true,
+        false,
+        -1,
+        0,
+        1,
+        2,
+        7,
+        11,
+        13.8,
+        15,
+        16,
+        17,
+        23,
+        24,
+        25
+    ];
 
-  // These only need to work with b1
-  var sourceOffset = [
-    "NONE",
-    undefined,
-    null,
-    true,
-    false,
-    -1,
-    0,
-    1,
-    2,
-    7,
-    11,
-    13.8,
-    23,
-    24,
-    25
-  ];
+    // These only need to work with b1
+    var sourceOffset = [
+        'NONE',
+        undefined,
+        null,
+        true,
+        false,
+        -1,
+        0,
+        1,
+        2,
+        7,
+        11,
+        13.8,
+        23,
+        24,
+        25
+    ];
 
-  targetOffset.forEach(function(targetStart, idx1) {
-    sourceOffset.forEach(function(sourceStart, idx2) {
-      var tmp = [];
+    targetOffset.forEach(function (targetStart, idx1) {
+        sourceOffset.forEach(function (sourceStart, idx2) {
+            var tmp = [];
 
-      sourceOffset.forEach(function(sourceEnd, idx3) {
-        var b1, b2;
-        var i;
+            sourceOffset.forEach(function (sourceEnd, idx3) {
+                var b1, b2;
+                var i;
 
-        //print(targetStart, sourceStart, sourceEnd);
+                //print(targetStart, sourceStart, sourceEnd);
 
-        try {
-          b1 = new Buffer(24);
-          for (i = 0; i < b1.length; i++) {
-            b1[i] = 0x61 + i;
-          }
-          b2 = new Buffer(16);
-          for (i = 0; i < b2.length; i++) {
-            b2[i] = 0x2e;
-          }
-          if (targetStart == "NONE") {
-            b1.copy(b2);
-          } else if (sourceStart == "NONE") {
-            b1.copy(b2, targetStart);
-          } else if (sourceEnd == "NONE") {
-            b1.copy(b2, targetStart, sourceStart);
-          } else {
-            b1.copy(b2, targetStart, sourceStart, sourceEnd);
-          }
-          tmp.push(printableNodejsBuffer(b1));
-          tmp.push(printableNodejsBuffer(b2));
-          tmp.push(
-            targetStart +
-              " " +
-              sourceStart +
-              " " +
-              sourceEnd +
-              " " +
-              String(b1) +
-              " " +
-              String(b2)
-          );
-        } catch (e) {
-          tmp.push(
-            targetStart +
-              " " +
-              sourceStart +
-              " " +
-              sourceEnd +
-              " " +
-              String(b1) +
-              " " +
-              String(b2),
-            e.name
-          );
-        }
+                try {
+                    b1 = new Buffer(24);
+                    for (i = 0; i < b1.length; i++) {
+                        b1[i] = 0x61 + i;
+                    }
+                    b2 = new Buffer(16);
+                    for (i = 0; i < b2.length; i++) {
+                        b2[i] = 0x2e;
+                    }
+                    if (targetStart == 'NONE') {
+                        b1.copy(b2);
+                    } else if (sourceStart == 'NONE') {
+                        b1.copy(b2, targetStart);
+                    } else if (sourceEnd == 'NONE') {
+                        b1.copy(b2, targetStart, sourceStart);
+                    } else {
+                        b1.copy(b2, targetStart, sourceStart, sourceEnd);
+                    }
+                    tmp.push(printableNodejsBuffer(b1));
+                    tmp.push(printableNodejsBuffer(b2));
+                    tmp.push(targetStart + ' ' + sourceStart + ' ' + sourceEnd + ' ' +
+                             String(b1) + ' ' + String(b2));
+                } catch (e) {
+                    tmp.push(targetStart + ' ' + sourceStart + ' ' + sourceEnd + ' ' +
+                             String(b1) + ' ' + String(b2), e.name);
+                }
 
-        // In-place case
-        try {
-          b1 = new Buffer(24);
-          for (i = 0; i < b1.length; i++) {
-            b1[i] = 0x61 + i;
-          }
-          if (targetStart == "NONE") {
-            b1.copy(b1);
-          } else if (sourceStart == "NONE") {
-            b1.copy(b1, targetStart);
-          } else if (sourceEnd == "NONE") {
-            b1.copy(b1, targetStart, sourceStart);
-          } else {
-            b1.copy(b1, targetStart, sourceStart, sourceEnd);
-          }
-          tmp.push(printableNodejsBuffer(b1));
-          tmp.push(
-            targetStart + " " + sourceStart + " " + sourceEnd + " " + String(b1)
-          );
-        } catch (e) {
-          tmp.push(
-            targetStart +
-              " " +
-              sourceStart +
-              " " +
-              sourceEnd +
-              " " +
-              String(b1) +
-              " " +
-              e.name
-          );
-        }
-      });
+                 // In-place case
+                try {
+                    b1 = new Buffer(24);
+                    for (i = 0; i < b1.length; i++) {
+                        b1[i] = 0x61 + i;
+                    }
+                    if (targetStart == 'NONE') {
+                        b1.copy(b1);
+                    } else if (sourceStart == 'NONE') {
+                        b1.copy(b1, targetStart);
+                    } else if (sourceEnd == 'NONE') {
+                        b1.copy(b1, targetStart, sourceStart);
+                    } else {
+                        b1.copy(b1, targetStart, sourceStart, sourceEnd);
+                    }
+                    tmp.push(printableNodejsBuffer(b1));
+                    tmp.push(targetStart + ' ' + sourceStart + ' ' + sourceEnd + ' ' +
+                             String(b1));
+                } catch (e) {
+                    tmp.push(targetStart + ' ' + sourceStart + ' ' + sourceEnd + ' ' +
+                             String(b1) + ' ' + e.name);
+                }
+            });
 
-      print(idx1, idx2, checksumString(tmp.join("\n")));
+            print(idx1, idx2, checksumString(tmp.join('\n')));
+        });
     });
-  });
 }
 
 try {
-  print("Node.js Buffer copy() test");
-  nodejsBufferCopyTest();
+    print('Node.js Buffer copy() test');
+    nodejsBufferCopyTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -523,147 +462,97 @@ ABCDEFGH abcdefgh 4142434445464748 6162636465666768
  */
 
 function nodejsBufferCopyRetvalTest() {
-  var b1, b2;
+    var b1, b2;
 
-  // Equal size, zero offset.  Return value is 8.
+    // Equal size, zero offset.  Return value is 8.
 
-  b1 = new Buffer("ABCDEFGH");
-  b2 = new Buffer("abcdefgh");
-  print(b1.copy(b2));
-  print(
-    String(b1),
-    String(b2),
-    printableNodejsBuffer(b1),
-    printableNodejsBuffer(b2)
-  );
+    b1 = new Buffer('ABCDEFGH');
+    b2 = new Buffer('abcdefgh');
+    print(b1.copy(b2));
+    print(String(b1), String(b2), printableNodejsBuffer(b1), printableNodejsBuffer(b2));
 
-  // Source is smaller than target, offset.
+    // Source is smaller than target, offset.
 
-  b1 = new Buffer("ABC");
-  b2 = new Buffer("abcdefgh");
-  print(b1.copy(b2, 2));
-  print(
-    String(b1),
-    String(b2),
-    printableNodejsBuffer(b1),
-    printableNodejsBuffer(b2)
-  );
+    b1 = new Buffer('ABC');
+    b2 = new Buffer('abcdefgh');
+    print(b1.copy(b2, 2));
+    print(String(b1), String(b2), printableNodejsBuffer(b1), printableNodejsBuffer(b2));
 
-  // Source is larger than target, offset.
+    // Source is larger than target, offset.
 
-  b1 = new Buffer("ABCDEFGHIJK");
-  b2 = new Buffer("abcdefgh");
-  print(b1.copy(b2, 2));
-  print(
-    String(b1),
-    String(b2),
-    printableNodejsBuffer(b1),
-    printableNodejsBuffer(b2)
-  );
+    b1 = new Buffer('ABCDEFGHIJK');
+    b2 = new Buffer('abcdefgh');
+    print(b1.copy(b2, 2));
+    print(String(b1), String(b2), printableNodejsBuffer(b1), printableNodejsBuffer(b2));
 
-  // Source is larger than offset; use negative offset -> RangeError
-  // instead of clipping from the left.
+    // Source is larger than offset; use negative offset -> RangeError
+    // instead of clipping from the left.
 
-  try {
-    b1 = new Buffer("ABCDEFGHIJK");
-    b2 = new Buffer("abcdefgh");
-    print(b1.copy(b2, -1));
-  } catch (e) {
-    print(e.name);
-  }
-  print(
-    String(b1),
-    String(b2),
-    printableNodejsBuffer(b1),
-    printableNodejsBuffer(b2)
-  );
+    try {
+        b1 = new Buffer('ABCDEFGHIJK');
+        b2 = new Buffer('abcdefgh');
+        print(b1.copy(b2, -1));
+    } catch (e) {
+        print(e.name);
+    }
+    print(String(b1), String(b2), printableNodejsBuffer(b1), printableNodejsBuffer(b2));
 
-  // Equal size, offset 1: one byte is clipped.  Return value is 7,
-  // actual #bytes copied.
+    // Equal size, offset 1: one byte is clipped.  Return value is 7,
+    // actual #bytes copied.
 
-  b1 = new Buffer("ABCDEFGH");
-  b2 = new Buffer("abcdefgh");
-  print(b1.copy(b2, 1));
-  print(
-    String(b1),
-    String(b2),
-    printableNodejsBuffer(b1),
-    printableNodejsBuffer(b2)
-  );
+    b1 = new Buffer('ABCDEFGH');
+    b2 = new Buffer('abcdefgh');
+    print(b1.copy(b2, 1));
+    print(String(b1), String(b2), printableNodejsBuffer(b1), printableNodejsBuffer(b2));
 
-  // Offset/length in source; copy 2 bytes (5,6) to offsets (1,2).
+    // Offset/length in source; copy 2 bytes (5,6) to offsets (1,2).
 
-  b1 = new Buffer("ABCDEFGH");
-  b2 = new Buffer("abcdefgh");
-  print(b1.copy(b2, 1, 5, 7));
-  print(
-    String(b1),
-    String(b2),
-    printableNodejsBuffer(b1),
-    printableNodejsBuffer(b2)
-  );
+    b1 = new Buffer('ABCDEFGH');
+    b2 = new Buffer('abcdefgh');
+    print(b1.copy(b2, 1, 5, 7));
+    print(String(b1), String(b2), printableNodejsBuffer(b1), printableNodejsBuffer(b2));
 
-  // Offset/length in source; copy 4 bytes (3,4,5,6) to offsets (5,6,7),
-  // clipping 1 byte.
+    // Offset/length in source; copy 4 bytes (3,4,5,6) to offsets (5,6,7),
+    // clipping 1 byte.
 
-  b1 = new Buffer("ABCDEFGH");
-  b2 = new Buffer("abcdefgh");
-  print(b1.copy(b2, 5, 3, 7));
-  print(
-    String(b1),
-    String(b2),
-    printableNodejsBuffer(b1),
-    printableNodejsBuffer(b2)
-  );
+    b1 = new Buffer('ABCDEFGH');
+    b2 = new Buffer('abcdefgh');
+    print(b1.copy(b2, 5, 3, 7));
+    print(String(b1), String(b2), printableNodejsBuffer(b1), printableNodejsBuffer(b2));
 
-  // Negative values cause RangeErrors.
+    // Negative values cause RangeErrors.
 
-  try {
-    b1 = new Buffer("ABCDEFGH");
-    b2 = new Buffer("abcdefgh");
-    print(b1.copy(b2, -3));
-  } catch (e) {
-    print(e.name);
-  }
-  print(
-    String(b1),
-    String(b2),
-    printableNodejsBuffer(b1),
-    printableNodejsBuffer(b2)
-  );
+    try {
+        b1 = new Buffer('ABCDEFGH');
+        b2 = new Buffer('abcdefgh');
+        print(b1.copy(b2, -3));
+    } catch (e) {
+        print(e.name);
+    }
+    print(String(b1), String(b2), printableNodejsBuffer(b1), printableNodejsBuffer(b2));
 
-  try {
-    b1 = new Buffer("ABCDEFGH");
-    b2 = new Buffer("abcdefgh");
-    print(b1.copy(b2, 1, -1));
-  } catch (e) {
-    print(e.name);
-  }
-  print(
-    String(b1),
-    String(b2),
-    printableNodejsBuffer(b1),
-    printableNodejsBuffer(b2)
-  );
+    try {
+        b1 = new Buffer('ABCDEFGH');
+        b2 = new Buffer('abcdefgh');
+        print(b1.copy(b2, 1, -1));
+    } catch (e) {
+        print(e.name);
+    }
+    print(String(b1), String(b2), printableNodejsBuffer(b1), printableNodejsBuffer(b2));
 
-  try {
-    b1 = new Buffer("ABCDEFGH");
-    b2 = new Buffer("abcdefgh");
-    print(b1.copy(b2, 1, 3, -1));
-  } catch (e) {
-    print(e.name);
-  }
-  print(
-    String(b1),
-    String(b2),
-    printableNodejsBuffer(b1),
-    printableNodejsBuffer(b2)
-  );
+    try {
+        b1 = new Buffer('ABCDEFGH');
+        b2 = new Buffer('abcdefgh');
+        print(b1.copy(b2, 1, 3, -1));
+    } catch (e) {
+        print(e.name);
+    }
+    print(String(b1), String(b2), printableNodejsBuffer(b1), printableNodejsBuffer(b2));
 }
 
 try {
-  print("Node.js Buffer copy() retval test");
-  nodejsBufferCopyRetvalTest();
+    print('Node.js Buffer copy() retval test');
+    nodejsBufferCopyRetvalTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

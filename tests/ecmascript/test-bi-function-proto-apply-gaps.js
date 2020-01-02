@@ -11,23 +11,23 @@ undefined undefined
 ===*/
 
 function test() {
-  function f(a, b, c, d, e) {
-    print(typeof a, a);
-    print(typeof b, b);
-    print(typeof c, c);
-    print(typeof d, d);
-    print(typeof e, e);
-  }
+    function f(a,b,c,d,e) {
+        print(typeof a, a);
+        print(typeof b, b);
+        print(typeof c, c);
+        print(typeof d, d);
+        print(typeof e, e);
+    }
 
-  var args = [];
-  args.length = 10;
-  args[3] = "foo";
+    var args = [];
+    args.length = 10;
+    args[3] = 'foo';
 
-  f.apply(null, args);
+    f.apply(null, args);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

@@ -27,88 +27,71 @@ object true 123 321
 ===*/
 
 function test() {
-  var o, pd;
-  var a, b;
-  var ret;
+    var o, pd;
+    var a, b;
+    var ret;
 
-  // Method existence
-  print("Object.setPrototypeOf exists", "setPrototypeOf" in Object);
-  print(typeof Object.setPrototypeOf);
+    // Method existence
+    print('Object.setPrototypeOf exists', 'setPrototypeOf' in Object);
+    print(typeof Object.setPrototypeOf);
 
-  // Setting a prototype
-  a = { foo: 123 };
-  b = { bar: 321 };
-  print("before:", Object.getPrototypeOf(a) === Object.prototype, a.foo, a.bar);
-  Object.setPrototypeOf(a, b);
-  print("after:", Object.getPrototypeOf(a) === b, a.foo, a.bar);
-
-  // Attempt to set a prototype loop
-  try {
+    // Setting a prototype
     a = { foo: 123 };
     b = { bar: 321 };
-    print(
-      "before:",
-      Object.getPrototypeOf(a) === Object.prototype,
-      a.foo,
-      a.bar
-    );
+    print('before:', Object.getPrototypeOf(a) === Object.prototype, a.foo, a.bar);
     Object.setPrototypeOf(a, b);
-    print("after:", Object.getPrototypeOf(a) === b, a.foo, a.bar);
-    Object.setPrototypeOf(b, a); // error, no change in b's prototype
-    print("never here");
-  } catch (e) {
-    print(e.name, a.foo, a.bar, b.foo, b.bar);
-  }
+    print('after:', Object.getPrototypeOf(a) === b, a.foo, a.bar);
 
-  // Setting a prototype to null
-  a = { foo: 123 };
-  print(
-    "before:",
-    Object.getPrototypeOf(a) === Object.prototype,
-    a.foo,
-    a.bar,
-    typeof a.toString
-  );
-  Object.setPrototypeOf(a, null);
-  print(
-    "after:",
-    Object.getPrototypeOf(a) === null,
-    a.foo,
-    a.bar,
-    typeof a.toString
-  );
-
-  // Attempt to set prototype to something else than null/object
-  // ES2015: TypeError when using setPrototypeOf, ignored when using __proto__ (!)
-  [undefined, true, false, 123, "foo"].forEach(function(x) {
+    // Attempt to set a prototype loop
     try {
-      a = { foo: 123 };
-      b = { bar: 321 };
-      Object.setPrototypeOf(a, b);
-      Object.setPrototypeOf(a, x); // TypeError, 'b' remains as prototype
-      print(x === null ? "null" : typeof x, a.foo, a.bar);
+        a = { foo: 123 };
+        b = { bar: 321 };
+        print('before:', Object.getPrototypeOf(a) === Object.prototype, a.foo, a.bar);
+        Object.setPrototypeOf(a, b);
+        print('after:', Object.getPrototypeOf(a) === b, a.foo, a.bar);
+        Object.setPrototypeOf(b, a);  // error, no change in b's prototype
+        print('never here');
     } catch (e) {
-      print(x === null ? "null" : typeof x, e.name);
+        print(e.name, a.foo, a.bar, b.foo, b.bar);
     }
-  });
 
-  // Attempt to set prototype of something other than an object
-  // ES2015: TypeError for undefined and null (not object coercible), value is returned as is
-  a = { foo: 123 };
-  [undefined, null, true, false, 123, "foo", a].forEach(function(x) {
-    try {
-      ret = Object.setPrototypeOf(x, { bar: 321 });
-      print(x === null ? "null" : typeof x, ret === x, x.foo, x.bar);
-    } catch (e) {
-      print(x === null ? "null" : typeof x, e.name);
-    }
-  });
+    // Setting a prototype to null
+    a = { foo: 123 };
+    print('before:', Object.getPrototypeOf(a) === Object.prototype, a.foo, a.bar, typeof a.toString);
+    Object.setPrototypeOf(a, null);
+    print('after:', Object.getPrototypeOf(a) === null, a.foo, a.bar, typeof a.toString);
 
-  // TODO: coercion order tests (side effect / error message if multiple errors)
+    // Attempt to set prototype to something else than null/object
+    // ES2015: TypeError when using setPrototypeOf, ignored when using __proto__ (!)
+    [ undefined, true, false, 123, 'foo' ].forEach(function (x) {
+        try {
+            a = { foo: 123 };
+            b = { bar: 321 };
+            Object.setPrototypeOf(a, b);
+            Object.setPrototypeOf(a, x);  // TypeError, 'b' remains as prototype
+            print(x === null ? 'null' : typeof x, a.foo, a.bar);
+        } catch (e) {
+            print(x === null ? 'null' : typeof x, e.name);
+        }
+    });
+
+    // Attempt to set prototype of something other than an object
+    // ES2015: TypeError for undefined and null (not object coercible), value is returned as is
+    a = { foo: 123 };
+    [ undefined, null, true, false, 123, 'foo', a ].forEach(function (x) {
+        try {
+            ret = Object.setPrototypeOf(x, { bar: 321 });
+            print(x === null ? 'null' : typeof x, ret === x, x.foo, x.bar);
+        } catch (e) {
+            print(x === null ? 'null' : typeof x, e.name);
+        }
+    });
+
+    // TODO: coercion order tests (side effect / error message if multiple errors)
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

@@ -18,21 +18,21 @@ true
 ===*/
 
 function test() {
-  var buf = new Buffer("abcdefgh");
-  print(Buffer.isBuffer(buf));
-  print(buf instanceof Buffer);
-  print(buf instanceof Uint8Array);
-  print(Object.prototype.toString.call(buf));
+    var buf = new Buffer('abcdefgh');
+    print(Buffer.isBuffer(buf));
+    print(buf instanceof Buffer);
+    print(buf instanceof Uint8Array);
+    print(Object.prototype.toString.call(buf));
 
-  var sub = buf.subarray(1);
-  print(Buffer.isBuffer(sub));
-  print(sub instanceof Buffer);
-  print(sub instanceof Uint8Array);
-  print(Object.prototype.toString.call(sub));
+    var sub = buf.subarray(1);
+    print(Buffer.isBuffer(sub));
+    print(sub instanceof Buffer);
+    print(sub instanceof Uint8Array);
+    print(Object.prototype.toString.call(sub));
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

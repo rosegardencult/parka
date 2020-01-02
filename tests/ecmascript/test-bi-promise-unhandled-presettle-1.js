@@ -18,33 +18,30 @@ tick
 
 var P, Q, R;
 
-setupPromiseUnhandledCallbacks(
-  function(p) {
-    print("unhandled/reject:", p.name);
-  },
-  function(p) {
-    print("unhandled/handle:", p.name);
-  }
-);
+setupPromiseUnhandledCallbacks(function (p) {
+    print('unhandled/reject:', p.name);
+}, function (p) {
+    print('unhandled/handle:', p.name);
+});
 
 function nop() {
-  print("nop called");
+    print('nop called');
 }
 
 P = Promise.reject(123);
-P.name = "P";
+P.name = 'P';
 Q = Promise.reject(234);
-Q.name = "Q";
+Q.name = 'Q';
 R = Promise.reject(345);
-R.name = "R";
+R.name = 'R';
 
 P.catch(nop);
 Q.catch(nop);
 // Handler is not callable.  R itself is considered handled because
 // it is directly bound to R2.  However, R2 will be unhandled.
-var R2 = R.catch(123);
-R2.name = "R2";
+var R2 = R.catch(123)
+R2.name = 'R2';
 
-promiseNextTick(function(cb) {
-  print("tick");
+promiseNextTick(function (cb) {
+    print('tick');
 });

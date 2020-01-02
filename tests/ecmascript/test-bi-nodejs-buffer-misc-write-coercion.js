@@ -88,74 +88,43 @@ NaN 00000000000000000000000000000000
 ===*/
 
 function writeCoercionTest() {
-  // Just an example for Uint8 and Int16.
+    // Just an example for Uint8 and Int16.
 
-  var b = new Buffer(16);
+    var b = new Buffer(16);
 
-  function u8(v) {
-    b.fill(0x00);
-    try {
-      b.writeUInt8(v, 3);
-    } catch (e) {
-      print(v, e.name);
+    function u8(v) {
+        b.fill(0x00);
+        try {
+            b.writeUInt8(v, 3);
+        } catch (e) {
+            print(v, e.name);
+        }
+        print(v, printableNodejsBuffer(b));
     }
-    print(v, printableNodejsBuffer(b));
-  }
 
-  function i16(v) {
-    b.fill(0x00);
-    try {
-      b.writeUInt16BE(v, 3);
-    } catch (e) {
-      print(v, e.name);
+    function i16(v) {
+        b.fill(0x00);
+        try {
+            b.writeUInt16BE(v, 3);
+        } catch (e) {
+            print(v, e.name);
+        }
+        print(v, printableNodejsBuffer(b));
     }
-    print(v, printableNodejsBuffer(b));
-  }
 
-  var values = [
-    -1 / 0,
-    -1e15,
-    -0xffffffff,
-    -0x8001,
-    -0x8000,
-    -0x81,
-    -0x80,
-    -10.9,
-    -10.5,
-    -10.1,
-    -10,
-    -9.9,
-    -9.5,
-    -9.1,
-    -9,
-    -1,
-    -0,
-    0,
-    1,
-    9,
-    9.1,
-    9.5,
-    9.9,
-    10,
-    10.1,
-    10.5,
-    10.9,
-    0x7f,
-    0x80,
-    0x7fff,
-    0x8000,
-    0xffffffff,
-    1e15,
-    1 / 0,
-    0 / 0
-  ];
+    var values = [
+        -1/0, -1e15, -0xffffffff, -0x8001, -0x8000,
+        -0x81, -0x80, -10.9, -10.5, -10.1, -10, -9.9, -9.5, -9.1, -9,
+        -1, -0, 0, 1, 9, 9.1, 9.5, 9.9, 10, 10.1, 10.5, 10.9,
+        0x7f, 0x80, 0x7fff, 0x8000, 0xffffffff, 1e15, 1/0, 0/0
+    ];
 
-  values.forEach(u8);
-  values.forEach(i16);
+    values.forEach(u8);
+    values.forEach(i16);
 }
 
 try {
-  writeCoercionTest();
+    writeCoercionTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

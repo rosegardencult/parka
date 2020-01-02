@@ -30,23 +30,21 @@ basic test
 65535
 ===*/
 
-print("basic test");
+print('basic test');
 
 function charCodeAtTest() {
-  var str = new String(
-    "abcABC\u0000foo\u0081bar\u07ffquux\u1234baz\ufedcxyz\uffff"
-  );
-  var i;
+    var str = new String('abcABC\u0000foo\u0081bar\u07ffquux\u1234baz\ufedcxyz\uffff');
+    var i;
 
-  for (i = 0; i < str.length; i++) {
-    print(str.charCodeAt(i));
-  }
+    for (i = 0; i < str.length; i++) {
+        print(str.charCodeAt(i));
+    }
 }
 
 try {
-  charCodeAtTest();
+    charCodeAtTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -65,31 +63,32 @@ Infinity NaN
 NaN 98
 ===*/
 
-print("oob test");
+print('oob test');
 
 function outOfBoundsTest() {
-  var str = new String("bar");
-  var i;
+    var str = new String('bar');
+    var i;
 
-  function pc(idx) {
-    var c = str.charCodeAt(idx);
-    print(idx, c);
-  }
+    function pc(idx) {
+        var c = str.charCodeAt(idx);
+        print(idx, c);
+    }
 
-  for (i = -3; i < 6; i++) {
-    pc(i);
-  }
+    for (i = -3; i < 6; i++) {
+        pc(i);
+    }
 
-  pc(Number.NEGATIVE_INFINITY),
+    pc(Number.NEGATIVE_INFINITY),
     pc(Number.POSITIVE_INFINITY),
+
     // ToInteger(NaN) coerces to 0 -> 'b'
     pc(Number.NaN);
 }
 
 try {
-  outOfBoundsTest();
+    outOfBoundsTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -101,34 +100,34 @@ random access test done
  * stress the stringcache.  Note that the test is not deterministic.
  */
 
-print("random access test");
+print('random access test');
 
 function randomAccessTest() {
-  var tmp = [];
-  var str;
-  var i;
-  var idx, c;
+    var tmp = [];
+    var str;
+    var i;
+    var idx, c;
 
-  for (i = 0; i < 65536; i++) {
-    tmp.push(String.fromCharCode(i));
-  }
-  str = new String(tmp.join(""));
-
-  for (i = 0; i < 100000; i++) {
-    idx = Math.floor(Math.random() * 65536);
-    c = str.charCodeAt(idx);
-    if (c !== idx) {
-      print("random access test failed for index", idx);
+    for (i = 0; i < 65536; i++) {
+        tmp.push(String.fromCharCode(i));
     }
-  }
+    str = new String(tmp.join(''));
 
-  print("random access test done");
+    for (i = 0; i < 100000; i++) {
+        idx = Math.floor(Math.random() * 65536);
+        c = str.charCodeAt(idx);
+        if (c !== idx) {
+            print('random access test failed for index', idx);
+        }
+    }
+
+    print('random access test done');
 }
 
 try {
-  randomAccessTest();
+    randomAccessTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -180,42 +179,42 @@ testing [object Object]
 
 /* charCodeAt() is generic, check 'this' coercion */
 
-print("coercion");
+print('coercion');
 
 function thisCoercionTest() {
-  function test(x) {
-    var c;
-    var i;
+    function test(x) {
+        var c;
+        var i;
 
-    print("testing", x);
-    try {
-      for (i = 0; ; i++) {
-        c = String.prototype.charCodeAt.call(x, i);
-        if (isNaN(c)) {
-          break;
+        print('testing', x);
+        try {
+            for (i = 0; ; i++) {
+                c = String.prototype.charCodeAt.call(x, i);
+                if (isNaN(c)) {
+                    break;
+                }
+                print(i, typeof c, c);
+            }
+        } catch (e) {
+            print(e.name);
         }
-        print(i, typeof c, c);
-      }
-    } catch (e) {
-      print(e.name);
     }
-  }
 
-  // undefined and null cause TypeError from CheckObjectCoercible
+    // undefined and null cause TypeError from CheckObjectCoercible
 
-  test(undefined);
-  test(null);
+    test(undefined);
+    test(null);
 
-  test(true);
-  test(false);
-  test(123);
-  test("foo");
-  test([1, 2]);
-  test({ foo: 1, bar: 2 });
+    test(true);
+    test(false);
+    test(123);
+    test('foo');
+    test([1,2]);
+    test({ foo: 1, bar: 2 });
 }
 
 try {
-  thisCoercionTest();
+    thisCoercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

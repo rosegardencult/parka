@@ -8,14 +8,14 @@ TypeError
 ===*/
 
 function test_eval() {
-  var t = new Duktape.Thread(function() {
-    eval("Duktape.Thread.yield(1234)");
-  });
-  Duktape.Thread.resume(t);
+    var t = new Duktape.Thread(function() {
+        eval('Duktape.Thread.yield(1234)');
+    });
+    Duktape.Thread.resume(t)
 }
 
 try {
-  test_eval();
+    test_eval();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

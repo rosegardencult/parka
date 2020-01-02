@@ -7,23 +7,23 @@ TypeError
 ===*/
 
 function testCaller() {
-  "use strict";
-  print("arguments.caller:", arguments.caller);
+    'use strict';
+    print('arguments.caller:', arguments.caller);
 }
 
 try {
-  testCaller();
+    testCaller();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 function testCallee() {
-  "use strict";
-  print("arguments.callee:", arguments.callee);
+    'use strict';
+    print('arguments.callee:', arguments.callee);
 }
 
 try {
-  testCallee();
+    testCallee();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

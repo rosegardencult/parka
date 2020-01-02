@@ -14,21 +14,21 @@ SyntaxError
 ===*/
 
 function regexpTest() {
-  var re;
+    var re;
 
-  // Without '/u' Unicode mode the \u{H+} escape form is not supported.
-  // V8 parses the \u literally so that the regexp is matched like
-  // /u{41}/.  Duktape currently rejects this form.
+    // Without '/u' Unicode mode the \u{H+} escape form is not supported.
+    // V8 parses the \u literally so that the regexp is matched like
+    // /u{41}/.  Duktape currently rejects this form.
 
-  try {
-    re = new RegExp("\\u{4}");
-    print(re.test("uuu")); // false
-    print(re.test("uuuu")); // true
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        re = new RegExp('\\u{4}');
+        print(re.test('uuu'));  // false
+        print(re.test('uuuu')); // true
+    } catch (e) {
+        print(e.name);
+    }
 
-  /* XXX: Remaining tests disabled because Unicode mode not supported yet for
+/* XXX: Remaining tests disabled because Unicode mode not supported yet for
    regexps.
 
     // Simple case for 'A' character.
@@ -54,8 +54,8 @@ function regexpTest() {
 }
 
 try {
-  print("regexp test");
-  regexpTest();
+    print('regexp test');
+    regexpTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

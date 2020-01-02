@@ -9,7 +9,7 @@ true
 false
 ===*/
 
-print(true);
+print(true)
 print(!true);
 print(!!true);
 print(false);
@@ -25,9 +25,9 @@ false
 true
 ===*/
 
-print(!{}); // ToBoolean({}) -> true
+print(!{});   // ToBoolean({}) -> true
 print(!!{});
-print(!""); // ToBoolean('') -> false
-print(!!"");
-print(!"a"); // ToBoolean('a') -> true
-print(!!"a");
+print(!'');   // ToBoolean('') -> false
+print(!!'');
+print(!'a');  // ToBoolean('a') -> true
+print(!!'a');

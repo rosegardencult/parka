@@ -17,38 +17,38 @@ object true
 ===*/
 
 function subarrayBasicTest() {
-  var i;
+    var i;
 
-  var b = new ArrayBuffer(8);
-  var v0 = new Uint8Array(b);
-  for (i = 0; i < 8; i++) {
-    v0[i] = 0x10 + i;
-  }
-  printBuffer(b);
+    var b = new ArrayBuffer(8);
+    var v0 = new Uint8Array(b);
+    for (i = 0; i < 8; i++) {
+        v0[i] = 0x10 + i;
+    }
+    printBuffer(b);
 
-  var v1 = new Uint8Array(b);
-  printBuffer(v1);
-  print(typeof v1.buffer, v1.buffer === b);
+    var v1 = new Uint8Array(b);
+    printBuffer(v1);
+    print(typeof v1.buffer, v1.buffer === b);
 
-  var v2 = v1.subarray(3, 5);
-  printBuffer(v2);
-  print(typeof v2.buffer, v2.buffer === b);
+    var v2 = v1.subarray(3, 5);
+    printBuffer(v2);
+    print(typeof v2.buffer, v2.buffer === b);
 
-  v2[0] = 0xde; // ok, map to b[3]
-  v2[1] = 0xad; // ok, map to b[4]
-  v2[2] = 0xbe; // out of subarray, becomes a concrete property on v2
-  v2[3] = 0xef; // out of subarray, becomes a concrete property on v2
+    v2[0] = 0xde;  // ok, map to b[3]
+    v2[1] = 0xad;  // ok, map to b[4]
+    v2[2] = 0xbe;  // out of subarray, becomes a concrete property on v2
+    v2[3] = 0xef;  // out of subarray, becomes a concrete property on v2
 
-  printBuffer(b);
-  printBuffer(v1);
-  printBuffer(v2);
+    printBuffer(b);
+    printBuffer(v1);
+    printBuffer(v2);
 }
 
 try {
-  print("basic test");
-  subarrayBasicTest();
+    print('basic test');
+    subarrayBasicTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -1208,86 +1208,75 @@ bruteforce test
 ===*/
 
 function subarrayBruteforceTest() {
-  var buf = new ArrayBuffer(32);
-  var tmp;
-  var i;
+    var buf = new ArrayBuffer(32);
+    var tmp;
+    var i;
 
-  tmp = new Uint8Array(buf);
-  for (i = 0; i < tmp.length; i++) {
-    tmp[i] = 0x40 + i;
-  }
+    tmp = new Uint8Array(buf);
+    for (i = 0; i < tmp.length; i++) {
+        tmp[i] = 0x40 + i;
+    }
 
-  // Include both 1:1 mapped views and offsetted views, we want to test
-  // both with subarray().
+    // Include both 1:1 mapped views and offsetted views, we want to test
+    // both with subarray().
 
-  var views = [
-    new Int8Array(buf),
-    new Int8Array(buf, 5, 13),
+    var views = [
+        new Int8Array(buf),
+        new Int8Array(buf, 5, 13),
 
-    new Uint8Array(buf),
-    new Uint8Array(buf, 5, 13),
+        new Uint8Array(buf),
+        new Uint8Array(buf, 5, 13),
 
-    new Uint8ClampedArray(buf),
-    new Uint8ClampedArray(buf, 5, 13),
+        new Uint8ClampedArray(buf),
+        new Uint8ClampedArray(buf, 5, 13),
 
-    new Int16Array(buf),
-    new Int16Array(buf, 4, 8),
+        new Int16Array(buf),
+        new Int16Array(buf, 4, 8),
 
-    new Uint16Array(buf),
-    new Uint16Array(buf, 12, 8),
+        new Uint16Array(buf),
+        new Uint16Array(buf, 12, 8),
 
-    new Int32Array(buf),
-    new Int32Array(buf, 4, 4),
+        new Int32Array(buf),
+        new Int32Array(buf, 4, 4),
 
-    new Uint32Array(buf),
-    new Uint32Array(buf, 12, 4),
+        new Uint32Array(buf),
+        new Uint32Array(buf, 12, 4),
 
-    new Float32Array(buf),
-    new Float32Array(buf, 4, 4),
+        new Float32Array(buf),
+        new Float32Array(buf, 4, 4),
 
-    new Float64Array(buf),
-    new Float64Array(buf, 8, 3)
-  ];
+        new Float64Array(buf),
+        new Float64Array(buf, 8, 3),
+    ];
 
-  var offsets = ["NONE", -3, -1, 0, 1, 2, "3", 10];
+    var offsets = [
+        'NONE', -3, -1, 0, 1, 2, '3', 10
+    ];
 
-  views.forEach(function(view, idx1) {
-    offsets.forEach(function(start, idx2) {
-      offsets.forEach(function(end, idx3) {
-        var sub;
-        try {
-          if (start === "NONE") {
-            sub = view.subarray();
-          } else if (end === "NONE") {
-            sub = view.subarray(start);
-          } else {
-            sub = view.subarray(start, end);
-          }
-          print(
-            idx1,
-            idx2,
-            idx3,
-            Object.prototype.toString.call(sub),
-            printableBuffer(sub)
-          );
-        } catch (e) {
-          print(
-            idx1,
-            idx2,
-            idx3,
-            Object.prototype.toString.call(sub),
-            e.name,
-            printableBuffer(sub)
-          );
-        }
-      });
+    views.forEach(function (view, idx1) {
+        offsets.forEach(function (start, idx2) {
+            offsets.forEach(function (end, idx3) {
+                var sub;
+                try {
+                    if (start === 'NONE') {
+                        sub = view.subarray();
+                    } else if (end === 'NONE') {
+                        sub = view.subarray(start);
+                    } else {
+                        sub = view.subarray(start, end);
+                    }
+                    print(idx1, idx2, idx3, Object.prototype.toString.call(sub), printableBuffer(sub));
+                } catch (e) {
+                    print(idx1, idx2, idx3, Object.prototype.toString.call(sub), e.name, printableBuffer(sub));
+                }
+            });
+        });
     });
-  });
 }
 
 try {
-  print("bruteforce test");
-  subarrayBruteforceTest();
+    print('bruteforce test');
+    subarrayBruteforceTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

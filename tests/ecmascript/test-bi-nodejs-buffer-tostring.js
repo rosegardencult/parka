@@ -9,11 +9,11 @@
 /*@include util-string.js@*/
 
 function makeBuffer(bytes) {
-  var buf = new Buffer(bytes.length);
-  for (var i = 0; i < bytes.length; i++) {
-    buf[i] = typeof bytes[i] === "number" ? bytes[i] : bytes[i].charCodeAt(0);
-  }
-  return buf;
+    var buf = new Buffer(bytes.length);
+    for (var i = 0; i < bytes.length; i++) {
+        buf[i] = (typeof bytes[i] === 'number' ? bytes[i] : bytes[i].charCodeAt(0));
+    }
+    return buf;
 }
 
 /*===
@@ -231,143 +231,116 @@ false 5 "DEFG"
 ===*/
 
 function nodejsBufferToStringTest() {
-  var b, s;
+    var b, s;
 
-  // Check inheritance; not inherited from Object.prototype
-  print(typeof Buffer.prototype.toString);
-  print(Buffer.prototype.toString === Object.prototype.valueOf);
-  print(Buffer.prototype.hasOwnProperty("toString"));
+    // Check inheritance; not inherited from Object.prototype
+    print(typeof Buffer.prototype.toString);
+    print(Buffer.prototype.toString === Object.prototype.valueOf);
+    print(Buffer.prototype.hasOwnProperty('toString'));
 
-  // buf.toString([encoding], [start], [end])
+    // buf.toString([encoding], [start], [end])
 
-  // Without arguments encoding defaults to UTF-8 and the entire
-  // buffer is converted to string.  At least undefined and null
-  // are accepted as "not defined" for encoding.
-  b = new Buffer("ABC");
-  safePrintString(b.toString());
-  safePrintString(b.toString(undefined));
-  safePrintString(b.toString(null));
+    // Without arguments encoding defaults to UTF-8 and the entire
+    // buffer is converted to string.  At least undefined and null
+    // are accepted as "not defined" for encoding.
+    b = new Buffer('ABC');
+    safePrintString(b.toString());
+    safePrintString(b.toString(undefined));
+    safePrintString(b.toString(null));
 
-  // If the buffer is a slice of an underlying buffer, only that slice
-  // is string converted.  Offsets are relative to the slice.
-  b = new Buffer("ABCDEFGH");
-  b = b.slice(3, 7); // DEFG
-  safePrintString(b.toString());
-  safePrintString(b.toString(null, 1));
-  safePrintString(b.toString(null, 1, 2));
+    // If the buffer is a slice of an underlying buffer, only that slice
+    // is string converted.  Offsets are relative to the slice.
+    b = new Buffer('ABCDEFGH');
+    b = b.slice(3, 7);  // DEFG
+    safePrintString(b.toString());
+    safePrintString(b.toString(null, 1));
+    safePrintString(b.toString(null, 1, 2));
 
-  // When the buffer data is legal UTF-8 and the chosen encoding
-  // is UTF-8 (default), Duktape internal representation is correct
-  // as is.  Here the 4-byte data is U+CAFE U+0041.  (Since Duktape 2.x
-  // there's an explicit UTF-8 decoding + CESU-8 encoding process.)
-  b = new Buffer(4);
-  b[0] = 0xec;
-  b[1] = 0xab;
-  b[2] = 0xbe;
-  b[3] = 0x41;
-  safePrintString(b.toString());
+    // When the buffer data is legal UTF-8 and the chosen encoding
+    // is UTF-8 (default), Duktape internal representation is correct
+    // as is.  Here the 4-byte data is U+CAFE U+0041.  (Since Duktape 2.x
+    // there's an explicit UTF-8 decoding + CESU-8 encoding process.)
+    b = new Buffer(4);
+    b[0] = 0xec; b[1] = 0xab; b[2] = 0xbe; b[3] = 0x41;
+    safePrintString(b.toString());
 
-  // When the buffer data is not legal UTF-8 replacement characters
-  // (U+FFFD) are emitted.  In this case the input is a CESU-8 encoded
-  // surrogate pair which is entirely invalid UTF-8.  In this case one
-  // replacement character gets emitted for each byte.
-  b = new Buffer(6);
-  b[0] = 0xed;
-  b[1] = 0xa0;
-  b[2] = 0x80;
-  b[3] = 0xed;
-  b[4] = 0xbf;
-  b[5] = 0xbf;
-  safePrintString(b.toString());
+    // When the buffer data is not legal UTF-8 replacement characters
+    // (U+FFFD) are emitted.  In this case the input is a CESU-8 encoded
+    // surrogate pair which is entirely invalid UTF-8.  In this case one
+    // replacement character gets emitted for each byte.
+    b = new Buffer(6);
+    b[0] = 0xed; b[1] = 0xa0; b[2] = 0x80;
+    b[3] = 0xed; b[4] = 0xbf; b[5] = 0xbf;
+    safePrintString(b.toString());
 
-  // Here the buffer data is invalid UTF-8 and invalid CESU-8.
-  // Node.js replaces the offending character (0xff) with U+FFFD
-  // (replacement character).
-  b = new Buffer(4);
-  b[0] = 0xff;
-  b[1] = 0x41;
-  b[2] = 0x42;
-  b[3] = 0x43;
-  safePrintString(b.toString());
+    // Here the buffer data is invalid UTF-8 and invalid CESU-8.
+    // Node.js replaces the offending character (0xff) with U+FFFD
+    // (replacement character).
+    b = new Buffer(4);
+    b[0] = 0xff; b[1] = 0x41; b[2] = 0x42; b[3] = 0x43;
+    safePrintString(b.toString());
 
-  // Invalid continuation characters.  Node.js seems to scan for
-  // the next valid starting byte and each offending byte causes
-  // a new U+FFFD to be emitted (here U+FFFD U+FFFD U+0042 U+FFFD).
-  // While there are differences in replacement character handling,
-  // here the result agrees between Node.js and Duktape.
-  b = new Buffer(4);
-  b[0] = 0xc1;
-  b[1] = 0xc1;
-  b[2] = 0x42;
-  b[3] = 0xc1;
-  safePrintString(b.toString());
+    // Invalid continuation characters.  Node.js seems to scan for
+    // the next valid starting byte and each offending byte causes
+    // a new U+FFFD to be emitted (here U+FFFD U+FFFD U+0042 U+FFFD).
+    // While there are differences in replacement character handling,
+    // here the result agrees between Node.js and Duktape.
+    b = new Buffer(4);
+    b[0] = 0xc1; b[1] = 0xc1; b[2] = 0x42; b[3] = 0xc1;
+    safePrintString(b.toString());
 
-  // XXX: encoding test?
+    // XXX: encoding test?
 
-  // Offsets, very lenient, something like:
-  //     - Non-numbers coerce to 0 (no valueOf() etc consulted)
-  //     - Negative starting point => empty result, regardless of 'end'
-  //     - Valid starting point but 'end' out of bounds => clamp to end
-  //     - Crossed indices => empty result
-  //
-  // Duktape behavior is a bit more lenient: everything is ToInteger()
-  // coerced, clamped to valid range, and crossed indices are allowed.
-  // Testcase expect string has been corrected for this.
-  //
-  // Offsets are relative to a slice (if buffer is a slice).
+    // Offsets, very lenient, something like:
+    //     - Non-numbers coerce to 0 (no valueOf() etc consulted)
+    //     - Negative starting point => empty result, regardless of 'end'
+    //     - Valid starting point but 'end' out of bounds => clamp to end
+    //     - Crossed indices => empty result
+    //
+    // Duktape behavior is a bit more lenient: everything is ToInteger()
+    // coerced, clamped to valid range, and crossed indices are allowed.
+    // Testcase expect string has been corrected for this.
+    //
+    // Offsets are relative to a slice (if buffer is a slice).
 
-  b = new Buffer("ABCDEFGH");
-  b = b.slice(3, 7); // DEFG
-  safePrintString(b.toString());
+    b = new Buffer('ABCDEFGH');
+    b = b.slice(3, 7);  // DEFG
+    safePrintString(b.toString());
 
-  var offsetList = [
-    "NONE",
-    undefined,
-    null,
-    true,
-    false,
-    {
-      valueOf: function() {
-        return 1;
-      }
-    },
-    {
-      valueOf: function() {
-        return 3;
-      }
-    },
-    -1,
-    0,
-    1,
-    2,
-    3,
-    4,
-    5
-  ];
+    var offsetList = [
+        'NONE',
+        undefined,
+        null,
+        true,
+        false,
+        { valueOf: function () { return 1; } },
+        { valueOf: function () { return 3; } },
+        -1, 0, 1, 2, 3, 4, 5
+    ]
 
-  offsetList.forEach(function(start) {
-    offsetList.forEach(function(end) {
-      try {
-        if (start === "NONE") {
-          s = b.toString("utf8");
-        } else if (end === "NONE") {
-          s = b.toString("utf8", start);
-        } else {
-          s = b.toString("utf8", start, end);
-        }
-        print(start, end, safeEscapeString(s));
-      } catch (e) {
-        print(start, end, e.name);
-      }
+    offsetList.forEach(function (start) {
+        offsetList.forEach(function (end) {
+            try {
+                if (start === 'NONE') {
+                    s = b.toString('utf8');
+                } else if (end === 'NONE') {
+                    s = b.toString('utf8', start);
+                } else {
+                    s = b.toString('utf8', start, end);
+                }
+                print(start, end, safeEscapeString(s));
+            } catch (e) {
+                print(start, end, e.name);
+            }
+        });
     });
-  });
 }
 
 try {
-  print("node.js Buffer toString() test");
-  nodejsBufferToStringTest();
+    print('node.js Buffer toString() test');
+    nodejsBufferToStringTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -379,28 +352,28 @@ all bytes test
 // Just a simple test which decodes a buffer containing all 256 byte values.
 
 function allBytesTest() {
-  var buf = new Buffer(256);
-  var i;
+    var buf = new Buffer(256);
+    var i;
 
-  for (i = 0; i < 256; i++) {
-    buf[i] = i;
-  }
+    for (i = 0; i < 256; i++) {
+        buf[i] = i;
+    };
 
-  var str = buf.toString();
-  print(str.length);
+    var str = buf.toString();
+    print(str.length);
 
-  var cpsum = 0;
-  for (i = 0; i < str.length; i++) {
-    cpsum += str.charCodeAt(i);
-  }
-  print(cpsum);
+    var cpsum = 0;
+    for (i = 0; i < str.length; i++) {
+        cpsum += str.charCodeAt(i);
+    }
+    print(cpsum);
 }
 
 try {
-  print("all bytes test");
-  allBytesTest();
+    print('all bytes test');
+    allBytesTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -666,40 +639,34 @@ try {
 ===*/
 
 function miscDecodeTest() {
-  var i;
+    var i;
 
-  function test(bytes) {
-    var buf = makeBuffer(bytes);
-    print(
-      Array.prototype.map
-        .call(buf.toString(), function(v) {
-          return v.charCodeAt(0);
-        })
-        .join(" ")
-    );
-  }
+    function test(bytes) {
+        var buf = makeBuffer(bytes);
+        print(Array.prototype.map.call(buf.toString(), function (v) { return v.charCodeAt(0); }).join(' '));
+    }
 
-  // All initial bytes.
-  for (i = 0; i < 256; i++) {
-    test([i, "x"]);
-  }
+    // All initial bytes.
+    for (i = 0; i < 256; i++) {
+        test([ i, 'x' ]);
+    }
 
-  // Truncated codepoint(s).
-  //
-  // Duktape (and Firefox) TextDecoder() -- which is used for Node.js Buffer
-  // .toString() now -- emit a single replacement character for the truncated
-  // sequence EC AB.  Chrome and Node.js v6.7.0 emit two.  Duktape behavior
-  // matches WHATWG Encoding API.
+    // Truncated codepoint(s).
+    //
+    // Duktape (and Firefox) TextDecoder() -- which is used for Node.js Buffer
+    // .toString() now -- emit a single replacement character for the truncated
+    // sequence EC AB.  Chrome and Node.js v6.7.0 emit two.  Duktape behavior
+    // matches WHATWG Encoding API.
 
-  test([0xec, 0xab]);
-  test([0xec, 0xab, 0xec, 0xab]);
-  test([0xec, 0xab, "f", "o", "o", 0xec, 0xab]);
+    test([ 0xec, 0xab ]);
+    test([ 0xec, 0xab, 0xec, 0xab ]);
+    test([ 0xec, 0xab, 'f', 'o', 'o', 0xec, 0xab ]);
 }
 
 try {
-  miscDecodeTest();
+    miscDecodeTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -733,62 +700,44 @@ replacement character policy
 // required for TextDecoder() in any case.
 
 function replacementCharacterPolicyTest() {
-  // Truncated U+CAFE test.
-  var buf = new Buffer(4);
-  buf[0] = 0xec;
-  buf[1] = 0xab;
-  buf[2] = 0xec;
-  buf[3] = 0xab;
-  var res = buf.toString();
-  print(
-    Array.prototype.map
-      .call(res, function(v) {
-        return v.charCodeAt(0);
-      })
-      .join(" ")
-  );
+    // Truncated U+CAFE test.
+    var buf = new Buffer(4);
+    buf[0] = 0xec;
+    buf[1] = 0xab;
+    buf[2] = 0xec;
+    buf[3] = 0xab;
+    var res = buf.toString();
+    print(Array.prototype.map.call(res, function (v) { return v.charCodeAt(0); }).join(' '));
 
-  // Test from http://www.unicode.org/review/pr-121.html.
-  var buf = new Buffer(8);
-  buf[0] = 0x61;
-  buf[1] = 0xf1;
-  buf[2] = 0x80;
-  buf[3] = 0x80;
-  buf[4] = 0xe1;
-  buf[5] = 0x80;
-  buf[6] = 0xc2;
-  buf[7] = 0x62;
-  var res = buf.toString();
-  print(
-    Array.prototype.map
-      .call(res, function(v) {
-        return v.charCodeAt(0);
-      })
-      .join(" ")
-  );
+    // Test from http://www.unicode.org/review/pr-121.html.
+    var buf = new Buffer(8);
+    buf[0] = 0x61;
+    buf[1] = 0xF1;
+    buf[2] = 0x80;
+    buf[3] = 0x80;
+    buf[4] = 0xE1;
+    buf[5] = 0x80;
+    buf[6] = 0xC2;
+    buf[7] = 0x62;
+    var res = buf.toString();
+    print(Array.prototype.map.call(res, function (v) { return v.charCodeAt(0); }).join(' '));
 
-  // Interesting special case: ED A0 80 is a CESU-8 encoded surrogate pair.
-  // Because ED is not a valid initial UTF-8 byte at all, the sequence
-  // generates three replacement characters.
-  var buf = new Buffer(3);
-  buf[0] = 0xed;
-  buf[1] = 0xa0;
-  buf[2] = 0x80;
-  var res = buf.toString();
-  print(
-    Array.prototype.map
-      .call(res, function(v) {
-        return v.charCodeAt(0);
-      })
-      .join(" ")
-  );
+    // Interesting special case: ED A0 80 is a CESU-8 encoded surrogate pair.
+    // Because ED is not a valid initial UTF-8 byte at all, the sequence
+    // generates three replacement characters.
+    var buf = new Buffer(3);
+    buf[0] = 0xed;
+    buf[1] = 0xa0;
+    buf[2] = 0x80;
+    var res = buf.toString();
+    print(Array.prototype.map.call(res, function (v) { return v.charCodeAt(0); }).join(' '));
 }
 
 try {
-  print("replacement character policy");
-  replacementCharacterPolicyTest();
+    print('replacement character policy');
+    replacementCharacterPolicyTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -799,33 +748,31 @@ bom handling
 ===*/
 
 function bomTest() {
-  var res;
+    var res;
 
-  // Just a BOM and nothing else -> Node.js doesn't strip the BOM:
-  // > new Buffer(new Uint8Array([ 0xef, 0xbb, 0xbf ])).toString()
-  // ''
-  // > new Buffer(new Uint8Array([ 0xef, 0xbb, 0xbf ])).toString().length
-  // 1
-  // > new Buffer(new Uint8Array([ 0xef, 0xbb, 0xbf ])).toString().charCodeAt(0)
-  // 65279
+    // Just a BOM and nothing else -> Node.js doesn't strip the BOM:
+    // > new Buffer(new Uint8Array([ 0xef, 0xbb, 0xbf ])).toString()
+    // ''
+    // > new Buffer(new Uint8Array([ 0xef, 0xbb, 0xbf ])).toString().length
+    // 1
+    // > new Buffer(new Uint8Array([ 0xef, 0xbb, 0xbf ])).toString().charCodeAt(0)
+    // 65279
 
-  res = new Buffer(new Uint8Array([0xef, 0xbb, 0xbf])).toString();
-  safePrintString(res);
+    res = new Buffer(new Uint8Array([ 0xef, 0xbb, 0xbf ])).toString();
+    safePrintString(res);
 
-  // BOM + followup characters, BOM is kept.
-  res = new Buffer(new Uint8Array([0xef, 0xbb, 0xbf, 0x41, 0x42])).toString();
-  safePrintString(res);
+    // BOM + followup characters, BOM is kept.
+    res = new Buffer(new Uint8Array([ 0xef, 0xbb, 0xbf, 0x41, 0x42 ])).toString();
+    safePrintString(res);
 
-  // BOM inside a string, BOM is kept.
-  res = new Buffer(
-    new Uint8Array([0x40, 0xef, 0xbb, 0xbf, 0x41, 0x42])
-  ).toString();
-  safePrintString(res);
+    // BOM inside a string, BOM is kept.
+    res = new Buffer(new Uint8Array([ 0x40, 0xef, 0xbb, 0xbf, 0x41, 0x42 ])).toString();
+    safePrintString(res);
 }
 
 try {
-  print("bom handling");
-  bomTest();
+    print('bom handling');
+    bomTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

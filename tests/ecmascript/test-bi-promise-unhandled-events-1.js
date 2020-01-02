@@ -28,49 +28,37 @@ tick 2b
 done
 ===*/
 
-if (
-  typeof Duktape === "object" &&
-  typeof Promise === "function" &&
-  Promise.isPolyfill
-) {
-  Promise.unhandledRejection = function(args) {
-    console.log(
-      "unhandledRejection:",
-      args.event,
-      args.promise.name,
-      args.reason
-    );
-    throw new Error("aiee"); // ignored
-  };
+if (typeof Duktape === 'object' && typeof Promise === 'function' && Promise.isPolyfill) {
+    Promise.unhandledRejection = function (args) {
+        console.log('unhandledRejection:', args.event, args.promise.name, args.reason);
+        throw new Error('aiee');  // ignored
+    };
 } else {
-  throw new TypeError("test is Duktape specific");
+    throw new TypeError('test is Duktape specific');
 }
 
 // rawReject .name is undefined because it happens inline and we don't yet
 // have a chance to give the Promise a .name.
 
-print("create P");
-var P = Promise.reject(123);
-P.name = "P";
-print("create Q");
-var Q = Promise.reject(234);
-Q.name = "Q";
-print("create R");
-var R = Promise.reject(345);
-R.name = "R";
+print('create P');
+var P = Promise.reject(123); P.name = 'P';
+print('create Q');
+var Q = Promise.reject(234); Q.name = 'Q';
+print('create R');
+var R = Promise.reject(345); R.name = 'R';
 
-print("P.catch");
+print('P.catch');
 P.catch(Math.cos);
 
-print("tick 1a");
+print('tick 1a');
 Promise.runQueue();
-print("tick 1b");
+print('tick 1b');
 
-print("Q.catch");
+print('Q.catch');
 Q.catch(Math.cos);
 
-print("tick 2a");
+print('tick 2a');
 Promise.runQueue();
-print("tick 2b");
+print('tick 2b');
 
-print("done");
+print('done');

@@ -29,75 +29,67 @@ true true true
 ===*/
 
 function test() {
-  var err = new Error("aiee");
-  var pd;
+    var err = new Error('aiee');
+    var pd;
 
-  // By default an Error instance only has a .message property; the rest
-  // of the properties are provided by inherited accessors based on an
-  // internal _Tracedata property.
-  print(JSON.stringify(Object.getOwnPropertyNames(err)));
+    // By default an Error instance only has a .message property; the rest
+    // of the properties are provided by inherited accessors based on an
+    // internal _Tracedata property.
+    print(JSON.stringify(Object.getOwnPropertyNames(err)));
 
-  // .fileName is writable
-  err.fileName = "dummy";
-  print(err.fileName);
+    // .fileName is writable
+    err.fileName = 'dummy';
+    print(err.fileName);
 
-  // .lineNumber is writable
-  err.lineNumber = 99999;
-  print(err.lineNumber);
-
-  // Note that the stacktrace uses file/line information from the call
-  // stack functions and will ignore the .fileName and .lineNumber "own"
-  // properties.
-
-  //print(err.stack)
-
-  // .stack is also writable
-  err.stack = "Foo\n\tbar\n\tquux";
-  print(err.stack);
-
-  // All of the overwritten values appear as own properties which will
-  // shadow the default accessors.
-  print(JSON.stringify(Object.getOwnPropertyNames(err)));
-
-  function writabilityTest() {
-    err = new Error("zork");
-    var origFileName = err.fileName;
-    var origLineNumber = err.lineNumber;
-    var origStack = err.stack;
-    print(
-      err.fileName === origFileName,
-      err.lineNumber === origLineNumber,
-      err.stack === origStack
-    );
-    err.fileName = "dummy";
+    // .lineNumber is writable
     err.lineNumber = 99999;
-    err.stack = "Foo\nBar";
-    print(
-      err.fileName === origFileName,
-      err.lineNumber === origLineNumber,
-      err.stack === origStack
-    );
-  }
+    print(err.lineNumber);
 
-  // If you prefer the Duktape 1.3.0 behavior, you can edit the inherited
-  // accessors.  For example, if the setter is made a no-op, Duktape 1.3.0
-  // behavior is restored.
+    // Note that the stacktrace uses file/line information from the call
+    // stack functions and will ignore the .fileName and .lineNumber "own"
+    // properties.
 
-  writabilityTest(); // writable
+    //print(err.stack)
 
-  pd = Object.getOwnPropertyDescriptor(Error.prototype, "fileName");
-  print(Duktape.enc("jx", pd));
-  Object.defineProperties(Error.prototype, {
-    fileName: { set: function nop() {} },
-    lineNumber: { set: function nop() {} },
-    stack: { set: function nop() {} }
-  });
+    // .stack is also writable
+    err.stack = 'Foo\n\tbar\n\tquux';
+    print(err.stack);
 
-  writabilityTest(); // not writable, Duktape 1.3.0 behavior
+    // All of the overwritten values appear as own properties which will
+    // shadow the default accessors.
+    print(JSON.stringify(Object.getOwnPropertyNames(err)));
+
+    function writabilityTest() {
+        err = new Error('zork');
+        var origFileName = err.fileName;
+        var origLineNumber = err.lineNumber;
+        var origStack = err.stack;
+        print(err.fileName === origFileName, err.lineNumber === origLineNumber, err.stack === origStack);
+        err.fileName = 'dummy';
+        err.lineNumber = 99999;
+        err.stack = 'Foo\nBar';
+        print(err.fileName === origFileName, err.lineNumber === origLineNumber, err.stack === origStack);
+    }
+
+    // If you prefer the Duktape 1.3.0 behavior, you can edit the inherited
+    // accessors.  For example, if the setter is made a no-op, Duktape 1.3.0
+    // behavior is restored.
+
+    writabilityTest();  // writable
+
+    pd = Object.getOwnPropertyDescriptor(Error.prototype, 'fileName');
+    print(Duktape.enc('jx', pd));
+    Object.defineProperties(Error.prototype, {
+        fileName: { set: function nop() {} },
+        lineNumber: { set: function nop() {} },
+        stack: { set: function nop() {} }
+    });
+
+    writabilityTest();  // not writable, Duktape 1.3.0 behavior
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

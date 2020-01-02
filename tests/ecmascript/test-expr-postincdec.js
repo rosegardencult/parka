@@ -19,19 +19,19 @@ var y = 234;
 print(x, y);
 
 print(x++);
-print(x++);
+print((x)++);
 print(x--);
-print(x--);
+print((x)--);
 
 try {
-  eval("print((x, y)++)");
+    eval('print((x, y)++)');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 try {
-  eval("print((x, y)--)");
+    eval('print((x, y)--)');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 print(x, y);

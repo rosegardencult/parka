@@ -26,33 +26,31 @@ testFunc fileName: my/foo
 ===*/
 
 function modSearch() {
-  return (
-    "function testFunc() { print('testFunc name:', Duktape.act(-2).function.name);\n" +
-    "                      print('testFunc fileName:', Duktape.act(-2).function.fileName); }\n" +
-    "\n" +
-    "exports.testFunc = testFunc;\n" +
-    "print('moduleFunc name:', Duktape.act(-2).function.name);\n" +
-    "print('moduleFunc fileName:', Duktape.act(-2).function.fileName);\n"
-  );
+    return "function testFunc() { print('testFunc name:', Duktape.act(-2).function.name);\n" +
+           "                      print('testFunc fileName:', Duktape.act(-2).function.fileName); }\n" +
+           "\n" +
+           "exports.testFunc = testFunc;\n" +
+           "print('moduleFunc name:', Duktape.act(-2).function.name);\n" +
+           "print('moduleFunc fileName:', Duktape.act(-2).function.fileName);\n";
 }
 
 function test() {
-  /* For the module function itself (which is a Duktape internal artifact)
-   * the fileName is already forced to be module ID.  This was OK in
-   * Duktape 1.0.0.
-   */
+    /* For the module function itself (which is a Duktape internal artifact)
+     * the fileName is already forced to be module ID.  This was OK in
+     * Duktape 1.0.0.
+     */
 
-  Duktape.modSearch = modSearch;
-  var mod = require("my/foo");
+    Duktape.modSearch = modSearch;
+    var mod = require('my/foo');
 
-  /* However, functions defined within the module don't have a proper
-   * fileName in Duktape 1.0.0.
-   */
-  mod.testFunc();
+    /* However, functions defined within the module don't have a proper
+     * fileName in Duktape 1.0.0.
+     */
+    mod.testFunc();
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

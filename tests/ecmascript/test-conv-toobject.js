@@ -22,32 +22,23 @@
 ===*/
 
 function test() {
-  [
-    undefined,
-    null,
-    true,
-    false,
-    123.0,
-    "foo",
-    [],
-    {},
-    function test() {}
-  ].forEach(function(v, i) {
-    try {
-      if (v === undefined || v === null) {
-        // just to get the TypeError
-        print(Object.prototype.toString.call(Object.prototype.ValueOf(v)));
-      } else {
-        print(Object.prototype.toString.call(Object(v)));
-      }
-    } catch (e) {
-      print(i, e.name);
-    }
-  });
+    [ undefined, null, true, false, 123.0, 'foo',
+      [], {}, function test() {} ].forEach(function (v, i) {
+        try {
+            if (v === undefined || v === null) {
+                // just to get the TypeError
+                print(Object.prototype.toString.call(Object.prototype.ValueOf(v)));
+            } else {
+                print(Object.prototype.toString.call(Object(v)));
+            }
+        } catch (e) {
+            print(i, e.name);
+        }
+    });
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

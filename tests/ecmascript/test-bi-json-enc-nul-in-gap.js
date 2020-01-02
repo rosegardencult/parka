@@ -16,17 +16,17 @@
 ===*/
 
 function nulInGapTest() {
-  var obj = { foo: 1, bar: 2, quux: 3, baz: [1, 2, 3] };
-  var res;
+    var obj = { foo: 1, bar: 2, quux: 3, baz: [ 1, 2, 3 ] };
+    var res;
 
-  // NUL in the middle of gap should not be an issue.
-  res = JSON.stringify(obj, null, "--\u0000-->");
+    // NUL in the middle of gap should not be an issue.
+    res = JSON.stringify(obj, null, '--\u0000-->');
 
-  print(res.replace(/\u0000/g, "<NUL>"));
+    print(res.replace(/\u0000/g, '<NUL>'));
 }
 
 try {
-  nulInGapTest();
+    nulInGapTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

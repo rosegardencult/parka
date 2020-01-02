@@ -10,29 +10,29 @@ view test
 ===*/
 
 function viewTest() {
-  var pb = createPlainBuffer("abcdefghijklmnop");
-  var view;
-  var i;
+    var pb = createPlainBuffer('abcdefghijklmnop');
+    var view;
+    var i;
 
-  for (i = 0; i < pb.length; i++) {
-    pb[i] = 0x60 + (i >> 2); // endian neutral value
-  }
+    for (i = 0; i < pb.length; i++) {
+        pb[i] = 0x60 + (i >> 2);  // endian neutral value
+    }
 
-  // Create typedarray on top of plain buffer.  The inherited .buffer
-  // getter creates an ArrayBuffer on-the-fly.  Because there's no place
-  // to store the result, each .buffer read generates a new ArrayBuffer.
+    // Create typedarray on top of plain buffer.  The inherited .buffer
+    // getter creates an ArrayBuffer on-the-fly.  Because there's no place
+    // to store the result, each .buffer read generates a new ArrayBuffer.
 
-  view = new Uint32Array(pb.buffer);
-  print(Object.prototype.toString.call(view));
-  print(view.length, view.byteLength, view.byteOffset, view.BYTES_PER_ELEMENT);
-  print(view.buffer, view.buffer === pb);
-  print(view[0]);
-  print(Duktape.enc("jx", view));
+    view = new Uint32Array(pb.buffer);
+    print(Object.prototype.toString.call(view));
+    print(view.length, view.byteLength, view.byteOffset, view.BYTES_PER_ELEMENT);
+    print(view.buffer, view.buffer === pb);
+    print(view[0]);
+    print(Duktape.enc('jx', view));
 }
 
 try {
-  print("view test");
-  viewTest();
+    print('view test');
+    viewTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

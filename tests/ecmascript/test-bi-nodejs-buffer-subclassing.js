@@ -25,32 +25,30 @@ false
 ===*/
 
 function slicePrototypeInheritanceTest() {
-  var proto = {
-    name: "MyNodejsBuffer",
-    toString: function() {
-      return "MyBuffer";
-    }
-  };
-  Object.setPrototypeOf(proto, Buffer.prototype);
+    var proto = {
+        name: 'MyNodejsBuffer',
+        toString: function () { return 'MyBuffer'; }
+    };
+    Object.setPrototypeOf(proto, Buffer.prototype);
 
-  var b1 = new Buffer("ABCDEFGH");
-  Object.setPrototypeOf(b1, proto);
-  print(typeof b1);
-  print(Object.prototype.toString.call(b1));
-  print(String(b1));
-  print(b1.name);
-  print(Object.getPrototypeOf(b1) === proto);
+    var b1 = new Buffer('ABCDEFGH');
+    Object.setPrototypeOf(b1, proto);
+    print(typeof b1);
+    print(Object.prototype.toString.call(b1));
+    print(String(b1));
+    print(b1.name);
+    print(Object.getPrototypeOf(b1) === proto);
 
-  var b2 = b1.slice(5);
-  print(typeof b2);
-  print(Object.prototype.toString.call(b2));
-  print(String(b2));
-  print(b2.name);
-  print(Object.getPrototypeOf(b2) === proto);
+    var b2 = b1.slice(5);
+    print(typeof b2);
+    print(Object.prototype.toString.call(b2));
+    print(String(b2));
+    print(b2.name);
+    print(Object.getPrototypeOf(b2) === proto);
 }
 
 try {
-  slicePrototypeInheritanceTest();
+    slicePrototypeInheritanceTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

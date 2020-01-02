@@ -38,38 +38,38 @@ NaN
 ===*/
 
 function test() {
-  printExact((0 / 0) ** 0);
-  printExact((0 / 0) ** -0);
-  printExact(-1e100 % (1 / 0)); // return 1st arg if modulus is +/- inf
-  printExact(-1e100 % (-1 / 0));
-  printExact((1 / 0) % (1 / 0)); // but if 1st arg is +/- inf (and modulus +/- inf), return NaN
-  printExact((1 / 0) % (-1 / 0));
-  printExact((-1 / 0) % (1 / 0));
-  printExact((-1 / 0) % (-1 / 0));
-  printExact(0 % 1); // preserve zero and its sign, even for inf
-  printExact(-0 % 1);
-  printExact(0 % -1);
-  printExact(-0 % -1);
-  printExact(0 % (1 / 0));
-  printExact(-0 % (1 / 0));
-  printExact(0 % (-1 / 0));
-  printExact(-0 % (-1 / 0));
-  printExact(0 % (0 / 0)); // ... but if modulus is NaN or 0, result is NaN
-  printExact(-0 % (0 / 0));
-  printExact(0 % 0);
-  printExact(-0 % 0);
-  printExact(0 % -0);
-  printExact(-0 % -0);
-  printExact(Math.atan2(1 / 0, 1 / 0));
-  printExact(Math.atan2(1 / 0, -1 / 0));
-  printExact(Math.atan2(-1 / 0, 1 / 0));
-  printExact(Math.atan2(-1 / 0, -1 / 0));
-  printExact(Math.pow(0 / 0, 0));
-  printExact(Math.pow(0 / 0, -0));
+    printExact((0/0) ** 0);
+    printExact((0/0) ** -0);
+    printExact((-1e100) % (1/0));  // return 1st arg if modulus is +/- inf
+    printExact((-1e100) % (-1/0));
+    printExact((1/0) % (1/0));     // but if 1st arg is +/- inf (and modulus +/- inf), return NaN
+    printExact((1/0) % (-1/0));
+    printExact((-1/0) % (1/0));
+    printExact((-1/0) % (-1/0));
+    printExact(0 % 1);  // preserve zero and its sign, even for inf
+    printExact(-0 % 1);
+    printExact(0 % -1);
+    printExact(-0 % -1);
+    printExact(0 % (1/0));
+    printExact(-0 % (1/0));
+    printExact(0 % (-1/0));
+    printExact(-0 % (-1/0));
+    printExact(0 % (0/0));    // ... but if modulus is NaN or 0, result is NaN
+    printExact(-0 % (0/0));
+    printExact(0 % 0);
+    printExact(-0 % 0);
+    printExact(0 % -0);
+    printExact(-0 % -0);
+    printExact(Math.atan2(1/0, 1/0));
+    printExact(Math.atan2(1/0, -1/0));
+    printExact(Math.atan2(-1/0, 1/0));
+    printExact(Math.atan2(-1/0, -1/0));
+    printExact(Math.pow(0/0, 0));
+    printExact(Math.pow(0/0, -0));
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

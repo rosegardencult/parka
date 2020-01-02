@@ -25,36 +25,34 @@ TypeError
 ===*/
 
 function lightfuncFinalizerTest() {
-  var lfunc = Math.max;
+    var lfunc = Math.max;
 
-  // Verify built-ins are lightfuncs
-  print(valueIsLightFunc(lfunc));
+    // Verify built-ins are lightfuncs
+    print(valueIsLightFunc(lfunc));
 
-  // Attempt to set a finalizer on the lightfunc directly fails.
-  try {
-    Duktape.fin(lfunc, function(v) {
-      print("lfunc finalizer");
-    });
-  } catch (e) {
-    print(e.name);
-    //print(e.stack);
-  }
-
-  // Finalizer can be set to Function.prototype but it won't get called
-  // because lightfuncs are primitive values without a refcount field.
-  Duktape.fin(Function.prototype, function(v) {
-    if (valueIsLightFunc(v)) {
-      print("inherited finalizer for lightfunc");
-    } else {
-      //print('inherited finalizer, not for lightfunc: ' + v);
+    // Attempt to set a finalizer on the lightfunc directly fails.
+    try {
+        Duktape.fin(lfunc, function (v) { print('lfunc finalizer'); });
+    } catch (e) {
+        print(e.name);
+        //print(e.stack);
     }
-  });
 
-  lfunc = null;
+    // Finalizer can be set to Function.prototype but it won't get called
+    // because lightfuncs are primitive values without a refcount field.
+    Duktape.fin(Function.prototype, function (v) {
+        if (valueIsLightFunc(v)) {
+            print('inherited finalizer for lightfunc');
+        } else {
+            //print('inherited finalizer, not for lightfunc: ' + v);
+        }
+    });
+
+    lfunc = null;
 }
 
 try {
-  lightfuncFinalizerTest();
+    lightfuncFinalizerTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

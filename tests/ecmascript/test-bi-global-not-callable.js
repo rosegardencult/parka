@@ -1,8 +1,5 @@
 // indirect eval -> this is bound to the global object, E5 Section 10.4.2, step 1.a.
-var g = (function() {
-  var e = eval;
-  return e("this");
-})();
+var g = (function () { var e = eval; return e('this'); } )();
 
 /*===
 TypeError
@@ -10,15 +7,15 @@ TypeError
 ===*/
 
 try {
-  // not constructable -> TypeError
-  new g();
+    // not constructable -> TypeError
+    new g();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  // not callable -> TypeError
-  new g();
+    // not callable -> TypeError
+    new g();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

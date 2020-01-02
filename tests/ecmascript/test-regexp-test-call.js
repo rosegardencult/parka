@@ -11,13 +11,13 @@ false
 ===*/
 
 try {
-  r = /foo/;
-  t = r.test("foo");
-  print(t);
-  t = r.test("bar");
-  print(t);
+    r = /foo/;
+    t = r.test('foo');
+    print(t);
+    t = r.test('bar');
+    print(t);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -26,13 +26,13 @@ false
 ===*/
 
 try {
-  r = /(foo)/i;
-  t = r.test("Foo");
-  print(t);
-  t = r.test("bar");
-  print(t);
+    r = /(foo)/i;
+    t = r.test('Foo');
+    print(t);
+    t = r.test('bar');
+    print(t);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -44,16 +44,16 @@ false 0
 ===*/
 
 try {
-  r = /foo/gi;
-  print(r.lastIndex);
-  t = r.test("fooFooFOO");
-  print(t, r.lastIndex);
-  t = r.test("fooFooFOO");
-  print(t, r.lastIndex);
-  t = r.test("fooFooFOO");
-  print(t, r.lastIndex);
-  t = r.test("fooFooFOO");
-  print(t, r.lastIndex);
+    r = /foo/gi;
+    print(r.lastIndex);
+    t = r.test('fooFooFOO');
+    print(t, r.lastIndex);
+    t = r.test('fooFooFOO');
+    print(t, r.lastIndex);
+    t = r.test('fooFooFOO');
+    print(t, r.lastIndex);
+    t = r.test('fooFooFOO');
+    print(t, r.lastIndex);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

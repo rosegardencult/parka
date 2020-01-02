@@ -20,16 +20,16 @@ stringify test
 ===*/
 
 function stringifyTest() {
-  var objs = getBufferTestObjectList();
+    var objs = getBufferTestObjectList();
 
-  objs.forEach(function(b) {
-    print(Object.prototype.toString.call(b), b.toString(), String(b));
-  });
+    objs.forEach(function (b) {
+        print(Object.prototype.toString.call(b), b.toString(), String(b));
+    });
 }
 
 try {
-  print("stringify test");
-  stringifyTest();
+    print('stringify test');
+    stringifyTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

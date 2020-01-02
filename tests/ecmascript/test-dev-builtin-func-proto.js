@@ -10,7 +10,7 @@ true
 ===*/
 
 try {
-  print(Object.getPrototypeOf(Math.cos) === Function.prototype);
+    print(Object.getPrototypeOf(Math.cos) === Function.prototype);
 } catch (e) {
-  print(e);
+    print(e);
 }

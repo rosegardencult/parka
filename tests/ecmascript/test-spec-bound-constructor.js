@@ -7,18 +7,18 @@
  */
 
 function func1(v1, v2, v3) {
-  print("func1 this", typeof this, this);
-  print("func1 args", v1, v2, v3);
-  if (typeof this === "object") {
-    this.value1 = v1;
-    this.value2 = v2;
-    this.value3 = v3;
-  }
+    print('func1 this', typeof this, this);
+    print('func1 args', v1, v2, v3);
+    if (typeof this === 'object') {
+        this.value1 = v1;
+        this.value2 = v2;
+        this.value3 = v3;
+    }
 }
 
-var func2 = func1.bind("func2_this", "foo");
+var func2 = func1.bind('func2_this', 'foo');
 
-var func3 = func2.bind("func3_this", "bar");
+var func3 = func2.bind('func3_this', 'bar');
 
 /*===
 normal function call to func3
@@ -29,10 +29,10 @@ func1 args foo bar quux
 // Calling func3 as a normal function causes 'func2_this' to be the effective
 // this binding.
 try {
-  print("normal function call to func3");
-  func3("quux");
+    print('normal function call to func3');
+    func3('quux');
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -47,11 +47,11 @@ res.value3 quux
 // Constructor call causes the fresh ECMAScript object (created in E5.1
 // Section 13.2.2 step 1) to the effective this binding.
 try {
-  print("constructor call to func3");
-  var res = new func3("quux");
-  print("res.value1", res.value1);
-  print("res.value2", res.value2);
-  print("res.value3", res.value3);
+    print('constructor call to func3');
+    var res = new func3('quux');
+    print('res.value1', res.value1);
+    print('res.value2', res.value2);
+    print('res.value3', res.value3);
 } catch (e) {
-  print(e);
+    print(e);
 }

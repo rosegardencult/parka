@@ -114,61 +114,49 @@ with SyntaxError
 yield SyntaxError
 ===*/
 
-var keywords =
-  "break do instanceof typeof case else new var catch finally return void continue for switch while debugger function this with default if throw delete in try";
+var keywords = "break do instanceof typeof case else new var catch finally return void continue for switch while debugger function this with default if throw delete in try";
 var future1 = "class enum extends super const export import";
-var future2 =
-  "implements interface yield let package private protected public static";
+var future2 = "implements interface yield let package private protected public static";
 var other = "null true false";
-var accepted = "set get"; // these must be accepted!
-var names = (
-  keywords +
-  " " +
-  future1 +
-  " " +
-  future2 +
-  " " +
-  other +
-  " " +
-  accepted
-).split(" ");
+var accepted = "set get";  // these must be accepted!
+var names = (keywords + " " + future1 + " " + future2 + " " + other + " " + accepted).split(' ');
 names.sort();
 
 function reservedWordNonStrictTest() {
-  names.forEach(function(n) {
-    var code = "(function () { var " + n + " = 123; })";
-    try {
-      var res = eval(code);
-      print(n, typeof res);
-    } catch (e) {
-      print(n, e.name);
-    }
-  });
+    names.forEach(function(n) {
+        var code = '(function () { var ' + n + ' = 123; })';
+        try {
+            var res = eval(code);
+            print(n, typeof res);
+        } catch (e) {
+            print(n, e.name);
+        }
+    });
 }
 
 function reservedWordStrictTest() {
-  names.sort();
-  names.forEach(function(n) {
-    var code = '(function () { "use strict"; var ' + n + " = 123; })";
-    try {
-      var res = eval(code);
-      print(n, typeof res);
-    } catch (e) {
-      print(n, e.name);
-    }
-  });
+    names.sort();
+    names.forEach(function(n) {
+        var code = '(function () { "use strict"; var ' + n + ' = 123; })';
+        try {
+            var res = eval(code);
+            print(n, typeof res);
+        } catch (e) {
+            print(n, e.name);
+        }
+    });
 }
 
-print("=== non-strict ===");
+print('=== non-strict ===');
 try {
-  reservedWordNonStrictTest();
+    reservedWordNonStrictTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
-print("=== strict ===");
+print('=== strict ===');
 try {
-  reservedWordStrictTest();
+    reservedWordStrictTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

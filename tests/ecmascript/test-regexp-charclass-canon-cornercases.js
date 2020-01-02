@@ -183,55 +183,39 @@
 ===*/
 
 function test() {
-  var re;
-  var i;
+    var re;
+    var i;
 
-  for (i = 0x100; i <= 0x10f; i++) {
-    re = RegExpUtil.makeCaseInsensitiveCharClassRegExp(i - 0x100, i);
-    print(i, re.source, RegExpUtil.getRegExpSingleCharMatches(re));
-  }
+    for (i = 0x100; i <= 0x10f; i++) {
+        re = RegExpUtil.makeCaseInsensitiveCharClassRegExp(i - 0x100, i);
+        print(i, re.source, RegExpUtil.getRegExpSingleCharMatches(re));
+    }
 
-  // The current canonicalization blocks that are different when continuity
-  // across block edges are taken into account (or not):
-  //
-  // block 6 ([192,223]) differs
-  // block 227 ([7264,7295]) differs
-  // block 360 ([11520,11551]) differs
-  // block 1373 ([43936,43967]) differs
-  // block 1374 ([43968,43999]) differs
+    // The current canonicalization blocks that are different when continuity
+    // across block edges are taken into account (or not):
+    //
+    // block 6 ([192,223]) differs
+    // block 227 ([7264,7295]) differs
+    // block 360 ([11520,11551]) differs
+    // block 1373 ([43936,43967]) differs
+    // block 1374 ([43968,43999]) differs
 
-  var values = [
-    191,
-    192,
-    193,
-    222,
-    223,
-    224,
-    43935,
-    43936,
-    43937,
-    43966,
-    43967,
-    43978,
-    43969,
-    43998,
-    43999,
-    44000,
-    44001
-  ];
-  values.forEach(function(v1) {
-    values.forEach(function(v2) {
-      if (v2 < v1) {
-        return;
-      }
-      var re = RegExpUtil.makeCaseInsensitiveCharClassRegExp(v1, v2);
-      print(v1, v2, re.source, RegExpUtil.getRegExpSingleCharMatches(re));
+    var values = [
+        191, 192, 193, 222, 223, 224,
+        43935, 43936, 43937, 43966, 43967, 43978,
+        43969, 43998, 43999, 44000, 44001
+    ];
+    values.forEach(function (v1) {
+        values.forEach(function (v2) {
+            if (v2 < v1) { return; }
+            var re = RegExpUtil.makeCaseInsensitiveCharClassRegExp(v1, v2);
+            print(v1, v2, re.source, RegExpUtil.getRegExpSingleCharMatches(re));
+        });
     });
-  });
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

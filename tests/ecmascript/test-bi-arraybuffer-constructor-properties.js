@@ -9,10 +9,8 @@
 ---*/
 
 function encValue(v) {
-  if (typeof v === "function") {
-    return "function";
-  }
-  return String(v);
+    if (typeof v === 'function') { return 'function'; }
+    return String(v);
 }
 
 /*===
@@ -25,24 +23,29 @@ true
 ===*/
 
 function arrayBufferConstructorPropertiesTest() {
-  var props = ["name", "length", "prototype", "isView"];
+    var props = [
+        'name',
+        'length',
+        'prototype',
+        'isView'
+    ];
 
-  props.forEach(function(propname) {
-    try {
-      var obj = ArrayBuffer;
-      var val = obj[propname];
-      print(propname, propname in obj, typeof val, encValue(val));
-    } catch (e) {
-      print(e.stack || e);
-    }
-  });
+    props.forEach(function (propname) {
+        try {
+            var obj = ArrayBuffer;
+            var val = obj[propname];
+            print(propname, propname in obj, typeof val, encValue(val));
+        } catch (e) {
+            print(e.stack || e);
+        }
+    });
 
-  print(ArrayBuffer.prototype.constructor === ArrayBuffer);
+    print(ArrayBuffer.prototype.constructor === ArrayBuffer);
 }
 
 try {
-  print("ArrayBuffer constructor properties test");
-  arrayBufferConstructorPropertiesTest();
+    print('ArrayBuffer constructor properties test');
+    arrayBufferConstructorPropertiesTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

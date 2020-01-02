@@ -9,17 +9,17 @@ foo
 var t;
 
 try {
-  t = new Uint8Array([0x63, 0x66, 0x6f, 0x6f]).buffer;
-  print(CBOR.decode(t));
+    t = new Uint8Array([ 0x63, 0x66, 0x6f, 0x6f ]).buffer;
+    print(CBOR.decode(t));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  t = new Uint8Array([0x63, 0x66, 0x6f, 0x6f]);
-  print(CBOR.decode(t));
+    t = new Uint8Array([ 0x63, 0x66, 0x6f, 0x6f ]);
+    print(CBOR.decode(t));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -30,12 +30,12 @@ false
 
 // CBOR.encode() results in an ArrayBuffer.
 try {
-  t = CBOR.encode("foo");
-  print(typeof t);
-  print(t instanceof ArrayBuffer);
-  print(t instanceof Uint8Array);
+    t = CBOR.encode('foo');
+    print(typeof t);
+    print(t instanceof ArrayBuffer);
+    print(t instanceof Uint8Array);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -48,16 +48,16 @@ true
 // decode as Uint8Array in cbor-js and Duktape.
 
 try {
-  t = CBOR.decode(new Uint8Array([0x43, 0x11, 0x22, 0x33]).buffer);
-  print(typeof t);
-  print(t instanceof ArrayBuffer);
-  print(t instanceof Uint8Array);
+    t = CBOR.decode(new Uint8Array([ 0x43, 0x11, 0x22, 0x33 ]).buffer);
+    print(typeof t);
+    print(t instanceof ArrayBuffer);
+    print(t instanceof Uint8Array);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
 done
 ===*/
 
-print("done");
+print('done');

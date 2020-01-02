@@ -40,49 +40,38 @@ alt1
 ===*/
 
 function test() {
-  // Condition is evaluated with ToBoolean()
-  var cond = [
-    // undefined and null are considered false
-    undefined,
-    null,
+    // Condition is evaluated with ToBoolean()
+    var cond = [
+        // undefined and null are considered false
+        undefined, null,
 
-    // booleans are as is
-    true,
-    false,
+        // booleans are as is
+        true, false,
 
-    // -0, +0, NaN are false; other numbers true
-    -0,
-    +0,
-    0 / 0,
-    -1 / 0,
-    -1e9,
-    1e9,
-    1 / 0,
+        // -0, +0, NaN are false; other numbers true
+        -0, +0, 0/0,
+        -1/0, -1e9, 1e9, 1/0,
 
-    // empty string is false; other strings true
-    "",
-    "\0",
-    "foo",
+        // empty string is false; other strings true
+        '', '\0', 'foo',
 
-    // all objects are true
-    {},
-    [],
-    function() {}
-  ];
+        // all objects are true
+        {}, [], function () {}
+    ];
 
-  cond.forEach(function(condValue, i) {
-    try {
-      // alternatives are evaluated only after checking the condition
-      var t = condValue ? (print("alt1"), 123) : (print("alt2"), 234);
-      print(i, typeof condValue, t);
-    } catch (e) {
-      print(i, typeof condValue, e);
-    }
-  });
+    cond.forEach(function (condValue, i) {
+        try {
+            // alternatives are evaluated only after checking the condition
+            var t = condValue ? (print('alt1'), 123) : (print('alt2'), 234);
+            print(i, typeof condValue, t);
+        } catch (e) {
+            print(i, typeof condValue, e);
+        }
+    });
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

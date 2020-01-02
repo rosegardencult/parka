@@ -9,9 +9,9 @@
  */
 
 try {
-  print(Number("1.99999999999999989"));
+    print(Number('1.99999999999999989'));
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -23,7 +23,7 @@ Infinity
  */
 
 try {
-  print(Number("1.79769313486231581e308"));
+    print(Number('1.79769313486231581e308'));
 } catch (e) {
-  print(e);
+    print(e);
 }

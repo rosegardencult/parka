@@ -21,30 +21,30 @@ Caught: Error: aiee
 ===*/
 
 function testErrorToStringReplacement() {
-  var origToString = Error.prototype.toString;
+    var origToString = Error.prototype.toString;
 
-  Error.prototype.toString = function() {
-    var line;
-    print("Error.prototype.toString() called:", typeof this);
+    Error.prototype.toString = function () {
+        var line;
+        print('Error.prototype.toString() called:', typeof this);
 
-    line = (this || {}).lineNumber;
-    print("Linenumber type is:", typeof line);
+        line = (this || {}).lineNumber;
+        print('Linenumber type is:', typeof line);
 
-    // A useful replacement could be something like this
-    //return this.name + ': ' + this.message + ' (at line ' + this.lineNumber + ')';
+        // A useful replacement could be something like this
+        //return this.name + ': ' + this.message + ' (at line ' + this.lineNumber + ')';
 
-    return this.name + ": " + this.message;
-  };
+        return this.name + ': ' + this.message;
+    };
 
-  try {
-    throw new Error("aiee");
-  } catch (e) {
-    print("Caught: " + e);
-  }
+    try {
+        throw new Error('aiee');
+    } catch (e) {
+        print('Caught: ' + e);
+    }
 }
 
 try {
-  testErrorToStringReplacement();
+    testErrorToStringReplacement();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

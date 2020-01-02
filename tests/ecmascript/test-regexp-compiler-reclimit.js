@@ -18,40 +18,40 @@ failure for: 10000 -> RangeError
 ===*/
 
 function createRegexp(n) {
-  var res = [];
-  var i;
+    var res = [];
+    var i;
 
-  // Each disjunction causes recursion.
-  res = "x";
-  for (i = 0; i < n; i++) {
-    res = "(?:y|" + res + ")";
-  }
+    // Each disjunction causes recursion.
+    res = 'x';
+    for (i = 0; i < n; i++) {
+      res = '(?:y|' + res + ')';
+    }
 
-  return res;
+    return res;
 }
 
 function wrappedTest(n) {
-  var src, reg;
+    var src, reg;
 
-  try {
-    src = createRegexp(n);
-    reg = new RegExp(src);
-    print("success for:", n);
-  } catch (e) {
-    print("failure for:", n, "->", e.name);
-  }
+    try {
+        src = createRegexp(n);
+        reg = new RegExp(src);
+        print('success for:', n);
+    } catch (e) {
+        print('failure for:', n, '->', e.name);
+    }
 }
 
 function test() {
-  wrappedTest(1);
-  wrappedTest(10);
-  wrappedTest(100);
-  wrappedTest(1000);
-  wrappedTest(10000);
+    wrappedTest(1);
+    wrappedTest(10);
+    wrappedTest(100);
+    wrappedTest(1000);
+    wrappedTest(10000);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

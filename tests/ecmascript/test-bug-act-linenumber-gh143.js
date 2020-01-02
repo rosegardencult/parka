@@ -16,17 +16,12 @@
 ===*/
 
 (function() {
-  function cows_eat_kitties() {
-    for (var i = -1; i >= -4; i--) {
-      print(i, Duktape.act(i).lineNumber);
-    }
-    print(Duktape.act(-3).lineNumber);
-  }
-  function pigs_eat_cows() {
-    return cows_eat_kitties();
-  }
-  pigs_eat_cows();
-  pigs_eat_cows();
+function cows_eat_kitties() { for (var i = -1; i >= -4; i--) { print(i, Duktape.act(i).lineNumber); }; print(Duktape.act(-3).lineNumber); }
+function pigs_eat_cows() { return cows_eat_kitties(); }
+pigs_eat_cows();
+pigs_eat_cows();
+
+
 })();
 
 /* Callstack for Duktape.act() in cows_eat_kitties():

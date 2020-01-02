@@ -9,9 +9,9 @@
  * string value) was not included in getOwnPropertyNames() output.
  */
 
-var obj = Object.getOwnPropertyNames(new String("foo"));
+var obj = Object.getOwnPropertyNames(new String('foo'));
 var i;
 
 for (i = 0; i < obj.length; i++) {
-  print(i, typeof obj[i], obj[i]);
+    print(i, typeof obj[i], obj[i]);
 }

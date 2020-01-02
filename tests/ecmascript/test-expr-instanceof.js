@@ -10,14 +10,14 @@ false
 
 var t;
 
-print(new Error("test") instanceof Error);
+print(new Error('test') instanceof Error);
 
 // RHS must be callable
 try {
-  t = new Error("test");
-  print(t instanceof t);
+    t = new Error('test');
+    print(t instanceof t);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 // an object is not an instance of itself (must be callable for

@@ -15,29 +15,25 @@ Error: bar
 ===*/
 
 function test() {
-  try {
-    // this error really doesn't affect the test
-    throw new Error("foo");
-  } catch (e) {
     try {
-      throw new Error("bar");
-    } finally {
-      print("finally");
-      try {
-        throw new Error("quux");
-      } catch (e) {
-        print("ignore quux");
-      }
+        // this error really doesn't affect the test
+        throw new Error('foo');
+    } catch (e) {
+        try {
+            throw new Error('bar');
+        } finally {
+            print('finally');
+            try { throw new Error('quux'); } catch (e) { print('ignore quux'); }
 
-      print(e);
-      eval("print(e)");
-      // continue propagating original error ('bar')
+            print(e);
+            eval('print(e)');
+            // continue propagating original error ('bar')
+        }
     }
-  }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

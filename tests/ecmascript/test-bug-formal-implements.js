@@ -13,11 +13,11 @@ SyntaxError
  */
 
 try {
-  // FutureReservedWord only recognized in strict mode,
-  // function declared in non-strict mode but function
-  // itself is strict
-  eval("function foo(implements) { 'use strict'; };");
-  print("never here");
+    // FutureReservedWord only recognized in strict mode,
+    // function declared in non-strict mode but function
+    // itself is strict
+    eval("function foo(implements) { 'use strict'; };");
+    print('never here');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

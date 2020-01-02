@@ -212,72 +212,70 @@ expected errors: 3117
 
 // identity replacer to forcibly avoid fast path
 function id(k, v) {
-  return v;
+    return v;
 }
 
 function mkloop(depth, loopDepth) {
-  var objects = [];
-  var i;
+    var objects = [];
+    var i;
 
-  for (i = 0; i < depth; i++) {
-    objects.push({ myDepth: i });
-  }
+    for (i = 0; i < depth; i++) {
+        objects.push({ myDepth: i });
+    }
 
-  // Link objects linearly.
-  for (i = 0; i < depth - 1; i++) {
-    objects[i].ref = objects[i + 1];
-  }
+    // Link objects linearly.
+    for (i = 0; i < depth - 1; i++) {
+        objects[i].ref = objects[i + 1];
+    }
 
-  // Add loop link to specified object.
-  objects[depth - 1].loopRef = objects[loopDepth];
+    // Add loop link to specified object.
+    objects[depth - 1].loopRef = objects[loopDepth];
 
-  return objects[0];
+    return objects[0];
 }
 
 function test() {
-  var i, j, j_step;
-  var obj;
-  var match = 0;
+    var i, j, j_step;
+    var obj;
+    var match = 0;
 
-  for (i = 1; i < 1000; ) {
-    print(i);
+    for (i = 1; i < 1000;) {
+        print(i);
 
-    // visiting[] is now 64 entries, so go over that a bit densely,
-    // then skip.
-    j_step = i <= 70 ? 1 : i >>> 2;
+        // visiting[] is now 64 entries, so go over that a bit densely,
+        // then skip.
+        j_step = (i <= 70 ? 1 : i >>> 2);
 
-    for (j = 0; j < i; j += j_step) {
-      obj = mkloop(i, j);
+        for (j = 0; j < i; j += j_step) {
+            obj = mkloop(i, j);
 
-      try {
-        print(JSON.stringify(obj, id, 4));
-      } catch (e) {
-        if (
-          e.name === "TypeError" &&
-          (e.message.toLowerCase().indexOf("cyclic") >= 0 ||
-            e.message.toLowerCase().indexOf("circular") >= 0)
-        ) {
-          match++;
-        } else {
-          print(e.stack);
-          throw new Error("no cyclic error, i=" + i + ", j=" + j + ": " + e);
+            try {
+                print(JSON.stringify(obj, id, 4));
+            } catch (e) {
+                if (e.name === 'TypeError' &&
+                    (e.message.toLowerCase().indexOf('cyclic') >= 0 ||
+                     e.message.toLowerCase().indexOf('circular') >= 0)) {
+                    match++;
+                } else {
+                    print(e.stack);
+                    throw new Error('no cyclic error, i=' + i + ', j=' + j + ': ' + e);
+                }
+            }
         }
-      }
+
+        // Sample i densely over the visiting[] size, then skip.
+        if (i <= 70) {
+            i++;
+        } else {
+            i += 7;
+        }
     }
 
-    // Sample i densely over the visiting[] size, then skip.
-    if (i <= 70) {
-      i++;
-    } else {
-      i += 7;
-    }
-  }
-
-  print("expected errors: " + match);
+    print('expected errors: ' + match);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

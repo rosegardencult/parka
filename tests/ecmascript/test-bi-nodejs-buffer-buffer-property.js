@@ -9,20 +9,20 @@ false
 ===*/
 
 function test() {
-  var buf = new Buffer("abcdefgh");
+    var buf = new Buffer('abcdefgh');
 
-  // Property exists.
-  print("buffer" in buf);
+    // Property exists.
+    print('buffer' in buf);
 
-  // In ES2015 this is false (also in Node.js v6.9.1) because the .buffer
-  // property is an inherited accessor.
-  print(Object.getOwnPropertyDescriptor(buf, "buffer") != null);
+    // In ES2015 this is false (also in Node.js v6.9.1) because the .buffer
+    // property is an inherited accessor.
+    print(Object.getOwnPropertyDescriptor(buf, 'buffer') != null);
 
-  print(Object.prototype.toString.call(buf.buffer));
+    print(Object.prototype.toString.call(buf.buffer));
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

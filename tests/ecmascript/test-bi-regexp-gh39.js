@@ -18,20 +18,17 @@ parse ok
  * (this doesn't seem to be the case when testing manually).
  */
 function test() {
-  try {
-    var r = new RegExp(
-      "/(\\(|\\s|\\[|\\=|:|\\+|\\.)(('|\")([^\\\\\\1]|\\\\.)*?(\\3))",
-      "gm"
-    );
-    print("parse ok");
-  } catch (e) {
-    print(e.name);
-    print(e);
-  }
+    try {
+        var r = new RegExp('/(\\(|\\s|\\[|\\=|:|\\+|\\.)((\'|")([^\\\\\\1]|\\\\.)*?(\\3))', 'gm');
+        print('parse ok');
+    } catch (e) {
+        print(e.name);
+        print(e);
+    }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

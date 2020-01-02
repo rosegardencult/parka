@@ -22,33 +22,29 @@ done
 ===*/
 
 function test() {
-  var i, j, k;
-  var str = [];
+    var i, j, k;
+    var str = [];
 
-  print("build");
-  for (i = 0; i < 10000; i++) {
-    str[i] = "x";
-  }
-  str = str.join("");
-
-  print("run");
-  for (i = 0; i < 1e4; i++) {
-    if (i % 1000 == 0) {
-      print(i);
+    print('build');
+    for (i = 0; i < 10000; i++) {
+        str[i] = 'x';
     }
-    j = Math.floor(Math.random() * str.length);
-    k = Math.floor(Math.random() * str.length);
-    var src = '"' + str.substring(0, j) + '" + "' + str.substring(0, k) + '"';
-    if (eval(src).length !== j + k) {
-      throw new Error("failed with lengths: " + j + ", " + k);
-    }
-  }
+    str = str.join('');
 
-  print("done");
+    print('run');
+    for (i = 0; i < 1e4; i++) {
+        if ((i % 1000) == 0) { print(i); }
+        j = Math.floor(Math.random() * str.length);
+        k = Math.floor(Math.random() * str.length);
+        var src = '"' + str.substring(0, j) + '" + "' + str.substring(0, k) + '"';
+        if (eval(src).length !== j + k) { throw new Error('failed with lengths: ' + j + ', ' + k); }
+    }
+
+    print('done');
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

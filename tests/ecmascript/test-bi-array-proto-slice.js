@@ -1,52 +1,50 @@
 // XXX: util
 function printDesc(obj, key) {
-  var pd = Object.getOwnPropertyDescriptor(obj, key);
-  if (!pd) {
-    print(key, "nonexistent");
-    return;
-  }
-  print(
-    key,
-    "value=" + pd.value,
-    "writable=" + pd.writable,
-    "enumerable=" + pd.enumerable,
-    "configurable=" + pd.configurable,
-    "get=" + typeof pd.get,
-    "set=" + typeof pd.set
-  );
+    var pd = Object.getOwnPropertyDescriptor(obj, key);
+    if (!pd) {
+        print(key, 'nonexistent');
+        return;
+    }
+    print(key,
+          'value=' + pd.value,
+          'writable=' + pd.writable,
+          'enumerable=' + pd.enumerable,
+          'configurable=' + pd.configurable,
+          'get=' + typeof pd.get,
+          'set=' + typeof pd.set);
 }
 
 // XXX: util
 function dumpValue(v) {
-  var i, n;
-  var tmp = [];
+    var i, n;
+    var tmp = [];
 
-  if (v === undefined) {
-    return "undefined";
-  } else if (v === null) {
-    return "null";
-  }
-
-  n = Math.floor(v.length);
-  for (i = 0; i < n; i++) {
-    if (v.hasOwnProperty(i)) {
-      tmp.push(v[i]);
-    } else {
-      tmp.push("nonexistent");
+    if (v === undefined) {
+        return 'undefined';
+    } else if (v === null) {
+        return 'null';
     }
-  }
-  return typeof v + " " + v.length + " " + tmp.join(",");
+
+    n = Math.floor(v.length);
+    for (i = 0; i < n; i++) {
+        if (v.hasOwnProperty(i)) {
+            tmp.push(v[i]);
+        } else {
+            tmp.push('nonexistent');
+        }
+    }
+    return typeof v + ' ' + v.length + ' ' + tmp.join(',');
 }
 
 function test(this_value, args) {
-  var t;
+    var t;
 
-  try {
-    t = Array.prototype.slice.apply(this_value, args);
-    print(typeof t, Object.prototype.toString.call(t), dumpValue(t));
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        t = Array.prototype.slice.apply(this_value, args);
+        print(typeof t, Object.prototype.toString.call(t), dumpValue(t));
+    } catch (e) {
+        print(e.name);
+    }
 }
 
 /*===
@@ -2711,95 +2709,71 @@ object [object Array] object 3 1,2,3
 9 false
 ===*/
 
-print("basic");
+print('basic');
 
 function basicTest() {
-  var obj, res;
-  var i, j;
-  var vals = [
-    Number.NEGATIVE_INFINITY,
-    -1e9,
-    -7,
-    -6,
-    -5,
-    -4,
-    -3,
-    -2,
-    -1,
-    -0,
-    +0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    1e9,
-    Number.POSITIVE_INFINITY,
-    Number.NaN
-  ];
+    var obj, res;
+    var i, j;
+    var vals = [ Number.NEGATIVE_INFINITY, -1e9, -7, -6, -5, -4, -3, -2, -1, -0, +0,
+                 1, 2, 3, 4, 5, 6, 7, 1e9, Number.POSITIVE_INFINITY, Number.NaN ];
 
-  // dense array
+    // dense array
 
-  obj = [1, 2, 3, 4, 5];
-  for (i = 0; i < vals.length; i++) {
-    for (j = 0; j < vals.length; j++) {
-      print("dense", i, j, vals[i], vals[j]);
-      test(obj, [vals[i], vals[j]]);
+    obj = [1,2,3,4,5];
+    for (i = 0; i < vals.length; i++) {
+        for (j = 0; j < vals.length; j++) {
+            print('dense', i, j, vals[i], vals[j]);
+            test(obj, [vals[i],vals[j]]);
+        }
     }
-  }
 
-  // sparse array
+    // sparse array
 
-  obj = [1];
-  obj[100] = "foo";
-  obj[1] = 2;
-  obj[2] = 3;
-  obj[3] = 4;
-  obj[4] = 5;
-  obj.length = 5;
-  for (i = 0; i < vals.length; i++) {
-    for (j = 0; j < vals.length; j++) {
-      print("sparse", i, j, vals[i], vals[j]);
-      test(obj, [vals[i], vals[j]]);
+    obj = [1];
+    obj[100] = 'foo';
+    obj[1] = 2; obj[2] = 3; obj[3] = 4; obj[4] = 5;
+    obj.length = 5;
+    for (i = 0; i < vals.length; i++) {
+        for (j = 0; j < vals.length; j++) {
+            print('sparse', i, j, vals[i], vals[j]);
+            test(obj, [vals[i],vals[j]]);
+        }
     }
-  }
 
-  // non-array
+    // non-array
 
-  obj = { "0": 1, "1": 2, "2": 3, "3": 4, "4": 5, "5": 6, "6": 7, length: 5 };
-  for (i = 0; i < vals.length; i++) {
-    for (j = 0; j < vals.length; j++) {
-      print("nonarray", i, j, vals[i], vals[j]);
-      test(obj, [vals[i], vals[j]]);
+    obj = { '0': 1, '1': 2, '2': 3, '3': 4, '4': 5, '5': 6, '6': 7, length: 5 };
+    for (i = 0; i < vals.length; i++) {
+        for (j = 0; j < vals.length; j++) {
+            print('nonarray', i, j, vals[i], vals[j]);
+            test(obj, [vals[i],vals[j]]);
+        }
     }
-  }
 
-  // final length of the result array must be based on the last non-missing
-  // element
+    // final length of the result array must be based on the last non-missing
+    // element
 
-  obj = [1, 2, 3];
-  obj.length = 5;
-  test(obj, [0, 5]); // correct result is [1,2,3], not [1,2,3,nonex,nonex]
+    obj = [1,2,3];
+    obj.length = 5;
+    test(obj, [0,5]);  // correct result is [1,2,3], not [1,2,3,nonex,nonex]
 
-  // "holes" are kept
+    // "holes" are kept
 
-  obj = [1, 2];
-  obj[5] = 6;
-  obj[8] = 9; // length = 9
-  obj.length = 10;
-  res = Array.prototype.slice.call(obj, 0, 10);
-  print(res.length);
-  for (i = 0; i < 10; i++) {
-    print(i, res.hasOwnProperty(i));
-  }
+    obj = [1,2];
+    obj[5] = 6;
+    obj[8] = 9;  // length = 9
+    obj.length = 10;
+    res = Array.prototype.slice.call(obj, 0, 10);
+    print(res.length);
+    for (i = 0; i < 10; i++) {
+        print(i, res.hasOwnProperty(i));
+    }
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -2840,112 +2814,69 @@ length value=12 writable=true enumerable=false configurable=false get=undefined 
 11 value=12 writable=true enumerable=true configurable=true get=undefined set=undefined
 ===*/
 
-print("attributes");
+print('attributes');
 
 function attributesTest() {
-  var obj;
-  var res;
+    var obj;
+    var res;
 
-  // The slice() result is created from scratch, so:
-  //
-  //   - all attributes must match [[Put]] defaults, i.e. all
-  //     all properties are data properties, and are writable,
-  //     enumerable, and configurable
-  //   - getters are called once (to read their value) and then
-  //     converted to data properties
-  //   - the result is an Array instance regardless of input type
-  //   - 'length' coercion happens first, getter invocation order
-  //     is ascending
+    // The slice() result is created from scratch, so:
+    //
+    //   - all attributes must match [[Put]] defaults, i.e. all
+    //     all properties are data properties, and are writable,
+    //     enumerable, and configurable
+    //   - getters are called once (to read their value) and then
+    //     converted to data properties
+    //   - the result is an Array instance regardless of input type
+    //   - 'length' coercion happens first, getter invocation order
+    //     is ascending
 
-  obj = {};
-  Object.defineProperties(obj, {
-    "0": { value: 1, writable: false, enumerable: false, configurable: false },
-    "1": { value: 2, writable: false, enumerable: false, configurable: true },
-    "2": { value: 3, writable: false, enumerable: true, configurable: false },
-    "3": { value: 4, writable: false, enumerable: true, configurable: true },
-    "4": { value: 5, writable: true, enumerable: false, configurable: false },
-    "5": { value: 6, writable: true, enumerable: false, configurable: true },
-    "6": { value: 7, writable: true, enumerable: true, configurable: false },
-    "7": { value: 8, writable: true, enumerable: true, configurable: true },
-    "8": {
-      get: function() {
-        print("8 getter");
-        return 9;
-      },
-      set: function() {
-        print("8 setter");
-      },
-      enumerable: false,
-      configurable: false
-    },
-    "9": {
-      get: function() {
-        print("9 getter");
-        return 10;
-      },
-      set: function() {
-        print("9 setter");
-      },
-      enumerable: false,
-      configurable: true
-    },
-    "10": {
-      get: function() {
-        print("10 getter");
-        return 11;
-      },
-      set: function() {
-        print("10 setter");
-      },
-      enumerable: true,
-      configurable: false
-    },
-    "11": {
-      get: function() {
-        print("11 getter");
-        return 12;
-      },
-      set: function() {
-        print("11 setter");
-      },
-      enumerable: true,
-      configurable: true
-    },
-    length: {
-      value: {
-        toString: function() {
-          print("length toString");
-          return 100;
-        },
-        valueOf: function() {
-          print("length valueOf");
-          return 256 * 256 * 256 * 256 + 12;
-        } // ToUint32(retval) = 12
-      },
-      writable: false,
-      enumerable: false,
-      configurable: false
+    obj = {};
+    Object.defineProperties(obj, {
+        '0': { value: 1, writable: false, enumerable: false, configurable: false },
+        '1': { value: 2, writable: false, enumerable: false, configurable: true },
+        '2': { value: 3, writable: false, enumerable: true, configurable: false },
+        '3': { value: 4, writable: false, enumerable: true, configurable: true },
+        '4': { value: 5, writable: true, enumerable: false, configurable: false },
+        '5': { value: 6, writable: true, enumerable: false, configurable: true },
+        '6': { value: 7, writable: true, enumerable: true, configurable: false },
+        '7': { value: 8, writable: true, enumerable: true, configurable: true },
+        '8': { get: function() { print('8 getter'); return 9; },
+               set: function() { print('8 setter'); },
+               enumerable: false, configurable: false },
+        '9': { get: function() { print('9 getter'); return 10; },
+               set: function() { print('9 setter'); },
+               enumerable: false, configurable: true },
+        '10': { get: function() { print('10 getter'); return 11; },
+                set: function() { print('10 setter'); },
+                enumerable: true, configurable: false },
+        '11': { get: function() { print('11 getter'); return 12; },
+                set: function() { print('11 setter'); },
+                enumerable: true, configurable: true },
+        length: { value: {
+                    toString: function() { print('length toString'); return 100; },
+                    valueOf: function() { print('length valueOf'); return 256*256*256*256+12; },  // ToUint32(retval) = 12
+                  }, writable: false, enumerable: false, configurable: false }
+    });
+
+    print(Object.prototype.toString.call(obj));
+    printDesc(obj, 'length');
+    for (i = 0; i < 12; i++) {
+        printDesc(obj, String(i));
     }
-  });
 
-  print(Object.prototype.toString.call(obj));
-  printDesc(obj, "length");
-  for (i = 0; i < 12; i++) {
-    printDesc(obj, String(i));
-  }
-
-  res = Array.prototype.slice.call(obj, 0, 12);
-  print(Object.prototype.toString.call(res));
-  printDesc(res, "length");
-  for (i = 0; i < 12; i++) {
-    printDesc(res, String(i));
-  }
+    res = Array.prototype.slice.call(obj, 0, 12);
+    print(Object.prototype.toString.call(res));
+    printDesc(res, 'length');
+    for (i = 0; i < 12; i++) {
+        printDesc(res, String(i));
+    }
 }
 
 try {
-  attributesTest();
+    attributesTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -2970,122 +2901,64 @@ end valueOf
 object [object Array] object 3 3,4,5
 ===*/
 
-print("coercion");
+print('coercion');
 
 function coercionTest() {
-  var obj;
+    var obj;
 
-  // this coercion
+    // this coercion
 
-  test(undefined, [1, 2]);
-  test(null, [1, 2]);
-  test(true, [1, 2]);
-  test(false, [1, 2]);
-  test(123, [1, 2]);
-  test("quux", [1, 4]); // can actually be sliced
-  test([1, 2], [1, 2]);
-  test({ foo: 1, bar: 2 }, [1, 2]);
+    test(undefined, [1,2]);
+    test(null, [1,2]);
+    test(true, [1,2]);
+    test(false, [1,2]);
+    test(123, [1,2]);
+    test('quux', [1,4]);  // can actually be sliced
+    test([1,2], [1,2]);
+    test({ foo: 1, bar: 2 }, [1,2]);
 
-  // length coercion
+    // length coercion
 
-  obj = { "0": 1, "1": 2, "2": 3, "3": 4, "4": 5, "5": 6, length: "3.9" };
-  test(obj, [0, Number.POSITIVE_INFINITY]);
+    obj = { '0': 1, '1': 2, '2': 3, '3': 4, '4': 5, '5': 6, length: '3.9' };
+    test(obj, [0, Number.POSITIVE_INFINITY]);
 
-  obj = {
-    "0": 1,
-    "1": 2,
-    "2": 3,
-    "3": 4,
-    "4": 5,
-    "5": 6,
-    length: 256 * 256 * 256 * 256 + 3.9
-  };
-  test(obj, [0, Number.POSITIVE_INFINITY]);
+    obj = { '0': 1, '1': 2, '2': 3, '3': 4, '4': 5, '5': 6, length: 256*256*256*256 + 3.9 };
+    test(obj, [0, Number.POSITIVE_INFINITY]);
 
-  obj = {
-    "0": 1,
-    "1": 2,
-    "2": 3,
-    "3": 4,
-    "4": 5,
-    "5": 6,
-    length: -256 * 256 * 256 * 256 + 3.9
-  };
-  test(obj, [0, Number.POSITIVE_INFINITY]);
+    obj = { '0': 1, '1': 2, '2': 3, '3': 4, '4': 5, '5': 6, length: -256*256*256*256 + 3.9 };
+    test(obj, [0, Number.POSITIVE_INFINITY]);
 
-  obj = {
-    "0": 1,
-    "1": 2,
-    "2": 3,
-    "3": 4,
-    "4": 5,
-    "5": 6,
-    length: {
-      toString: function() {
-        print("length toString");
-        return 4;
-      },
-      valueOf: function() {
-        print("length valueOf");
-        return 3;
-      }
-    }
-  };
-  test(obj, [0, Number.POSITIVE_INFINITY]);
+    obj = { '0': 1, '1': 2, '2': 3, '3': 4, '4': 5, '5': 6, length: {
+        toString: function() { print('length toString'); return 4; },
+        valueOf: function() { print('length valueOf'); return 3; },
+    } };
+    test(obj, [0, Number.POSITIVE_INFINITY]);
 
-  // start/end is ToInteger() coerced, not ToUint32() coerced
+    // start/end is ToInteger() coerced, not ToUint32() coerced
 
-  obj = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  test(obj, [-256 * 256 * 256 * 256 + 4, 256 * 256 * 256 * 256 + 7]); // slices entire range [0,10], not [4,7]
+    obj = [1,2,3,4,5,6,7,8,9,10];
+    test(obj, [ -256*256*256*256 + 4, 256*256*256*256 + 7 ]);  // slices entire range [0,10], not [4,7]
 
-  // start/end coercion; coercion order: length, start, end
+    // start/end coercion; coercion order: length, start, end
 
-  obj = {
-    "0": 1,
-    "1": 2,
-    "2": 3,
-    "3": 4,
-    "4": 5,
-    "5": 6,
-    "6": 7,
-    "7": 8,
-    length: {
-      toString: function() {
-        print("length toString");
-        return 4;
-      },
-      valueOf: function() {
-        print("length valueOf");
-        return 6;
-      }
-    }
-  };
-  test(obj, [
-    {
-      toString: function() {
-        print("start toString");
-        return 1;
-      },
-      valueOf: function() {
-        print("start valueOf");
-        return 2;
-      }
-    },
-    {
-      toString: function() {
-        print("end toString");
-        return 4;
-      },
-      valueOf: function() {
-        print("end valueOf");
-        return 5;
-      }
-    }
-  ]);
+    obj = { '0': 1, '1': 2, '2': 3, '3': 4, '4': 5, '5': 6, '6': 7, '7': 8, length: {
+       toString: function() { print('length toString'); return 4; },
+       valueOf: function() { print('length valueOf'); return 6; },
+    } };
+    test(obj, [
+        {
+            toString: function() { print('start toString'); return 1; },
+            valueOf: function() { print('start valueOf'); return 2; }
+        },
+        {
+            toString: function() { print('end toString'); return 4; },
+            valueOf: function() { print('end valueOf'); return 5; }
+        },
+    ]);
 }
 
 try {
-  coercionTest();
+    coercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

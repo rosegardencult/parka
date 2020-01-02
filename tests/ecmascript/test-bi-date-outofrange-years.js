@@ -17,13 +17,13 @@
  */
 
 function testYear(i) {
-  var d = new Date(0);
-  d.setUTCFullYear(i);
-  try {
-    print(i, d.toISOString());
-  } catch (e) {
-    print(i, e.name);
-  }
+    var d = new Date(0);
+    d.setUTCFullYear(i);
+    try {
+        print(i, d.toISOString());
+    } catch (e) {
+        print(i, e.name);
+    }
 }
 
 /*===
@@ -132,20 +132,20 @@ negative edge
 ===*/
 
 function negativeEdgeTest() {
-  var i;
+    var i;
 
-  /*
-   *  Edge cases
-   *
-   *  > new Date(-271821,1,1)
-   *  Invalid Date
-   *  > new Date(-271820,1,1)
-   *  Tue Feb 01 -271820 00:00:00 GMT+0200 (EET)
-   */
+    /*
+     *  Edge cases
+     *
+     *  > new Date(-271821,1,1)
+     *  Invalid Date
+     *  > new Date(-271820,1,1)
+     *  Tue Feb 01 -271820 00:00:00 GMT+0200 (EET)
+     */
 
-  for (i = -271850; i <= -271750; i++) {
-    testYear(i);
-  }
+    for (i = -271850; i <= -271750; i++) {
+        testYear(i);
+    }
 }
 
 /*===
@@ -254,20 +254,20 @@ positive edge
 ===*/
 
 function positiveEdgeTest() {
-  var i;
+    var i;
 
-  /*
-   *  Edge cases
-   *
-   *  > new Date(275760,1,1)
-   *  Fri Feb 01 275760 00:00:00 GMT+0200 (EET)
-   *  > new Date(275761,1,1)
-   *  Invalid Date
-   */
+    /*
+     *  Edge cases
+     *
+     *  > new Date(275760,1,1)
+     *  Fri Feb 01 275760 00:00:00 GMT+0200 (EET)
+     *  > new Date(275761,1,1)
+     *  Invalid Date
+     */
 
-  for (i = 275700; i <= 275800; i++) {
-    testYear(i);
-  }
+    for (i = 275700; i <= 275800; i++) {
+        testYear(i);
+    }
 }
 
 /*===
@@ -677,42 +677,42 @@ other
 ===*/
 
 function otherTest() {
-  var i, d;
+    var i, d;
 
-  for (i = -1e9; i <= 1e9; i += 1e7) {
-    testYear(i);
-  }
+    for (i = -1e9; i <= 1e9; i += 1e7) {
+        testYear(i);
+    }
 
-  // The assert offender in test-bug-date-insane-setyear was
-  // 123912921921321 ~= 1.23e14.  setUTCFullYear() does not
-  // trigger the bug, so use setFullYear() but avoid printing
-  // the result (which would depend on timezone).
+    // The assert offender in test-bug-date-insane-setyear was
+    // 123912921921321 ~= 1.23e14.  setUTCFullYear() does not
+    // trigger the bug, so use setFullYear() but avoid printing
+    // the result (which would depend on timezone).
 
-  for (i = -1e14; i <= 1e14; i += 1e12) {
-    d = new Date(0);
-    d.setUTCFullYear(i);
-    d.setFullYear(i);
-    print(i);
-  }
+    for (i = -1e14; i <= 1e14; i += 1e12) {
+        d = new Date(0);
+        d.setUTCFullYear(i);
+        d.setFullYear(i);
+        print(i);
+    }
 }
 
 try {
-  print("negative edge");
-  negativeEdgeTest();
+    print('negative edge');
+    negativeEdgeTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 try {
-  print("positive edge");
-  positiveEdgeTest();
+    print('positive edge');
+    positiveEdgeTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 try {
-  print("other");
-  otherTest();
+    print('other');
+    otherTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

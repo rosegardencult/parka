@@ -27,48 +27,46 @@ true
  * This testcase breaks with DUK_USE_NONSTD_FUNC_CALLER_PROPERTY.
  */
 
-function f() {}
+function f() { }
 
-function g() {
-  "use strict";
-}
+function g() { 'use strict' }
 
 var pd1, pd2;
 
 try {
-  print(f.caller);
+    print(f.caller);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(f.arguments);
+    print(f.arguments);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(g.caller);
+    print(g.caller);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(g.arguments);
+    print(g.arguments);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 // the thrower is required to be the same object
 try {
-  pd1 = Object.getOwnPropertyDescriptor(g, "caller");
-  pd2 = Object.getOwnPropertyDescriptor(g, "arguments");
-  print(typeof pd1.get, typeof pd1.set);
-  print(typeof pd2.get, typeof pd2.set);
-  print(pd1.get === pd1.set);
-  print(pd2.get === pd2.set);
-  print(pd1.get === pd2.get);
-  print(pd1.set === pd2.set);
+    pd1 = Object.getOwnPropertyDescriptor(g, 'caller');
+    pd2 = Object.getOwnPropertyDescriptor(g, 'arguments');
+    print(typeof pd1.get, typeof pd1.set);
+    print(typeof pd2.get, typeof pd2.set);
+    print(pd1.get === pd1.set);
+    print(pd2.get === pd2.set);
+    print(pd1.get === pd2.get);
+    print(pd1.set === pd2.set);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

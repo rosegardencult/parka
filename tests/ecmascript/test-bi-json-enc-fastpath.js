@@ -17,29 +17,37 @@ basic test
  */
 
 function jsonStringifyFastPathBasic() {
-  var val = {
-    foo: 123,
-    bar: 234,
-    quux: {
-      val1: undefined,
-      val2: null,
-      val3: true,
-      val4: false,
-      val5: 123,
-      val6: 123.456,
-      val7: "foo"
-    },
-    baz: [undefined, null, true, false, 123, 123.456, "foo"]
-  };
+    var val = {
+        foo: 123,
+        bar: 234,
+        quux: {
+            val1: undefined,
+            val2: null,
+            val3: true,
+            val4: false,
+            val5: 123,
+            val6: 123.456,
+            val7: 'foo'
+        },
+        baz: [
+            undefined,
+            null,
+            true,
+            false,
+            123,
+            123.456,
+            'foo'
+        ]
+    };
 
-  print(JSON.stringify(val));
+    print(JSON.stringify(val));
 }
 
 try {
-  print("basic test");
-  jsonStringifyFastPathBasic();
+    print('basic test');
+    jsonStringifyFastPathBasic();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -64,34 +72,27 @@ top level value test
 /* Top level value */
 
 function jsonStringifyFastPathTopLevelValueTest() {
-  var values = [
-    undefined,
-    null,
-    true,
-    false,
-    123,
-    123.456,
-    "foo",
-    { foo: 123 },
-    ["foo"],
-    new Array(10), // .length is larger than underlying array part length
-    function myfunc() {},
-    new Date(123),
-    Duktape.dec("hex", "deadbeef"),
-    new ArrayBuffer(8),
-    new Buffer("ABCDEFGH") // has toJSON
-  ];
+    var values = [
+        undefined, null, true, false, 123, 123.456, 'foo',
+        { foo: 123 }, [ 'foo' ],
+        new Array(10),  // .length is larger than underlying array part length
+        function myfunc() {},
+        new Date(123),
+        Duktape.dec('hex', 'deadbeef'),
+        new ArrayBuffer(8),
+        new Buffer('ABCDEFGH'),  // has toJSON
+    ];
 
-  values.forEach(function(v, i) {
-    print(i, JSON.stringify(v));
-  });
+    values.forEach(function (v, i) {
+        print(i, JSON.stringify(v));
+    });
 }
 
 try {
-  print("top level value test");
-  jsonStringifyFastPathTopLevelValueTest();
+    print('top level value test');
+    jsonStringifyFastPathTopLevelValueTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -107,23 +108,23 @@ auto unbox test
  */
 
 function jsonStringifyFastPathAutoUnboxTest() {
-  var values = [
-    new Number(123),
-    new String("foo"),
-    new Boolean(true),
-    new Boolean(false)
-  ];
+    var values = [
+        new Number(123),
+        new String('foo'),
+        new Boolean(true),
+        new Boolean(false)
+    ];
 
-  values.forEach(function(v, i) {
-    print(i, JSON.stringify(v));
-  });
+    values.forEach(function (v, i) {
+        print(i, JSON.stringify(v));
+    });
 }
 
 try {
-  print("auto unbox test");
-  jsonStringifyFastPathAutoUnboxTest();
+    print('auto unbox test');
+    jsonStringifyFastPathAutoUnboxTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -153,73 +154,67 @@ inherit [1,2,3,4,null,"inherit",6]
  */
 
 function jsonStringifyFastPathAbort() {
-  var values = [];
-  var obj;
-  var i;
+    var values = [];
+    var obj;
+    var i;
 
-  // a .toJSON property aborts
-  values.push({
-    toJSON: function() {
-      return "foobar";
+    // a .toJSON property aborts
+    values.push({ toJSON: function () { return 'foobar'; } });
+
+    // a lightfunc value might inherit a .toJSON, so lightfuncs always
+    // cause an abort
+    values.push([ Math.cos ]);  // only a lightfunc if "built-in lightfuncs" option set
+
+    // a getter property aborts
+    obj = {};
+    Object.defineProperty(obj, 'mygetter', {
+        get: function () {
+            print('mygetter called');
+            obj.foo = 'bar';  // mutate, shouldn't be visible in output
+        },
+        enumerable: true,
+        configurable: true
+    });
+    values.push(obj);
+
+    // a sparse Array aborts fast path
+    obj = [ 1, 2, 3 ];
+    obj[100] = 4;
+    values.push(obj);
+
+    // a non-cyclic structure which is larger than the fast path loop check
+    // array (which has a fixed size, currently 32 elements) should abort
+    // the fast path and *succeed* in the slow path which has a much larger
+    // recursion limit.
+    var deep = {};
+    for (i = 0; i < 100; i++) {
+        deep = { deeper: deep };
     }
-  });
+    values.push(deep);
 
-  // a lightfunc value might inherit a .toJSON, so lightfuncs always
-  // cause an abort
-  values.push([Math.cos]); // only a lightfunc if "built-in lightfuncs" option set
+    values.forEach(function (v, i) {
+        print(i, JSON.stringify(v));
+    });
 
-  // a getter property aborts
-  obj = {};
-  Object.defineProperty(obj, "mygetter", {
-    get: function() {
-      print("mygetter called");
-      obj.foo = "bar"; // mutate, shouldn't be visible in output
-    },
-    enumerable: true,
-    configurable: true
-  });
-  values.push(obj);
+    // a dense gappy Array with a conflicting inherited property causes a
+    // bailout (needs separate test because we modify Array.prototype)
 
-  // a sparse Array aborts fast path
-  obj = [1, 2, 3];
-  obj[100] = 4;
-  values.push(obj);
-
-  // a non-cyclic structure which is larger than the fast path loop check
-  // array (which has a fixed size, currently 32 elements) should abort
-  // the fast path and *succeed* in the slow path which has a much larger
-  // recursion limit.
-  var deep = {};
-  for (i = 0; i < 100; i++) {
-    deep = { deeper: deep };
-  }
-  values.push(deep);
-
-  values.forEach(function(v, i) {
-    print(i, JSON.stringify(v));
-  });
-
-  // a dense gappy Array with a conflicting inherited property causes a
-  // bailout (needs separate test because we modify Array.prototype)
-
-  obj = [1, 2, 3, 4];
-  obj[6] = 6; // still dense
-  print("no-inherit", JSON.stringify(obj)); // fast path OK
-  Object.defineProperty(Array.prototype, "5", {
-    writable: true,
-    enumerable: true,
-    configurable: true,
-    value: "inherit"
-  });
-  print("inherit", JSON.stringify(obj)); // fast path aborted
-  delete Array.prototype["5"];
+    obj = [ 1, 2, 3, 4 ];
+    obj[6] = 6;  // still dense
+    print('no-inherit', JSON.stringify(obj));  // fast path OK
+    Object.defineProperty(Array.prototype, '5', {
+        writable: true, enumerable: true, configurable: true,
+        value: 'inherit'
+    });
+    print('inherit', JSON.stringify(obj));  // fast path aborted
+    delete Array.prototype['5'];
 }
 
 try {
-  print("abort test");
-  jsonStringifyFastPathAbort();
+    print('abort test');
+    jsonStringifyFastPathAbort();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -235,41 +230,41 @@ child bar
 /* Property inheritance is quite interesting, test for correct behavior. */
 
 function jsonStringifyFastPathInheritanceTest() {
-  var obj1, obj2;
+    var obj1, obj2;
 
-  /* For objects JSON.stringify() only looks at enumerable own properties so
-   * it's very simple.
-   */
+    /* For objects JSON.stringify() only looks at enumerable own properties so
+     * it's very simple.
+     */
 
-  obj1 = { foo: "parent foo" };
-  obj2 = Object.create(obj1);
-  obj2.bar = "child bar";
-  print(obj2.foo);
-  print(obj2.bar);
-  print(JSON.stringify(obj2));
+    obj1 = { foo: 'parent foo' };
+    obj2 = Object.create(obj1);
+    obj2.bar = 'child bar';
+    print(obj2.foo);
+    print(obj2.bar);
+    print(JSON.stringify(obj2));
 
-  /* For arrays JSON.stringify() uses the [[Get]] operation which -does-
-   * inherit through array gaps.  Ensure that works correctly.
-   */
-  obj1 = ["foo", "bar", "quux", "baz"];
-  print(JSON.stringify(obj1));
+    /* For arrays JSON.stringify() uses the [[Get]] operation which -does-
+     * inherit through array gaps.  Ensure that works correctly.
+     */
+    obj1 = [ 'foo', 'bar', 'quux', 'baz' ];
+    print(JSON.stringify(obj1));
 
-  // create gap, nothing inherited; this is now supported in the fast path
-  delete obj1[1];
-  print(JSON.stringify(obj1));
+    // create gap, nothing inherited; this is now supported in the fast path
+    delete obj1[1];
+    print(JSON.stringify(obj1));
 
-  // inherit something through the gap; this now bails out of the fast path
-  Array.prototype[1] = "parent-bar";
-  print(JSON.stringify(obj1));
+    // inherit something through the gap; this now bails out of the fast path
+    Array.prototype[1] = 'parent-bar';
+    print(JSON.stringify(obj1));
 
-  delete Array.prototype[1]; // restore sanity
+    delete Array.prototype[1];  // restore sanity
 }
 
 try {
-  print("inheritance test");
-  jsonStringifyFastPathInheritanceTest();
+    print('inheritance test');
+    jsonStringifyFastPathInheritanceTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -282,50 +277,35 @@ proxy test
  */
 
 function jsonStringifyFastPathProxyTest() {
-  var myValue;
-  var target = { foo: "bar" };
+    var myValue;
+    var target = { foo: 'bar' };
 
-  // side effects chosen so that a restart will generate the same
-  // result value sequence
-  var p1 = new Proxy(target, {
-    get: function() {
-      myValue = 234;
-      return 123;
-    }
-  });
-  var p2 = new Proxy(target, {
-    get: function() {
-      var ret = myValue;
-      myValue = 345;
-      return ret;
-    }
-  });
-  var p3 = new Proxy(target, {
-    get: function() {
-      var ret = myValue;
-      myValue = 456;
-      return ret;
-    }
-  });
-  var p4 = new Proxy(target, {
-    get: function() {
-      var ret = myValue;
-      myValue = 567;
-      return ret;
-    }
-  });
+    // side effects chosen so that a restart will generate the same
+    // result value sequence
+    var p1 = new Proxy(target, {
+        get: function() { myValue = 234; return 123; }
+    });
+    var p2 = new Proxy(target, {
+        get: function() { var ret = myValue; myValue = 345; return ret; }
+    });
+    var p3 = new Proxy(target, {
+        get: function() { var ret = myValue; myValue = 456; return ret; }
+    });
+    var p4 = new Proxy(target, {
+        get: function() { var ret = myValue; myValue = 567; return ret; }
+    });
 
-  var obj = ["begin", p1, p2, p3, p4, "end"];
+    var obj = [ 'begin', p1, p2, p3, p4, 'end' ];
 
-  myValue = 100;
-  print(JSON.stringify(obj));
+    myValue = 100;
+    print(JSON.stringify(obj));
 }
 
 try {
-  print("proxy test");
-  jsonStringifyFastPathProxyTest();
+    print('proxy test');
+    jsonStringifyFastPathProxyTest();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -741,122 +721,114 @@ jc3
 /* Fast path for JX/JC. */
 
 function jxJcFastPathTest() {
-  var val;
+    var val;
 
-  function id(k, v) {
-    return v;
-  }
+    function id(k,v) { return v; }
 
-  function cleanPrint(x) {
-    x = x.replace(/[^\u0020-\u007e\u000a]/g, function(x) {
-      return "<" + x.charCodeAt(0) + ">";
-    });
-    x = x.replace(/\((?:0x)?[0-9a-fA-F]+\)/g, function(x) {
-      return "(PTR)";
-    });
-    x = x.replace(/"_ptr":"(?:0x)?[0-9a-fA-F]+"/g, function(x) {
-      return '"_ptr":"PTR"';
-    });
-    print(x);
-  }
+    function cleanPrint(x) {
+        x = x.replace(/[^\u0020-\u007e\u000a]/g, function (x) { return '<' + x.charCodeAt(0) + '>'; });
+        x = x.replace(/\((?:0x)?[0-9a-fA-F]+\)/g, function (x) { return '(PTR)'; });
+        x = x.replace(/"_ptr":"(?:0x)?[0-9a-fA-F]+"/g, function (x) { return '"_ptr":"PTR"'; });
+        print(x);
+    }
 
-  var arrayBuffer = new ArrayBuffer(8);
-  var u8 = new Uint8Array(arrayBuffer);
-  u8[0] = 0x61;
-  u8[1] = 0x62;
-  u8[2] = 0x63;
-  u8[3] = 0x64;
-  u8[4] = 0x65;
-  u8[5] = 0x66;
-  u8[6] = 0x67;
-  u8[7] = 0x68;
+    var arrayBuffer = new ArrayBuffer(8);
+    var u8 = new Uint8Array(arrayBuffer);
+    u8[0] = 0x61;
+    u8[1] = 0x62;
+    u8[2] = 0x63;
+    u8[3] = 0x64;
+    u8[4] = 0x65;
+    u8[5] = 0x66;
+    u8[6] = 0x67;
+    u8[7] = 0x68;
 
-  // Remove Node.js buffer .toJSON() method here, because its presence
-  // would cause a fastpath abort.
-  delete Buffer.prototype.toJSON;
-  print("toJSON" in Buffer.prototype);
+    // Remove Node.js buffer .toJSON() method here, because its presence
+    // would cause a fastpath abort.
+    delete Buffer.prototype.toJSON;
+    print('toJSON' in Buffer.prototype);
 
-  val = {
-    undefined: void 0,
-    null: null,
-    true: true,
-    trueBoxed: new Boolean(true),
-    false: false,
-    falseBoxed: new Boolean(false),
-    number: 123,
-    numberBoxed: new Number(123),
-    posZero: +0,
-    negZero: -0,
-    posInf: 1 / 0,
-    negInf: -1 / 0,
-    nan: 0 / 0,
-    "123mustquote": "must quote, non-identifier first char",
-    "mustquote\u0000": "must quote, NUL",
-    mustquoteሴ: "must quote, non-ASCII",
-    must_allow_unquoted123: "all chars ok",
-    nonAsciiString: "nonascii: \u0000\u001e\u007f\u1234\ucafe",
-    stringBoxed: new String("boxed string"),
-    buffer: Duktape.dec("hex", "deadbeef"),
-    pointer: Duktape.Pointer("dummy"),
-    pointerBoxed: new Duktape.Pointer(Duktape.Pointer("dummy")),
-    nodejsBuffer: new Buffer("ABCDEFGHIJKL"),
-    nodejsBufferView: new Buffer("ABCDEFGHIJKL").slice(3, 7),
-    arrayBuffer: arrayBuffer,
-    dataView: new DataView(arrayBuffer),
-    int8Array: new Int8Array(arrayBuffer),
-    uint8Array: new Uint8Array(arrayBuffer),
-    uint8ArrayView: new Uint8Array(arrayBuffer).subarray(1, 5),
-    uint8ClampedArray: new Uint8ClampedArray(arrayBuffer),
-    int16Array: new Int16Array(arrayBuffer),
-    int16ArrayView: new Int16Array(arrayBuffer).subarray(2, 4),
-    uint16Array: new Uint16Array(arrayBuffer),
-    int32Array: new Int32Array(arrayBuffer),
-    uint32Array: new Uint32Array(arrayBuffer),
-    float32Array: new Float32Array(arrayBuffer),
-    float64Array: new Float64Array(arrayBuffer),
-    function: function test() {}
-  };
+    val = {
+        undefined: void 0,
+        null: null,
+        true: true,
+        trueBoxed: new Boolean(true),
+        false: false,
+        falseBoxed: new Boolean(false),
+        number: 123,
+        numberBoxed: new Number(123),
+        posZero: +0,
+        negZero: -0,
+        posInf: 1/0,
+        negInf: -1/0,
+        nan: 0/0,
+        '123mustquote': 'must quote, non-identifier first char',
+        'mustquote\u0000': 'must quote, NUL',
+        'mustquote\u1234': 'must quote, non-ASCII',
+        'must_allow_unquoted123': 'all chars ok',
+        nonAsciiString: 'nonascii: \u0000\u001e\u007f\u1234\ucafe',
+        stringBoxed: new String('boxed string'),
+        buffer: Duktape.dec('hex', 'deadbeef'),
+        pointer: Duktape.Pointer('dummy'),
+        pointerBoxed: new Duktape.Pointer(Duktape.Pointer('dummy')),
+        nodejsBuffer: new Buffer('ABCDEFGHIJKL'),
+        nodejsBufferView: new Buffer('ABCDEFGHIJKL').slice(3, 7),
+        arrayBuffer: arrayBuffer,
+        dataView: new DataView(arrayBuffer),
+        int8Array: new Int8Array(arrayBuffer),
+        uint8Array: new Uint8Array(arrayBuffer),
+        uint8ArrayView: new Uint8Array(arrayBuffer).subarray(1, 5),
+        uint8ClampedArray: new Uint8ClampedArray(arrayBuffer),
+        int16Array: new Int16Array(arrayBuffer),
+        int16ArrayView: new Int16Array(arrayBuffer).subarray(2, 4),
+        uint16Array: new Uint16Array(arrayBuffer),
+        int32Array: new Int32Array(arrayBuffer),
+        uint32Array: new Uint32Array(arrayBuffer),
+        float32Array: new Float32Array(arrayBuffer),
+        float64Array: new Float64Array(arrayBuffer),
+        function: function test() {}
+    };
 
-  var json1 = JSON.stringify(val);
-  var json2 = JSON.stringify(val, null, 4);
-  var json3 = JSON.stringify(val, id, 4); // replacer forces out of fast path
+    var json1 = JSON.stringify(val);
+    var json2 = JSON.stringify(val, null, 4);
+    var json3 = JSON.stringify(val, id, 4);  // replacer forces out of fast path
 
-  print(json2 === json3);
-  print("json1");
-  cleanPrint(json1);
-  print("json2");
-  cleanPrint(json2);
-  print("json3");
-  cleanPrint(json3);
+    print(json2 === json3);
+    print('json1');
+    cleanPrint(json1);
+    print('json2');
+    cleanPrint(json2);
+    print('json3');
+    cleanPrint(json3);
 
-  var jx1 = Duktape.enc("jx", val);
-  var jx2 = Duktape.enc("jx", val, null, 4);
-  var jx3 = Duktape.enc("jx", val, id, 4);
+    var jx1 = Duktape.enc('jx', val);
+    var jx2 = Duktape.enc('jx', val, null, 4);
+    var jx3 = Duktape.enc('jx', val, id, 4);
 
-  print(jx2 === jx3);
-  print("jx1");
-  cleanPrint(jx1);
-  print("jx2");
-  cleanPrint(jx2);
-  print("jx3");
-  cleanPrint(jx3);
+    print(jx2 === jx3);
+    print('jx1');
+    cleanPrint(jx1);
+    print('jx2');
+    cleanPrint(jx2);
+    print('jx3');
+    cleanPrint(jx3);
 
-  var jc1 = Duktape.enc("jc", val);
-  var jc2 = Duktape.enc("jc", val, null, 4);
-  var jc3 = Duktape.enc("jc", val, id, 4);
+    var jc1 = Duktape.enc('jc', val);
+    var jc2 = Duktape.enc('jc', val, null, 4);
+    var jc3 = Duktape.enc('jc', val, id, 4);
 
-  print(jc2 === jc3);
-  print("jc1");
-  cleanPrint(jc1);
-  print("jc2");
-  cleanPrint(jc2);
-  print("jc3");
-  cleanPrint(jc3);
+    print(jc2 === jc3);
+    print('jc1');
+    cleanPrint(jc1);
+    print('jc2');
+    cleanPrint(jc2);
+    print('jc3');
+    cleanPrint(jc3);
 }
 
 try {
-  print("jx/jc test");
-  jxJcFastPathTest();
+    print('jx/jc test');
+    jxJcFastPathTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

@@ -288,47 +288,47 @@ globalFunc called: 255
 ===*/
 
 function createFunc(count) {
-  var res = [];
-  var i;
+    var res = [];
+    var i;
 
-  res.push("(function test" + count + "() {");
-  for (i = 0; i < count; i++) {
-    // Use dummy variables to control where the call setup target
-    // (CSVAR 'a' field) goes.  We must cross the shuffle boundary
-    // exactly, and also exercise the BC limit for shuffling which
-    // has special handling in the compiler.
-    res.push("var unused" + i + " = 123;");
-  }
-  res.push("globalFunc(" + i + ");");
-  res.push("})");
-  return eval(res.join("\n"));
+    res.push('(function test' + count + '() {');
+    for (i = 0; i < count; i++) {
+        // Use dummy variables to control where the call setup target
+        // (CSVAR 'a' field) goes.  We must cross the shuffle boundary
+        // exactly, and also exercise the BC limit for shuffling which
+        // has special handling in the compiler.
+        res.push('var unused' + i + ' = 123;');
+    }
+    res.push('globalFunc(' + i + ');');
+    res.push('})');
+    return eval(res.join('\n'));
 }
 
 function test() {
-  var i;
+    var i;
 
-  globalFunc = function globalFunc(arg) {
-    print("globalFunc called:", arg);
-  };
+    globalFunc = function globalFunc(arg) {
+        print('globalFunc called:', arg);
+    };
 
-  function test(count) {
-    try {
-      createFunc(count)();
-    } catch (e) {
-      print(count, e.name);
+    function test(count) {
+        try {
+            createFunc(count)();
+        } catch (e) {
+            print(count, e.name);
+        }
     }
-  }
 
-  for (i = 0; i < 256; i++) {
-    test(i);
-  }
-  for (i = 262130; i < 262150; i++) {
-    test(i);
-  }
+    for (i = 0; i < 256; i++) {
+        test(i);
+    }
+    for (i = 262130; i < 262150; i++) {
+        test(i);
+    }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

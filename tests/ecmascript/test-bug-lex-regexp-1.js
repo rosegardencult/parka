@@ -9,11 +9,11 @@
 var obj, val;
 
 try {
-  eval("obj = { foo: 124 };");
-  eval("val = obj['foo']/2;");
-  eval("print(val)");
+    eval("obj = { foo: 124 };");
+    eval("val = obj['foo']/2;");
+    eval("print(val)");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -23,9 +23,9 @@ try {
 /* Similar test for parens */
 
 try {
-  print(eval("(50+50)/2"));
+    print(eval("(50+50)/2"));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -37,7 +37,7 @@ NaN
  */
 
 try {
-  print(eval("({foo:1}/2)"));
+    print(eval("({foo:1}/2)"));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

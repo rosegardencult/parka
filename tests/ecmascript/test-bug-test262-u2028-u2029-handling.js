@@ -13,17 +13,17 @@
 var bar;
 
 try {
-  bar = -1;
-  eval("var foo\u2028bar = 66;");
-  print(bar);
+    bar = -1;
+    eval("var foo\u2028bar = 66;");
+    print(bar);
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 try {
-  bar = -1;
-  eval("var foo\u2028bar = 66;");
-  print(bar);
+    bar = -1;
+    eval("var foo\u2028bar = 66;");
+    print(bar);
 } catch (e) {
-  print(e);
+    print(e);
 }

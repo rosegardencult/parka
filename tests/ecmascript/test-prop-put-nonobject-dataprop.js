@@ -19,14 +19,14 @@ TypeError
 ===*/
 
 function f() {
-  "use strict";
+  'use strict';
 
-  "foo".bar = 1; /* TypeError in strict mode */
-}
+  "foo".bar = 1;  /* TypeError in strict mode */
+};
 
 try {
-  f();
-  print("not thrown");
+    f();
+    print("not thrown");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

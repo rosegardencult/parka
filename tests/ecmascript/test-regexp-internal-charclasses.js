@@ -13,54 +13,54 @@
 ===*/
 
 function printEscaped(x) {
-  var i, n, c;
-  var res = [];
-  var nybbles = "0123456789abcdef";
+    var i, n, c;
+    var res = [];
+    var nybbles = '0123456789abcdef';
 
-  for (i = 0, n = x.length; i < n; i++) {
-    c = x.charCodeAt(i);
-    if (c >= 0x20 && c <= 0x7e && x[i] !== "'" && x[i] !== '"') {
-      res.push(x[i]);
-    } else {
-      res.push("\\x" + nybbles[(c >> 4) & 0x0f] + nybbles[c & 0x0f]);
+    for (i = 0, n = x.length; i < n; i++) {
+        c = x.charCodeAt(i);
+        if (c >= 0x20 && c <= 0x7e && x[i] !== '\'' && x[i] !== '"') {
+            res.push(x[i]);
+        } else {
+            res.push('\\x' + nybbles[(c >> 4) & 0x0f] + nybbles[c & 0x0f]);
+        }
     }
-  }
 
-  print(x.length + ': "' + res.join("") + '"');
+    print(x.length + ': "' + res.join('') + '"');
 }
 
 function testCharacterClassMatches() {
-  var i, str;
+    var i, str;
 
-  str = "";
-  for (i = 0; i < 256; i++) {
-    str += String.fromCharCode(i);
-  }
-
-  printEscaped(str);
-
-  function test(re) {
-    var res = "";
-    var t;
-    for (var i = 0; i < 256; i++) {
-      t = re.exec(String.fromCharCode(i));
-      if (t) {
-        res += t[0];
-      }
+    str = '';
+    for (i = 0; i < 256; i++) {
+        str += String.fromCharCode(i);
     }
-    printEscaped(res);
-  }
 
-  test(/[\d]/);
-  test(/[\D]/);
-  test(/[\s]/);
-  test(/[\S]/);
-  test(/[\w]/);
-  test(/[\W]/);
+    printEscaped(str);
+
+    function test(re) {
+        var res = '';
+        var t;
+        for (var i = 0; i < 256; i++) {
+            t = re.exec(String.fromCharCode(i));
+            if (t) {
+                res += t[0];
+            }
+        }
+        printEscaped(res);
+    }
+
+    test(/[\d]/);
+    test(/[\D]/);
+    test(/[\s]/);
+    test(/[\S]/);
+    test(/[\w]/);
+    test(/[\W]/);
 }
 
 try {
-  testCharacterClassMatches();
+    testCharacterClassMatches();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

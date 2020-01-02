@@ -47,114 +47,81 @@ PRACE fulfill 1: 234
 var resolve1, resolve1;
 var resolve2, resolve2;
 var resolve3, resolve3;
-var P1 = new Promise(function(resolve, reject) {
-  print("P1 executor");
-  resolve1 = resolve;
-  reject1 = reject;
+var P1 = new Promise(function (resolve, reject) {
+    print('P1 executor');
+    resolve1 = resolve; reject1 = reject;
 });
-var P2 = new Promise(function(resolve, reject) {
-  print("P2 executor");
-  resolve2 = resolve;
-  reject2 = reject;
+var P2 = new Promise(function (resolve, reject) {
+    print('P2 executor');
+    resolve2 = resolve; reject2 = reject;
 });
-var P3 = new Promise(function(resolve, reject) {
-  print("P3 executor");
-  resolve3 = resolve;
-  reject3 = reject;
+var P3 = new Promise(function (resolve, reject) {
+    print('P3 executor');
+    resolve3 = resolve; reject3 = reject;
 });
 
-P1.then(
-  function(v) {
-    print("P1.then fulfill 1:", v);
-  },
-  function(e) {
-    print("P1.then reject 1:", String(e));
-  }
-);
-P2.then(
-  function(v) {
-    print("P2.then fulfill 1:", v);
-  },
-  function(e) {
-    print("P2.then reject 1:", String(e));
-  }
-);
-P3.then(
-  function(v) {
-    print("P3.then fulfill 1:", v);
-  },
-  function(e) {
-    print("P3.then reject 1:", String(e));
-  }
-);
+P1.then(function (v) {
+    print('P1.then fulfill 1:', v);
+}, function (e) {
+    print('P1.then reject 1:', String(e));
+});
+P2.then(function (v) {
+    print('P2.then fulfill 1:', v);
+}, function (e) {
+    print('P2.then reject 1:', String(e));
+});
+P3.then(function (v) {
+    print('P3.then fulfill 1:', v);
+}, function (e) {
+    print('P3.then reject 1:', String(e));
+});
 
-print("create Promise.race()");
-var PRACE = Promise.race([P1, P2, P3]);
-PRACE.then(
-  function(v) {
-    print("PRACE fulfill 1:", v);
-  },
-  function(e) {
-    print("PRACE reject 1:", String(e));
-  }
-);
+print('create Promise.race()');
+var PRACE = Promise.race([ P1, P2, P3 ]);
+PRACE.then(function (v) {
+    print('PRACE fulfill 1:', v);
+}, function (e) {
+    print('PRACE reject 1:', String(e));
+});
 
-P1.then(
-  function(v) {
-    print("P1.then fulfill 2:", v);
-  },
-  function(e) {
-    print("P1.then reject 2:", String(e));
-  }
-);
-P2.then(
-  function(v) {
-    print("P2.then fulfill 2:", v);
-  },
-  function(e) {
-    print("P2.then reject 2:", String(e));
-  }
-);
-P3.then(
-  function(v) {
-    print("P3.then fulfill 2:", v);
-  },
-  function(e) {
-    print("P3.then reject 2:", String(e));
-  }
-);
+P1.then(function (v) {
+    print('P1.then fulfill 2:', v);
+}, function (e) {
+    print('P1.then reject 2:', String(e));
+});
+P2.then(function (v) {
+    print('P2.then fulfill 2:', v);
+}, function (e) {
+    print('P2.then reject 2:', String(e));
+});
+P3.then(function (v) {
+    print('P3.then fulfill 2:', v);
+}, function (e) {
+    print('P3.then reject 2:', String(e));
+});
 
-print("resolve 3");
+print('resolve 3');
 resolve3(234);
-P3.then(
-  function(v) {
-    print("P3.then fulfill 3:", v);
-  },
-  function(e) {
-    print("P3.then reject 3:", String(e));
-  }
-);
+P3.then(function (v) {
+    print('P3.then fulfill 3:', v);
+}, function (e) {
+    print('P3.then reject 3:', String(e));
+});
 
-print("resolve 2");
+print('resolve 2');
 resolve2(123);
-P2.then(
-  function(v) {
-    print("P2.then fulfill 3:", v);
-  },
-  function(e) {
-    print("P2.then reject 3:", String(e));
-  }
-);
+P2.then(function (v) {
+    print('P2.then fulfill 3:', v);
+}, function (e) {
+    print('P2.then reject 3:', String(e));
+});
 
-print("reject 1");
-reject1(new Error("aiee"));
-P1.then(
-  function(v) {
-    print("P1.then fulfill 3:", v);
-  },
-  function(e) {
-    print("P1.then reject 3:", String(e));
-  }
-);
+print('reject 1');
+reject1(new Error('aiee'));
+P1.then(function (v) {
+    print('P1.then fulfill 3:', v);
+}, function (e) {
+    print('P1.then reject 3:', String(e));
+});
 
-print("done");
+print('done');

@@ -8,12 +8,12 @@ true
 ===*/
 
 function test() {
-  var buf = new Buffer(10);
-  print(ArrayBuffer.isView(buf));
+    var buf = new Buffer(10);
+    print(ArrayBuffer.isView(buf));
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

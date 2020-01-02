@@ -9,7 +9,7 @@
  */
 
 function indirectCheckObjectCoercible(x) {
-  String.prototype.charAt.call(x, 0);
+    String.prototype.charAt.call(x, 0);
 }
 
 /*===
@@ -24,24 +24,14 @@ no error
 no error
 ===*/
 
-var values = [
-  undefined,
-  null,
-  true,
-  false,
-  123.0,
-  "foo",
-  {},
-  [],
-  function() {}
-];
+var values = [ undefined, null, true, false, 123.0, "foo", {}, [], function () {} ];
 var i;
 
 for (i = 0; i < values.length; i++) {
-  try {
-    indirectCheckObjectCoercible(values[i]);
-    print("no error");
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        indirectCheckObjectCoercible(values[i]);
+        print('no error');
+    } catch (e) {
+        print(e.name);
+    }
 }

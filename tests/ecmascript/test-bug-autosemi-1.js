@@ -10,23 +10,23 @@ var x = 10;
 var y = 20;
 
 function f_postinc() {
-  print(x, y);
+    print(x, y);
 
-  // interpreted as "x; ++y;"
-  x;
-  ++y;
+    // interpreted as "x; ++y;"
+    x
+    ++y
 
-  print("->", x, y);
+    print('->', x, y);
 
-  // interpreted as "x++; y;"
-  x++;
-  y;
+    // interpreted as "x++; y;"
+    x++
+    y
 
-  print("->", x, y);
+    print('->', x, y);
 }
 
 try {
-  f_postinc();
+    f_postinc();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

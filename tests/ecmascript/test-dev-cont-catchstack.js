@@ -30,32 +30,32 @@ still here
  */
 
 function f1() {
-  try {
     try {
-      try {
         try {
-          f1();
+            try {
+                try {
+                    f1();
+                } finally {
+                }
+            } finally {
+            }
         } finally {
         }
-      } finally {
-      }
     } finally {
     }
-  } finally {
-  }
 }
 
 try {
-  f1();
+    f1();
 } catch (e) {
-  print(e.name + ": " + e.message);
+    print(e.name + ': ' + e.message);
 
-  // ensure that it is indeed the catchstack which failed; Rhino and V8
-  // will fail this test of course
-  print(/catch/i.test(e.message));
+    // ensure that it is indeed the catchstack which failed; Rhino and V8
+    // will fail this test of course
+    print(/catch/i.test(e.message));
 }
 
-print("still here");
+print('still here');
 
 /*===
 6765
@@ -64,17 +64,13 @@ print("still here");
 /* Test that we can continue normally.  Just a simple recursive call test here. */
 
 function fib(x) {
-  if (x == 0) {
-    return 0;
-  }
-  if (x == 1) {
-    return 1;
-  }
-  return fib(x - 1) + fib(x - 2);
+    if (x == 0) { return 0; }
+    if (x == 1) { return 1; }
+    return fib(x - 1) + fib(x - 2);
 }
 
 try {
-  print(fib(20));
+    print(fib(20));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

@@ -11,20 +11,20 @@ obj1
 ===*/
 
 function test() {
-  var obj1 = { name: "obj1" };
-  var obj2 = { name: "obj2" };
+    var obj1 = { name: 'obj1' };
+    var obj2 = { name: 'obj2' };
 
-  // For these it'd be nice to avoid an explicit bytecode copy, because
-  // the key won't mutate any state.
-  print(obj1.name);
-  print(obj1["name"]);
+    // For these it'd be nice to avoid an explicit bytecode copy, because
+    // the key won't mutate any state.
+    print(obj1.name);
+    print(obj1['name']);
 
-  // Here a copy must be made.
-  print(obj1[((obj1 = obj2), "name")]);
+    // Here a copy must be made.
+    print(obj1[(obj1 = obj2), 'name']);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

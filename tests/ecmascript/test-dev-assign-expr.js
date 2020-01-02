@@ -103,203 +103,131 @@ var glob;
 /* Test assignment cases where LHS is handled using slow path PUTVAR. */
 
 function slowPathAssignTest() {
-  var four = 4;
-  var y = 99;
-  var y1 = 10;
-  var y2 = 20;
-  var y3 = 30;
-  var y4 = 40;
+    var four = 4;
+    var y = 99;
+    var y1 = 10;
+    var y2 = 20;
+    var y3 = 30;
+    var y4 = 40;
 
-  // Top-level assignment cases.
-  //  plain: true, 123
-  //  const: 123.1, 'foo'
-  //  temp reg: four + 1
-  //  reg-bound var: y
+    // Top-level assignment cases.
+    //  plain: true, 123
+    //  const: 123.1, 'foo'
+    //  temp reg: four + 1
+    //  reg-bound var: y
 
-  glob = true;
-  print(glob);
-  glob = 123;
-  print(glob);
-  glob = 123.1;
-  print(glob);
-  glob = four + 1;
-  print(glob);
-  glob = y;
-  print(glob);
+    glob = true; print(glob);
+    glob = 123; print(glob);
+    glob = 123.1; print(glob);
+    glob = four + 1; print(glob);
+    glob = y; print(glob);
 
-  glob += true;
-  print(glob);
-  glob += 123;
-  print(glob);
-  glob += 123.1;
-  print(glob);
-  glob += four + 1;
-  print(glob);
-  glob += y;
-  print(glob);
+    glob += true; print(glob);
+    glob += 123; print(glob);
+    glob += 123.1; print(glob);
+    glob += four + 1; print(glob);
+    glob += y; print(glob);
 
-  // Parenthesis don't affect the top level status.
+    // Parenthesis don't affect the top level status.
 
-  glob = true;
-  print(glob);
-  glob = 123;
-  print(glob);
-  glob = 123.1;
-  print(glob);
-  glob = four + 1;
-  print(glob);
-  glob = y;
-  print(glob);
+    (glob = true); print(glob);
+    (glob = 123); print(glob);
+    (glob = 123.1); print(glob);
+    (glob = four + 1); print(glob);
+    (glob = y); print(glob);
 
-  glob += true;
-  print(glob);
-  glob += 123;
-  print(glob);
-  glob += 123.1;
-  print(glob);
-  glob += four + 1;
-  print(glob);
-  glob += y;
-  print(glob);
+    (glob += true); print(glob);
+    (glob += 123); print(glob);
+    (glob += 123.1); print(glob);
+    (glob += four + 1); print(glob);
+    (glob += y); print(glob);
 
-  // Comma expression doesn't affect top level status.
+    // Comma expression doesn't affect top level status.
 
-  (glob = true), print("post: " + glob);
-  (glob = 123), print("post: " + glob);
-  (glob = 123.1), print("post: " + glob);
-  (glob = four + 1), print("post: " + glob);
-  (glob = y), print("post: " + glob);
+    glob = true, print('post: ' + glob);
+    glob = 123, print('post: ' + glob);
+    glob = 123.1, print('post: ' + glob);
+    glob = four + 1, print('post: ' + glob);
+    glob = y, print('post: ' + glob);
 
-  (glob += true), print("post: " + glob);
-  (glob += 123), print("post: " + glob);
-  (glob += 123.1), print("post: " + glob);
-  (glob += four + 1), print("post: " + glob);
-  (glob += y), print("post: " + glob);
+    glob += true, print('post: ' + glob);
+    glob += 123, print('post: ' + glob);
+    glob += 123.1, print('post: ' + glob);
+    glob += four + 1, print('post: ' + glob);
+    glob += y, print('post: ' + glob);
 
-  print("pre: " + glob), (glob = true), print("post: " + glob);
-  print("pre: " + glob), (glob = 123), print("post: " + glob);
-  print("pre: " + glob), (glob = 123.1), print("post: " + glob);
-  print("pre: " + glob), (glob = four + 1), print("post: " + glob);
-  print("pre: " + glob), (glob = y), print("post: " + glob);
+    print('pre: ' + glob), glob = true, print('post: ' + glob);
+    print('pre: ' + glob), glob = 123, print('post: ' + glob);
+    print('pre: ' + glob), glob = 123.1, print('post: ' + glob);
+    print('pre: ' + glob), glob = four + 1, print('post: ' + glob);
+    print('pre: ' + glob), glob = y, print('post: ' + glob);
 
-  print("pre: " + glob), (glob += true), print("post: " + glob);
-  print("pre: " + glob), (glob += 123), print("post: " + glob);
-  print("pre: " + glob), (glob += 123.1), print("post: " + glob);
-  print("pre: " + glob), (glob += four + 1), print("post: " + glob);
-  print("pre: " + glob), (glob += y), print("post: " + glob);
+    print('pre: ' + glob), glob += true, print('post: ' + glob);
+    print('pre: ' + glob), glob += 123, print('post: ' + glob);
+    print('pre: ' + glob), glob += 123.1, print('post: ' + glob);
+    print('pre: ' + glob), glob += four + 1, print('post: ' + glob);
+    print('pre: ' + glob), glob += y, print('post: ' + glob);
 
-  // Being inside a function call (or any other expression type)
-  // removes top level status.
+    // Being inside a function call (or any other expression type)
+    // removes top level status.
 
-  print((glob = true));
-  print(glob);
-  print((glob = 123));
-  print(glob);
-  print((glob = 123.1));
-  print(glob);
-  print((glob = four + 1));
-  print(glob);
-  print((glob = y));
-  print(glob);
+    print(glob = true); print(glob);
+    print(glob = 123); print(glob);
+    print(glob = 123.1); print(glob);
+    print(glob = four + 1); print(glob);
+    print(glob = y); print(glob);
 
-  print((glob += true));
-  print(glob);
-  print((glob += 123));
-  print(glob);
-  print((glob += 123.1));
-  print(glob);
-  print((glob += four + 1));
-  print(glob);
-  print((glob += y));
-  print(glob);
+    print(glob += true); print(glob);
+    print(glob += 123); print(glob);
+    print(glob += 123.1); print(glob);
+    print(glob += four + 1); print(glob);
+    print(glob += y); print(glob);
 
-  // Intermediate values must be independent of 'glob'.
+    // Intermediate values must be independent of 'glob'.
 
-  print((glob = 10) + (glob = 20) + ((glob = 30) + (glob = 40)));
-  print((glob = y1) + (glob = y2) + ((glob = y3) + (glob = y4)));
+    print( ((glob = 10) + (glob = 20)) + ((glob = 30) + (glob = 40)) );
+    print( ((glob = y1) + (glob = y2)) + ((glob = y3) + (glob = y4)) );
 
-  glob = 100;
-  print((glob += 10) + (glob += 20) + ((glob += 30) + (glob += 40)));
-  print((glob += y1) + (glob += y2) + ((glob += y3) + (glob += y4)));
+    glob = 100;
+    print( ((glob += 10) + (glob += 20)) + ((glob += 30) + (glob += 40)) );
+    print( ((glob += y1) + (glob += y2)) + ((glob += y3) + (glob += y4)) );
 
-  // Both LHS and RHS are mutated so an actual temp is mandatory.
-  y1 = 10;
-  y2 = 20;
-  y3 = 30;
-  y4 = 40;
-  print(
-    (glob = y1) +
-      (glob = y1 = y2) +
-      ((glob = y1 = y2 = y3) + (glob = y1 = y2 = y3 = y4))
-  );
+    // Both LHS and RHS are mutated so an actual temp is mandatory.
+    y1 = 10; y2 = 20; y3 = 30; y4 = 40;
+    print( ((glob = y1) + (glob = y1 = y2)) + ((glob = y1 = y2 = y3) + (glob = y1 = y2 = y3 = y4)) );
 
-  y1 = 10;
-  y2 = 20;
-  y3 = 30;
-  y4 = 40;
-  print(
-    (glob += y1) +
-      (glob += y1 += y2) +
-      ((glob += y1 += y2 += y3) + (glob += y1 += y2 += y3 += y4))
-  );
+    y1 = 10; y2 = 20; y3 = 30; y4 = 40;
+    print( ((glob += y1) + (glob += y1 += y2)) + ((glob += y1 += y2 += y3) + (glob += y1 += y2 += y3 += y4)) );
 
-  // Unresolved addition as RHS.
-  y1 = 10;
-  y2 = 20;
-  y3 = 30;
-  y4 = 40;
-  glob = y1 + y2;
-  print(glob);
+    // Unresolved addition as RHS.
+    y1 = 10; y2 = 20; y3 = 30; y4 = 40;
+    glob = y1 + y2; print(glob);
 
-  y1 = 10;
-  y2 = 20;
-  y3 = 30;
-  y4 = 40;
-  print((glob = y1 + y2) + (glob = y3 + y4));
+    y1 = 10; y2 = 20; y3 = 30; y4 = 40;
+    print( (glob = y1 + y2) + (glob = y3 + y4) );
 
-  // Unresolved addition as RHS.  Must be computed exactly once
-  // so that side effects are not repeated.
+    // Unresolved addition as RHS.  Must be computed exactly once
+    // so that side effects are not repeated.
 
-  y1 = 10;
-  y2 = 20;
-  y3 = 30;
-  y4 = 40;
-  print((glob = 1 + 2));
-  print(glob);
+    y1 = 10; y2 = 20; y3 = 30; y4 = 40;
+    print(glob = 1 + 2); print(glob);
 
-  var obj1 = {
-    valueOf: function() {
-      print("arg1");
-      return 123;
-    }
-  };
-  var obj2 = {
-    valueOf: function() {
-      print("arg2");
-      return 234;
-    }
-  };
-  print((glob = obj1 + obj2));
+    var obj1 = {valueOf: function() { print('arg1'); return 123; }};
+    var obj2 = {valueOf: function() { print('arg2'); return 234; }};
+    print(glob = obj1 + obj2);
 
-  y1 = 10;
-  y2 = 20;
-  y3 = 30;
-  y4 = 40;
-  glob = y1 + y2;
-  print(glob);
+    y1 = 10; y2 = 20; y3 = 30; y4 = 40;
+    glob = y1 + y2; print(glob);
 
-  y1 = 10;
-  y2 = 20;
-  y3 = 30;
-  y4 = 40;
-  print((glob = y1 + y2) + (glob = y3 + y4));
+    y1 = 10; y2 = 20; y3 = 30; y4 = 40;
+    print( (glob = y1 + y2) + (glob = y3 + y4) );
 }
 
 try {
-  print("slow path");
-  slowPathAssignTest();
+    print('slow path');
+    slowPathAssignTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -394,188 +322,125 @@ arg2
  */
 
 function fastPathAssignTest() {
-  var four = 4;
-  var x;
-  var y = 99;
-  var y1 = 10;
-  var y2 = 20;
-  var y3 = 30;
-  var y4 = 40;
+    var four = 4;
+    var x;
+    var y = 99;
+    var y1 = 10;
+    var y2 = 20;
+    var y3 = 30;
+    var y4 = 40;
 
-  // Top-level assignment cases.
-  //  plain: true, 123
-  //  const: 123.1, 'foo'
-  //  temp reg: four + 1
-  //  reg-bound var: y
+    // Top-level assignment cases.
+    //  plain: true, 123
+    //  const: 123.1, 'foo'
+    //  temp reg: four + 1
+    //  reg-bound var: y
 
-  x = true;
-  print(x);
-  x = 123;
-  print(x);
-  x = 123.1;
-  print(x);
-  x = four + 1;
-  print(x);
-  x = y;
-  print(x);
+    x = true; print(x);
+    x = 123; print(x);
+    x = 123.1; print(x);
+    x = four + 1; print(x);
+    x = y; print(x);
 
-  x += true;
-  print(x);
-  x += 123;
-  print(x);
-  x += 123.1;
-  print(x);
-  x += four + 1;
-  print(x);
-  x += y;
-  print(x);
+    x += true; print(x);
+    x += 123; print(x);
+    x += 123.1; print(x);
+    x += four + 1; print(x);
+    x += y; print(x);
 
-  // Parenthesis don't affect the top level status.
+    // Parenthesis don't affect the top level status.
 
-  x = true;
-  print(x);
-  x = 123;
-  print(x);
-  x = 123.1;
-  print(x);
-  x = four + 1;
-  print(x);
-  x = y;
-  print(x);
+    (x = true); print(x);
+    (x = 123); print(x);
+    (x = 123.1); print(x);
+    (x = four + 1); print(x);
+    (x = y); print(x);
 
-  x += true;
-  print(x);
-  x += 123;
-  print(x);
-  x += 123.1;
-  print(x);
-  x += four + 1;
-  print(x);
-  x += y;
-  print(x);
+    (x += true); print(x);
+    (x += 123); print(x);
+    (x += 123.1); print(x);
+    (x += four + 1); print(x);
+    (x += y); print(x);
 
-  // Comma expression doesn't affect top level status.
+    // Comma expression doesn't affect top level status.
 
-  (x = true), print("post: " + x);
-  (x = 123), print("post: " + x);
-  (x = 123.1), print("post: " + x);
-  (x = four + 1), print("post: " + x);
-  (x = y), print("post: " + x);
+    x = true, print('post: ' + x);
+    x = 123, print('post: ' + x);
+    x = 123.1, print('post: ' + x);
+    x = four + 1, print('post: ' + x);
+    x = y, print('post: ' + x);
 
-  (x += true), print("post: " + x);
-  (x += 123), print("post: " + x);
-  (x += 123.1), print("post: " + x);
-  (x += four + 1), print("post: " + x);
-  (x += y), print("post: " + x);
+    x += true, print('post: ' + x);
+    x += 123, print('post: ' + x);
+    x += 123.1, print('post: ' + x);
+    x += four + 1, print('post: ' + x);
+    x += y, print('post: ' + x);
 
-  print("pre: " + x), (x = true), print("post: " + x);
-  print("pre: " + x), (x = 123), print("post: " + x);
-  print("pre: " + x), (x = 123.1), print("post: " + x);
-  print("pre: " + x), (x = four + 1), print("post: " + x);
-  print("pre: " + x), (x = y), print("post: " + x);
+    print('pre: ' + x), x = true, print('post: ' + x);
+    print('pre: ' + x), x = 123, print('post: ' + x);
+    print('pre: ' + x), x = 123.1, print('post: ' + x);
+    print('pre: ' + x), x = four + 1, print('post: ' + x);
+    print('pre: ' + x), x = y, print('post: ' + x);
 
-  print("pre: " + x), (x += true), print("post: " + x);
-  print("pre: " + x), (x += 123), print("post: " + x);
-  print("pre: " + x), (x += 123.1), print("post: " + x);
-  print("pre: " + x), (x += four + 1), print("post: " + x);
-  print("pre: " + x), (x += y), print("post: " + x);
+    print('pre: ' + x), x += true, print('post: ' + x);
+    print('pre: ' + x), x += 123, print('post: ' + x);
+    print('pre: ' + x), x += 123.1, print('post: ' + x);
+    print('pre: ' + x), x += four + 1, print('post: ' + x);
+    print('pre: ' + x), x += y, print('post: ' + x);
 
-  // Being inside a function call (or any other expression type)
-  // removes top level status.
+    // Being inside a function call (or any other expression type)
+    // removes top level status.
 
-  print((x = true));
-  print(x);
-  print((x = 123));
-  print(x);
-  print((x = 123.1));
-  print(x);
-  print((x = four + 1));
-  print(x);
-  print((x = y));
-  print(x);
+    print(x = true); print(x);
+    print(x = 123); print(x);
+    print(x = 123.1); print(x);
+    print(x = four + 1); print(x);
+    print(x = y); print(x);
 
-  print((x += true));
-  print(x);
-  print((x += 123));
-  print(x);
-  print((x += 123.1));
-  print(x);
-  print((x += four + 1));
-  print(x);
-  print((x += y));
-  print(x);
+    print(x += true); print(x);
+    print(x += 123); print(x);
+    print(x += 123.1); print(x);
+    print(x += four + 1); print(x);
+    print(x += y); print(x);
 
-  // Intermediate values must be independent of 'x'.
+    // Intermediate values must be independent of 'x'.
 
-  print((x = 10) + (x = 20) + ((x = 30) + (x = 40)));
-  print((x = y1) + (x = y2) + ((x = y3) + (x = y4)));
+    print( ((x = 10) + (x = 20)) + ((x = 30) + (x = 40)) );
+    print( ((x = y1) + (x = y2)) + ((x = y3) + (x = y4)) );
 
-  x = 100;
-  print((x += 10) + (x += 20) + ((x += 30) + (x += 40)));
-  print((x += y1) + (x += y2) + ((x += y3) + (x += y4)));
+    x = 100;
+    print( ((x += 10) + (x += 20)) + ((x += 30) + (x += 40)) );
+    print( ((x += y1) + (x += y2)) + ((x += y3) + (x += y4)) );
 
-  // Both LHS and RHS are mutated so an actual temp is mandatory.
-  y1 = 10;
-  y2 = 20;
-  y3 = 30;
-  y4 = 40;
-  print(
-    (x = y1) + (x = y1 = y2) + ((x = y1 = y2 = y3) + (x = y1 = y2 = y3 = y4))
-  );
+    // Both LHS and RHS are mutated so an actual temp is mandatory.
+    y1 = 10; y2 = 20; y3 = 30; y4 = 40;
+    print( ((x = y1) + (x = y1 = y2)) + ((x = y1 = y2 = y3) + (x = y1 = y2 = y3 = y4)) );
 
-  y1 = 10;
-  y2 = 20;
-  y3 = 30;
-  y4 = 40;
-  print(
-    (x += y1) +
-      (x += y1 += y2) +
-      ((x += y1 += y2 += y3) + (x += y1 += y2 += y3 += y4))
-  );
+    y1 = 10; y2 = 20; y3 = 30; y4 = 40;
+    print( ((x += y1) + (x += y1 += y2)) + ((x += y1 += y2 += y3) + (x += y1 += y2 += y3 += y4)) );
 
-  // Unresolved addition as RHS.  Must be computed exactly once
-  // so that side effects are not repeated.
+    // Unresolved addition as RHS.  Must be computed exactly once
+    // so that side effects are not repeated.
 
-  y1 = 10;
-  y2 = 20;
-  y3 = 30;
-  y4 = 40;
-  print((x = 1 + 2));
-  print(x);
+    y1 = 10; y2 = 20; y3 = 30; y4 = 40;
+    print(x = 1 + 2); print(x);
 
-  var obj1 = {
-    valueOf: function() {
-      print("arg1");
-      return 123;
-    }
-  };
-  var obj2 = {
-    valueOf: function() {
-      print("arg2");
-      return 234;
-    }
-  };
-  print((x = obj1 + obj2));
+    var obj1 = {valueOf: function() { print('arg1'); return 123; }};
+    var obj2 = {valueOf: function() { print('arg2'); return 234; }};
+    print(x = obj1 + obj2);
 
-  y1 = 10;
-  y2 = 20;
-  y3 = 30;
-  y4 = 40;
-  x = y1 + y2;
-  print(x);
+    y1 = 10; y2 = 20; y3 = 30; y4 = 40;
+    x = y1 + y2; print(x);
 
-  y1 = 10;
-  y2 = 20;
-  y3 = 30;
-  y4 = 40;
-  print((x = y1 + y2) + (x = y3 + y4));
+    y1 = 10; y2 = 20; y3 = 30; y4 = 40;
+    print( (x = y1 + y2) + (x = y3 + y4) );
 }
 
 try {
-  print("fast path");
-  fastPathAssignTest();
+    print('fast path');
+    fastPathAssignTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -609,84 +474,59 @@ misc assign test
 ===*/
 
 function miscAssignTest() {
-  var x = 10;
-  var y = 20;
-  var z = 30;
-  var w;
-  var obj = { foo: 0 };
+    var x = 10;
+    var y = 20;
+    var z = 30;
+    var w;
+    var obj = { foo: 0 };
 
-  // On the top level these should not use a temporary, and e.g.
-  // x = y + z should compile to a single ADD.
-  x = y + z;
-  print(x);
-  x += y;
-  print(x);
-  x += y + z;
-  print(x);
+    // On the top level these should not use a temporary, and e.g.
+    // x = y + z should compile to a single ADD.
+    x = y + z; print(x);
+    x += y; print(x);
+    x += y + z; print(x);
 
-  // Outside of top level a temporary must be used.
-  w = x = y + z;
-  print(x);
-  w = x += y;
-  print(x);
-  w = x += y + z;
-  print(x);
+    // Outside of top level a temporary must be used.
+    w = x = y + z; print(x);
+    w = x += y; print(x);
+    w = x += y + z; print(x);
 
-  // Same tests for a non-reg-bound variable.
-  glob = y + z;
-  print(glob);
-  glob += y;
-  print(glob);
-  glob += y + z;
-  print(glob);
-  w = glob = y + z;
-  print(glob);
-  w = glob += y;
-  print(glob);
-  w = glob += y + z;
-  print(glob);
+    // Same tests for a non-reg-bound variable.
+    glob = y + z; print(glob);
+    glob += y; print(glob);
+    glob += y + z; print(glob);
+    w = glob = y + z; print(glob);
+    w = glob += y; print(glob);
+    w = glob += y + z; print(glob);
 
-  // And for a property LHS.
-  obj.foo = y + z;
-  print(obj.foo);
-  obj.foo += y;
-  print(obj.foo);
-  obj.foo += y + z;
-  print(obj.foo);
-  w = obj.foo = y + z;
-  print(obj.foo);
-  w = obj.foo += y;
-  print(obj.foo);
-  w = obj.foo += y + z;
-  print(obj.foo);
+    // And for a property LHS.
+    obj.foo = y + z; print(obj.foo);
+    obj.foo += y; print(obj.foo);
+    obj.foo += y + z; print(obj.foo);
+    w = obj.foo = y + z; print(obj.foo);
+    w = obj.foo += y; print(obj.foo);
+    w = obj.foo += y + z; print(obj.foo);
 
-  // Bytecode tests (inspect manually)
-  x = 10;
-  x += 3;
-  x += 3.1;
-  x += true;
-  print(x);
+    // Bytecode tests (inspect manually)
+    x = 10;
+    x += 3;
+    x += 3.1;
+    x += true;
+    print(x);
 
-  x = 10;
-  y = 20;
-  glob = +(x + y);
-  print(glob);
-  glob = 123;
-  print(glob);
-  glob = 123.1;
-  print(glob);
-  w = glob = +(x + y);
-  print(glob);
-  w = glob = 123;
-  print(glob);
-  w = glob = 123.1;
-  print(glob);
-  print((glob = +(x + y)), (glob = 123), (glob = 123.1));
+    x = 10; y = 20;
+    glob = +(x + y); print(glob);
+    glob = 123; print(glob);
+    glob = 123.1; print(glob);
+    w = glob = +(x + y); print(glob);
+    w = glob = 123; print(glob);
+    w = glob = 123.1; print(glob);
+    print(glob = +(x + y), glob = 123, glob = 123.1);
 }
 
 try {
-  print("misc assign test");
-  miscAssignTest();
+    print('misc assign test');
+    miscAssignTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

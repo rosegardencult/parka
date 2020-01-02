@@ -21,52 +21,52 @@
 ===*/
 
 function classify1(v) {
-  switch (v) {
+    switch (v) {
     case 0:
     case 2:
     case 4:
     case 6:
     case 8:
-      return "even";
+        return 'even';
     case 1:
     case 3:
     case 5:
     case 7:
     case 9:
-      return "odd";
+        return 'odd';
     default:
-      return "out-of-range";
-  }
+        return 'out-of-range';
+    }
 }
 
 function classify2(v) {
-  switch (v) {
+    switch (v) {
     default:
     case 0:
     case 2:
     case 4:
     case 6:
     case 8:
-      return "even-or-out-of-range";
+        return 'even-or-out-of-range';
     case 1:
     case 3:
     case 5:
     case 7:
     case 9:
-      return "odd";
-  }
+        return 'odd';
+    }
 }
 
 function test() {
-  var i;
+    var i;
 
-  for (i = -2; i <= 12; i++) {
-    print(i, classify1(i), classify2(i));
-  }
+    for (i = -2; i <= 12; i++) {
+        print(i, classify1(i), classify2(i));
+    }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

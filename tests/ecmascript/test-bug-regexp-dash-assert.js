@@ -3,12 +3,12 @@ true
 ===*/
 
 function test() {
-  var re = /[--]/;
-  print(re.test("-"));
+    var re = /[--]/;
+    print(re.test('-'));
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

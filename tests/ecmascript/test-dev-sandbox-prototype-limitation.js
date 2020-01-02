@@ -13,28 +13,28 @@ undefined
 ===*/
 
 function test() {
-  var proto;
+    var proto;
 
-  // Implicit inheritance example
-  print("foo".toUpperCase());
+    // Implicit inheritance example
+    print("foo".toUpperCase());
 
-  // This is not possible because String.prototype is not configurable
-  proto = {};
-  String.prototype = proto;
-  print(String.prototype === proto);
+    // This is not possible because String.prototype is not configurable
+    proto = {};
+    String.prototype = proto;
+    print(String.prototype === proto);
 
-  // Even if a sandboxing environment were to provide an empty String.prototype
-  // or not even expose 'String' at all, "foo".toUpperCase would still resolve
-  // to the built-in function.  This is not demonstrated here.
+    // Even if a sandboxing environment were to provide an empty String.prototype
+    // or not even expose 'String' at all, "foo".toUpperCase would still resolve
+    // to the built-in function.  This is not demonstrated here.
 
-  // This is sufficient to prevent access to toUpperCase.
-  delete String.prototype.toUpperCase;
-  print(typeof String.prototype.toUpperCase);
-  print(typeof "foo".toUpperCase);
+    // This is sufficient to prevent access to toUpperCase.
+    delete String.prototype.toUpperCase;
+    print(typeof String.prototype.toUpperCase);
+    print(typeof "foo".toUpperCase);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

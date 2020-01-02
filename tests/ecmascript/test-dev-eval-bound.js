@@ -10,33 +10,33 @@ global foo
 global foo
 ===*/
 
-var FOO = "global foo";
+var FOO = 'global foo';
 
 var origEval = eval;
 
 function test() {
-  var eval;
-  var FOO = "local foo";
+    var eval;
+    var FOO = 'local foo';
 
-  // Basic test.
-  eval = origEval.bind(null, "print(1+2+3)");
-  eval("print(1000)");
+    // Basic test.
+    eval = origEval.bind(null, 'print(1+2+3)');
+    eval('print(1000)');
 
-  // Direct eval sees our closure.
-  eval = origEval;
-  eval("print(FOO)");
+    // Direct eval sees our closure.
+    eval = origEval;
+    eval('print(FOO)');
 
-  // Indirect eval does not.
-  eval = origEval;
-  (1, eval)("print(FOO)");
+    // Indirect eval does not.
+    eval = origEval;
+    (1, eval)('print(FOO)');
 
-  // Bound eval also doesn't see our closure.
-  eval = origEval.bind(null, "print(FOO)");
-  eval("print(1000)");
+    // Bound eval also doesn't see our closure.
+    eval = origEval.bind(null, 'print(FOO)');
+    eval('print(1000)');
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

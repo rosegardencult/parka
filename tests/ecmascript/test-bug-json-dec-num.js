@@ -8,7 +8,7 @@ SyntaxError
  */
 
 try {
-  print(JSON.parse("1.2.3"));
+    print(JSON.parse('1.2.3'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

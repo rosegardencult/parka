@@ -5,8 +5,8 @@
  */
 
 function dec(hexInput, expect) {
-  var t = CBOR.decode(Duktape.dec("hex", hexInput));
-  print(hexInput, Duktape.enc("jx", t), Duktape.enc("jx", expect));
+    var t = CBOR.decode(Duktape.dec('hex', hexInput));
+    print(hexInput, Duktape.enc('jx', t), Duktape.enc('jx', expect));
 }
 
 /*===
@@ -15,7 +15,7 @@ function dec(hexInput, expect) {
 done
 ===*/
 
-dec("7f" + "60".repeat(1024) + "ff", "");
-dec("5f" + "40".repeat(1024) + "ff", new Uint8Array([]));
+dec('7f' + ('60'.repeat(1024)) + 'ff', '');
+dec('5f' + ('40'.repeat(1024)) + 'ff', new Uint8Array([]));
 
-print("done");
+print('done');

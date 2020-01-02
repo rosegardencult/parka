@@ -27,20 +27,20 @@ zero sign test
 ===*/
 
 function zeroSignTest() {
-  var objs = getBufferTestObjectList();
+    var objs = getBufferTestObjectList();
 
-  // Because ArrayBuffer and DataView don't have virtual index properties,
-  // the negative zero creates a concrete property and preserves the sign.
+    // Because ArrayBuffer and DataView don't have virtual index properties,
+    // the negative zero creates a concrete property and preserves the sign.
 
-  objs.forEach(function(b) {
-    b[0] = -0;
-    print(String(b), typeof b[0], 1 / b[0] > 0 ? "+0" : "-0");
-  });
+    objs.forEach(function (b) {
+        b[0] = -0;
+        print(String(b), typeof b[0], (1 / b[0] > 0) ? '+0' : '-0');
+    });
 }
 
 try {
-  print("zero sign test");
-  zeroSignTest();
+    print('zero sign test');
+    zeroSignTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

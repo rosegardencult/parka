@@ -9,19 +9,19 @@ SyntaxError
 ===*/
 
 try {
-  eval("try { throw; } catch (e) { print(e); }");
+    eval('try { throw; } catch (e) { print(e); }');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("try { throw } catch (e) { print(e); }");
+    eval('try { throw } catch (e) { print(e); }');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("try { throw\n } catch (e) { print(e); }");
+    eval('try { throw\n } catch (e) { print(e); }');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

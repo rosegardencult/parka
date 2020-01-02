@@ -3,20 +3,20 @@
  */
 
 function test(this_value, args, print_prefix) {
-  var t;
+    var t;
 
-  if (print_prefix === undefined) {
-    print_prefix = "";
-  } else {
-    print_prefix += " ";
-  }
+    if (print_prefix === undefined) {
+        print_prefix = '';
+    } else {
+        print_prefix += ' ';
+    }
 
-  try {
-    t = Number.prototype.toPrecision.apply(this_value, args);
-    print(print_prefix + typeof t + " " + t);
-  } catch (e) {
-    print(e.name);
-  }
+    try {
+        t = Number.prototype.toPrecision.apply(this_value, args);
+        print(print_prefix + typeof t + ' ' + t);
+    } catch (e) {
+        print(e.name);
+    }
 }
 
 /*===
@@ -2687,48 +2687,47 @@ RangeError
 110,22,undefined string NaN
 ===*/
 
-print("basic");
+print('basic');
 
 function basicTest() {
-  var values = [];
-  var i, t;
-  var prec;
+    var values = [];
+    var i, t;
+    var prec;
 
-  values.push(Number.NEGATIVE_INFINITY);
+    values.push(Number.NEGATIVE_INFINITY);
 
-  t = "-1.23456789012345678901234567890";
-  values.push(Number(t + "e100"));
-  for (i = 25; i >= -25; i--) {
-    values.push(Number(t + "e" + i));
-  }
-  values.push(Number(t + "e-100"));
-
-  values.push(-0);
-  values.push(+0);
-
-  t = "1.23456789012345678901234567890";
-  values.push(Number(t + "e-100"));
-  for (i = -25; i <= 25; i++) {
-    values.push(Number(t + "e" + i));
-  }
-  values.push(Number(t + "e100"));
-
-  values.push(Number.POSITIVE_INFINITY);
-  values.push(Number.NAN);
-
-  for (i = 0; i < values.length; i++) {
-    test(new Number(values[i]), [], i + "," + "n/a" + "," + values[i]);
-    for (prec = 0; prec <= 22; prec++) {
-      // 0 and 22 are out of bounds
-      test(new Number(values[i]), [prec], i + "," + prec + "," + values[i]);
+    t = '-1.23456789012345678901234567890';
+    values.push(Number(t + 'e100'));
+    for (i = 25; i >= -25; i--) {
+        values.push(Number(t + 'e' + i));
     }
-  }
+    values.push(Number(t + 'e-100'));
+
+    values.push(-0);
+    values.push(+0);
+
+    t = '1.23456789012345678901234567890';
+    values.push(Number(t + 'e-100'));
+    for (i = -25; i <= 25; i++) {
+        values.push(Number(t + 'e' + i));
+    }
+    values.push(Number(t + 'e100'));
+
+    values.push(Number.POSITIVE_INFINITY);
+    values.push(Number.NAN);
+
+    for (i = 0; i < values.length; i++) {
+        test(new Number(values[i]), [], i + ',' + 'n/a' + ',' + values[i]);
+        for (prec = 0; prec <= 22; prec++) {  // 0 and 22 are out of bounds
+            test(new Number(values[i]), [ prec ], i + ',' + prec + ',' + values[i]);
+        }
+    }
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -2772,51 +2771,45 @@ RangeError
  *  - Only at this point is precision checked to be in range [1,21]
  */
 
-print("coercion");
+print('coercion');
 
 function coercionTest() {
-  function makePrec(name, v1, v2) {
-    return {
-      toString: function() {
-        print(name + " toString");
-        return v1;
-      },
-      valueOf: function() {
-        print(name + " valueOf");
-        return v2;
-      }
-    };
-  }
+    function makePrec(name, v1, v2) {
+        return {
+            toString: function() { print(name + ' toString'); return v1; },
+            valueOf: function() { print(name + ' valueOf'); return v2; }
+        };
+    }
 
-  var prec_invalid = makePrec("prec_invalid", 200, 100);
+    var prec_invalid = makePrec('prec_invalid', 200, 100);
 
-  // if precision is undefined (or not given), same as ToString
+    // if precision is undefined (or not given), same as ToString
 
-  test(new Number(12345), []);
-  test(new Number(12345), [undefined]);
+    test(new Number(12345), []);
+    test(new Number(12345), [ undefined ]);
 
-  // if precision is given, it is ToInteger() coerced (with side
-  // effects) but not range checked for NaN and +/- Infinity
+    // if precision is given, it is ToInteger() coerced (with side
+    // effects) but not range checked for NaN and +/- Infinity
 
-  test(new Number(NaN), [prec_invalid]);
-  test(new Number(Number.POSITIVE_INFINITY), [prec_invalid]);
-  test(new Number(Number.NEGATIVE_INFINITY), [prec_invalid]);
+    test(new Number(NaN), [ prec_invalid ]);
+    test(new Number(Number.POSITIVE_INFINITY), [ prec_invalid ]);
+    test(new Number(Number.NEGATIVE_INFINITY), [ prec_invalid ]);
 
-  // if precision is given, it is ToInteger() coerced, and if number
-  // is not NaN or +/- Infinity, it is range checked to [1,21]
+    // if precision is given, it is ToInteger() coerced, and if number
+    // is not NaN or +/- Infinity, it is range checked to [1,21]
 
-  test(new Number(123), [makePrec("prec", 100, -256 * 256 * 256 * 256 + 0)]);
-  test(new Number(123), [makePrec("prec", 100, 0)]);
-  test(new Number(123), [makePrec("prec", 100, 1)]);
-  test(new Number(123), [makePrec("prec", 100, 2)]);
-  test(new Number(123), [makePrec("prec", 100, 20)]);
-  test(new Number(123), [makePrec("prec", 100, 21)]);
-  test(new Number(123), [makePrec("prec", 100, 22)]);
-  test(new Number(123), [makePrec("prec", 100, 256 * 256 * 256 * 256 + 0)]);
+    test(new Number(123), [ makePrec('prec', 100, -256*256*256*256 + 0) ]);
+    test(new Number(123), [ makePrec('prec', 100, 0) ]);
+    test(new Number(123), [ makePrec('prec', 100, 1) ]);
+    test(new Number(123), [ makePrec('prec', 100, 2) ]);
+    test(new Number(123), [ makePrec('prec', 100, 20) ]);
+    test(new Number(123), [ makePrec('prec', 100, 21) ]);
+    test(new Number(123), [ makePrec('prec', 100, 22) ]);
+    test(new Number(123), [ makePrec('prec', 100, 256*256*256*256 + 0) ]);
 }
 
 try {
-  coercionTest();
+    coercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

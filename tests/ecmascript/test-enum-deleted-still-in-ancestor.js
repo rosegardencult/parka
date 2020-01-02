@@ -11,15 +11,15 @@ foo inherited
  * the ancestor.  So, 'foo' should still enumerate.
  */
 
-function F() {}
-F.prototype = { foo: "inherited" };
+function F() {};
+F.prototype = { "foo": "inherited" };
 
 var a = new F();
 a.bar = "skip";
-a.foo = "own"; // overlapping field
+a.foo = "own";  // overlapping field
 
 // enumeration order: "bar", "foo"
 for (var i in a) {
-  delete a.foo; // only affects 'a', not F.prototype
-  print(i, a[i]);
+    delete a.foo;  // only affects 'a', not F.prototype
+    print(i, a[i]);
 }

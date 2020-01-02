@@ -568,73 +568,66 @@ ff00010203040506070809
 ===*/
 
 function test() {
-  var buf;
-  var i, j, len;
-  var csum;
+    var buf;
+    var i, j, len;
+    var csum;
 
-  for (i = 0; i < 256; i++) {
-    buf = createPlainBuffer(1);
-    buf[0] = i;
-    print(Duktape.enc("hex", buf));
-  }
+    for (i = 0; i < 256; i++) {
+        buf = createPlainBuffer(1); buf[0] = i;
+        print(Duktape.enc('hex', buf));
+    }
 
-  for (len = 0; len <= 8; len++) {
-    print(len);
-    buf = createPlainBuffer(len);
+    for (len = 0; len <= 8; len++) {
+        print(len);
+        buf = createPlainBuffer(len);
+
+        csum = 0;
+        for (;;) {
+            csum += checksumString(Duktape.enc('hex', buf));
+
+            // Full coverage for last byte, sparse coverage for others.
+            if (len == 0) { break; }
+            buf[len - 1]++;
+            if (buf[len - 1] == 0x00) {
+                for (i = len - 2; i >= 0; i--) {
+                    if (buf[i] == 0xff) {
+                        buf[i] = 0x00;
+                    } else if (i == len - 2) {
+                        buf[i] += 0x11;
+                        break;
+                    } else {
+                        buf[i] += 0xff;  // just cycle 0x00, 0xff
+                        break;
+                    }
+                }
+                if (i < 0) { break; }
+            }
+        }
+        print(csum);
+    }
 
     csum = 0;
-    for (;;) {
-      csum += checksumString(Duktape.enc("hex", buf));
-
-      // Full coverage for last byte, sparse coverage for others.
-      if (len == 0) {
-        break;
-      }
-      buf[len - 1]++;
-      if (buf[len - 1] == 0x00) {
-        for (i = len - 2; i >= 0; i--) {
-          if (buf[i] == 0xff) {
-            buf[i] = 0x00;
-          } else if (i == len - 2) {
-            buf[i] += 0x11;
-            break;
-          } else {
-            buf[i] += 0xff; // just cycle 0x00, 0xff
-            break;
-          }
-        }
-        if (i < 0) {
-          break;
-        }
-      }
+    for (len = 1; len < 8 * 1024 * 1024; len = Math.floor(len * 1.79 + 1)) {
+        print(len);
+        buf = createPlainBuffer(len);
+        for (i = 0; i < len; i++) { buf[i] = i; }
+        csum += checksumString(Duktape.enc('hex', buf));
     }
     print(csum);
-  }
 
-  csum = 0;
-  for (len = 1; len < 8 * 1024 * 1024; len = Math.floor(len * 1.79 + 1)) {
-    print(len);
-    buf = createPlainBuffer(len);
-    for (i = 0; i < len; i++) {
-      buf[i] = i;
+    // Scrolling 11 byte window: two fast path blocks (4 input bytes -> 8 output bytes)
+    // and 3 leftover bytes.  Every possible input byte goes through every position.
+    buf = createPlainBuffer(11);
+    for (i = 0; i < 256; i++) {
+        for (j = 0; j < buf.length; j++) {
+            buf[j] = i + j;
+        }
+        print(Duktape.enc('hex', buf));
     }
-    csum += checksumString(Duktape.enc("hex", buf));
-  }
-  print(csum);
-
-  // Scrolling 11 byte window: two fast path blocks (4 input bytes -> 8 output bytes)
-  // and 3 leftover bytes.  Every possible input byte goes through every position.
-  buf = createPlainBuffer(11);
-  for (i = 0; i < 256; i++) {
-    for (j = 0; j < buf.length; j++) {
-      buf[j] = i + j;
-    }
-    print(Duktape.enc("hex", buf));
-  }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

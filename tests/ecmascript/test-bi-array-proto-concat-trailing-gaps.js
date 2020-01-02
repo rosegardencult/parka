@@ -70,41 +70,37 @@
 ===*/
 
 function test() {
-  function dump(v) {
-    var tmp = [];
-    for (var i = 0; i < v.length; i++) {
-      if (i in v) {
-        tmp.push(v[i]);
-      } else {
-        tmp.push("nonexistent");
-      }
+    function dump(v) {
+        var tmp = [];
+        for (var i = 0; i < v.length; i++) {
+            if (i in v) { tmp.push(v[i]) } else { tmp.push('nonexistent'); }
+        }
+        print(v.length, tmp.join(' '));
     }
-    print(v.length, tmp.join(" "));
-  }
 
-  var a = [1, 2, 3];
-  dump(a);
+    var a = [ 1, 2, 3 ];
+    dump(a);
 
-  var b = [4, 5, ,]; // intermediate trailing elements are not ignored
-  dump(b);
+    var b = [ 4, 5, , ];  // intermediate trailing elements are not ignored
+    dump(b);
 
-  var c = [6, 7, ,]; // trailing ones are ignored by standard behavior
-  dump(c);
+    var c = [ 6, 7, , ];  // trailing ones are ignored by standard behavior
+    dump(c);
 
-  var d = a.concat(b, c);
-  dump(d);
+    var d = a.concat(b, c);
+    dump(d);
 
-  // concat() doesn't unflatten non-Array objects, so this results in a
-  // two-element array: [e, f]
+    // concat() doesn't unflatten non-Array objects, so this results in a
+    // two-element array: [e, f]
 
-  var e = { "3": "foo", "7": "bar", length: 10 };
-  var f = { "0": "quux", "2": "baz", length: 5 };
-  var g = Array.prototype.concat.call(e, f);
-  dump(g);
+    var e = { '3': 'foo', '7': 'bar', 'length': 10 };
+    var f = { '0': 'quux', '2': 'baz', 'length': 5 };
+    var g = Array.prototype.concat.call(e, f);
+    dump(g);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

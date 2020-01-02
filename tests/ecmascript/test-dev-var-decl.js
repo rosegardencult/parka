@@ -10,27 +10,27 @@ undefined
  */
 
 try {
-  print(eval("var i;"));
+    print(eval("var i;"));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(eval("var i = 1;"));
+    print(eval("var i = 1;"));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(eval("123; var i;"));
+    print(eval("123; var i;"));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(eval("123; var i = 1;"));
+    print(eval("123; var i = 1;"));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -45,23 +45,23 @@ SyntaxError
  */
 
 try {
-  eval("var for = 1;");
+    eval("var for = 1;");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  /* 'implements' is not a reserved word in non-strict mode */
-  eval("var implements = 'works'; print(implements);");
+    /* 'implements' is not a reserved word in non-strict mode */
+    eval("var implements = 'works'; print(implements);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  /* 'implements' IS a reserved word in strict mode */
-  eval("'use strict'; var implements = 'works'; print(implements);");
+    /* 'implements' IS a reserved word in strict mode */
+    eval("'use strict'; var implements = 'works'; print(implements);");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -79,29 +79,25 @@ SyntaxError
  */
 
 try {
-  eval("function f1() { var eval = 'works'; print(eval); }; f1();");
+    eval("function f1() { var eval = 'works'; print(eval); }; f1();");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("function f2() { var arguments = 'works'; print(arguments); }; f2();");
+    eval("function f2() { var arguments = 'works'; print(arguments); }; f2();");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval(
-    "function f3() { 'use strict'; var eval = 'works'; print(eval); }; f3();"
-  );
+    eval("function f3() { 'use strict'; var eval = 'works'; print(eval); }; f3();");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval(
-    "function f4() { 'use strict'; var arguments = 'works'; print(arguments); }; f4();"
-  );
+    eval("function f4() { 'use strict'; var arguments = 'works'; print(arguments); }; f4();");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

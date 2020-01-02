@@ -11,17 +11,17 @@ true
 ===*/
 
 function regexpConstructorTest() {
-  print(Object.getPrototypeOf(RegExp) === Function.prototype);
-  print(Object.prototype.toString.call(RegExp));
-  print("length" in RegExp, RegExp.length);
-  print("prototype" in RegExp);
+    print(Object.getPrototypeOf(RegExp) === Function.prototype);
+    print(Object.prototype.toString.call(RegExp));
+    print('length' in RegExp, RegExp.length);
+    print('prototype' in RegExp);
 }
 
 try {
-  print("constructor");
-  regexpConstructorTest();
+    print('constructor');
+    regexpConstructorTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -33,23 +33,20 @@ function
 ===*/
 
 function regexpPrototypeTest() {
-  // These are tested in much more detail by the general built-in objects
-  // and properties test.
+    // These are tested in much more detail by the general built-in objects
+    // and properties test.
 
-  print(
-    "constructor" in RegExp.prototype,
-    RegExp.prototype.constructor === RegExp
-  );
-  print(typeof RegExp.prototype.exec);
-  print(typeof RegExp.prototype.test);
-  print(typeof RegExp.prototype.toString);
+    print('constructor' in RegExp.prototype, RegExp.prototype.constructor === RegExp);
+    print(typeof RegExp.prototype.exec);
+    print(typeof RegExp.prototype.test);
+    print(typeof RegExp.prototype.toString);
 }
 
 try {
-  print("prototype");
-  regexpPrototypeTest();
+    print('prototype');
+    regexpPrototypeTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -62,33 +59,33 @@ lastIndex true true
 ===*/
 
 function regexpInstanceTest() {
-  var r = /foo/gi;
+    var r = /foo/gi;
 
-  function check(name) {
-    print(name, name in r, Object.getOwnPropertyDescriptor(r, name) != null);
-  }
+    function check(name) {
+        print(name, name in r, Object.getOwnPropertyDescriptor(r, name) != null);
+    }
 
-  // Properties, E5.1 Section 15.10.7
-  //
-  // The E5.1 specification indicates that the above properties should be
-  // own properties (not inherited).  Check for that, although it's quite
-  // likely at least the the flag-related properties will be converted to
-  // accessors at some point to save memory.
-  //
-  // ES2015 actually changes .source, .global, .ignoreCase, and .multiline to
-  // inherited getters, check for that behavior.  .lastIndex remains own
-  // property.
+    // Properties, E5.1 Section 15.10.7
+    //
+    // The E5.1 specification indicates that the above properties should be
+    // own properties (not inherited).  Check for that, although it's quite
+    // likely at least the the flag-related properties will be converted to
+    // accessors at some point to save memory.
+    //
+    // ES2015 actually changes .source, .global, .ignoreCase, and .multiline to
+    // inherited getters, check for that behavior.  .lastIndex remains own
+    // property.
 
-  check("source");
-  check("global");
-  check("ignoreCase");
-  check("multiline");
-  check("lastIndex");
+    check('source');
+    check('global');
+    check('ignoreCase');
+    check('multiline');
+    check('lastIndex');
 }
 
 try {
-  print("instance");
-  regexpInstanceTest();
+    print('instance');
+    regexpInstanceTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

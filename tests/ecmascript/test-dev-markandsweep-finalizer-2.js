@@ -40,46 +40,46 @@ var b;
 var rescue;
 
 function finalizer_a(x) {
-  if (rescue) {
-    print("finalizer: rescue");
-    a = x;
-  } else {
-    print("finalizer: no rescue");
-  }
+    if (rescue) {
+        print('finalizer: rescue');
+        a = x;
+    } else {
+        print('finalizer: no rescue');
+    }
 }
 
 function finalizer_b(x) {
-  if (rescue) {
-    print("finalizer: rescue");
-    b = x;
-  } else {
-    print("finalizer: no rescue");
-  }
+    if (rescue) {
+        print('finalizer: rescue');
+        b = x;
+    } else {
+        print('finalizer: no rescue');
+    }
 }
 
 function init() {
-  a = { name: "a" };
-  b = { name: "b" };
+    a = { name: 'a' };
+    b = { name: 'b' };
 
-  /* circular refs */
-  a.ref = b;
-  b.ref = a;
+    /* circular refs */
+    a.ref = b;
+    b.ref = a;
 
-  Duktape.fin(a, finalizer_a);
-  Duktape.fin(b, finalizer_b);
+    Duktape.fin(a, finalizer_a);
+    Duktape.fin(b, finalizer_b);
 }
 
 function delrefs() {
-  a = undefined;
-  b = undefined;
+    a = undefined;
+    b = undefined;
 }
 
 function testrefs() {
-  print(typeof a);
-  print(typeof b);
+    print(typeof a);
+    print(typeof b);
 
-  //print(Duktape.refc(a));
-  //print(Duktape.refc(b));
+    //print(Duktape.refc(a));
+    //print(Duktape.refc(b));
 }
 
 init();
@@ -88,8 +88,8 @@ testrefs();
 
 rescue = true;
 delrefs();
-Duktape.gc(); // both a and b should be unreachable and have their finalizers executed
-Duktape.gc(); // a second gc will rescue the objects, allowing their finalizer to run again
+Duktape.gc();  // both a and b should be unreachable and have their finalizers executed
+Duktape.gc();  // a second gc will rescue the objects, allowing their finalizer to run again
 testrefs();
 
 /* Note: a single gc above is NOT sufficient to ensure that the finalizer will run again.
@@ -111,11 +111,11 @@ testrefs();
 
 rescue = true;
 delrefs();
-Duktape.gc(); // again
+Duktape.gc();  // again
 Duktape.gc();
 testrefs();
 
 rescue = false;
 delrefs();
-Duktape.gc(); // swept immediately
+Duktape.gc();  // swept immediately
 testrefs();

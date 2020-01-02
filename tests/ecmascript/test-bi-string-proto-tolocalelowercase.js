@@ -3,9 +3,9 @@ foobar
 ===*/
 
 try {
-  print("fOoBaR".toLocaleLowerCase());
+    print('fOoBaR'.toLocaleLowerCase());
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -20,31 +20,31 @@ string 15 [object object]
 ===*/
 
 function coercionTest() {
-  function test(str) {
-    var t;
+    function test(str) {
+        var t;
 
-    try {
-      t = String.prototype.toLocaleLowerCase.call(str);
-      print(typeof t, t.length, t);
-    } catch (e) {
-      print(e.name);
+        try {
+            t = String.prototype.toLocaleLowerCase.call(str);
+            print(typeof t, t.length, t);
+        } catch (e) {
+            print(e.name);
+        }
     }
-  }
 
-  test(undefined);
-  test(null);
-  test(true);
-  test(false);
-  test(123.0);
-  test("FoObAr");
-  test([1, "fOO", "Bar"]);
-  test({ foo: 1, bar: 2 });
+    test(undefined);
+    test(null);
+    test(true);
+    test(false);
+    test(123.0);
+    test('FoObAr');
+    test([1,'fOO','Bar']);
+    test({ foo: 1, bar: 2 });
 }
 
 try {
-  coercionTest();
+    coercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /* XXX: basic tests like coercion etc. */

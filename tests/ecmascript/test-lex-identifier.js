@@ -12,16 +12,17 @@
 ===*/
 
 try {
-  eval("$=10; print($);");
+    eval('$=10; print($);');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval("_=20; print(_);");
+    eval('_=20; print(_);');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
+
 
 /*
  *  Escapes in IdentifierStart and IdentifierPart
@@ -43,36 +44,34 @@ SyntaxError
 
 /* Rhino fails */
 try {
-  eval(
-    '\\u0001x = "val";'
-  ); /* U+0001 not allowed in IdentifierStart or IdentifierPart */
-  print("1");
+    eval('\\u0001x = "val";');   /* U+0001 not allowed in IdentifierStart or IdentifierPart */
+    print('1');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /* Rhino fails */
 try {
-  eval('\\u0030x = "val";'); /* identifier '0x', not allowed */
-  print("2");
+    eval('\\u0030x = "val";');   /* identifier '0x', not allowed */
+    print('2');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  eval('x\\u0030 = "val";'); /* identifier 'x0', allowed */
-  print(x0);
-  print("3");
+    eval('x\\u0030 = "val";');   /* identifier 'x0', allowed */
+    print(x0);
+    print('3');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /* There is no hex escape for identifier names. */
 try {
-  eval('x\\x30 = "val";'); /* identifier 'x0' */
-  print("4");
+    eval('x\\x30 = "val";');   /* identifier 'x0' */
+    print('4');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /* XXX: add more cases */

@@ -20,25 +20,25 @@ undefined
 ===*/
 
 function bufferObjectWrapTest() {
-  var b = new Uint32Array(0x100000);
-  var i;
+    var b = new Uint32Array(0x100000);
+    var i;
 
-  for (var i = 0; i < b.length; i++) {
-    b[i] = 0x41414141;
-  }
+    for (var i = 0; i < b.length; i++) {
+        b[i] = 0x41414141;
+    }
 
-  print(b[0x00000000]);
-  print(b[0x000fffff]);
-  print(b[0x40000000]);
-  print(b[0x400fffff]);
-  print(b[0x80000000]);
-  print(b[0x800fffff]);
-  print(b[0xc0000000]);
-  print(b[0xc00fffff]);
+    print(b[0x00000000]);
+    print(b[0x000fffff]);
+    print(b[0x40000000]);
+    print(b[0x400fffff]);
+    print(b[0x80000000]);
+    print(b[0x800fffff]);
+    print(b[0xc0000000]);
+    print(b[0xc00fffff]);
 }
 
 try {
-  bufferObjectWrapTest();
+    bufferObjectWrapTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

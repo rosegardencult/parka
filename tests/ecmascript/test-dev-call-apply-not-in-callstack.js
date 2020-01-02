@@ -14,29 +14,27 @@ f0 called
 ===*/
 
 function test() {
-  var f0 = function f0() {
-    print("f0 called");
-    for (var i = -1; ; i--) {
-      var act = Duktape.act(i);
-      if (!act) {
-        break;
-      }
-      print(i, act.function.name);
+    var f0 = function f0() {
+        print('f0 called');
+        for (var i = -1; ; i--) {
+            var act = Duktape.act(i);
+            if (!act) { break; }
+            print(i, act.function.name);
+        }
+    };
+    var f1 = function f1() {
+        Reflect.apply(f0, 'dummy');
     }
-  };
-  var f1 = function f1() {
-    Reflect.apply(f0, "dummy");
-  };
-  var f2 = function f2() {
-    f1.call("dummy");
-  };
-  var f3 = function f3() {
-    f2.apply("dummy");
-  };
-  f3();
+    var f2 = function f2() {
+        f1.call('dummy');
+    }
+    var f3 = function f3() {
+        f2.apply('dummy');
+    }
+    f3();
 }
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

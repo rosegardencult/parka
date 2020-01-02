@@ -29467,127 +29467,127 @@ neg mant alt2, i=1024 -Infinity -Infinity
 ===*/
 
 function buildFloat(m, e) {
-  if (e > 0) {
-    while (e-- > 0) {
-      m *= 2;
+    if (e > 0) {
+        while (e-- > 0) {
+            m *= 2;
+        }
+    } else if (e < 0) {
+        while (e++ < 0) {
+            m /= 2;
+        }
     }
-  } else if (e < 0) {
-    while (e++ < 0) {
-      m /= 2;
-    }
-  }
-  return m;
+    return m;
 }
 
 function buildMantissa(x) {
-  var t = 0;
-  var n = x.length;
-  var i;
+    var t = 0;
+    var n = x.length;
+    var i;
 
-  // x should have 53 digits, first digit should be 1
+    // x should have 53 digits, first digit should be 1
 
-  for (i = 0; i < n; i++) {
-    t *= 2;
-    if (x.charAt(i) === "1") {
-      t += 1;
+    for (i = 0; i < n; i++) {
+        t *= 2;
+        if (x.charAt(i) === '1') {
+            t += 1;
+        }
     }
-  }
 
-  for (i = 0; i < 52; i++) {
-    t /= 2;
-  }
+    for (i = 0; i < 52; i++) {
+        t /= 2;
+    }
 
-  return t;
+    return t;
 }
 
 function generate(callback) {
-  var i;
-  var m;
-  var t;
-  var res = [];
+    var i;
+    var m;
+    var t;
+    var res = [];
 
-  function add(val, label) {
-    res.push({ value: val, label: label });
-  }
+    function add(val, label) {
+        res.push({ value: val, label: label });
+    }
 
-  // Exponent range is [-1023,1024], with exp=-1023 being denormals,
-  // so lowest useful "shift" is around -1023-52=-1075.  The loops
-  // below go for a little extra.
+    // Exponent range is [-1023,1024], with exp=-1023 being denormals,
+    // so lowest useful "shift" is around -1023-52=-1075.  The loops
+    // below go for a little extra.
 
-  // special values and zero
-  add(Number.NEGATIVE_INFINITY, "neg inf");
-  add(-0, "neg zero");
-  add(+0, "pos zero");
-  add(Number.POSITIVE_INFINITY, "pos inf");
-  add(Number.NaN, "nan");
+    // special values and zero
+    add(Number.NEGATIVE_INFINITY, 'neg inf');
+    add(-0, 'neg zero');
+    add(+0, 'pos zero');
+    add(Number.POSITIVE_INFINITY, 'pos inf');
+    add(Number.NaN, 'nan');
 
-  // two's exponents, including denormals, both signs
-  for (i = -1075; i <= 1024; i++) {
-    add(buildFloat(1, i), "pos 1*2^i, i=" + i);
-    add(buildFloat(-1, i), "neg 1*2^i, i=" + i);
-  }
+    // two's exponents, including denormals, both signs
+    for (i = -1075; i <= 1024; i++) {
+        add(buildFloat(1, i), 'pos 1*2^i, i=' + i);
+        add(buildFloat(-1, i), 'neg 1*2^i, i=' + i);
+    }
 
-  // some specific mantissa forms
-  for (i = -1080; i <= 1024; i++) {
-    //                 12345678901234567890123456789012345678901234567890123
-    m = buildMantissa("11111111111111111111111111111111111111111111111111111");
-    add(buildFloat(m, i), "pos mant all 1s, i=" + i);
-    add(buildFloat(-m, i), "neg mant all 1s, i=" + i);
+    // some specific mantissa forms
+    for (i = -1080; i <= 1024; i++) {
+        //                 12345678901234567890123456789012345678901234567890123
+        m = buildMantissa('11111111111111111111111111111111111111111111111111111');
+        add(buildFloat(m, i), 'pos mant all 1s, i=' + i);
+        add(buildFloat(-m, i), 'neg mant all 1s, i=' + i);
 
-    //                 12345678901234567890123456789012345678901234567890123
-    m = buildMantissa("11111111111111111111111111111111111111111111111111110");
-    add(buildFloat(m, i), "pos mant all 1s, last 0 i=" + i);
-    add(buildFloat(-m, i), "neg mant all 1s, last 0 i=" + i);
+        //                 12345678901234567890123456789012345678901234567890123
+        m = buildMantissa('11111111111111111111111111111111111111111111111111110');
+        add(buildFloat(m, i), 'pos mant all 1s, last 0 i=' + i);
+        add(buildFloat(-m, i), 'neg mant all 1s, last 0 i=' + i);
 
-    //                 12345678901234567890123456789012345678901234567890123
-    m = buildMantissa("10000000000000000000000000000000000000000000000000000");
-    add(buildFloat(m, i), "pos mant leading 1, other 0s, i=" + i);
-    add(buildFloat(-m, i), "neg mant leading 1, other 0s, i=" + i);
+        //                 12345678901234567890123456789012345678901234567890123
+        m = buildMantissa('10000000000000000000000000000000000000000000000000000');
+        add(buildFloat(m, i), 'pos mant leading 1, other 0s, i=' + i);
+        add(buildFloat(-m, i), 'neg mant leading 1, other 0s, i=' + i);
 
-    //                 12345678901234567890123456789012345678901234567890123
-    m = buildMantissa("10000000000000000000000000000000000000000000000000001");
-    add(buildFloat(m, i), "pos mant leading 1, 0s, last 1, i=" + i);
-    add(buildFloat(-m, i), "neg mant leading 1, 0s, last 1, i=" + i);
+        //                 12345678901234567890123456789012345678901234567890123
+        m = buildMantissa('10000000000000000000000000000000000000000000000000001');
+        add(buildFloat(m, i), 'pos mant leading 1, 0s, last 1, i=' + i);
+        add(buildFloat(-m, i), 'neg mant leading 1, 0s, last 1, i=' + i);
 
-    //                 12345678901234567890123456789012345678901234567890123
-    m = buildMantissa("10101010101010101010101010101010101010101010101010101");
-    add(buildFloat(m, i), "pos mant alt1, i=" + i);
-    add(buildFloat(-m, i), "neg mant alt1, i=" + i);
+        //                 12345678901234567890123456789012345678901234567890123
+        m = buildMantissa('10101010101010101010101010101010101010101010101010101');
+        add(buildFloat(m, i), 'pos mant alt1, i=' + i);
+        add(buildFloat(-m, i), 'neg mant alt1, i=' + i);
 
-    //                 12345678901234567890123456789012345678901234567890123
-    m = buildMantissa("11001100110011001100110011001100110011001100110011001");
-    add(buildFloat(m, i), "pos mant alt2, i=" + i);
-    add(buildFloat(-m, i), "neg mant alt2, i=" + i);
-  }
+        //                 12345678901234567890123456789012345678901234567890123
+        m = buildMantissa('11001100110011001100110011001100110011001100110011001');
+        add(buildFloat(m, i), 'pos mant alt2, i=' + i);
+        add(buildFloat(-m, i), 'neg mant alt2, i=' + i);
+    }
 
-  return res;
+    return res;
 }
 
 function cb(x, label) {
-  var s = new Number(x);
-  print(label, String(x), s.toPrecision(20));
+    var s = new Number(x);
+    print(label, String(x), s.toPrecision(20));
 }
 
 function test() {
-  var gen;
-  var i;
-  var t;
+    var gen;
+    var i;
+    var t;
 
-  gen = generate();
-  for (i = 0; i < gen.length; i++) {
-    t = gen[i];
-    cb(t.value, t.label);
-  }
+    gen = generate();
+    for (i = 0; i < gen.length; i++) {
+        t = gen[i];
+        cb(t.value, t.label);
+    }
 }
 
 try {
-  if (this.__engine__ === "rhino") {
-    // Rhino 1.7 release 3 2012 02 16
-    print("Rhino infinite loops on some denormals, so skip test entirely.");
-    throw new Error("Rhino execution skipped");
-  }
+    if (this.__engine__ === 'rhino') {
+        // Rhino 1.7 release 3 2012 02 16
+        print('Rhino infinite loops on some denormals, so skip test entirely.');
+        throw new Error('Rhino execution skipped');
+    }
 
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

@@ -112,14 +112,14 @@ ThrowTypeError
  */
 
 function func() {
-  "use strict";
+    'use strict';
 }
 
 try {
-  var desc = Object.getOwnPropertyDescriptor(func, "caller");
-  print(desc.get.name);
+    var desc = Object.getOwnPropertyDescriptor(func, 'caller');
+    print(desc.get.name);
 } catch (e) {
-  print(e.name, e);
+    print(e.name, e);
 }
 
 /*===
@@ -129,7 +129,7 @@ undefined
 /* XXX: other non-standard builtins */
 
 try {
-  print(Duktape.name);
+    print(Duktape.name);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

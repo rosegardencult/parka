@@ -2,8 +2,8 @@
  *  Tests for E5 Section 11.8.5.
  */
 
-function f(x, y) {
-  print(x < y);
+function f(x,y) {
+    print(x < y);
 }
 
 /*===
@@ -18,17 +18,17 @@ false
 true
 ===*/
 
-f("aax", "aaw");
-f("aax", "aax");
-f("aax", "aay");
+f('aax', 'aaw');
+f('aax', 'aax');
+f('aax', 'aay');
 
-f("aa" + String.fromCharCode(200), "aa" + String.fromCharCode(199));
-f("aa" + String.fromCharCode(200), "aa" + String.fromCharCode(200));
-f("aa" + String.fromCharCode(200), "aa" + String.fromCharCode(201));
+f('aa' + String.fromCharCode(200), 'aa' + String.fromCharCode(199));
+f('aa' + String.fromCharCode(200), 'aa' + String.fromCharCode(200));
+f('aa' + String.fromCharCode(200), 'aa' + String.fromCharCode(201));
 
-f("aa" + String.fromCharCode(200, 3000), "aa" + String.fromCharCode(200, 2999));
-f("aa" + String.fromCharCode(200, 3000), "aa" + String.fromCharCode(200, 3000));
-f("aa" + String.fromCharCode(200, 3000), "aa" + String.fromCharCode(200, 3001));
+f('aa' + String.fromCharCode(200, 3000), 'aa' + String.fromCharCode(200, 2999));
+f('aa' + String.fromCharCode(200, 3000), 'aa' + String.fromCharCode(200, 3000));
+f('aa' + String.fromCharCode(200, 3000), 'aa' + String.fromCharCode(200, 3001));
 
 /*===
 false
@@ -39,10 +39,10 @@ false
 
 /* String cases, prefix matches -> length matters. */
 
-f("", "");
-f("xx", "xx");
-f("xx", "xxx");
-f("xx", "x");
+f('', '');
+f('xx', 'xx');
+f('xx', 'xxx');
+f('xx', 'x');
 
 /* XXX: more string cases, esp. unicode */
 
@@ -149,7 +149,7 @@ f(Number.POSITIVE_INFINITY, -1);
 f(Number.POSITIVE_INFINITY, -0);
 f(Number.POSITIVE_INFINITY, +0);
 f(Number.POSITIVE_INFINITY, 1);
-f(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY); // actually covered by step e -> false
+f(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY);  // actually covered by step e -> false
 
 // step i
 f(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY);
@@ -157,10 +157,10 @@ f(-1, Number.POSITIVE_INFINITY);
 f(-0, Number.POSITIVE_INFINITY);
 f(+0, Number.POSITIVE_INFINITY);
 f(1, Number.POSITIVE_INFINITY);
-f(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY); // actually covered by step e -> false
+f(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY);  // actually covered by step e -> false
 
 // step j
-f(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY); // actually covered by step e -> false
+f(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY);  // actually covered by step e -> false
 f(-1, Number.NEGATIVE_INFINITY);
 f(-0, Number.NEGATIVE_INFINITY);
 f(+0, Number.NEGATIVE_INFINITY);
@@ -168,7 +168,7 @@ f(1, Number.NEGATIVE_INFINITY);
 f(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY);
 
 // step k
-f(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY); // actually covered by step e -> false
+f(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY);  // actually covered by step e -> false
 f(Number.NEGATIVE_INFINITY, -1);
 f(Number.NEGATIVE_INFINITY, -0);
 f(Number.NEGATIVE_INFINITY, +0);

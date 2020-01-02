@@ -16,37 +16,33 @@ map fn: number 20
 ===*/
 
 function test() {
-  function mapper(x) {
-    print("map fn:", typeof x, x);
-    return x * x;
-  }
-  function dump(v) {
-    var tmp = [];
-    for (var i = 0; i < v.length; i++) {
-      if (i in v) {
-        tmp.push(v[i]);
-      } else {
-        tmp.push("nonexistent");
-      }
+    function mapper(x) {
+        print('map fn:', typeof x, x);
+        return x*x;
     }
-    print(v.length, tmp.join(" "));
-  }
+    function dump(v) {
+        var tmp = [];
+        for (var i = 0; i < v.length; i++) {
+            if (i in v) { tmp.push(v[i]) } else { tmp.push('nonexistent'); }
+        }
+        print(v.length, tmp.join(' '));
+    }
 
-  var a = [1, 2, , , 3, ,]; // -> items: 1 2 na na 3 na, length 6
-  dump(a);
+    var a = [ 1, 2, , , 3, ,  ];  // -> items: 1 2 na na 3 na, length 6
+    dump(a);
 
-  var b = a.map(mapper);
-  dump(b);
+    var b = a.map(mapper);
+    dump(b);
 
-  var c = { "3": 10, "7": 20, length: 10 };
-  dump(c);
+    var c = { '3': 10, '7': 20, 'length': 10 };
+    dump(c);
 
-  var d = Array.prototype.map.call(c, mapper);
-  dump(d);
+    var d = Array.prototype.map.call(c, mapper);
+    dump(d);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

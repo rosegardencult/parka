@@ -333,49 +333,49 @@ radix 36
 ===*/
 
 function fastPathTest() {
-  var start = -256 * 256 * 256 * 256 + 1;
-  var end = 256 * 256 * 256 * 256 - 1;
-  var step = 115757; // prime
-  var i;
-  var radix;
-  var tmp = [];
+    var start = -256*256*256*256 + 1;
+    var end = 256*256*256*256 - 1;
+    var step = 115757;  // prime
+    var i;
+    var radix;
+    var tmp = [];
 
-  function flush() {
-    if (tmp.length > 0) {
-      // Note: here we're printing a checksum which is a small integer,
-      // so the checksum will go through the same fast path.
-      print(checksumString(tmp.join(" ")));
-      tmp.length = 0;
+    function flush() {
+        if (tmp.length > 0) {
+            // Note: here we're printing a checksum which is a small integer,
+            // so the checksum will go through the same fast path.
+            print(checksumString(tmp.join(' ')));
+            tmp.length = 0;
+        }
     }
-  }
 
-  function f(x) {
-    tmp.push(x);
-    if (tmp.length >= 10000) {
-      flush();
+    function f(x) {
+        tmp.push(x);
+        if (tmp.length >= 10000) {
+            flush();
+        }
     }
-  }
 
-  for (radix = 2; radix <= 36; radix++) {
-    print("radix", radix);
-    i = start;
-    for (;;) {
-      f(new Number(i).toString(radix));
+    for (radix = 2; radix <= 36; radix++) {
+        print('radix', radix);
+        i = start;
+        for (;;) {
+            f(new Number(i).toString(radix));
 
-      if (i >= end) {
-        break;
-      }
-      i += step;
-      if (i >= end) {
-        i = end; // always include end
-      }
+            if (i >= end) {
+                break;
+            }
+            i += step;
+            if (i >= end) {
+                i = end;  // always include end
+            }
+        }
+        flush();
     }
-    flush();
-  }
 }
 
 try {
-  fastPathTest();
+    fastPathTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

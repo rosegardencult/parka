@@ -20,36 +20,35 @@ exports: object true
 
 var global_require = require;
 
-Duktape.modSearch = function(id) {
-  print("modSearch:", id);
-  if (id === "foo/bar") {
-    return 'var mod = require("./quux");\n';
-  }
-  if (id === "foo/quux") {
-    return (
-      "var pd;\n" +
-      'print("require:", typeof require, require === global_require);\n' +
-      'pd = Object.getOwnPropertyDescriptor(module, "id");\n' +
-      'print("module:", typeof module, module.id, pd.writable, pd.enumerable, pd.configurable);\n' +
-      'print("exports:", typeof exports, exports === this);\n'
-    );
-  }
-  throw new Error("cannot find module");
+Duktape.modSearch = function (id) {
+    print('modSearch:', id);
+    if (id === 'foo/bar') {
+        return 'var mod = require("./quux");\n'
+    }
+    if (id === 'foo/quux') {
+        return 'var pd;\n' +
+               'print("require:", typeof require, require === global_require);\n' +
+               'pd = Object.getOwnPropertyDescriptor(module, "id");\n' +
+               'print("module:", typeof module, module.id, pd.writable, pd.enumerable, pd.configurable);\n' +
+               'print("exports:", typeof exports, exports === this);\n'
+               ;
+    }
+    throw new Error('cannot find module');
 };
 
-print("basic bindings");
+print('basic bindings');
 
 function bindingTest() {
-  var mod = require("foo/bar");
+    var mod = require('foo/bar');
 
-  // module.id must be a resolved absolute path so that it can be used
-  // to require the correct module from any other module
+    // module.id must be a resolved absolute path so that it can be used
+    // to require the correct module from any other module
 }
 
 try {
-  bindingTest();
+    bindingTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -106,78 +105,76 @@ var myVar3;
 var mod;
 
 function initVars() {
-  module = "global-module";
-  exports = "global-exports";
-  myVar1 = "global-myVar1";
-  myVar2 = "global-myVar2";
-  myVar3 = "global-myVar3";
-  foo = "global-foo";
+    module = 'global-module';
+    exports = 'global-exports';
+    myVar1 = 'global-myVar1';
+    myVar2 = 'global-myVar2';
+    myVar3 = 'global-myVar3';
+    foo = 'global-foo';
 }
 
 function dumpVars() {
-  print("module:", module);
-  print("exports:", exports);
-  print("myVar1:", myVar1);
-  print("myVar2:", myVar2);
-  print("myVar3:", myVar3);
-  print("foo:", foo);
+    print('module:', module);
+    print('exports:', exports);
+    print('myVar1:', myVar1);
+    print('myVar2:', myVar2);
+    print('myVar3:', myVar3);
+    print('foo:', foo);
 }
 
-Duktape.modSearch = function(id) {
-  var ret;
+Duktape.modSearch = function (id) {
+    var ret;
 
-  if (id === "test1" || id === "test2") {
-    ret =
-      "var myVar1;\n" + // declared inside the module
-      'exports.name = "' +
-      id +
-      '";\n' + // goes into exports
-      'exports = "module-exports";\n' + // overwrites module exports, not global, does not affect exports.name getting exported
-      'this.foo = "bar";\n' + // 'this' is bound to the original exports table, so 'foo' gets exported
-      'require = "module-require";\n' + // overwrite module require, not global
-      'myVar1 = "module-myVar1";\n' + // writes to local variable, not global
-      "function myVar2() {}\n" + // declared inside module
-      'myVar3 = "module-myVar3";\n'; // not declared locally, *set to global variable*
-    //print(ret);
-    return ret;
-  }
-  throw new Error("cannot find module: " + id);
+    if (id === 'test1' || id === 'test2') {
+        ret = 'var myVar1;\n' +                      // declared inside the module
+              'exports.name = "' + id + '";\n' +     // goes into exports
+              'exports = "module-exports";\n' +      // overwrites module exports, not global, does not affect exports.name getting exported
+              'this.foo = "bar";\n' +                // 'this' is bound to the original exports table, so 'foo' gets exported
+              'require = "module-require";\n' +      // overwrite module require, not global
+              'myVar1 = "module-myVar1";\n' +        // writes to local variable, not global
+              'function myVar2() {}\n' +             // declared inside module
+              'myVar3 = "module-myVar3";\n'          // not declared locally, *set to global variable*
+              ;
+        //print(ret);
+        return ret;
+    }
+    throw new Error('cannot find module: ' + id);
 };
 
 function moduleEnvironmentTest() {
-  var mod;
-  mod = require("test2");
-  print("mod:", typeof mod, mod);
-  print("mod.name:", mod.name);
-  print("mod.foo:", mod.foo);
-  print("after module require");
-  dumpVars();
+    var mod;
+    mod = require('test2');
+    print('mod:', typeof mod, mod);
+    print('mod.name:', mod.name);
+    print('mod.foo:', mod.foo);
+    print('after module require');
+    dumpVars();
 }
 
-print("scoping");
+print('scoping');
 
 /* Using a require() from a global program. */
-print("before global require");
+print('before global require');
 initVars();
 dumpVars();
 try {
-  mod = require("test1");
+    mod = require('test1');
 } catch (e) {
-  print("global require failed:", e);
-  print(e.stack || e);
+    print('global require failed:', e);
+    print(e.stack || e);
 }
-print("mod:", typeof mod, mod);
-print("mod.name:", mod.name);
-print("mod.foo:", mod.foo);
-print("after global require");
+print('mod:', typeof mod, mod);
+print('mod.name:', mod.name);
+print('mod.foo:', mod.foo);
+print('after global require');
 dumpVars();
 
 initVars();
-print("before module require");
+print('before module require');
 dumpVars();
 
 try {
-  moduleEnvironmentTest();
+    moduleEnvironmentTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

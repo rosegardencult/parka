@@ -25,27 +25,27 @@
 ===*/
 
 function test() {
-  var str, res;
+    var str, res;
 
-  function dump(x) {
-    var res = [];
-    for (var i = 0; i < x.length; i++) {
-      res.push(x.charCodeAt(i));
+    function dump(x) {
+        var res = [];
+        for (var i = 0; i < x.length; i++) {
+            res.push(x.charCodeAt(i));
+        }
+        print(res.join(' '));
     }
-    print(res.join(" "));
-  }
 
-  // Internal prefix 0xFE is just repeated, unaffected.
-  str = bufferToStringRaw(new Uint8Array([0xfe, 0x41, 0x42, 0x43]));
-  print(str.length);
-  dump(str);
-  res = str.repeat(3);
-  print(res.length);
-  print(Duktape.enc("jx", Uint8Array.allocPlain(res)));
+    // Internal prefix 0xFE is just repeated, unaffected.
+    str = bufferToStringRaw(new Uint8Array([ 0xfe, 0x41, 0x42, 0x43 ]));
+    print(str.length);
+    dump(str);
+    res = str.repeat(3);
+    print(res.length);
+    print(Duktape.enc('jx', Uint8Array.allocPlain(res)));
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

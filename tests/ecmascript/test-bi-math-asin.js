@@ -17,7 +17,7 @@ NaN
 printExact(Math.asin(+0));
 printExact(Math.asin(-0));
 printRounded6(Math.asin(1));
-printRounded6(Math.asin(-1));
+printRounded6(Math.asin(-1))
 printRounded6(Math.asin(Number.NaN));
 printRounded6(Math.asin(1.0000001));
 printRounded6(Math.asin(-1.0000001));

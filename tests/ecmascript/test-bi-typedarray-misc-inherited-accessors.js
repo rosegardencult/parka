@@ -32,26 +32,17 @@ BYTES_PER_ELEMENT true false number 8
 ===*/
 
 function test() {
-  [new ArrayBuffer(10), new Uint8Array(10), new Float64Array(10)].forEach(
-    function(buf) {
-      print(Object.prototype.toString.call(buf));
-      [
-        "length",
-        "byteLength",
-        "byteOffset",
-        "BYTES_PER_ELEMENT",
-        "0",
-        "9",
-        "10"
-      ].forEach(function(v) {
-        print(v, v in buf, buf.hasOwnProperty(v), typeof buf[v], buf[v]);
-      });
-    }
-  );
+    [ new ArrayBuffer(10), new Uint8Array(10), new Float64Array(10) ].forEach(function (buf) {
+        print(Object.prototype.toString.call(buf));
+        [ 'length', 'byteLength', 'byteOffset', 'BYTES_PER_ELEMENT',
+          '0', '9', '10' ].forEach(function (v) {
+            print(v, v in buf, buf.hasOwnProperty(v), typeof buf[v], buf[v]);
+        });
+    });
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

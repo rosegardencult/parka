@@ -268,27 +268,15 @@
 /* Number and string comparisons using greater/less than (or equal). */
 
 var testValues = [
-  -1 / 0,
-  -1e9,
-  -1,
-  -0,
-  +0,
-  +1,
-  1e9,
-  1 / 0,
-  0 / 0,
+    -1/0, -1e9, -1, -0, +0, +1, 1e9, 1/0, 0/0,
 
-  "",
-  "foo",
-  "foo\0",
-  "foo\u1234",
-  "foo\u4321"
+    '', 'foo', 'foo\0', 'foo\u1234', 'foo\u4321',
 ];
 
-testValues.forEach(function(v1, i1) {
-  testValues.forEach(function(v2, i2) {
-    print(i1, i2, v1 < v2, v1 > v2, v1 <= v2, v1 >= v2);
-  });
+testValues.forEach(function (v1, i1) {
+    testValues.forEach(function (v2, i2) {
+        print(i1, i2, v1 < v2, v1 > v2, v1 <= v2, v1 >= v2);
+    });
 });
 
 /* Instanceof and in.  Some test value combinations are not all that
@@ -296,29 +284,17 @@ testValues.forEach(function(v1, i1) {
  */
 
 var testValues = [
-  1e9,
-  "",
-  "foo",
-  new Error("my error"),
-  Error,
-  Number,
-  String,
-  { foo: 123 }
+    1e9, '', 'foo',
+    new Error('my error'),
+    Error, Number, String,
+    { foo: 123 }
 ];
 
-testValues.forEach(function(v1, i1) {
-  testValues.forEach(function(v2, i2) {
-    var res1, res2;
-    try {
-      res1 = v1 instanceof v2;
-    } catch (e) {
-      res1 = String(e.name);
-    }
-    try {
-      res2 = v1 in v2;
-    } catch (e) {
-      res2 = String(e.name);
-    }
-    print(i1, i2, res1, res2);
-  });
+testValues.forEach(function (v1, i1) {
+    testValues.forEach(function (v2, i2) {
+        var res1, res2;
+        try { res1 = v1 instanceof v2; } catch (e) { res1 = String(e.name); }
+        try { res2 = v1 in v2; } catch (e) { res2 = String(e.name); }
+        print(i1, i2, res1, res2);
+    });
 });

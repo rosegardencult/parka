@@ -27,8 +27,7 @@
 // Test source must be eval'd; if it were part of the program, it would
 // fail in compilation.  Use line continuations for the source, ugh.
 
-var test_source =
-  "\
+var test_source = "\
 function test() {\
     var obj;\
 \
@@ -173,7 +172,7 @@ function test() {\
 ";
 
 try {
-  eval(test_source + "; test();");
+    eval(test_source + "; test();");
 } catch (e) {
-  print(e);
+    print(e);
 }

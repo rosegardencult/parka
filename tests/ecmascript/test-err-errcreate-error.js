@@ -12,26 +12,26 @@ RangeError
 ===*/
 
 try {
-  Duktape.errCreate = function(e) {
-    print("errCreate:", e.name);
-    try {
-      decodeURIComponent("%ff%ff");
-    } catch (e2) {
-      print("internal error:", e2.name);
-    }
-    try {
-      throw new EvalError("user error"); // created but not augmented
-    } catch (e2) {
-      print("internal error:", e2.name);
-    }
-    return e;
-  };
-  Duktape.errThrow = function(e) {
-    print("errThrow:", e.name);
-    return e;
-  };
+    Duktape.errCreate = function (e) {
+        print('errCreate:', e.name);
+        try {
+            decodeURIComponent('%ff%ff');
+        } catch (e2) {
+            print('internal error:', e2.name);
+        }
+        try {
+            throw new EvalError('user error');  // created but not augmented
+        } catch (e2) {
+            print('internal error:', e2.name);
+        }
+        return e;
+    };
+    Duktape.errThrow = function (e) {
+        print('errThrow:', e.name);
+        return e;
+    };
 
-  throw new RangeError("aiee");
+    throw new RangeError('aiee');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

@@ -20,11 +20,11 @@ var i;
  */
 
 try {
-  // wrap in eval because it's a SyntaxError
-  r = eval("/\\z/");
-  print(r.toString());
+    // wrap in eval because it's a SyntaxError
+    r = eval("/\\z/");
+    print(r.toString());
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -45,26 +45,26 @@ try {
  */
 
 try {
-  src = "\u200d";
-  r = new RegExp(src);
-  txt = r.toString();
-  for (i = 0; i < txt.length; i++) {
-    print(txt.charCodeAt(i));
-  }
+    src = '\u200d';
+    r = new RegExp(src);
+    txt = r.toString();
+    for (i = 0; i < txt.length; i++) {
+        print(txt.charCodeAt(i));
+    }
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  // ZWJ in an identity escape
-  src = "\\" + "\u200d";
-  r = new RegExp(src);
-  txt = r.toString();
-  for (i = 0; i < txt.length; i++) {
-    print(txt.charCodeAt(i));
-  }
+    // ZWJ in an identity escape
+    src = '\\' + '\u200d';
+    r = new RegExp(src);
+    txt = r.toString();
+    for (i = 0; i < txt.length; i++) {
+        print(txt.charCodeAt(i));
+    }
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -83,24 +83,24 @@ try {
  */
 
 try {
-  src = "\u200c";
-  r = new RegExp(src);
-  txt = r.toString();
-  for (i = 0; i < txt.length; i++) {
-    print(txt.charCodeAt(i));
-  }
+    src = '\u200c';
+    r = new RegExp(src);
+    txt = r.toString();
+    for (i = 0; i < txt.length; i++) {
+        print(txt.charCodeAt(i));
+    }
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  // ZWNJ in an identity escape
-  src = "\\" + "\u200c";
-  r = new RegExp(src);
-  txt = r.toString();
-  for (i = 0; i < txt.length; i++) {
-    print(txt.charCodeAt(i));
-  }
+    // ZWNJ in an identity escape
+    src = '\\' + '\u200c';
+    r = new RegExp(src);
+    txt = r.toString();
+    for (i = 0; i < txt.length; i++) {
+        print(txt.charCodeAt(i));
+    }
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

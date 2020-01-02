@@ -8,5 +8,5 @@ var m;
 fooFOO foo FOO
 ===*/
 
-m = /^(...)(\1)$/i.exec("fooFOO");
+m = /^(...)(\1)$/i.exec('fooFOO');
 print(m[0], m[1], m[2]);

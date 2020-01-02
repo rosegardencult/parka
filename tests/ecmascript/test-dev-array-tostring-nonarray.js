@@ -9,10 +9,6 @@ JOIN
  * Because the custom object has a 'join' function, it is called.
  */
 
-var obj = {
-  join: function() {
-    return "JOIN";
-  }
-};
+var obj = { join: function() { return 'JOIN'; } };
 
 print(Array.prototype.toString.apply(obj));

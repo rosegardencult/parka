@@ -41,73 +41,50 @@ object 32000 32000 489780
 ===*/
 
 function createArrayConst(num) {
-  var res = [];
-  for (var i = 0; i < num; i++) {
-    res.push('"foo' + i + '"'); // avoid sharing consts
-  }
-  return "([" + res.join(",") + "])";
+    var res = [];
+    for (var i = 0; i < num; i++) {
+        res.push('"foo' + i + '"');  // avoid sharing consts
+    }
+    return '([' + res.join(',') + '])';
 }
 
 function createObjectConst(num) {
-  var res = [];
-  for (var i = 0; i < num; i++) {
-    res.push("foo" + i + ':"bar' + i + '"'); // avoid sharing consts
-  }
-  return "({" + res.join(",") + "})";
+    var res = [];
+    for (var i = 0; i < num; i++) {
+        res.push('foo' + i + ':"bar' + i + '"');  // avoid sharing consts
+    }
+    return '({' + res.join(',') + '})';
 }
 
 function testArray(num) {
-  var t = eval(createArrayConst(num));
-  var len = 0; // combined string length (kind of a checksum)
-  for (i = 0; i < t.length; i++) {
-    len += t[i].length;
-  }
-  print("array", num, t.length, len);
+    var t = eval(createArrayConst(num));
+    var len = 0;  // combined string length (kind of a checksum)
+    for (i = 0; i < t.length; i++) {
+        len += t[i].length;
+    }
+    print('array', num, t.length, len);
 }
 
 function testObject(num) {
-  var t = eval(createObjectConst(num));
-  var len = 0; // combined string length (kind of a checksum)
-  var keys = Object.getOwnPropertyNames(t);
-  for (i = 0; i < keys.length; i++) {
-    len += keys[i].length + t[keys[i]].length;
-  }
-  print("object", num, keys.length, len);
-}
-
-try {
-  [0, 10, 100, 253, 254, 255, 256, 257, 300, 3000, 10000, 65000].forEach(
-    function(x) {
-      testArray(x);
+    var t = eval(createObjectConst(num));
+    var len = 0;  // combined string length (kind of a checksum)
+    var keys = Object.getOwnPropertyNames(t);
+    for (i = 0; i < keys.length; i++) {
+        len += keys[i].length + t[keys[i]].length;
     }
-  );
-} catch (e) {
-  print(e);
+    print('object', num, keys.length, len);
 }
 
 try {
-  [
-    0,
-    10,
-    100,
-    125,
-    126,
-    127,
-    128,
-    129,
-    130,
-    253,
-    254,
-    255,
-    256,
-    257,
-    300,
-    3000,
-    10000,
-    32000
-  ].forEach(function(x) {
-    testObject(x);
-  });
+    [0, 10, 100, 253, 254, 255, 256, 257, 300, 3000, 10000, 65000]
+        .forEach(function(x) { testArray(x); });
 } catch (e) {
-  print(e);
+    print(e);
+}
+
+try {
+    [0, 10, 100, 125, 126, 127, 128, 129, 130, 253, 254, 255, 256, 257, 300, 3000, 10000, 32000]
+        .forEach(function(x) { testObject(x); });
+} catch (e) {
+    print(e);
 }

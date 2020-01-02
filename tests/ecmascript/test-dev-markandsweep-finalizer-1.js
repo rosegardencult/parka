@@ -23,25 +23,25 @@ var b;
  * value reachable during function execution.
  */
 function init() {
-  a = { foo: 123 };
-  b = {};
+    a = { foo: 123 };
+    b = {}
 
-  Duktape.fin(a, function(x) {
-    print("finalizer, foo ->", x.foo);
-  });
+    Duktape.fin(a, function (x) {
+        print('finalizer, foo ->', x.foo);
+    });
 
-  // circular reference prevents refcount collection
-  a.bar = b;
-  b.bar = a;
+    // circular reference prevents refcount collection
+    a.bar = b;
+    b.bar = a;
 }
 
 init();
 
 // refcount does not finalize here
-print("nulling");
+print('nulling')
 a = null;
 b = null;
-print("nulled");
+print('nulled')
 
 // mark-and-sweep finalizing happens here if refcount disabled
 Duktape.gc();

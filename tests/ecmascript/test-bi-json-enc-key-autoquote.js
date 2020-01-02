@@ -101,54 +101,48 @@
 ===*/
 
 function test() {
-  var obj = {
-    abc: 123,
-    foo_bar_quux$: 234,
-    $foo_bar_quux123: 345,
-    fooሴbar: 456,
-    "": 567,
-    "xxx\u0080": 678,
-    "xxx\u0090": 678,
-    "xxx\u00a0": 678,
-    "xxx\u00b0": 678,
-    xxxÀ: 678,
-    xxxÐ: 678,
-    xxxà: 678,
-    xxxð: 678
-  };
+    var obj = {
+        'abc': 123,
+        'foo_bar_quux$': 234,
+        '$foo_bar_quux123': 345,
+        'foo\u1234bar': 456,
+        '': 567,
+        'xxx\u0080': 678,
+        'xxx\u0090': 678,
+        'xxx\u00a0': 678,
+        'xxx\u00b0': 678,
+        'xxx\u00c0': 678,
+        'xxx\u00d0': 678,
+        'xxx\u00e0': 678,
+        'xxx\u00f0': 678,
+    };
 
-  var longkey = "abc";
-  while (longkey.length < 4096) {
-    longkey = longkey + longkey;
-  }
-  obj[longkey] = 789;
+    var longkey = 'abc';
+    while (longkey.length < 4096) { longkey = longkey + longkey; }
+    obj[longkey] = 789;
 
-  function id(k, v) {
-    return v;
-  }
+    function id(k, v) { return v; }
 
-  function cleanPrint(x) {
-    x = x.replace(/[^\u0020-\u007e\u000a]/g, function(c) {
-      return "<" + c.charCodeAt(0) + ">";
-    });
-    print(x);
-  }
+    function cleanPrint(x) {
+        x = x.replace(/[^\u0020-\u007e\u000a]/g, function (c) { return '<' + c.charCodeAt(0) + '>' });
+        print(x);
+    }
 
-  cleanPrint(JSON.stringify(obj));
-  cleanPrint(JSON.stringify(obj, null, 4));
-  cleanPrint(JSON.stringify(obj, id, 4));
+    cleanPrint(JSON.stringify(obj));
+    cleanPrint(JSON.stringify(obj, null, 4));
+    cleanPrint(JSON.stringify(obj, id, 4));
 
-  cleanPrint(Duktape.enc("jx", obj));
-  cleanPrint(Duktape.enc("jx", obj, null, 4));
-  cleanPrint(Duktape.enc("jx", obj, id, 4));
+    cleanPrint(Duktape.enc('jx', obj));
+    cleanPrint(Duktape.enc('jx', obj, null, 4));
+    cleanPrint(Duktape.enc('jx', obj, id, 4));
 
-  cleanPrint(Duktape.enc("jc", obj));
-  cleanPrint(Duktape.enc("jc", obj, null, 4));
-  cleanPrint(Duktape.enc("jc", obj, id, 4));
+    cleanPrint(Duktape.enc('jc', obj));
+    cleanPrint(Duktape.enc('jc', obj, null, 4));
+    cleanPrint(Duktape.enc('jc', obj, id, 4));
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

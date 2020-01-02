@@ -3,21 +3,17 @@
  */
 
 function encValue(x) {
-  if (typeof x === "function") {
-    return "function";
-  }
+    if (typeof x === 'function') { return 'function' }
 
-  // Avoid Node.js problem for: String(Buffer.prototype).
-  // > process.version
-  // 'v0.12.1'
-  // > String(Buffer.prototype)
-  // node: ../src/node_buffer.cc:262: void node::Buffer::StringSlice(const v8::FunctionCallbackInfo<v8::Value>&) [with node::encoding encoding = (node::encoding)1u]: Assertion `obj_data != __null' failed.
-  // Aborted (core dumped)
+    // Avoid Node.js problem for: String(Buffer.prototype).
+    // > process.version
+    // 'v0.12.1'
+    // > String(Buffer.prototype)
+    // node: ../src/node_buffer.cc:262: void node::Buffer::StringSlice(const v8::FunctionCallbackInfo<v8::Value>&) [with node::encoding encoding = (node::encoding)1u]: Assertion `obj_data != __null' failed.
+    // Aborted (core dumped)
 
-  if (x === Buffer.prototype) {
-    return "[object Object]";
-  }
-  return String(x);
+    if (x === Buffer.prototype) { return '[object Object]'; }
+    return String(x);
 }
 
 /*===
@@ -34,30 +30,30 @@ true
 ===*/
 
 function nodejsBufferConstructorPropertiesTest() {
-  var props = [
-    "name",
-    "length",
-    "prototype",
+    var props = [
+        'name',
+        'length',
+        'prototype',
 
-    "isEncoding",
-    "isBuffer",
-    "byteLength",
-    "concat",
-    "compare"
-  ];
+        'isEncoding',
+        'isBuffer',
+        'byteLength',
+        'concat',
+        'compare'
+    ];
 
-  props.forEach(function(propname) {
-    var obj = Buffer;
-    var val = obj[propname];
-    print(propname, propname in obj, typeof val, encValue(val));
-  });
+    props.forEach(function (propname) {
+        var obj = Buffer;
+        var val = obj[propname];
+        print(propname, propname in obj, typeof val, encValue(val));
+    });
 
-  print(Buffer.prototype.constructor === Buffer);
+    print(Buffer.prototype.constructor === Buffer);
 }
 
 try {
-  print("Node.js Buffer constructor properties test");
-  nodejsBufferConstructorPropertiesTest();
+    print('Node.js Buffer constructor properties test');
+    nodejsBufferConstructorPropertiesTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

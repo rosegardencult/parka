@@ -27,67 +27,45 @@ TypeError: RegExp required, found 123 (stack index -1)
 ===*/
 
 function test() {
-  function cleanPrint(v) {
-    print(
-      sanitizePointers(
-        String(v).replace(/[^\u0020-\u007e]/g, function(v) {
-          return "<" + v.charCodeAt(0) + ">";
-        })
-      )
-    );
-  }
-
-  // Duktape.enc() requires first arg to be string
-  [
-    "NONE",
-    undefined,
-    null,
-    true,
-    false,
-    123,
-    { foo: "bar" },
-    ["foo", "bar"],
-    function nop() {},
-    Duktape.Pointer("dummy"),
-    createPlainBuffer(4),
-    new Duktape.Pointer("dummy"),
-    new ArrayBuffer(4)
-  ].forEach(function(v) {
-    try {
-      if (v === "NONE") {
-        print(Duktape.enc());
-      } else {
-        print(Duktape.enc(v));
-      }
-    } catch (e) {
-      cleanPrint(e);
+    function cleanPrint(v) {
+        print(sanitizePointers(String(v).replace(/[^\u0020-\u007e]/g, function (v) { return '<' + v.charCodeAt(0) + '>'; })));
     }
-  });
 
-  // Duktape.fin() requires first arg to be object
-  [
-    "",
-    "foo",
-    "foo\u1234",
-    "foobarfoobar\u0000foobarfoobar\ucafefoobarfoobar\u4321quux"
-  ].forEach(function(v) {
+    // Duktape.enc() requires first arg to be string
+    [ 'NONE', undefined, null, true, false, 123,
+      { foo: 'bar' }, [ 'foo', 'bar' ], function nop() {},
+      Duktape.Pointer('dummy'), createPlainBuffer(4),
+      new Duktape.Pointer('dummy'), new ArrayBuffer(4) ].forEach(function (v) {
+        try {
+            if (v === 'NONE') {
+                print(Duktape.enc());
+            } else {
+                print(Duktape.enc(v));
+            }
+        } catch (e) {
+            cleanPrint(e);
+        }
+    });
+
+    // Duktape.fin() requires first arg to be object
+    [ '', 'foo', 'foo\u1234', 'foobarfoobar\u0000foobarfoobar\ucafefoobarfoobar\u4321quux' ].forEach(function (v) {
+        try {
+            print(Duktape.fin(v));
+        } catch (e) {
+            cleanPrint(e);
+        }
+    });
+
+    // RegExp uses a "require with class" internal helper
     try {
-      print(Duktape.fin(v));
+        RegExp.prototype.exec.call(123);
     } catch (e) {
-      cleanPrint(e);
+        cleanPrint(e);
     }
-  });
-
-  // RegExp uses a "require with class" internal helper
-  try {
-    RegExp.prototype.exec.call(123);
-  } catch (e) {
-    cleanPrint(e);
-  }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

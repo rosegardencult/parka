@@ -14,17 +14,17 @@
 ===*/
 
 function test() {
-  var val = [];
-  for (var i = 0; i < 10000; i++) {
-    val.push(new String("dummy"));
-  }
+    var val = [];
+    for (var i = 0; i < 10000; i++) {
+        val.push(new String('dummy'));
+    }
 
-  var res = JSON.stringify(val);
-  print(res.length);
+    var res = JSON.stringify(val);
+    print(res.length);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

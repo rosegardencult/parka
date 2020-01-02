@@ -27,40 +27,38 @@ lower: 002e 03c3
 ===*/
 
 function dump(x) {
-  var i;
-  var a = [];
-  var t;
+    var i;
+    var a = [];
+    var t;
 
-  for (i = 0; i < x.length; i++) {
-    t = x.charCodeAt(i).toString(16);
-    while (t.length < 4) {
-      t = "0" + t;
+    for (i = 0; i < x.length; i++) {
+        t = x.charCodeAt(i).toString(16);
+        while (t.length < 4) { t = '0' + t; }
+        a.push(t);
     }
-    a.push(t);
-  }
 
-  return a.join(" ");
+    return a.join(' ');
 }
 
 function conv(x) {
-  print("input:", dump(x));
-  print("upper:", dump(x.toUpperCase()));
-  print("lower:", dump(x.toLowerCase()));
+    print('input:', dump(x));
+    print('upper:', dump(x.toUpperCase()));
+    print('lower:', dump(x.toLowerCase()));
 }
 
 function test() {
-  // Sanity
-  conv("Foo");
+    // Sanity
+    conv('Foo');
 
-  // Greek final sigma lowercasing rule
-  conv("x\u03a3."); // prev: letter, curr=greek capital letter sigma, next=non-letter/non-existentZ
-  conv("x\u03a3");
-  conv(".\u03a3."); // prev is not a letter, rule not active
-  conv(".\u03a3"); // same
+    // Greek final sigma lowercasing rule
+    conv('x\u03a3.');   // prev: letter, curr=greek capital letter sigma, next=non-letter/non-existentZ
+    conv('x\u03a3');
+    conv('.\u03a3.');   // prev is not a letter, rule not active
+    conv('.\u03a3');    // same
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

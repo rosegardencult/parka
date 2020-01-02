@@ -14,13 +14,13 @@ clone and transfer test
 ===*/
 
 function cloneAndTransferTest() {
-  // Section 9 of the Khronos specification provides some guidance for cloning
-  // and transfering, but it doesn't specify anything that we can test now.
+    // Section 9 of the Khronos specification provides some guidance for cloning
+    // and transfering, but it doesn't specify anything that we can test now.
 }
 
 try {
-  print("clone and transfer test");
-  cloneAndTransferTest();
+    print('clone and transfer test');
+    cloneAndTransferTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

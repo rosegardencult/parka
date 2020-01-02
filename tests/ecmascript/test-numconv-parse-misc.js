@@ -44,99 +44,99 @@ Infinity
 /* Misc tests from specification and own documentation. */
 
 function miscTest() {
-  function pFloat(x) {
-    try {
-      print(parseFloat(x));
-    } catch (e) {
-      print(e.name);
+    function pFloat(x) {
+        try {
+            print(parseFloat(x));
+        } catch (e) {
+            print(e.name);
+        }
     }
-  }
 
-  function pInt(x, radix) {
-    try {
-      print(parseInt(x, radix));
-    } catch (e) {
-      print(e.name);
+    function pInt(x, radix) {
+        try {
+            print(parseInt(x, radix));
+        } catch (e) {
+            print(e.name);
+        }
     }
-  }
 
-  function pJSON(x) {
-    try {
-      print(JSON.parse(x));
-    } catch (e) {
-      print(e.name);
+    function pJSON(x) {
+        try {
+            print(JSON.parse(x));
+        } catch (e) {
+            print(e.name);
+        }
     }
-  }
 
-  // parseFloat() allows fractions without leading integer digit
-  pFloat("0.1");
-  pFloat(".1");
+    // parseFloat() allows fractions without leading integer digit
+    pFloat('0.1');
+    pFloat('.1');
 
-  // parseFloat() also allows decimal point without fractions,
-  // but does not allow a decimal point without a leading integer
-  // digit AND without fraction digits
-  pFloat("1.");
-  pFloat(".");
+    // parseFloat() also allows decimal point without fractions,
+    // but does not allow a decimal point without a leading integer
+    // digit AND without fraction digits
+    pFloat('1.');
+    pFloat('.');
 
-  // Exponent must have at least one digit.  However, if the exponent
-  // is malformed, pFloat() finds the shortest valid prefix, and parses
-  // the invalid cases as '1'!
-  pFloat("1e5");
-  pFloat("1e");
-  pFloat("1e+");
-  pFloat("1e-");
+    // Exponent must have at least one digit.  However, if the exponent
+    // is malformed, pFloat() finds the shortest valid prefix, and parses
+    // the invalid cases as '1'!
+    pFloat('1e5');
+    pFloat('1e');
+    pFloat('1e+');
+    pFloat('1e-');
 
-  // parseFloat() parses 'Infinity'
-  pFloat("Infinity");
-  pFloat("-Infinity");
+    // parseFloat() parses 'Infinity'
+    pFloat('Infinity');
+    pFloat('-Infinity');
 
-  // parseInt() does not; in suitable radix 'Infinity' is a valid number
-  pInt("Infinity", 36);
-  pInt("-Infinity", 36);
+    // parseInt() does not; in suitable radix 'Infinity' is a valid number
+    pInt('Infinity', 36);
+    pInt('-Infinity', 36);
 
-  // JSON.parse does not allow fractions without leading digits, or
-  // decimal point without at least one fractional digit
-  pJSON("0.1"); // OK
-  pJSON(".1");
-  pJSON("1.");
-  pJSON(".");
+    // JSON.parse does not allow fractions without leading digits, or
+    // decimal point without at least one fractional digit
+    pJSON('0.1');  // OK
+    pJSON('.1');
+    pJSON('1.');
+    pJSON('.');
 
-  // JSON.parse requires at least one digit in exponent
-  pJSON("1e5");
-  pJSON("1e");
-  pJSON("1e+");
-  pJSON("1e-");
+    // JSON.parse requires at least one digit in exponent
+    pJSON('1e5');
+    pJSON('1e');
+    pJSON('1e+');
+    pJSON('1e-');
 
-  // JSON.parse() preserves sign
-  print(1 / JSON.parse("0")); // -> +inf
-  print(1 / JSON.parse("-0")); // -> -inf
+    // JSON.parse() preserves sign
+    print(1/JSON.parse('0'));  // -> +inf
+    print(1/JSON.parse('-0')); // -> -inf
 
-  // V8 prints "1e+23", some Duktape version prints something else
-  // (a separate bug testcase opened)
-  print(parseInt("0000100000000000000000000000", 10));
+    // V8 prints "1e+23", some Duktape version prints something else
+    // (a separate bug testcase opened)
+    print(parseInt('0000100000000000000000000000', 10));
 
-  // various positions for precision digits
-  pFloat("10000000000000000000");
-  pFloat("100000000000000000000");
-  pFloat("1000000000000000000000");
-  pFloat("10000000000000000000000");
-  pFloat("00010000000000000000000");
-  pFloat("000100000000000000000000");
-  pFloat("0001000000000000000000000");
-  pFloat("00010000000000000000000000");
-  pFloat("00000000000000000000000010000000000000000000");
-  pFloat("000000000000000000000000100000000000000000000");
-  pFloat("0000000000000000000000001000000000000000000000");
-  pFloat("00000000000000000000000010000000000000000000000");
-  pFloat("0.0001");
-  pFloat("0.00010000000000000000000");
-  pFloat("0.000100000000000000000000");
-  pFloat("0.0001000000000000000000000");
-  pFloat("0.00010000000000000000000000");
+    // various positions for precision digits
+    pFloat('10000000000000000000');
+    pFloat('100000000000000000000');
+    pFloat('1000000000000000000000');
+    pFloat('10000000000000000000000');
+    pFloat('00010000000000000000000');
+    pFloat('000100000000000000000000');
+    pFloat('0001000000000000000000000');
+    pFloat('00010000000000000000000000');
+    pFloat('00000000000000000000000010000000000000000000');
+    pFloat('000000000000000000000000100000000000000000000');
+    pFloat('0000000000000000000000001000000000000000000000');
+    pFloat('00000000000000000000000010000000000000000000000');
+    pFloat('0.0001');
+    pFloat('0.00010000000000000000000');
+    pFloat('0.000100000000000000000000');
+    pFloat('0.0001000000000000000000000');
+    pFloat('0.00010000000000000000000000');
 }
 
 try {
-  miscTest();
+    miscTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

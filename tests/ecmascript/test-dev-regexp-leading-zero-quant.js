@@ -8,7 +8,7 @@ true
  */
 
 r = /x{010,011}/;
-print(r.test("xxxxxxxx"));
+print(r.test('xxxxxxxx'));
 
 r = /x{010,011}/;
-print(r.test("xxxxxxxxxx"));
+print(r.test('xxxxxxxxxx'));

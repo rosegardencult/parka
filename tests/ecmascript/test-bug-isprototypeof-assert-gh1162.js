@@ -9,7 +9,7 @@ false
 ===*/
 
 try {
-  print(this.parseFloat.isPrototypeOf(this.Object.prototype));
+    print(this.parseFloat.isPrototypeOf(this.Object.prototype));
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

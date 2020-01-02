@@ -33,59 +33,59 @@
  */
 
 function stringifyPropertyListTest1() {
-  var obj = {
-    foo: 1,
-    bar: 2,
-    quux: 3
-  };
+    var obj = {
+        "foo": 1,
+        "bar": 2,
+        "quux": 3
+    };
 
-  Object.defineProperties(obj, {
-    baz: { value: 4, enumerable: false, configurable: true, writable: true }
-  });
+    Object.defineProperties(obj, {
+        baz: { value: 4, enumerable: false, configurable: true, writable: true }
+    });
 
-  // baz is non-enumerable
-  var txt = JSON.stringify(obj, ["foo", "bar", "baz"]);
-  print(txt);
+    // baz is non-enumerable
+    var txt = JSON.stringify(obj, [ 'foo', 'bar', 'baz' ]);
+    print(txt);
 
-  // different order
-  var txt = JSON.stringify(obj, ["baz", "foo", "bar"]);
-  print(txt);
+    // different order
+    var txt = JSON.stringify(obj, [ 'baz', 'foo', 'bar' ]);
+    print(txt);
 }
 
 function stringifyPropertyListTest2() {
-  // test that inherited properties are also correctly enumerated
-  // when using a PropertyList
+    // test that inherited properties are also correctly enumerated
+    // when using a PropertyList
 
-  var proto = {};
+    var proto = {};
 
-  function F() {
-    // quux and baz are inherited
-    this.foo = 1;
-    this.bar = 2;
-  }
-  F.prototype = proto;
+    function F() {
+        // quux and baz are inherited
+        this.foo = 1;
+        this.bar = 2;
+    }
+    F.prototype = proto;
 
-  var obj;
+    var obj;
 
-  Object.defineProperties(proto, {
-    quux: { value: 3, enumerable: true, writable: true, configurable: true },
-    baz: { value: 4, enumerable: false, writable: true, configurable: true }
-  });
+    Object.defineProperties(proto, {
+        quux: { value: 3, enumerable: true, writable: true, configurable: true },
+        baz: { value: 4, enumerable: false, writable: true, configurable: true },
+    });
 
-  obj = new F();
+    obj = new F();
 
-  var txt = JSON.stringify(obj, ["foo", "bar", "baz"]);
-  print(txt);
+    var txt = JSON.stringify(obj, [ 'foo', 'bar', 'baz' ]);
+    print(txt);
 
-  var txt = JSON.stringify(obj, ["baz", "foo", "bar"]);
-  print(txt);
+    var txt = JSON.stringify(obj, [ 'baz', 'foo', 'bar' ]);
+    print(txt);
 }
 
 try {
-  stringifyPropertyListTest1();
-  stringifyPropertyListTest2();
+    stringifyPropertyListTest1();
+    stringifyPropertyListTest2();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -100,40 +100,38 @@ try {
  */
 
 function stringifyPropertyListTest3() {
-  var obj = { foo: 1, bar: 2, quux: 3, baz: 4 };
+    var obj = { foo: 1, bar: 2, quux: 3, baz: 4 };
 
-  // add some properties to ensure invalid PropertyList keys are not
-  // coerced incorrectly and look up one of these
-  obj["" + true] = "val:true";
-  obj["" + false] = "val:false";
-  obj["null"] = "val:null";
-  obj["0"] = "val:0";
-  obj["1"] = "val:1";
+    // add some properties to ensure invalid PropertyList keys are not
+    // coerced incorrectly and look up one of these
+    obj['' + true] = 'val:true';
+    obj['' + false] = 'val:false';
+    obj['null'] = 'val:null';
+    obj['0'] = 'val:0';
+    obj['1'] = 'val:1';
 
-  // these will be legitimately accessed, numbers are coerced
-  obj["1.2"] = "val:1.2";
-  obj["2.2"] = "val:2.2";
-  obj["NaN"] = "val:NaN";
+    // these will be legitimately accessed, numbers are coerced
+    obj['1.2'] = 'val:1.2';
+    obj['2.2'] = 'val:2.2';
+    obj['NaN'] = 'val:NaN';
 
-  // undefined will be skipped
-  print(JSON.stringify(obj, ["foo", undefined, "baz"]));
+    // undefined will be skipped
+    print(JSON.stringify(obj, [ 'foo', undefined, 'baz' ]));
 
-  // null, true, false will be skipped
-  print(JSON.stringify(obj, ["foo", null, "baz", true, false, "bar"]));
+    // null, true, false will be skipped
+    print(JSON.stringify(obj, [ 'foo', null, 'baz', true, false, 'bar' ]));
 
-  // function will be skipped, Date will be skipped, array and object
-  // will be skipped
-  print(
-    JSON.stringify(obj, ["foo", function() {}, new Date(0), {}, [], "baz"])
-  );
+    // function will be skipped, Date will be skipped, array and object
+    // will be skipped
+    print(JSON.stringify(obj, [ 'foo', function () {}, new Date(0), {}, [], 'baz' ]));
 
-  // null will be skipped
-  // ToString(1.2) = '1.2'; ToString(new Number(2.2)) = '2.2', ToString(0/0) = 'NaN'
-  print(JSON.stringify(obj, ["foo", null, 1.2, new Number(2.2), 0 / 0]));
+    // null will be skipped
+    // ToString(1.2) = '1.2'; ToString(new Number(2.2)) = '2.2', ToString(0/0) = 'NaN'
+    print(JSON.stringify(obj, [ 'foo', null, 1.2, new Number(2.2), 0/0 ]));
 }
 
 try {
-  stringifyPropertyListTest3();
+    stringifyPropertyListTest3();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

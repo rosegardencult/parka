@@ -9,19 +9,19 @@ done
 ===*/
 
 function test() {
-  var s;
+    var s;
 
-  s = Symbol("x\ucafe".repeat(1e8));
-  print(String(s).length);
+    s = Symbol('x\ucafe'.repeat(1e8));
+    print(String(s).length);
 
-  s = Symbol.for("x\ucafe".repeat(1e8));
-  print(String(s).length);
+    s = Symbol.for('x\ucafe'.repeat(1e8));
+    print(String(s).length);
 
-  print("done");
+    print('done');
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

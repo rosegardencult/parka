@@ -12,15 +12,12 @@ fOO
 ===*/
 
 try {
-  r = /fOO/i;
-  t = r.exec("foo");
-  print(t);
-  t = r.exec("Foo");
-  print(t);
-  t = r.exec("fOO");
-  print(t);
+    r = /fOO/i;
+    t = r.exec('foo'); print(t);
+    t = r.exec('Foo'); print(t);
+    t = r.exec('fOO'); print(t);
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /* XXX: add more cases */

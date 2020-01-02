@@ -25,99 +25,93 @@ done
 ===*/
 
 function genfunc(nvar, nconst, gencsprop, avoidmputobj) {
-  var res = [];
-  var i;
+    var res = [];
+    var i;
 
-  res.push("(function test(arg1) {");
+    res.push('(function test(arg1) {');
 
-  // arg1 eats one registers, variables eat a register each
-  for (i = 0; i < nvar; i++) {
-    res.push("    var v" + i + ";");
-  }
-
-  // each constant eats a constant index
-  for (i = 0; i < nconst; i++) {
-    res.push('    v0 = "tempstr' + i + '";');
-  }
-
-  // generate a CSPROP(I)
-  if (gencsprop) {
-    if (avoidmputobj) {
-      res.push("    v" + (nvar - 1) + " = Object.create(Object.prototype);");
-      res.push(
-        "    v" + (nvar - 1) + '.fn = function() { return "csprop return"; };'
-      );
-    } else {
-      res.push(
-        "    v" +
-          (nvar - 1) +
-          ' = { fn: function() { return "csprop return"; } };'
-      );
+    // arg1 eats one registers, variables eat a register each
+    for (i = 0; i < nvar; i++) {
+        res.push('    var v' + i + ';');
     }
-    res.push("    void v" + (nvar - 1) + ".fn();");
-  }
 
-  res.push("    return arg1;");
-  res.push("})");
-  return res.join("\n");
+    // each constant eats a constant index
+    for (i = 0; i < nconst; i++) {
+        res.push('    v0 = "tempstr' + i + '";');
+    }
+
+    // generate a CSPROP(I)
+    if (gencsprop) {
+        if (avoidmputobj) {
+            res.push('    v' + (nvar - 1) + ' = Object.create(Object.prototype);');
+            res.push('    v' + (nvar - 1) + '.fn = function() { return "csprop return"; };');
+        } else {
+            res.push('    v' + (nvar - 1) + ' = { fn: function() { return "csprop return"; } };');
+        }
+        res.push('    void v' + (nvar - 1) + '.fn();');
+    }
+
+    res.push('    return arg1;');
+    res.push('})');
+    return res.join('\n');
 }
 
 function test() {
-  var i, j, src, fn, ret;
+    var i, j, src, fn, ret;
 
-  // Triggers clobbering of arg1
-  print("test 1");
-  for (i = 1; i < 512; i++) {
-    try {
-      src = genfunc(i, i, false, false);
-      fn = eval(src);
-      ret = fn("foo");
-      if (ret != "foo") {
-        print(i, ret);
-      }
-    } catch (e) {
-      print(i, e);
-    }
-  }
-
-  // Triggers "MPUTOBJ target not an object"
-  print("test 2");
-  for (i = 1; i < 512; i++) {
-    try {
-      src = genfunc(i, i, true, false);
-      fn = eval(src);
-      ret = fn("foo");
-      if (ret != "foo") {
-        print(i, ret);
-      }
-    } catch (e) {
-      print(i, e);
-    }
-  }
-
-  // Tried to trigger the CSPROPI issue (but avoid triggering the MPUTOBJ
-  // issue above), but didn't work
-  print("test 3");
-  for (i = 200; i < 400; i++) {
-    for (j = -10; j <= 10; j++) {
-      try {
-        src = genfunc(i, i + j, true, false);
-        fn = eval(src);
-        ret = fn("foo");
-        if (ret != "foo") {
-          print(i, j, ret);
+    // Triggers clobbering of arg1
+    print('test 1');
+    for (i = 1; i < 512; i++) {
+        try {
+            src = genfunc(i, i, false, false);
+            fn = eval(src);
+            ret = fn('foo');
+            if (ret != 'foo') {
+                print(i, ret);
+            }
+        } catch (e) {
+            print(i, e);
         }
-      } catch (e) {
-        print(i, e);
-      }
     }
-  }
 
-  print("done");
+    // Triggers "MPUTOBJ target not an object"
+    print('test 2');
+    for (i = 1; i < 512; i++) {
+        try {
+           src = genfunc(i, i, true, false);
+            fn = eval(src);
+            ret = fn('foo');
+            if (ret != 'foo') {
+                print(i, ret);
+            }
+        } catch (e) {
+            print(i, e);
+        }
+    }
+
+    // Tried to trigger the CSPROPI issue (but avoid triggering the MPUTOBJ
+    // issue above), but didn't work
+    print('test 3');
+    for (i = 200; i < 400; i++) {
+        for (j = -10; j <= 10; j++) {
+            try {
+                src = genfunc(i, i + j, true, false);
+                fn = eval(src);
+                ret = fn('foo');
+                if (ret != 'foo') {
+                    print(i, j, ret);
+                }
+            } catch (e) {
+                print(i, e);
+            }
+        }
+    }
+
+    print('done');
 }
 
 try {
-  test("foo");
+    test('foo');
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

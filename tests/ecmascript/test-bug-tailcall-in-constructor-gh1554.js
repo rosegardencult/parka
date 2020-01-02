@@ -3,21 +3,21 @@ object
 ===*/
 
 function replacement() {
-  //console.trace();
-  return null;
+    //console.trace();
+    return null;
 }
 
 function MyConstructor() {
-  return replacement();
+    return replacement();
 }
 
 function test() {
-  var O = new MyConstructor();
-  print(typeof O);
+    var O = new MyConstructor();
+    print(typeof O);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

@@ -237,52 +237,52 @@
 // 1056-1097 is not
 
 function test() {
-  var re;
-  var i;
+    var re;
+    var i;
 
-  // Pin lower edge to interesting values, run upper edge.
-  for (i = 1023; i <= 1057; i++) {
-    re = RegExpUtil.makeCaseInsensitiveCharClassRegExp(1023, i);
-    print(i, re.source, RegExpUtil.getRegExpSingleCharMatches(re));
-  }
-  for (i = 1024; i <= 1057; i++) {
-    re = RegExpUtil.makeCaseInsensitiveCharClassRegExp(1024, i);
-    print(i, re.source, RegExpUtil.getRegExpSingleCharMatches(re));
-  }
-  for (i = 1025; i <= 1057; i++) {
-    re = RegExpUtil.makeCaseInsensitiveCharClassRegExp(1025, i);
-    print(i, re.source, RegExpUtil.getRegExpSingleCharMatches(re));
-  }
-  for (i = 1055; i <= 1060; i++) {
-    re = RegExpUtil.makeCaseInsensitiveCharClassRegExp(1055, i);
-    print(i, re.source, RegExpUtil.getRegExpSingleCharMatches(re));
-  }
-  for (i = 1056; i <= 1060; i++) {
-    re = RegExpUtil.makeCaseInsensitiveCharClassRegExp(1056, i);
-    print(i, re.source, RegExpUtil.getRegExpSingleCharMatches(re));
-  }
-  for (i = 1057; i <= 1060; i++) {
-    re = RegExpUtil.makeCaseInsensitiveCharClassRegExp(1057, i);
-    print(i, re.source, RegExpUtil.getRegExpSingleCharMatches(re));
-  }
+    // Pin lower edge to interesting values, run upper edge.
+    for (i = 1023; i <= 1057; i++) {
+        re = RegExpUtil.makeCaseInsensitiveCharClassRegExp(1023, i);
+        print(i, re.source, RegExpUtil.getRegExpSingleCharMatches(re));
+    }
+    for (i = 1024; i <= 1057; i++) {
+        re = RegExpUtil.makeCaseInsensitiveCharClassRegExp(1024, i);
+        print(i, re.source, RegExpUtil.getRegExpSingleCharMatches(re));
+    }
+    for (i = 1025; i <= 1057; i++) {
+        re = RegExpUtil.makeCaseInsensitiveCharClassRegExp(1025, i);
+        print(i, re.source, RegExpUtil.getRegExpSingleCharMatches(re));
+    }
+    for (i = 1055; i <= 1060; i++) {
+        re = RegExpUtil.makeCaseInsensitiveCharClassRegExp(1055, i);
+        print(i, re.source, RegExpUtil.getRegExpSingleCharMatches(re));
+    }
+    for (i = 1056; i <= 1060; i++) {
+        re = RegExpUtil.makeCaseInsensitiveCharClassRegExp(1056, i);
+        print(i, re.source, RegExpUtil.getRegExpSingleCharMatches(re));
+    }
+    for (i = 1057; i <= 1060; i++) {
+        re = RegExpUtil.makeCaseInsensitiveCharClassRegExp(1057, i);
+        print(i, re.source, RegExpUtil.getRegExpSingleCharMatches(re));
+    }
 
-  // Pin upper edge, run lower edge.
-  for (i = 1023; i <= 1055; i++) {
-    re = RegExpUtil.makeCaseInsensitiveCharClassRegExp(i, 1055);
-    print(i, re.source, RegExpUtil.getRegExpSingleCharMatches(re));
-  }
-  for (i = 1023; i <= 1056; i++) {
-    re = RegExpUtil.makeCaseInsensitiveCharClassRegExp(i, 1056);
-    print(i, re.source, RegExpUtil.getRegExpSingleCharMatches(re));
-  }
-  for (i = 1023; i <= 1057; i++) {
-    re = RegExpUtil.makeCaseInsensitiveCharClassRegExp(i, 1057);
-    print(i, re.source, RegExpUtil.getRegExpSingleCharMatches(re));
-  }
+    // Pin upper edge, run lower edge.
+    for (i = 1023; i <= 1055; i++) {
+        re = RegExpUtil.makeCaseInsensitiveCharClassRegExp(i, 1055);
+        print(i, re.source, RegExpUtil.getRegExpSingleCharMatches(re));
+    }
+    for (i = 1023; i <= 1056; i++) {
+        re = RegExpUtil.makeCaseInsensitiveCharClassRegExp(i, 1056);
+        print(i, re.source, RegExpUtil.getRegExpSingleCharMatches(re));
+    }
+    for (i = 1023; i <= 1057; i++) {
+        re = RegExpUtil.makeCaseInsensitiveCharClassRegExp(i, 1057);
+        print(i, re.source, RegExpUtil.getRegExpSingleCharMatches(re));
+    }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

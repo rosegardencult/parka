@@ -14,16 +14,16 @@ done
 ===*/
 
 function test() {
-  var d = new Date();
-  print("about to set year");
-  d.setFullYear(123912921921321);
-  print("year set ok");
-  print(d);
+    var d = new Date();
+    print('about to set year');
+    d.setFullYear(123912921921321);
+    print('year set ok');
+    print(d);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }
-print("done");
+print('done');

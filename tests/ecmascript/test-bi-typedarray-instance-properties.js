@@ -9,10 +9,8 @@
 ---*/
 
 function encValue(v) {
-  if (typeof v === "function") {
-    return "function";
-  }
-  return String(v);
+    if (typeof v === 'function') { return 'function'; }
+    return String(v);
 }
 
 /*===
@@ -110,50 +108,43 @@ Float64Array 2 false undefined undefined
 ===*/
 
 function typedArrayInstancePropertiesTest() {
-  var views = [
-    "Int8Array",
-    "Uint8Array",
-    "Uint8ClampedArray",
-    "Int16Array",
-    "Uint16Array",
-    "Int32Array",
-    "Uint32Array",
-    "Float32Array",
-    "Float64Array"
-  ];
-  var props = [
-    "buffer", // from ArrayBufferView
-    "byteOffset", // from ArrayBufferView
-    "byteLength", // from ArrayBufferView
-    "BYTES_PER_ELEMENT", // from TypedArray
-    "length", // from TypedArray
-    "set", // from TypedArray
-    "subarray", // from TypedArray
-    "0",
-    "1",
-    "2" // '0' and '1' from TypedArray, '2' doesn't exist
-  ];
+    var views = [
+        'Int8Array', 'Uint8Array', 'Uint8ClampedArray',
+        'Int16Array', 'Uint16Array',
+        'Int32Array', 'Uint32Array',
+        'Float32Array', 'Float64Array'
+    ];
+    var props = [
+        'buffer',              // from ArrayBufferView
+        'byteOffset',          // from ArrayBufferView
+        'byteLength',          // from ArrayBufferView
+        'BYTES_PER_ELEMENT',   // from TypedArray
+        'length',              // from TypedArray
+        'set',                 // from TypedArray
+        'subarray',            // from TypedArray
+        '0', '1', '2'          // '0' and '1' from TypedArray, '2' doesn't exist
+    ];
 
-  // This now tests that e.g. 'BYTES_PER_ELEMENT' is somewhere in the
-  // inheritance chain.  Could also check whether the property is own
-  // or inherited.
+    // This now tests that e.g. 'BYTES_PER_ELEMENT' is somewhere in the
+    // inheritance chain.  Could also check whether the property is own
+    // or inherited.
 
-  views.forEach(function(viewname) {
-    props.forEach(function(propname) {
-      try {
-        var view = eval("new " + viewname + "(2)");
-        var val = view[propname];
-        print(viewname, propname, propname in view, typeof val, encValue(val));
-      } catch (e) {
-        print(e.stack || e);
-      }
+    views.forEach(function (viewname) {
+        props.forEach(function (propname) {
+            try {
+                var view = eval('new ' + viewname + '(2)');
+                var val = view[propname];
+                print(viewname, propname, propname in view, typeof val, encValue(val));
+            } catch (e) {
+                print(e.stack || e);
+            }
+        });
     });
-  });
 }
 
 try {
-  print("TypedArray instance properties test");
-  typedArrayInstancePropertiesTest();
+    print('TypedArray instance properties test');
+    typedArrayInstancePropertiesTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

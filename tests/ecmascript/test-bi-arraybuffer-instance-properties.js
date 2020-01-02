@@ -3,10 +3,8 @@
  */
 
 function encValue(v) {
-  if (typeof v === "function") {
-    return "function";
-  }
-  return String(v);
+    if (typeof v === 'function') { return 'function'; }
+    return String(v);
 }
 
 /*===
@@ -23,32 +21,30 @@ isView false undefined undefined
 ===*/
 
 function arrayBufferInstancePropertiesTest() {
-  var props = [
-    "byteLength",
-    "byteOffset", // not present in spec, Duktape provides
-    "length", // not present in spec, Duktape provides
-    "BYTES_PER_ELEMENT",
-    "slice",
-    "isView", // not present for ArrayBuffer instances, only ArrayBuffer constructor
-    "0",
-    "1",
-    "2" // indexed props not present
-  ];
+    var props = [
+        'byteLength',
+        'byteOffset',   // not present in spec, Duktape provides
+        'length',       // not present in spec, Duktape provides
+        'BYTES_PER_ELEMENT',
+        'slice',
+        'isView',       // not present for ArrayBuffer instances, only ArrayBuffer constructor
+        '0', '1', '2'   // indexed props not present
+    ];
 
-  props.forEach(function(propname) {
-    try {
-      var buf = new ArrayBuffer(2);
-      var val = buf[propname];
-      print(propname, propname in buf, typeof val, encValue(val));
-    } catch (e) {
-      print(e.stack || e);
-    }
-  });
+    props.forEach(function (propname) {
+        try {
+            var buf = new ArrayBuffer(2);
+            var val = buf[propname];
+            print(propname, propname in buf, typeof val, encValue(val));
+        } catch (e) {
+            print(e.stack || e);
+        }
+    });
 }
 
 try {
-  print("ArrayBuffer instance properties test");
-  arrayBufferInstancePropertiesTest();
+    print('ArrayBuffer instance properties test');
+    arrayBufferInstancePropertiesTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

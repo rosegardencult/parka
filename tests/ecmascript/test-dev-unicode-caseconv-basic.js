@@ -4,7 +4,7 @@ foo
 FOO
 ===*/
 
-text = "Foo";
+text = 'Foo';
 
 print(text);
 print(text.toLowerCase());

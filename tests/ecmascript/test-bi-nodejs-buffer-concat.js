@@ -217,192 +217,161 @@ true
 /* Buffer.concat(). */
 
 function concatTest() {
-  var b1 = new Buffer(0);
-  var b2 = new Buffer(1);
-  var b3 = new Buffer(16);
-  var b4 = b3.slice(3, 11); // Test slice in concat too
-  var i;
+    var b1 = new Buffer(0);
+    var b2 = new Buffer(1);
+    var b3 = new Buffer(16);
+    var b4 = b3.slice(3, 11);  // Test slice in concat too
+    var i;
 
-  function test(arr, totalLength) {
-    var b, i;
-    print("array length: " + arr.length + ", totalLength: " + totalLength);
+    function test(arr, totalLength) {
+        var b, i;
+        print('array length: ' + arr.length + ', totalLength: ' + totalLength);
 
-    b1.fill(0x11);
-    b2.fill(0x22);
-    for (i = 0; i < b3.length; i++) {
-      b3[i] = 0x41 + i;
+        b1.fill(0x11);
+        b2.fill(0x22);
+        for (i = 0; i < b3.length; i++) {
+            b3[i] = 0x41 + i;
+        }
+        // b4 is a slice of b3 so no fill
+
+        try {
+            if (totalLength === undefined) {
+                b = Buffer.concat(arr);
+            } else {
+                b = Buffer.concat(arr, totalLength);
+            }
+
+            print(Buffer.isBuffer(b), typeof b);
+            if (Buffer.isBuffer(b)) {
+                printNodejsBuffer(b);
+
+                // Write to result and check if it affects input buffers
+                // to see if a copy was made.
+                b[0] = 0x5a;
+                printNodejsBuffer(b);
+                printNodejsBuffer(b1);
+                printNodejsBuffer(b2);
+                printNodejsBuffer(b3);
+                printNodejsBuffer(b4);
+            }
+        } catch (e) {
+            //print(e.stack || e);
+            print(e.name);
+        }
     }
-    // b4 is a slice of b3 so no fill
 
-    try {
-      if (totalLength === undefined) {
-        b = Buffer.concat(arr);
-      } else {
-        b = Buffer.concat(arr, totalLength);
-      }
+    // Zero length input list; totalLength is ignored and result
+    // is a new zero-size buffer.
 
-      print(Buffer.isBuffer(b), typeof b);
-      if (Buffer.isBuffer(b)) {
-        printNodejsBuffer(b);
+    test([], undefined);
+    test([], 0);
+    test([], 10);
 
-        // Write to result and check if it affects input buffers
-        // to see if a copy was made.
-        b[0] = 0x5a;
-        printNodejsBuffer(b);
-        printNodejsBuffer(b1);
-        printNodejsBuffer(b2);
-        printNodejsBuffer(b3);
-        printNodejsBuffer(b4);
-      }
-    } catch (e) {
-      //print(e.stack || e);
-      print(e.name);
-    }
-  }
+    // Length 1 used to have special handling in Node.js v0.12.1: totalLength
+    // is ignored and the (only) array element is returned without creating a
+    // copy.  This was changed in later versions and by v6.9.1 (new baseline)
+    // there's no longer special handling.
 
-  // Zero length input list; totalLength is ignored and result
-  // is a new zero-size buffer.
+    test([b2], undefined);
+    test([b2], 0);
+    test([b2], 10);
 
-  test([], undefined);
-  test([], 0);
-  test([], 10);
+    // Length > 1: totalLength is respected, and a copy is always made.
+    // If totalLength is larger than the input buffers combined, the extra
+    // data is not initialized and may be non-zero (in Node.js).  In Duktape
+    // the extra data is always zeroed.
+    //
+    // The totalLength value seems to be ToNumber() / ToInteger() coerced
+    // by Node.js, because false coerces to 0 and true to 1.
 
-  // Length 1 used to have special handling in Node.js v0.12.1: totalLength
-  // is ignored and the (only) array element is returned without creating a
-  // copy.  This was changed in later versions and by v6.9.1 (new baseline)
-  // there's no longer special handling.
+    test([b1, b2, b3, b4], undefined);
+    test([b1, b2, b3, b4], -1);
+    test([b1, b2, b3, b4], null);
+    test([b1, b2, b3, b4], false);
+    test([b1, b2, b3, b4], true);
+    test([b1, b2, b3, b4], 'dummy totalLength');
+    test([b1, b2, b3, b4], '17');
+    test([b1, b2, b3, b4], 0);
+    test([b1, b2, b3, b4], 1);
+    test([b1, b2, b3, b4], 5);
+    test([b1, b2, b3, b4], 24);
+    test([b1, b2, b3, b4], 25);
+    test([b1, b2, b3, b4], 26);  // exceeds input length
+    test([b1, b2, b3, b4], 100); // exceeds input length
 
-  test([b2], undefined);
-  test([b2], 0);
-  test([b2], 10);
+    // Non-buffer arguments
+    //
+    // For a single argument Node.js will return the value as is, even
+    // if it's not a buffer.  For >= 2 arguments Node.js throws a TypeError
+    // but the error messages are odd.
 
-  // Length > 1: totalLength is respected, and a copy is always made.
-  // If totalLength is larger than the input buffers combined, the extra
-  // data is not initialized and may be non-zero (in Node.js).  In Duktape
-  // the extra data is always zeroed.
-  //
-  // The totalLength value seems to be ToNumber() / ToInteger() coerced
-  // by Node.js, because false coerces to 0 and true to 1.
+    test(['foo'], 1);  // Node.js returns -string- 'foo'
+    test([123], 3);    // Node.js returns -integer- 123
+    test(['foo', 'bar'], 5);
+    test([123, 234], 5);
 
-  test([b1, b2, b3, b4], undefined);
-  test([b1, b2, b3, b4], -1);
-  test([b1, b2, b3, b4], null);
-  test([b1, b2, b3, b4], false);
-  test([b1, b2, b3, b4], true);
-  test([b1, b2, b3, b4], "dummy totalLength");
-  test([b1, b2, b3, b4], "17");
-  test([b1, b2, b3, b4], 0);
-  test([b1, b2, b3, b4], 1);
-  test([b1, b2, b3, b4], 5);
-  test([b1, b2, b3, b4], 24);
-  test([b1, b2, b3, b4], 25);
-  test([b1, b2, b3, b4], 26); // exceeds input length
-  test([b1, b2, b3, b4], 100); // exceeds input length
+    // totalLength boundary condition test; don't exceed input buffer length
+    // here because the trailing bytes will be uninitialized (Node.js) or
+    // zero (Duktape)
+    [ -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+      17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29 ].forEach(function (totalLength) {
+        var b1 = new Buffer('foo');
+        var b2 = new Buffer('bar');
+        var b3 = new Buffer('quux');
+        var b4 = new Buffer('baz');
+        var buffers = [ b1, b2, b3, b4, b1, b2, b3, b4, b1 ];  // 29 bytes
+        var b;
+        try {
+            b = Buffer.concat(buffers, totalLength);
+            print(totalLength, b.length, String(b));
+        } catch (e) {
+            print(totalLength, e.name);
+        }
+    });
 
-  // Non-buffer arguments
-  //
-  // For a single argument Node.js will return the value as is, even
-  // if it's not a buffer.  For >= 2 arguments Node.js throws a TypeError
-  // but the error messages are odd.
+    // Odd concat arguments; TypeError if first arg not an array
+    // (array-like value is also rejected).
+    [
+        undefined,
+        null,
+        false,
+        true,
+        { '0': b1, '1': b2, '2': b3, '3': b4, 'length': 3 }
+    ].forEach(function (listarg) {
+        var b;
+        try {
+            b = Buffer.concat(listarg);
+            printNodejsBuffer(b);
+        } catch (e) {
+            print(e.name);
+        }
+    });
 
-  test(["foo"], 1); // Node.js returns -string- 'foo'
-  test([123], 3); // Node.js returns -integer- 123
-  test(["foo", "bar"], 5);
-  test([123, 234], 5);
+    // Specific test for 1-length array.
+    b1 = new Buffer('abcdefgh');
+    b2 = Buffer.concat([ b1 ]);
+    print(Buffer.isBuffer(b2));
+    print(b1 === b2);  // always a copy
+    print(b2.length);
 
-  // totalLength boundary condition test; don't exceed input buffer length
-  // here because the trailing bytes will be uninitialized (Node.js) or
-  // zero (Duktape)
-  [
-    -1,
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-    18,
-    19,
-    20,
-    21,
-    22,
-    23,
-    24,
-    25,
-    26,
-    27,
-    28,
-    29
-  ].forEach(function(totalLength) {
-    var b1 = new Buffer("foo");
-    var b2 = new Buffer("bar");
-    var b3 = new Buffer("quux");
-    var b4 = new Buffer("baz");
-    var buffers = [b1, b2, b3, b4, b1, b2, b3, b4, b1]; // 29 bytes
-    var b;
-    try {
-      b = Buffer.concat(buffers, totalLength);
-      print(totalLength, b.length, String(b));
-    } catch (e) {
-      print(totalLength, e.name);
-    }
-  });
+    // totalLength is respected with array length >= 1.
+    b1 = new Buffer('abcdefgh');
+    b2 = Buffer.concat([ b1 ], 100);
+    print(Buffer.isBuffer(b2));
+    print(b1 === b2);  // always a copy
+    print(b2.length);
 
-  // Odd concat arguments; TypeError if first arg not an array
-  // (array-like value is also rejected).
-  [
-    undefined,
-    null,
-    false,
-    true,
-    { "0": b1, "1": b2, "2": b3, "3": b4, length: 3 }
-  ].forEach(function(listarg) {
-    var b;
-    try {
-      b = Buffer.concat(listarg);
-      printNodejsBuffer(b);
-    } catch (e) {
-      print(e.name);
-    }
-  });
-
-  // Specific test for 1-length array.
-  b1 = new Buffer("abcdefgh");
-  b2 = Buffer.concat([b1]);
-  print(Buffer.isBuffer(b2));
-  print(b1 === b2); // always a copy
-  print(b2.length);
-
-  // totalLength is respected with array length >= 1.
-  b1 = new Buffer("abcdefgh");
-  b2 = Buffer.concat([b1], 100);
-  print(Buffer.isBuffer(b2));
-  print(b1 === b2); // always a copy
-  print(b2.length);
-
-  // Specific test for 0-length array: totalLength is ignored even in
-  // Node.js v6.9.1 when argument array is zero length.
-  b1 = new Buffer("abcdefgh");
-  b2 = Buffer.concat([], 100);
-  print(Buffer.isBuffer(b2));
-  print(b2.length);
+    // Specific test for 0-length array: totalLength is ignored even in
+    // Node.js v6.9.1 when argument array is zero length.
+    b1 = new Buffer('abcdefgh');
+    b2 = Buffer.concat([], 100);
+    print(Buffer.isBuffer(b2));
+    print(b2.length);
 }
 
 try {
-  print("concat test");
-  concatTest();
+    print('concat test');
+    concatTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

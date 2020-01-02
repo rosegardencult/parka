@@ -17,28 +17,28 @@ RangeError
 /* Parenthesis; expression recursion */
 
 function buildParenExpr(count) {
-  var t = "1";
-  var i;
+    var t = '1';
+    var i;
 
-  for (i = 0; i < count; i++) {
-    t = "(" + t + ")";
-  }
+    for (i = 0; i < count; i++) {
+        t = '(' + t + ')';
+    }
 
-  return t;
+    return t;
 }
 
 try {
-  /* a reasonable nest count should of course compile */
-  print(eval(buildParenExpr(25)));
+    /* a reasonable nest count should of course compile */
+    print(eval(buildParenExpr(25)));
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 try {
-  /* a RangeError without other trouble should happen */
-  print(eval(buildParenExpr(5000)));
+    /* a RangeError without other trouble should happen */
+    print(eval(buildParenExpr(5000)));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -49,27 +49,27 @@ RangeError
 /* Statement recursion */
 
 function buildBlockExpr(count) {
-  var t = "'innermost block';"; // implicit return value
-  var i;
+    var t = "'innermost block';";  // implicit return value
+    var i;
 
-  for (i = 0; i < count; i++) {
-    t = "if (true) { " + t + "}";
-  }
+    for (i = 0; i < count; i++) {
+        t = "if (true) { " + t + "}";
+    }
 
-  return t;
+    return t;
 }
 
 try {
-  // reasonable count
-  print(eval(buildBlockExpr(15)));
+    // reasonable count
+    print(eval(buildBlockExpr(15)));
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 try {
-  print(eval(buildBlockExpr(5000)));
+    print(eval(buildBlockExpr(5000)));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -80,27 +80,27 @@ RangeError
 /* Function recursion */
 
 function buildFuncExpr(count) {
-  var t = "(function(){ print('innermost func'); })";
-  var i;
+    var t = "(function(){ print('innermost func'); })";
+    var i;
 
-  for (i = 0; i < count; i++) {
-    // t: function expression (not called)
-    t = "(function(){" + t + "()" + "})";
-  }
+    for (i = 0; i < count; i++) {
+        // t: function expression (not called)
+        t = "(function(){" + t + "()" + "})";
+    }
 
-  t = t + "()"; // call the outermost
-  return t;
+    t = t + "()";  // call the outermost
+    return t;
 }
 
 try {
-  // reasonable
-  eval(buildFuncExpr(10));
+    // reasonable
+    eval(buildFuncExpr(10));
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 try {
-  eval(buildFuncExpr(1000));
+    eval(buildFuncExpr(1000));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

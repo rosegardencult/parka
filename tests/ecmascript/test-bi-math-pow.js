@@ -32,7 +32,7 @@ NaN
 NaN
 ===*/
 
-print("pow 1");
+print('pow 1');
 
 printExact(Math.pow(Number.NEGATIVE_INFINITY, NaN));
 printExact(Math.pow(-1, NaN));
@@ -88,7 +88,7 @@ Infinity
 0
 ===*/
 
-print("pow 2");
+print('pow 2');
 
 printExact(Math.pow(1.0000001, Number.POSITIVE_INFINITY));
 printExact(Math.pow(-1.0000001, Number.POSITIVE_INFINITY));
@@ -109,7 +109,7 @@ printExact(Math.pow(-0.999999, Number.NEGATIVE_INFINITY));
 printExact(Math.pow(Number.POSITIVE_INFINITY, 0.000001));
 printExact(Math.pow(Number.POSITIVE_INFINITY, -0.000001));
 
-printExact(Math.pow(Number.NEGATIVE_INFINITY, 3)); // odd integer
+printExact(Math.pow(Number.NEGATIVE_INFINITY, 3));  // odd integer
 printExact(Math.pow(Number.NEGATIVE_INFINITY, 4));
 printExact(Math.pow(Number.NEGATIVE_INFINITY, 4.5));
 printExact(Math.pow(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY));
@@ -142,7 +142,7 @@ NaN
 66
 ===*/
 
-print("pow 3");
+print('pow 3');
 
 printExact(Math.pow(+0, 0.0000001));
 printExact(Math.pow(+0, Number.POSITIVE_INFINITY));

@@ -19,25 +19,25 @@ true
 var myProxy;
 
 function MyConstructor() {
-  print(typeof new.target);
-  print(new.target === MyConstructor);
-  print(new.target === myProxy);
+    print(typeof new.target);
+    print(new.target === MyConstructor);
+    print(new.target === myProxy);
 }
 
 function test() {
-  // No 'construct' trap, just call through.
-  myProxy = new Proxy(MyConstructor, {});
+    // No 'construct' trap, just call through.
+    myProxy = new Proxy(MyConstructor, {});
 
-  // Direct constructor call, new.target should be MyConstructor.
-  print("- direct call");
-  new MyConstructor();
+    // Direct constructor call, new.target should be MyConstructor.
+    print('- direct call');
+    new MyConstructor();
 
-  // Call via Proxy without capturing trap.
-  new myProxy();
+    // Call via Proxy without capturing trap.
+    new myProxy();
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

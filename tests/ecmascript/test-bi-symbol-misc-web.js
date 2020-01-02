@@ -14,24 +14,24 @@ true
 ===*/
 
 function miscSymbolTest() {
-  // Symbols can appear in object literals using ES2015 computed property names.
-  var obj = {
-    foo: "bar",
-    [Symbol.for("bar")]: "quux"
-  };
-  print(obj.foo);
-  print(obj[Symbol.for("bar")]);
+    // Symbols can appear in object literals using ES2015 computed property names.
+    var obj = {
+        foo: 'bar',
+        [ Symbol.for('bar') ]: 'quux'
+    };
+    print(obj.foo);
+    print(obj[Symbol.for('bar')]);
 
-  // Symbol.keyFor() maps a global symbol back to its requested name.
-  var localFoo = Symbol("foo");
-  var globalFoo = Symbol.for("foo");
-  print(Symbol.keyFor(localFoo));
-  print(Symbol.keyFor(globalFoo));
-  print(Symbol.for(Symbol.keyFor(globalFoo)) === Symbol.for("foo"));
+    // Symbol.keyFor() maps a global symbol back to its requested name.
+    var localFoo = Symbol('foo');
+    var globalFoo = Symbol.for('foo');
+    print(Symbol.keyFor(localFoo));
+    print(Symbol.keyFor(globalFoo));
+    print(Symbol.for(Symbol.keyFor(globalFoo)) === Symbol.for('foo'));
 }
 
 try {
-  miscSymbolTest();
+    miscSymbolTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

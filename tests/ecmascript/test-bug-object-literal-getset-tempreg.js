@@ -7,31 +7,31 @@ function true true true
 ===*/
 
 var obj = {
-  getMusicFilename: function() {},
-  load: function() {},
-  fadeIn: function() {},
-  fadeOut: function() {},
-  update: function() {},
-  musicPath: "~/music/",
-  play: function() {},
-  playSound: function() {},
-  forceFinish: function() {},
-  setMaxMusicVolume: function() {},
-  setMaxSoundVolume: function() {},
-  setVolume: function() {},
-  stop: function() {},
-  save: function() {},
-  get done() {},
-  get volume() {},
-  get svolume() {},
-  get mute() {},
-  set mute(value) {}
+    getMusicFilename: function() {},
+    load: function() {},
+    fadeIn: function() {},
+    fadeOut: function() {},
+    update: function() {},
+    musicPath: "~/music/",
+    play: function() {},
+    playSound: function() {},
+    forceFinish: function() {},
+    setMaxMusicVolume: function() {},
+    setMaxSoundVolume: function() {},
+    setVolume: function() {},
+    stop: function() {},
+    save: function() {},
+    get done() {},
+    get volume() {},
+    get svolume() {},
+    get mute() {},
+    set mute(value) {}
 };
 
 obj.setMaxSoundVolume();
-print("still here");
+print('still here');
 
-var pd = Object.getOwnPropertyDescriptor(obj, "setMaxSoundVolume");
+var pd = Object.getOwnPropertyDescriptor(obj, 'setMaxSoundVolume');
 print(typeof pd.value, pd.writable, pd.enumerable, pd.configurable);
 
-print(Duktape.enc("jx", obj));
+print(Duktape.enc('jx', obj));

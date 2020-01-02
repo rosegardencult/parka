@@ -18,24 +18,22 @@ MyConstructor
 ===*/
 
 function MyConstructor(a, b, c) {
-  var idx;
+    var idx;
 
-  print("MyConstructor");
-  for (idx = -1; ; idx--) {
-    var t = Duktape.act(idx);
-    if (!t) {
-      break;
+    print('MyConstructor');
+    for (idx = -1; ; idx--) {
+        var t = Duktape.act(idx);
+        if (!t) { break; }
+        print(idx, (t.function || {}).name);
     }
-    print(idx, (t.function || {}).name);
-  }
 }
 
 function test() {
-  Reflect.construct(MyConstructor, [1, 2, 3]);
+    Reflect.construct(MyConstructor, [ 1, 2, 3 ]);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

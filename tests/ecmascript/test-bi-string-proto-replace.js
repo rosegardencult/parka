@@ -1,12 +1,12 @@
 // XXX: util
 
 function printCodepoints(x) {
-  var i;
-  var tmp = [];
-  for (i = 0; i < x.length; i++) {
-    tmp.push(x.charCodeAt(i));
-  }
-  print(tmp.join(" "));
+    var i;
+    var tmp = [];
+    for (i = 0; i < x.length; i++) {
+        tmp.push(x.charCodeAt(i));
+    }
+    print(tmp.join(' '));
 }
 
 /*===
@@ -26,65 +26,55 @@ xfxoxox
 17185 4660 17185 291 17185 65244 17185
 ===*/
 
-print("basic");
+print('basic');
 
 function basicTest() {
-  print("foo".replace("o", "O"));
+    print('foo'.replace('o', 'O'));
 
-  print("foo".replace(/o/g, "O"));
+    print('foo'.replace(/o/g, 'O'));
 
-  print(
-    "foo-123 foo-234 foo-345".replace(/foo-(\d+)/g, function replacer(
-      matchSub,
-      cap,
-      matchOffset,
-      str
-    ) {
-      return "bar-" + String(Number(cap) + 1000);
-    })
-  );
+    print('foo-123 foo-234 foo-345'.replace(/foo-(\d+)/g,
+        function replacer(matchSub, cap, matchOffset, str) {
+            return 'bar-' + String(Number(cap) + 1000);
+        })
+    );
 
-  // empty search string; matches once at the beginning
+    // empty search string; matches once at the beginning
 
-  print("foo".replace("", "x"));
+    print('foo'.replace('', 'x'));
 
-  // empty non-global regexp match; matches once at the beginning
+    // empty non-global regexp match; matches once at the beginning
 
-  print("foo".replace(/(?:)/, "x"));
+    print('foo'.replace(/(?:)/, 'x'));
 
-  // empty global regexp match; matches at the beginning (before first
-  // char), between every char, and after the last char.  Progress
-  // check in the matching process (replace() should perform regexp
-  // matching like match() does, according to E5.1) ensures this
-  // process terminates and matches only once at each point.
+    // empty global regexp match; matches at the beginning (before first
+    // char), between every char, and after the last char.  Progress
+    // check in the matching process (replace() should perform regexp
+    // matching like match() does, according to E5.1) ensures this
+    // process terminates and matches only once at each point.
 
-  print("foo".replace(/(?:)/g, "x"));
+    print('foo'.replace(/(?:)/g, 'x'));
 
-  // non-BMP variants of above tests: these are important because
-  // the implementation works with both byte and char offsets
+    // non-BMP variants of above tests: these are important because
+    // the implementation works with both byte and char offsets
 
-  printCodepoints("\u1234\u0123\u0032\u1234\ufedc".replace("\u1234", "\u4321"));
-  printCodepoints("\u1234\u0123\u0032\u1234\ufedc".replace(/\u1234/, "\u4321"));
-  printCodepoints(
-    "\u1234\u0123\u0032\u1234\ufedc".replace(/\u1234/g, "\u4321")
-  );
-  printCodepoints(
-    "\u1234\u2345\u1234\u3456\u1234\u4567".replace(
-      /\u1234(.)/g,
-      function replacer(matchSub, cap, matchOffset, str) {
-        return "x" + String.fromCharCode(cap.charCodeAt(0) + 0x100);
-      }
-    )
-  );
-  printCodepoints("\u1234\u0123\ufedc".replace("", "\u4321"));
-  printCodepoints("\u1234\u0123\ufedc".replace(/(?:)/, "\u4321"));
-  printCodepoints("\u1234\u0123\ufedc".replace(/(?:)/g, "\u4321"));
+    printCodepoints('\u1234\u0123\u0032\u1234\ufedc'.replace('\u1234', '\u4321'));
+    printCodepoints('\u1234\u0123\u0032\u1234\ufedc'.replace(/\u1234/, '\u4321'));
+    printCodepoints('\u1234\u0123\u0032\u1234\ufedc'.replace(/\u1234/g, '\u4321'));
+    printCodepoints('\u1234\u2345\u1234\u3456\u1234\u4567'.replace(/\u1234(.)/g,
+        function replacer(matchSub, cap, matchOffset, str) {
+            return 'x' + String.fromCharCode(cap.charCodeAt(0) + 0x100);
+        })
+    );
+    printCodepoints('\u1234\u0123\ufedc'.replace('', '\u4321'));
+    printCodepoints('\u1234\u0123\ufedc'.replace(/(?:)/, '\u4321'));
+    printCodepoints('\u1234\u0123\ufedc'.replace(/(?:)/g, '\u4321'));
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -105,70 +95,68 @@ string $1-$11,$1-$22
 
 /* Test all dollar replacement syntax variants */
 
-print("dollar replacements");
+print('dollar replacements');
 
 function dollarTest() {
-  function test(str, searchValue, replaceValue) {
-    var t;
+    function test(str, searchValue, replaceValue) {
+        var t;
 
-    try {
-      t = str.replace(searchValue, replaceValue);
-      print(typeof t, t);
-    } catch (e) {
-      print(e.name);
+        try {
+            t = str.replace(searchValue, replaceValue);
+            print(typeof t, t);
+        } catch (e) {
+            print(e.name);
+        }
     }
-  }
 
-  test("foobar", /([a-f])/g, "x");
+    test('foobar', /([a-f])/g, 'x');
 
-  test("foobar", /([a-f])/g, "$$");
+    test('foobar', /([a-f])/g, '$$');
 
-  test("foobar", /([a-f])/g, "$&$&");
+    test('foobar', /([a-f])/g, '$&$&');
 
-  test("foobar", /o/g, "[$`]");
+    test('foobar', /o/g, '[$`]');
 
-  test("foobar", /o/g, "[$']");
+    test('foobar', /o/g, '[$\']');
 
-  test("foobar", /(ob)/g, "$0"); // $0 is not valid, so is interpreted literally as "$0"
-  test("foobar", /(ob)/g, "$1$1");
-  test("foobar", /(ob)/g, "$01"); // interpreted as "replacement 1"
-  test("foobar", /(ob)/g, "$012"); // interpreted as "replacement 01 + '2'"
+    test('foobar', /(ob)/g, '$0');   // $0 is not valid, so is interpreted literally as "$0"
+    test('foobar', /(ob)/g, '$1$1');
+    test('foobar', /(ob)/g, '$01');  // interpreted as "replacement 1"
+    test('foobar', /(ob)/g, '$012'); // interpreted as "replacement 01 + '2'"
 
-  // Behavior here is implemented dependent because 11 > NCapturingParens.
-  // Rhino and V8 both seem to fall back to interpreting the expression
-  // as '$1' followed by a verbatim '1', so we test for that.
-  test("foobar", /(ob)/g, "$11"); // interpreted as "replacement 11" not "replacement 1 + '1'"
+    // Behavior here is implemented dependent because 11 > NCapturingParens.
+    // Rhino and V8 both seem to fall back to interpreting the expression
+    // as '$1' followed by a verbatim '1', so we test for that.
+    test('foobar', /(ob)/g, '$11');  // interpreted as "replacement 11" not "replacement 1 + '1'"
 
-  // $27 -> $29 are larger than NCapturingParens but $2 is not, so V8/Rhino fall back
-  // to interpreting them as $2 followed by a literal digit. Same goes for all matches
-  // up to $99.  $100 will be interpreted as $10 followed by a literal '0'.
-  test(
-    "abcdefghijklmnopqrstuvwxyz",
-    /(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)/g,
-    "$0$1$2$3$4$5$6$7$8$9$10$11$12$13$14$15$16$17$18$19$20$21$22$23$24$25$26$27$28$29" +
-      "$30$31$32$33$34$35$36$37$38$39$40$41$42$43$44$45$46$47$48$49" +
-      "$50$51$52$53$54$55$56$57$58$59$60$61$62$63$64$65$66$67$68$69" +
-      "$70$71$72$73$74$75$76$77$78$79$80$81$82$83$84$85$86$87$88$89" +
-      "$90$91$92$93$94$95$96$97$98$99$100"
-  );
+    // $27 -> $29 are larger than NCapturingParens but $2 is not, so V8/Rhino fall back
+    // to interpreting them as $2 followed by a literal digit. Same goes for all matches
+    // up to $99.  $100 will be interpreted as $10 followed by a literal '0'.
+    test('abcdefghijklmnopqrstuvwxyz',
+         /(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)/g,
+         '$0$1$2$3$4$5$6$7$8$9$10$11$12$13$14$15$16$17$18$19$20$21$22$23$24$25$26$27$28$29' +
+         '$30$31$32$33$34$35$36$37$38$39$40$41$42$43$44$45$46$47$48$49' +
+         '$50$51$52$53$54$55$56$57$58$59$60$61$62$63$64$65$66$67$68$69' +
+         '$70$71$72$73$74$75$76$77$78$79$80$81$82$83$84$85$86$87$88$89' +
+         '$90$91$92$93$94$95$96$97$98$99$100');
 
-  // Specific test form E5.1 Section 15.5.4.11:
-  //
-  // test("$1,$2", /(\$(\d))/g, "$$1-$1$2");
-  //
-  // This test cannot be used as is, because "\$" is not a valid RegExp
-  // identity escape: identity escape characters cannot come from
-  // IdentifierPart; since IdentifierPart includes '$' it must cause a
-  // SyntaxError.  On the other hand, a plain '$' has a special meaning,
-  // so a dollar sign must be encoded as a hex/unicode escape!
+    // Specific test form E5.1 Section 15.5.4.11:
+    //
+    // test("$1,$2", /(\$(\d))/g, "$$1-$1$2");
+    //
+    // This test cannot be used as is, because "\$" is not a valid RegExp
+    // identity escape: identity escape characters cannot come from
+    // IdentifierPart; since IdentifierPart includes '$' it must cause a
+    // SyntaxError.  On the other hand, a plain '$' has a special meaning,
+    // so a dollar sign must be encoded as a hex/unicode escape!
 
-  test("$1,$2", /(\u0024(\d))/g, "$$1-$1$2");
+    test("$1,$2", /(\u0024(\d))/g, "$$1-$1$2");
 }
 
 try {
-  dollarTest();
+    dollarTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -201,99 +189,88 @@ string [repl-0][repl-3]
 
 /* Function replacer, regexp captures. */
 
-print("function replacer");
+print('function replacer');
 
 function functionReplacerTest() {
-  // zero captures
-  function repl1(matchSub, matchOffset, str) {
-    print("repl1", matchSub, matchOffset, str);
-    return "[repl-" + matchOffset + "]";
-  }
-
-  // three captures
-  function repl2(matchSub, cap1, cap2, cap3, matchOffset, str) {
-    print("repl2", matchSub, cap1, cap2, cap3, matchOffset, str);
-    return "[repl-" + matchOffset + "]";
-  }
-
-  // three captures
-  function repl3(matchSub, cap1, cap2, cap3, matchOffset, str) {
-    print("repl3", matchSub, cap1, cap2, cap3, matchOffset, str);
-    return "Yadda-" + Number(cap3) * 2;
-  }
-
-  // one capture, returns an object which needs to be string coerced
-  function repl4(matchSub, cap, matchOffset, str) {
-    print("repl4", matchSub, cap, matchOffset, str);
-    return {
-      toString: function() {
-        print("toString() repl4 retval");
-        return "[repl-" + matchOffset + " cap=" + cap + "]";
-      },
-      valueOf: function() {
-        print("valueOf() repl4 retval");
-        return "not called";
-      }
-    };
-  }
-
-  // allows any captures, use arguments object to figure out args
-  function repl_args() {
-    var matchSub, matchOffset, str;
-    var caps = [];
-    var i, n;
-
-    matchSub = arguments[0];
-    matchOffset = arguments[arguments.length - 2];
-    str = arguments[arguments.length - 1];
-    for (i = 1; i < arguments.length - 2; i++) {
-      caps.push(arguments[i]);
+    // zero captures
+    function repl1(matchSub, matchOffset, str) {
+        print('repl1', matchSub, matchOffset, str);
+        return '[repl-' + matchOffset + ']';
     }
 
-    print(
-      "repl_args",
-      arguments.length,
-      matchSub,
-      "<" + caps.join(":") + ">",
-      matchOffset,
-      str
-    );
-
-    return "[repl-args-" + matchOffset + "]";
-  }
-
-  function test(str, searchValue, replaceValue) {
-    var t;
-
-    try {
-      t = str.replace(searchValue, replaceValue);
-      print(typeof t, t);
-    } catch (e) {
-      print(e.name);
+    // three captures
+    function repl2(matchSub, cap1, cap2, cap3, matchOffset, str) {
+        print('repl2', matchSub, cap1, cap2, cap3, matchOffset, str);
+        return '[repl-' + matchOffset + ']';
     }
-  }
 
-  test("foobar", "o", repl1);
-  test("foobar", /o/g, repl1);
+    // three captures
+    function repl3(matchSub, cap1, cap2, cap3, matchOffset, str) {
+        print('repl3', matchSub, cap1, cap2, cap3, matchOffset, str);
+        return 'Yadda-' + Number(cap3) * 2;
+    }
 
-  test("foobar", /(o)(b)(.)/g, repl2);
+    // one capture, returns an object which needs to be string coerced
+    function repl4(matchSub, cap, matchOffset, str) {
+        print('repl4', matchSub, cap, matchOffset, str);
+        return {
+            toString: function() { print('toString() repl4 retval');
+                                   return '[repl-' + matchOffset + ' cap=' + cap + ']'; },
+            valueOf: function() { print('valueOf() repl4 retval');
+                                  return 'not called'; }
+        };
+    }
 
-  test("yada-1 yadda-2 yaddda-3", /(ya)(d+)a-(\d+)/g, repl3);
+    // allows any captures, use arguments object to figure out args
+    function repl_args() {
+        var matchSub, matchOffset, str;
+        var caps = [];
+        var i, n;
 
-  test("foobar", /o/g, repl_args);
-  test("foobar", /(o)(b)(.)/g, repl_args);
+        matchSub = arguments[0];
+        matchOffset = arguments[arguments.length - 2];
+        str = arguments[arguments.length - 1];
+        for (i = 1; i < arguments.length - 2; i++) {
+            caps.push(arguments[i]);
+        }
 
-  // replace function value coercion
-  test("foObar", /(o)/gi, repl4);
+        print('repl_args', arguments.length, matchSub, '<' + caps.join(':') + '>', matchOffset, str);
 
-  // even captures with no match are given to the replacer, as undefined
-  test("foobar", /((foo)|(bar))/g, repl2);
+        return '[repl-args-' + matchOffset + ']';
+    }
+
+    function test(str, searchValue, replaceValue) {
+        var t;
+
+        try {
+            t = str.replace(searchValue, replaceValue);
+            print(typeof t, t);
+        } catch (e) {
+            print(e.name);
+        }
+    }
+
+    test('foobar', 'o', repl1);
+    test('foobar', /o/g, repl1);
+
+    test('foobar', /(o)(b)(.)/g, repl2);
+
+    test('yada-1 yadda-2 yaddda-3', /(ya)(d+)a-(\d+)/g, repl3);
+
+    test('foobar', /o/g, repl_args);
+    test('foobar', /(o)(b)(.)/g, repl_args);
+
+    // replace function value coercion
+    test('foObar', /(o)/gi, repl4);
+
+    // even captures with no match are given to the replacer, as undefined
+    test('foobar', /((foo)|(bar))/g, repl2);
 }
 
 try {
-  functionReplacerTest();
+    functionReplacerTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -363,94 +340,74 @@ re: source goo global true ignoreCase false multiline false lastIndex number 0
  * from this interpretation.
  */
 
-print("regexp details");
+print('regexp details');
 
 function regexpDetailsTest() {
-  var re;
+    var re;
 
-  function dumpRe(r) {
-    print(
-      "re:",
-      "source",
-      r.source,
-      "global",
-      r.global,
-      "ignoreCase",
-      r.ignoreCase,
-      "multiline",
-      r.multiline,
-      "lastIndex",
-      typeof r.lastIndex,
-      r.lastIndex
-    );
-  }
+    function dumpRe(r) {
+        print('re:', 'source', r.source, 'global', r.global, 'ignoreCase', r.ignoreCase,
+              'multiline', r.multiline, 'lastIndex', typeof r.lastIndex, r.lastIndex);
+    }
 
-  // non-global case with a match: lastIndex is not touched
-  print("non-global, match");
-  re = /foo/;
-  dumpRe(re);
-  re.lastIndex = "123";
-  dumpRe(re);
-  print(
-    "barfoobarfoo".replace(re, function() {
-      print("replace func");
-      dumpRe(re);
-      return "[repl]";
-    })
-  );
-  dumpRe(re);
+    // non-global case with a match: lastIndex is not touched
+    print('non-global, match');
+    re = /foo/;
+    dumpRe(re);
+    re.lastIndex = '123';
+    dumpRe(re);
+    print('barfoobarfoo'.replace(re, function() {
+        print('replace func');
+        dumpRe(re);
+        return '[repl]';
+    }));
+    dumpRe(re);
 
-  // non-global case with no match: lastIndex is written to zero
-  print("non-global, no match");
-  re = /goo/;
-  dumpRe(re);
-  re.lastIndex = "123";
-  dumpRe(re);
-  print(
-    "barfoobarfoo".replace(re, function() {
-      print("replace func");
-      dumpRe(re);
-      return "[repl]";
-    })
-  );
-  dumpRe(re);
+    // non-global case with no match: lastIndex is written to zero
+    print('non-global, no match');
+    re = /goo/;
+    dumpRe(re);
+    re.lastIndex = '123';
+    dumpRe(re);
+    print('barfoobarfoo'.replace(re, function() {
+        print('replace func');
+        dumpRe(re);
+        return '[repl]';
+    }));
+    dumpRe(re);
 
-  // global case with a matches: lastIndex is updated before every
-  // replacer call, and written to zero at the end
-  print("global, match");
-  re = /foo/g;
-  dumpRe(re);
-  re.lastIndex = "123";
-  dumpRe(re);
-  print(
-    "barfoobarfoobarfoobar".replace(re, function() {
-      print("replace func");
-      dumpRe(re);
-      return "[repl]";
-    })
-  );
-  dumpRe(re);
+    // global case with a matches: lastIndex is updated before every
+    // replacer call, and written to zero at the end
+    print('global, match');
+    re = /foo/g;
+    dumpRe(re);
+    re.lastIndex = '123';
+    dumpRe(re);
+    print('barfoobarfoobarfoobar'.replace(re, function() {
+        print('replace func');
+        dumpRe(re);
+        return '[repl]';
+    }));
+    dumpRe(re);
 
-  // global case with no match: lastIndex is written to zero
-  print("global, no match");
-  re = /goo/g;
-  dumpRe(re);
-  re.lastIndex = "123";
-  dumpRe(re);
-  print(
-    "barfoobarfoobarfoobar".replace(re, function() {
-      print("replace func");
-      dumpRe(re);
-      return "[repl]";
-    })
-  );
-  dumpRe(re);
+    // global case with no match: lastIndex is written to zero
+    print('global, no match');
+    re = /goo/g;
+    dumpRe(re);
+    re.lastIndex = '123';
+    dumpRe(re);
+    print('barfoobarfoobarfoobar'.replace(re, function() {
+        print('replace func');
+        dumpRe(re);
+        return '[repl]';
+    }));
+    dumpRe(re);
 }
 
 try {
-  regexpDetailsTest();
+    regexpDetailsTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -467,32 +424,32 @@ string [object OBJECT]
 
 /* Coercion of 'this' and arguments. */
 
-print("coercion");
+print('coercion');
 
 function coercionTest() {
-  function test(thisValue, searchValue, replaceValue) {
-    var t;
+    function test(thisValue, searchValue, replaceValue) {
+        var t;
 
-    try {
-      t = String.prototype.replace.call(thisValue, searchValue, replaceValue);
-      print(typeof t, t);
-    } catch (e) {
-      print(e.name);
+        try {
+            t = String.prototype.replace.call(thisValue, searchValue, replaceValue);
+            print(typeof t, t);
+        } catch (e) {
+            print(e.name);
+        }
     }
-  }
 
-  test(undefined, "foo", "bar");
-  test(null, "foo", "bar");
-  test(true, "rue", "RUE");
-  test(false, "lse", "LSE");
-  test(123, "23", "xy");
-  test("quux", "u", "U");
-  test([1, 2], ",2", ":3");
-  test({ foo: 1, bar: 2 }, "Object", "OBJECT");
+    test(undefined, 'foo', 'bar');
+    test(null, 'foo', 'bar');
+    test(true, 'rue', 'RUE');
+    test(false, 'lse', 'LSE');
+    test(123, '23', 'xy');
+    test('quux', 'u', 'U');
+    test([1,2], ',2', ':3');
+    test({ foo:1, bar:2 }, 'Object', 'OBJECT');
 }
 
 try {
-  coercionTest();
+    coercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

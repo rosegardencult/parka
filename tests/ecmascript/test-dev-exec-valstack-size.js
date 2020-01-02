@@ -12,8 +12,8 @@ try finished
  */
 
 try {
-  eval("for (var i = 0; i < 100000; i++) { 'foo' + i + 'bar' }");
-  print("try finished");
+    eval("for (var i = 0; i < 100000; i++) { 'foo' + i + 'bar' }");
+    print("try finished");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

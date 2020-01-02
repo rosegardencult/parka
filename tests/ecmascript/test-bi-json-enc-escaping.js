@@ -2070,59 +2070,29 @@
  */
 
 function quotingTest() {
-  var i;
-  var t;
-  var cp;
+    var i;
+    var t;
+    var cp;
 
-  for (i = 0; i < 65536; i += 32) {
-    // in batches of 32 chars
-    t = JSON.stringify(
-      String.fromCharCode(
-        i + 0,
-        i + 1,
-        i + 2,
-        i + 3,
-        i + 4,
-        i + 5,
-        i + 6,
-        i + 7,
-        i + 8,
-        i + 9,
-        i + 10,
-        i + 11,
-        i + 12,
-        i + 13,
-        i + 14,
-        i + 15,
-        i + 16,
-        i + 17,
-        i + 18,
-        i + 19,
-        i + 20,
-        i + 21,
-        i + 22,
-        i + 23,
-        i + 24,
-        i + 25,
-        i + 26,
-        i + 27,
-        i + 28,
-        i + 29,
-        i + 30,
-        i + 31
-      )
-    );
+    for (i = 0; i < 65536; i += 32) {
+        // in batches of 32 chars
+        t = JSON.stringify(String.fromCharCode(
+            i+0,  i+1,  i+2,  i+3,  i+4,  i+5,  i+6,  i+7,
+            i+8,  i+9,  i+10, i+11, i+12, i+13, i+14, i+15,
+            i+16, i+17, i+18, i+19, i+20, i+21, i+22, i+23,
+            i+24, i+25, i+26, i+27, i+28, i+29, i+30, i+31
+        ));
 
-    cp = [];
-    for (j = 0; j < t.length; j++) {
-      cp.push(t.charCodeAt(j));
+        cp = [];
+        for (j = 0; j < t.length; j++) {
+            cp.push(t.charCodeAt(j));
+        }
+        print(cp.join(' '));
     }
-    print(cp.join(" "));
-  }
 }
 
 try {
-  quotingTest();
+    quotingTest();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

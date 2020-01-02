@@ -11,21 +11,19 @@ count: 3000
 var origEval = eval;
 var count = 0;
 
-var eval = function(x) {
-  count++;
-  if (x <= 1) {
-    return;
-  }
-  test(x - 1);
-};
+var eval = function (x) {
+    count++;
+    if (x <= 1) { return; }
+    test(x - 1);
+}
 
 function test(x) {
-  eval(x);
+    eval(x);
 }
 
 try {
-  test(3e3);
-  print("count:", count);
+    test(3e3);
+    print('count:', count);
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

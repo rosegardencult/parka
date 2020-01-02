@@ -9,24 +9,15 @@
 ===*/
 
 function test() {
-  // Fast path enabled
-  print(
-    JSON.stringify([Duktape.Pointer("dummy"), new Duktape.Pointer("dummy")])
-  );
+    // Fast path enabled
+    print(JSON.stringify([ Duktape.Pointer('dummy'), new Duktape.Pointer('dummy') ]));
 
-  // Fast path disabled (replacer)
-  print(
-    JSON.stringify(
-      [Duktape.Pointer("dummy"), new Duktape.Pointer("dummy")],
-      function id(k, v) {
-        return v;
-      }
-    )
-  );
+    // Fast path disabled (replacer)
+    print(JSON.stringify([ Duktape.Pointer('dummy'), new Duktape.Pointer('dummy') ], function id(k,v) { return v; }));
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

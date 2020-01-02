@@ -9,27 +9,26 @@ done
 ===*/
 
 function pushPopTest() {
-  var arr, i, arg;
+    var arr, i, arg;
 
-  arr = [];
-  arg = [];
-  for (i = 0; i < 1000; i++) {
-    arr.push.apply(arr, arg);
-    arg.push("dummy");
-  }
-  print(arr.length);
+    arr = []; arg = [];
+    for (i = 0; i < 1000; i++) {
+        arr.push.apply(arr, arg);
+        arg.push('dummy');
+    }
+    print(arr.length);
 
-  while (arr.length > 0) {
-    arr.pop();
-  }
-  print(arr.length);
+    while (arr.length > 0) {
+        arr.pop();
+    }
+    print(arr.length);
 
-  // XXX: At the moment there's no shrink check in the fast path.
+    // XXX: At the moment there's no shrink check in the fast path.
 }
 
 try {
-  pushPopTest();
-  print("done");
+    pushPopTest();
+    print('done');
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

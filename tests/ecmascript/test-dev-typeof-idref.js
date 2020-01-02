@@ -16,15 +16,15 @@ undefined
 ===*/
 
 try {
-  print(typeof foo); // unresolvable -> undefined; requires TYPEOFID
+    print(typeof foo);  // unresolvable -> undefined; requires TYPEOFID
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  print(typeof foo); // parens must have no effect
+    print(typeof ((foo)));  // parens must have no effect
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -32,8 +32,8 @@ number
 ===*/
 
 function func(x) {
-  // register-bound variables are always resolvable
-  return typeof x;
+    // register-bound variables are always resolvable
+    return typeof x;
 }
 
 print(func(3));

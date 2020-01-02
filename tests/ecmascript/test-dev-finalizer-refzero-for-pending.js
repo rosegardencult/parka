@@ -28,20 +28,14 @@ var y = {};
 x.ref = y;
 y.ref = x;
 
-Duktape.fin(x, function(v) {
-  print("fin x");
-  v.ref = null;
-});
-Duktape.fin(y, function(v) {
-  print("fin y");
-  v.ref = null;
-});
+Duktape.fin(x, function (v) { print('fin x'); v.ref = null; });
+Duktape.fin(y, function (v) { print('fin y'); v.ref = null; });
 
-print("gc 1");
+print('gc 1');
 Duktape.gc();
-print("lose refs");
+print('lose refs');
 x = y = null;
-print("gc 2");
+print('gc 2');
 Duktape.gc();
 
-print("still here");
+print('still here');

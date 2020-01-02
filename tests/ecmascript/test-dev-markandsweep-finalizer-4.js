@@ -10,16 +10,16 @@ finalizing
 ===*/
 
 function fin(o) {
-  // because order of finalization is not guaranteed, don't print
-  // object name
-  print("finalizing");
+    // because order of finalization is not guaranteed, don't print
+    // object name
+    print('finalizing');
 }
 
-var obj1 = { name: "obj1" };
-var obj2 = { name: "obj2" };
+var obj1 = { name: 'obj1' };
+var obj2 = { name: 'obj2' };
 Duktape.fin(obj1, fin);
 Duktape.fin(obj2, fin);
-obj1.ref = obj2; // use circular reference to prevent refcount collection
+obj1.ref = obj2;  // use circular reference to prevent refcount collection
 obj2.ref = obj1;
 obj1 = null;
 obj2 = null;

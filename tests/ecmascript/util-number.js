@@ -13,20 +13,20 @@
  */
 
 function printRounded6(x) {
-  if (x === 0 && 1 / x < 0) {
-    print("-" + Math.round(x * 1000000));
-  } else {
-    print(Math.round(x * 1000000));
-  }
+    if (x === 0 && 1 / x < 0) {
+        print('-' + Math.round(x * 1000000));
+    } else {
+        print(Math.round(x * 1000000));
+    }
 }
 
 function toStringExact(x) {
-  if (x === 0 && 1 / x < 0) {
-    return "-0";
-  } else {
-    return String(x);
-  }
+    if (x === 0 && 1 / x < 0) {
+        return '-0';
+    } else {
+        return String(x);
+    }
 }
 function printExact(x) {
-  print(toStringExact(x));
+    print(toStringExact(x));
 }

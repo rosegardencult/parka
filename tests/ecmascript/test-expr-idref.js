@@ -30,16 +30,14 @@ var 1
 ===*/
 
 function test(arg1) {
-  var foo = 123;
-  print(var1); // access global identifier
-  print(arg1); // access argument
-  print(foo); // access local variable
-  function inner() {}
-  print(Object.prototype.toString.call(inner)); // access local function declaration
+    var foo = 123;
+    print(var1);  // access global identifier
+    print(arg1);  // access argument
+    print(foo);   // access local variable
+    function inner() {};
+    print(Object.prototype.toString.call(inner));  // access local function declaration
 
-  (function() {
-    print(foo);
-  })(); // access outer function variable
+    (function () { print(foo); })();  // access outer function variable
 }
 
 test(234);

@@ -26,30 +26,20 @@ object 3 finalized during heap destruction, don't create another object
 var objCount = 0;
 
 function mkObj() {
-  var obj = {};
-  var other = {};
-  obj.ref = other;
-  other.ref = obj;
-  other = null; // ensure cycle -> mark-and-sweep
-  var myCount = ++objCount;
+    var obj = {};
+    var other = {};
+    obj.ref = other; other.ref = obj; other = null;  // ensure cycle -> mark-and-sweep
+    var myCount = ++objCount;
 
-  print("created object", myCount);
-  Duktape.fin(obj, function finalize(o, heapDestruct) {
-    if (heapDestruct) {
-      print(
-        "object",
-        myCount,
-        "finalized during heap destruction, don't create another object"
-      );
-    } else {
-      print(
-        "object",
-        myCount,
-        "finalized before heap destruction, create new object"
-      );
-      void mkObj();
-    }
-  });
+    print('created object', myCount);
+    Duktape.fin(obj, function finalize(o, heapDestruct) {
+        if (heapDestruct) {
+            print('object', myCount, 'finalized during heap destruction, don\'t create another object');
+        } else {
+            print('object', myCount, 'finalized before heap destruction, create new object');
+            void mkObj();
+        }
+    });
 }
 
 void mkObj();

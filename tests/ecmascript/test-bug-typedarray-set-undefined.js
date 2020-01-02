@@ -3,10 +3,10 @@ TypeError
 still here
 ===*/
 
-var x = new Float64Array(2);
+var x = new Float64Array(2)
 try {
-  x.set(undefined);
+    x.set(undefined)
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
-print("still here");
+print('still here');

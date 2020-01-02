@@ -13,11 +13,11 @@
 var t;
 
 function encPrint(x) {
-  print(Duktape.enc("base64", x));
+    print(Duktape.enc('base64', x));
 }
 
 function decPrint(x) {
-  print(bufferToStringRaw(Duktape.dec("base64", x)));
+    print(bufferToStringRaw(Duktape.dec('base64', x)));
 }
 
 /*===
@@ -30,13 +30,13 @@ Zm9vYmE=
 Zm9vYmFy
 ===*/
 
-encPrint("");
-encPrint("f");
-encPrint("fo");
-encPrint("foo");
-encPrint("foob");
-encPrint("fooba");
-encPrint("foobar");
+encPrint('');
+encPrint('f');
+encPrint('fo');
+encPrint('foo');
+encPrint('foob');
+encPrint('fooba');
+encPrint('foobar');
 
 /*===
 
@@ -48,13 +48,13 @@ fooba
 foobar
 ===*/
 
-decPrint("");
-decPrint("Zg==");
-decPrint("Zm8=");
-decPrint("Zm9v");
-decPrint("Zm9vYg==");
-decPrint("Zm9vYmE=");
-decPrint("Zm9vYmFy");
+decPrint('');
+decPrint('Zg==');
+decPrint('Zm8=');
+decPrint('Zm9v');
+decPrint('Zm9vYg==');
+decPrint('Zm9vYmE=');
+decPrint('Zm9vYmFy');
 
 /*===
 Zm9v4Yi0
@@ -64,9 +64,9 @@ Zm9v4Yi0
 /* A string is UTF-8 encoded and then base-64 encoded. */
 
 // U+1234 -> 0xe1 0x88 0xb4
-encPrint("foo\u1234");
+encPrint('foo\u1234');
 
-t = bufferToStringRaw(Duktape.dec("base64", "Zm9v4Yi0"));
+t = bufferToStringRaw(Duktape.dec('base64', 'Zm9v4Yi0'));
 print(t.charCodeAt(0), t.charCodeAt(1), t.charCodeAt(2), t.charCodeAt(3));
 
 /*===
@@ -80,11 +80,11 @@ foo
  * documents to be decoded (even when there is intervening padding).
  */
 
-t = Duktape.enc("base64", "f") + Duktape.enc("base64", "oo");
+t = Duktape.enc('base64', 'f') + Duktape.enc('base64', 'oo');
 print(t);
 decPrint(t);
 
-t = Duktape.enc("base64", "fo") + Duktape.enc("base64", "o");
+t = Duktape.enc('base64', 'fo') + Duktape.enc('base64', 'o');
 print(t);
 decPrint(t);
 
@@ -99,12 +99,12 @@ foobarquux
  * any position.
  */
 
-t = Duktape.enc("base64", "foobarquux");
+t = Duktape.enc('base64', 'foobarquux');
 print(t);
 decPrint(t);
 
-decPrint("Zm9vYmFycXV1eA==\n");
-decPrint("Z m\t9\rv\nY  \r\n\t m  \n\n FycX \r\r\nV1eA =\t\t=\n");
+decPrint('Zm9vYmFycXV1eA==\n');
+decPrint('Z m\t9\rv\nY  \r\n\t m  \n\n FycX \r\r\nV1eA =\t\t=\n');
 
 /*===
 f
@@ -118,18 +118,19 @@ fo
  */
 
 try {
-  decPrint("Zg=="); // standard
-  decPrint("Zh=="); // non-zero unused bits
+    decPrint('Zg==');  // standard
+    decPrint('Zh==');  // non-zero unused bits
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  decPrint("Zm8="); // standard
-  decPrint("Zm9="); // non-zero unused bits
+    decPrint('Zm8=');  // standard
+    decPrint('Zm9=');  // non-zero unused bits
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
+
 
 /*===
 xy
@@ -142,15 +143,15 @@ xy
  */
 
 try {
-  decPrint("eHk=");
-} catch (e) {
-  print(e.name);
+    decPrint('eHk=');
+} catch(e) {
+    print(e.name);
 }
 
 try {
-  decPrint("eHk");
-} catch (e) {
-  print(e.name);
+    decPrint('eHk');
+} catch(e) {
+    print(e.name);
 }
 
 /*===
@@ -162,7 +163,7 @@ foo
 
 /* The current decoder also allows ASCII whitespace characters */
 
-t = Duktape.enc("base64", "f") + "\n" + Duktape.enc("base64", "oo") + "\n";
+t = Duktape.enc('base64', 'f') + '\n' + Duktape.enc('base64', 'oo') + '\n';
 print(t);
 decPrint(t);
 
@@ -173,9 +174,9 @@ TypeError
 /* Non-base64 characters will not be accepted */
 
 try {
-  decPrint("b28?");
+    decPrint('b28?');
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -252,18 +253,18 @@ try {
  */
 
 function testInputLengths() {
-  var len, i, u8;
+    var len, i, u8;
 
-  for (len = 0; len <= 64; len++) {
-    u8 = new Uint8Array(len);
-    for (i = 0; i < len; i++) {
-      u8[i] = 0xc0 + i;
+    for (len = 0; len <= 64; len++) {
+        u8 = new Uint8Array(len);
+        for (i = 0; i < len; i++) {
+            u8[i] = 0xc0 + i;
+        }
+        print(len, Duktape.enc('base64', u8));
     }
-    print(len, Duktape.enc("base64", u8));
-  }
 }
 try {
-  testInputLengths();
+    testInputLengths();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

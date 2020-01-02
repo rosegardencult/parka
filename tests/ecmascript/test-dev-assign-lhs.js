@@ -9,7 +9,7 @@ ReferenceError
  */
 
 try {
-  eval("f() = 1");
+    eval("f() = 1");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

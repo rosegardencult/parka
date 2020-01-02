@@ -16,7 +16,7 @@
  */
 
 try {
-  print(JSON.stringify(JSON.parse('{"foo":1,"bar":2,"foo":3}')));
+    print(JSON.stringify(JSON.parse('{"foo":1,"bar":2,"foo":3}')));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

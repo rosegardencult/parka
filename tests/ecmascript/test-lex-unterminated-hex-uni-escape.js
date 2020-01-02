@@ -27,39 +27,40 @@
  */
 
 function testString(x) {
-  var t;
+    var t;
 
-  print(x);
-  var t = eval('"' + x + '"');
-  print(t.length, t);
+    print(x);
+    var t = eval('"' + x + '"');
+    print(t.length, t);
 }
 
 function testStrings() {
-  var strings = [
-    "\\u",
-    "\\u1",
-    "\\u12",
-    "\\u123",
-    "\\u123G",
-    "\\x",
-    "\\x1",
-    "\\x1G"
-  ];
-  var i;
+    var strings = [
+        '\\u',
+        '\\u1',
+        '\\u12',
+        '\\u123',
+        '\\u123G',
+        '\\x',
+        '\\x1',
+        '\\x1G',
+    ];
+    var i;
 
-  for (i = 0; i < strings.length; i++) {
-    try {
-      testString(strings[i]);
-    } catch (e) {
-      print(e);
+    for (i = 0; i < strings.length; i++) {
+        try {
+            testString(strings[i]);
+        } catch (e) {
+            print(e);
+        }
     }
-  }
 }
 
+
 try {
-  testStrings();
+    testStrings();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 /*===
@@ -71,8 +72,8 @@ SyntaxError
  */
 
 try {
-  // if "\u" parsed as "u", same as assignemtn:  u123 = 1
-  print(eval("\\u123 = 1;"));
+    // if "\u" parsed as "u", same as assignemtn:  u123 = 1
+    print(eval('\\u123 = 1;'));
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

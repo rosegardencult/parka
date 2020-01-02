@@ -19,17 +19,18 @@
 ===*/
 
 function test() {
-  var re;
-  var i;
+    var re;
+    var i;
 
-  for (i = 0x0; i <= 0xffff; i++) {
-    re = RegExpUtil.makeCaseInsensitiveCharClassRegExp(i, i);
-    print(i, re.source, RegExpUtil.getRegExpSingleCharMatches(re));
-  }
+    for (i = 0x0; i <= 0xffff; i++) {
+        re = RegExpUtil.makeCaseInsensitiveCharClassRegExp(i, i);
+        print(i, re.source, RegExpUtil.getRegExpSingleCharMatches(re));
+    }
+
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

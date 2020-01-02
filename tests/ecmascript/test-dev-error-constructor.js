@@ -12,7 +12,7 @@ string
 ===*/
 
 e = new Error(undefined);
-print(typeof e.message); /* should be inherited from prototype, empty string */
+print(typeof e.message);  /* should be inherited from prototype, empty string */
 print(e.message);
 
 // same behavior if called as function
@@ -25,10 +25,10 @@ foo
 foo
 ===*/
 
-e = new Error("foo");
+e = new Error('foo');
 print(e.message);
 
-e = Error("foo");
+e = Error('foo');
 print(e.message);
 
 /*===

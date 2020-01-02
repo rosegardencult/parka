@@ -39,35 +39,22 @@ part B
 ===*/
 
 function basicTest() {
-  var i;
-  var count_a = 0,
-    count_b = 0,
-    count_c = 0;
+    var i;
+    var count_a = 0, count_b = 0, count_c = 0;
 
-  for (
-    print("part A"), count_a++, i = 0;
-    print("part B"), count_b++, i < 10;
-    print("part C"), count_c++, i++
-  ) {
-    print(
-      "body, i:",
-      i,
-      "count_a:",
-      count_a,
-      "count_b:",
-      count_b,
-      "count_c:",
-      count_c
-    );
-  }
+    for (print('part A'), count_a++, i = 0;
+         print('part B'), count_b++, i < 10;
+         print('part C'), count_c++, i++) {
+        print('body, i:', i, 'count_a:', count_a, 'count_b:', count_b, 'count_c:', count_c);
+    }
 }
 
-print("basic");
+print('basic');
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -113,45 +100,33 @@ break at 8
 /* Break and continue */
 
 function breakContinueTest() {
-  var i;
-  var count_a = 0,
-    count_b = 0,
-    count_c = 0;
+    var i;
+    var count_a = 0, count_b = 0, count_c = 0;
 
-  for (
-    print("part A"), count_a++, i = 0;
-    print("part B"), count_b++, i < 10;
-    print("part C"), count_c++, i++
-  ) {
-    print(
-      "body, i:",
-      i,
-      "count_a:",
-      count_a,
-      "count_b:",
-      count_b,
-      "count_c:",
-      count_c
-    );
-    if (i == 4 || i == 6) {
-      print("continue at 4 and 6");
-      continue;
+    for (print('part A'), count_a++, i = 0;
+         print('part B'), count_b++, i < 10;
+         print('part C'), count_c++, i++) {
+        print('body, i:', i, 'count_a:', count_a, 'count_b:', count_b, 'count_c:', count_c);
+        if (i == 4 || i == 6) {
+            print('continue at 4 and 6');
+            continue;
+        }
+        if (i == 8) {
+            print('break at 8');
+            break;
+        }
+        print('end body');
     }
-    if (i == 8) {
-      print("break at 8");
-      break;
-    }
-    print("end body");
-  }
 }
 
-print("break and continue");
+print('break and continue');
 
 try {
-  breakContinueTest();
+    breakContinueTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
+
 
 /*===
 syntax errors
@@ -161,22 +136,22 @@ OK
 
 /* Some specific SyntaxError tests. */
 
-print("syntax errors");
+print('syntax errors');
 
 try {
-  /* SyntaxError, because the first part of the three-part for
-   * must not contain a top level 'in'.
-   */
-  eval("x={}; for ('foo' in x; false; false) {};");
-  print("never here");
+    /* SyntaxError, because the first part of the three-part for
+     * must not contain a top level 'in'.
+     */
+    eval("x={}; for ('foo' in x; false; false) {};");
+    print("never here");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }
 
 try {
-  /* No SyntaxError because an 'in' may appear inside parenthesis */
-  eval("x={}; for (('foo' in x); false; false) {};");
-  print("OK");
+    /* No SyntaxError because an 'in' may appear inside parenthesis */
+    eval("x={}; for (('foo' in x); false; false) {};");
+    print("OK");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

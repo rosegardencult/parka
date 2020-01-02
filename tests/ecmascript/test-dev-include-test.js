@@ -9,7 +9,7 @@ Hello world!
 /*@include util-helloworld.js@*/
 
 try {
-  testHelloWorldUtility();
+    testHelloWorldUtility();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

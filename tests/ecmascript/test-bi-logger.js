@@ -13,10 +13,10 @@
 // and moved into the test harness of the extras.
 
 function raw_replacement(msg) {
-  // Timestamp is non-predictable
-  msg = bufferToStringRaw(msg); // arg is a buffer
-  msg = msg.replace(/^\S+/, "TIMESTAMP");
-  print(msg);
+    // Timestamp is non-predictable
+    msg = bufferToStringRaw(msg);  // arg is a buffer
+    msg = msg.replace(/^\S+/, 'TIMESTAMP');
+    print(msg);
 }
 
 Duktape.Logger.prototype.raw = raw_replacement;
@@ -36,59 +36,59 @@ TIMESTAMP INF inherited: inherited name changed
 ===*/
 
 function loggerNameTest() {
-  var logger;
+    var logger;
 
-  // Logger name can be set manually
+    // Logger name can be set manually
 
-  logger = new Duktape.Logger("myLogger");
-  logger.info("logger created");
+    logger = new Duktape.Logger('myLogger');
+    logger.info('logger created');
 
-  // Logger name given as null/undefined (any non-string actually) causes
-  // the logger to not have a 'n' property and does *not* trigger automatic
-  // name assignment.
+    // Logger name given as null/undefined (any non-string actually) causes
+    // the logger to not have a 'n' property and does *not* trigger automatic
+    // name assignment.
 
-  logger = new Duktape.Logger(undefined);
-  logger.info("logger created");
-  logger.info("undefined: inherit anon");
+    logger = new Duktape.Logger(undefined);
+    logger.info('logger created');
+    logger.info('undefined: inherit anon');
 
-  logger = new Duktape.Logger(null);
-  logger.info("logger created");
-  logger.info("null: inherit anon");
+    logger = new Duktape.Logger(null);
+    logger.info('logger created');
+    logger.info('null: inherit anon');
 
-  // Logger name defaults to caller fileName if present.  We don't know
-  // the full path of the logger and fileName is not writable, so we use
-  // eval to force caller fileName to "input".
+    // Logger name defaults to caller fileName if present.  We don't know
+    // the full path of the logger and fileName is not writable, so we use
+    // eval to force caller fileName to "input".
 
-  logger = eval("new Duktape.Logger()"); // caller fileName is 'input'
-  logger.info("logger created");
+    logger = eval('new Duktape.Logger()');  // caller fileName is 'input'
+    logger.info('logger created');
 
-  // If fileName is not present, logger gets no 'n' property and
-  // inherits 'n' from Logger prototype
+    // If fileName is not present, logger gets no 'n' property and
+    // inherits 'n' from Logger prototype
 
-  /* XXX: cannot easily test because cannot create a function with no
-   * fileName, and fileName is not configurable so can't delete it.
-   */
+    /* XXX: cannot easily test because cannot create a function with no
+     * fileName, and fileName is not configurable so can't delete it.
+     */
 
-  // Logger name can be modified runtime, and even removed in which
-  // case it is inherited from the Logger prototype
+    // Logger name can be modified runtime, and even removed in which
+    // case it is inherited from the Logger prototype
 
-  logger = new Duktape.Logger("myLogger");
-  logger.info("logger created");
-  logger.n = "newName";
-  logger.info("logger renamed");
-  delete logger.n;
-  logger.info("logger name deleted");
-  Duktape.Logger.prototype.n = "inherited";
-  logger.info("inherited name changed");
-  Duktape.Logger.prototype.n = "anon";
+    logger = new Duktape.Logger('myLogger');
+    logger.info('logger created');
+    logger.n = 'newName';
+    logger.info('logger renamed');
+    delete logger.n;
+    logger.info('logger name deleted');
+    Duktape.Logger.prototype.n = 'inherited';
+    logger.info('inherited name changed');
+    Duktape.Logger.prototype.n = 'anon';
 }
 
-print("logger name");
+print('logger name');
 
 try {
-  loggerNameTest();
+    loggerNameTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -109,52 +109,52 @@ TIMESTAMP FTL myLogger: fatal 3
 ===*/
 
 function logLevelTest() {
-  var logger;
+    var logger;
 
-  logger = new Duktape.Logger("myLogger");
+    logger = new Duktape.Logger('myLogger');
 
-  // Default log level is 'info', so trace/debug is omitted.
+    // Default log level is 'info', so trace/debug is omitted.
 
-  logger.trace("trace 1");
-  logger.debug("debug 1");
-  logger.info("info 1");
-  logger.warn("warn 1");
-  logger.error("error 1");
-  logger.fatal("fatal 1");
+    logger.trace('trace 1');
+    logger.debug('debug 1');
+    logger.info('info 1');
+    logger.warn('warn 1');
+    logger.error('error 1');
+    logger.fatal('fatal 1');
 
-  // Update global log level from prototype
+    // Update global log level from prototype
 
-  Duktape.Logger.prototype.l = 0;
+    Duktape.Logger.prototype.l = 0;
 
-  logger.trace("trace 2");
-  logger.debug("debug 2");
-  logger.info("info 2");
-  logger.warn("warn 2");
-  logger.error("error 2");
-  logger.fatal("fatal 2");
+    logger.trace('trace 2');
+    logger.debug('debug 2');
+    logger.info('info 2');
+    logger.warn('warn 2');
+    logger.error('error 2');
+    logger.fatal('fatal 2');
 
-  Duktape.Logger.prototype.l = 2; // back to info
+    Duktape.Logger.prototype.l = 2;  // back to info
 
-  // Update logger log level from the instance
+    // Update logger log level from the instance
 
-  logger.l = 3;
+    logger.l = 3;
 
-  logger.trace("trace 3");
-  logger.debug("debug 3");
-  logger.info("info 3");
-  logger.warn("warn 3");
-  logger.error("error 3");
-  logger.fatal("fatal 3");
+    logger.trace('trace 3');
+    logger.debug('debug 3');
+    logger.info('info 3');
+    logger.warn('warn 3');
+    logger.error('error 3');
+    logger.fatal('fatal 3');
 
-  logger.l = 2;
+    logger.l = 2;
 }
 
-print("log level");
+print('log level');
 
 try {
-  logLevelTest();
+    logLevelTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -184,169 +184,129 @@ Error: can't coerce me
 ===*/
 
 function formattingTest() {
-  var logger, logger2;
+    var logger, logger2;
 
-  logger = new Duktape.Logger("myLogger");
+    logger = new Duktape.Logger('myLogger');
 
-  // Formatting test, all standard types except function (function coerces
-  // a string with ECMAScript comments which interferes with the expect string)
+    // Formatting test, all standard types except function (function coerces
+    // a string with ECMAScript comments which interferes with the expect string)
 
-  print("types");
-  logger.info("type:", undefined);
-  logger.info("type:", null);
-  logger.info("type:", true);
-  logger.info("type:", false);
-  logger.info("type:", 123.4);
-  logger.info("type:", "str");
-  logger.info("type:", ["foo", "bar", "quux"]);
-  logger.info("type:", { foo: 1, bar: 2 });
+    print('types');
+    logger.info('type:', undefined);
+    logger.info('type:', null);
+    logger.info('type:', true);
+    logger.info('type:', false);
+    logger.info('type:', 123.4);
+    logger.info('type:', 'str');
+    logger.info('type:', [ 'foo', 'bar', 'quux' ]);
+    logger.info('type:', { foo: 1, bar: 2 });
 
-  // toLogString()
+    // toLogString()
 
-  Error.prototype.toLogString = function() {
-    return "ERROR:" + this.message;
-  };
-  logger.info("error:", new TypeError("my error"));
-  delete Error.prototype.toLogString;
+    Error.prototype.toLogString = function() { return 'ERROR:' + this.message; };
+    logger.info('error:', new TypeError('my error'));
+    delete Error.prototype.toLogString;
 
-  // Lazy formatting using toLogString
+    // Lazy formatting using toLogString
 
-  function lazyJx1(val) {
-    // Simple alternative, creates a closure per value
-    return {
-      toLogString: function() {
-        print("toLogString() called");
-        return Duktape.enc("jx", val);
-      }
-    };
-  }
+    function lazyJx1(val) {
+        // Simple alternative, creates a closure per value
+        return {
+            toLogString: function() {
+                print('toLogString() called');
+                return Duktape.enc('jx', val);
+            }
+        };
+    }
 
-  function lazyJx2(val) {
-    // Alternative using bind() (does not print anything when formatting)
-    return {
-      toLogString: Duktape.enc.bind(null, "jx", val)
-    };
-  }
+    function lazyJx2(val) {
+        // Alternative using bind() (does not print anything when formatting)
+        return {
+            toLogString: Duktape.enc.bind(null, 'jx', val)
+        };
+    }
 
-  function LazyValue(val) {
-    this.v = val;
-  }
-  LazyValue.prototype.toLogString = function() {
-    return Duktape.enc("jx", this.v);
-  };
-  function lazyJx3(val) {
-    // Alternative which avoids creating a closure per value.  This relies
-    // on toLogString() being called as a method, with 'this' bound to the
-    // object.
-    return new LazyValue(val);
-  }
+    function LazyValue(val) {
+        this.v = val;
+    }
+    LazyValue.prototype.toLogString = function () {
+        return Duktape.enc('jx', this.v);
+    }
+    function lazyJx3(val) {
+        // Alternative which avoids creating a closure per value.  This relies
+        // on toLogString() being called as a method, with 'this' bound to the
+        // object.
+        return new LazyValue(val);
+    }
 
-  logger.info(
-    "lazy visible",
-    lazyJx1({ foo: 1, bar: 2 }),
-    lazyJx1({ quux: 3, baz: 4 })
-  );
-  logger.debug(
-    "lazy invisible",
-    lazyJx1({ foo: 1, bar: 2 }),
-    lazyJx1({ quux: 3, baz: 4 })
-  );
+    logger.info('lazy visible', lazyJx1({foo:1, bar:2}), lazyJx1({quux:3, baz:4}));
+    logger.debug('lazy invisible', lazyJx1({foo:1, bar:2}), lazyJx1({quux:3, baz:4}));
 
-  logger.info(
-    "lazy visible",
-    lazyJx2({ foo: 1, bar: 2 }),
-    lazyJx2({ quux: 3, baz: 4 })
-  );
-  logger.debug(
-    "lazy invisible",
-    lazyJx2({ foo: 1, bar: 2 }),
-    lazyJx2({ quux: 3, baz: 4 })
-  );
+    logger.info('lazy visible', lazyJx2({foo:1, bar:2}), lazyJx2({quux:3, baz:4}));
+    logger.debug('lazy invisible', lazyJx2({foo:1, bar:2}), lazyJx2({quux:3, baz:4}));
 
-  logger.info(
-    "lazy visible",
-    lazyJx3({ foo: 1, bar: 2 }),
-    lazyJx3({ quux: 3, baz: 4 })
-  );
-  logger.debug(
-    "lazy invisible",
-    lazyJx3({ foo: 1, bar: 2 }),
-    lazyJx3({ quux: 3, baz: 4 })
-  );
+    logger.info('lazy visible', lazyJx3({foo:1, bar:2}), lazyJx3({quux:3, baz:4}));
+    logger.debug('lazy invisible', lazyJx3({foo:1, bar:2}), lazyJx3({quux:3, baz:4}));
 
-  // The object formatter function fmt() can be overridden in the instance
+    // The object formatter function fmt() can be overridden in the instance
 
-  logger2 = new Duktape.Logger("myLogger2");
-  logger.fmt = function() {
-    return "OBJECT";
-  };
-  logger.info("instance overrides fmt:", { foo: 1, bar: 2 });
-  logger2.info("other loggers still use default fmt:", { foo: 1, bar: 2 });
-  delete logger.fmt;
-  logger.info("logger now using default fmt again:", { foo: 1, bar: 2 });
+    logger2 = new Duktape.Logger('myLogger2');
+    logger.fmt = function() { return 'OBJECT'; }
+    logger.info('instance overrides fmt:', {foo:1, bar:2});
+    logger2.info('other loggers still use default fmt:', {foo:1, bar:2});
+    delete logger.fmt;
+    logger.info('logger now using default fmt again:', {foo:1, bar:2});
 
-  // The formatter can be overridden at the global level too
+    // The formatter can be overridden at the global level too
 
-  var old_fmt = Duktape.Logger.prototype.fmt;
-  Duktape.Logger.prototype.fmt = function(val) {
-    return Duktape.enc("jx", val);
-  };
-  logger.info("now using jx formatting:", { foo: 1, bar: 2 });
-  Duktape.Logger.prototype.fmt = old_fmt;
+    var old_fmt = Duktape.Logger.prototype.fmt;
+    Duktape.Logger.prototype.fmt = function(val) { return Duktape.enc('jx', val); };
+    logger.info('now using jx formatting:', {foo:1, bar:2});
+    Duktape.Logger.prototype.fmt = old_fmt;
 
-  // A lot of arguments and a long log string
+    // A lot of arguments and a long log string
 
-  var args = [];
-  for (i = 0; i < 1000; i++) {
-    args.push("string " + i);
-  }
-  logger.info.apply(logger, args);
+    var args = [];
+    for (i = 0; i < 1000; i++) {
+        args.push('string ' + i);
+    }
+    logger.info.apply(logger, args);
 
-  // Error during formatting causes formatted element to be replaced with
-  // a ToString() coerced version of the error thrown.  Here the error is
-  // triggered with toLogString()
+    // Error during formatting causes formatted element to be replaced with
+    // a ToString() coerced version of the error thrown.  Here the error is
+    // triggered with toLogString()
 
-  logger.info(
-    "formatting error",
-    123,
-    {
-      toLogString: function() {
-        throw new TypeError("fake error");
-      }
-    },
-    234
-  );
+    logger.info('formatting error',
+                123,
+                { toLogString: function() { throw new TypeError('fake error'); } },
+                234);
 
-  // If ToString(error) fails, that error is propagated to the caller at
-  // the moment.  This may not be the best behavior, but test for the
-  // current behavior.
+    // If ToString(error) fails, that error is propagated to the caller at
+    // the moment.  This may not be the best behavior, but test for the
+    // current behavior.
 
-  try {
-    logger.info(
-      "formatting error, error coercion fails",
-      123,
-      {
-        toLogString: function() {
-          var err = new TypeError("fake error");
-          err.toString = function() {
-            throw new Error("can't coerce me");
-          };
-          return err;
-        }
-      },
-      234
-    );
-  } catch (e) {
-    print(e);
-  }
+    try {
+        logger.info('formatting error, error coercion fails',
+                    123,
+                    {
+                        toLogString: function() {
+                            var err = new TypeError('fake error');
+                            err.toString = function() { throw new Error("can't coerce me"); };
+                            return err;
+                        }
+                    },
+                    234);
+    } catch (e) {
+        print(e);
+    }
 }
 
-print("formatting");
+print('formatting');
 
 try {
-  formattingTest();
+    formattingTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -358,21 +318,21 @@ lines
 ===*/
 
 function multiLineTest() {
-  var logger;
+    var logger;
 
-  logger = new Duktape.Logger("myLogger");
+    logger = new Duktape.Logger('myLogger');
 
-  // Multiline logging
+    // Multiline logging
 
-  logger.info("here\nis a string\non multiple\nlines");
+    logger.info('here\nis a string\non multiple\nlines');
 }
 
-print("multiline");
+print('multiline');
 
 try {
-  multiLineTest();
+    multiLineTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -499,47 +459,47 @@ length test
  */
 
 function lengthTest() {
-  var logger;
-  var msg;
+    var logger;
+    var msg;
 
-  // Replace raw() with something that just prints the result length.
+    // Replace raw() with something that just prints the result length.
 
-  function raw_printlen(msg) {
-    print(bufferToStringRaw(msg).length);
-  }
-  Duktape.Logger.prototype.raw = raw_printlen;
-
-  function mkStr(len) {
-    var res = "";
-    while (len--) {
-      res = res + "x";
+    function raw_printlen(msg) {
+        print(bufferToStringRaw(msg).length);
     }
-    return res;
-  }
+    Duktape.Logger.prototype.raw = raw_printlen;
 
-  // Exercise the boundary between the two buffer behaviors.  Start earlier
-  // than the limit to account for the log prefix.
-  logger = new Duktape.Logger("myLogger");
-  msg = mkStr(200);
-  while (msg.length <= 290) {
-    logger.info(msg);
-    msg = msg + "x";
-  }
+    function mkStr(len) {
+        var res = '';
+        while (len--) {
+            res = res + 'x';
+        }
+        return res;
+    }
 
-  // Test log entries up to 1 MB.
-  msg = "y";
-  while (msg.length <= 1024 * 1024) {
-    logger.info(msg);
-    msg = msg + msg;
-  }
+    // Exercise the boundary between the two buffer behaviors.  Start earlier
+    // than the limit to account for the log prefix.
+    logger = new Duktape.Logger('myLogger');
+    msg = mkStr(200);
+    while (msg.length <= 290) {
+        logger.info(msg);
+        msg = msg + 'x';
+    }
+
+    // Test log entries up to 1 MB.
+    msg = 'y';
+    while (msg.length <= 1024 * 1024) {
+        logger.info(msg);
+        msg = msg + msg;
+    }
 }
 
-print("length test");
+print('length test');
 
 try {
-  lengthTest();
+    lengthTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 Duktape.Logger.prototype.raw = raw_replacement;

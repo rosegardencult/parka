@@ -55,11 +55,11 @@
 ---*/
 
 function getFilledBuffer(size) {
-  var buf = new ArrayBuffer(size);
-  for (i = 0; i < buf.byteLength; i++) {
-    new Uint8Array(buf)[i] = 0x40 + i;
-  }
-  return buf;
+    var buf = new ArrayBuffer(size);
+    for (i = 0; i < buf.byteLength; i++) {
+        (new Uint8Array(buf))[i] = 0x40 + i;
+    }
+    return buf;
 }
 
 /*===
@@ -81,40 +81,40 @@ byte copy test
  */
 
 function byteCopyTest() {
-  var buf;
-  var v1, v2;
+    var buf;
+    var v1, v2;
 
-  [
-    [0, 0],
-    [0, 16],
-    [0, 17], // doesn't fit, RangeError
+    [
+        [0, 0],
+        [0, 16],
+        [0, 17],  // doesn't fit, RangeError
 
-    [0, 8], // doesn't overlap
-    [0, 12], // overlaps target from beginning (bytes [8,12[)
-    [8, 12], // overlaps target 1:1 but not to end of buffer
-    [12, 12], // overlaps target from end (bytes [12,24[)
-    [16, 12], // overlaps target from end (bytes [16,24[)
-    [24, 8] // doesn't overlap
-  ].forEach(function(range) {
-    try {
-      buf = getFilledBuffer(32); // [0,32[
-      v1 = new Uint8Array(buf, 8, 16); // [8,24[
-      v2 = new Uint8Array(buf, range[0], range[1]);
-      //print('v1', v1.length, v1.byteLength, v1.byteOffset);
-      //print('v2', v2.length, v2.byteLength, v2.byteOffset);
-      v1.set(v2);
-      print(range[0], range[1], printableBuffer(buf));
-    } catch (e) {
-      print(range[0], range[1], e.name);
-    }
-  });
+        [0, 8],   // doesn't overlap
+        [0, 12],  // overlaps target from beginning (bytes [8,12[)
+        [8, 12],  // overlaps target 1:1 but not to end of buffer
+        [12, 12], // overlaps target from end (bytes [12,24[)
+        [16, 12], // overlaps target from end (bytes [16,24[)
+        [24, 8],  // doesn't overlap
+    ].forEach(function (range) {
+        try {
+            buf = getFilledBuffer(32);         // [0,32[
+            v1 = new Uint8Array(buf, 8, 16);   // [8,24[
+            v2 = new Uint8Array(buf, range[0], range[1]);
+            //print('v1', v1.length, v1.byteLength, v1.byteOffset);
+            //print('v2', v2.length, v2.byteLength, v2.byteOffset);
+            v1.set(v2);
+            print(range[0], range[1], printableBuffer(buf));
+        } catch (e) {
+            print(range[0], range[1], e.name);
+        }
+    });
 }
 
 try {
-  print("byte copy test");
-  byteCopyTest();
+    print('byte copy test');
+    byteCopyTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -140,40 +140,40 @@ fast copy test
  */
 
 function fastCopyTest() {
-  var buf;
-  var v1, v2;
+    var buf;
+    var v1, v2;
 
-  [
-    [0, 0],
-    [0, 4],
-    [0, 5], // doesn't fit, RangeError
+    [
+        [0, 0],
+        [0, 4],
+        [0, 5],   // doesn't fit, RangeError
 
-    [0, 2], // doesn't overlap
-    [0, 3], // overlaps target from beginning (bytes [8,12[)
-    [8, 3], // overlaps target 1:1 but not to end of buffer
-    [12, 3], // overlaps target from end (bytes [12,24[)
-    [16, 3], // overlaps target from end (bytes [16,24[)
-    [24, 2] // doesn't overlap
-  ].forEach(function(range) {
-    try {
-      buf = getFilledBuffer(32); // [0,32[
-      v1 = new Int32Array(buf, 8, 4); // [8,24[
-      v2 = new Int8Array(buf, range[0], range[1]);
-      //print('v1', v1.length, v1.byteLength, v1.byteOffset);
-      //print('v2', v2.length, v2.byteLength, v2.byteOffset);
-      v1.set(v2);
-      print(range[0], range[1], printableBuffer(buf));
-    } catch (e) {
-      print(range[0], range[1], e.name);
-    }
-  });
+        [0, 2],   // doesn't overlap
+        [0, 3],   // overlaps target from beginning (bytes [8,12[)
+        [8, 3],   // overlaps target 1:1 but not to end of buffer
+        [12, 3],  // overlaps target from end (bytes [12,24[)
+        [16, 3],  // overlaps target from end (bytes [16,24[)
+        [24, 2],  // doesn't overlap
+    ].forEach(function (range) {
+        try {
+            buf = getFilledBuffer(32);         // [0,32[
+            v1 = new Int32Array(buf, 8, 4);    // [8,24[
+            v2 = new Int8Array(buf, range[0], range[1]);
+            //print('v1', v1.length, v1.byteLength, v1.byteOffset);
+            //print('v2', v2.length, v2.byteLength, v2.byteOffset);
+            v1.set(v2);
+            print(range[0], range[1], printableBuffer(buf));
+        } catch (e) {
+            print(range[0], range[1], e.name);
+        }
+    });
 }
 
 try {
-  print("fast copy test");
-  fastCopyTest();
+    print('fast copy test');
+    fastCopyTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -189,41 +189,42 @@ xy1234 40414243444546470000000001000200030004005455565758595a5b5c5d5e5f
 /* A slow copy is used for Array-like values. */
 
 function slowCopyTest() {
-  var buf;
-  var v1, v2;
+    var buf;
+    var v1, v2;
 
-  [
-    [],
-    [-1, 2, 0x123456, 0xdeadbeef],
-    ["1", "2", 3, 4, "5", "6", 7, "8"],
+    [
+        [],
+        [ -1, 2, 0x123456, 0xdeadbeef ],
+        [ '1', '2', 3, 4, '5', '6', 7, '8' ],
 
-    // Out of bounds (target is 16 bytes, 8 Int16).
-    ["1", "2", 3, 4, "5", "6", 7, "8", 9],
+        // Out of bounds (target is 16 bytes, 8 Int16).
+        [ '1', '2', 3, 4, '5', '6', 7, '8', 9 ],
 
-    { "0": -1, "1": 0x41, "2": 0x1ff, "3": 0x55, length: 3 },
+        { '0': -1, '1': 0x41, '2': 0x1ff, '3': 0x55, length: 3 },
 
-    // A String object is Array-like but not in the intuitive way:
-    // the indexed values are strings which get number coerced;
-    // most characters will coerce to 0, but e.g. '1', '2', etc
-    // will coerce to numbers.
-    new String("xy1234")
-  ].forEach(function(arraylike) {
-    try {
-      buf = getFilledBuffer(32); // [0,32[
-      v1 = new Int16Array(buf, 8, 8); // [8,24[
-      v1.set(arraylike);
-      print(arraylike, printableBuffer(buf));
-    } catch (e) {
-      print(arraylike, e.name);
-    }
-  });
+        // A String object is Array-like but not in the intuitive way:
+        // the indexed values are strings which get number coerced;
+        // most characters will coerce to 0, but e.g. '1', '2', etc
+        // will coerce to numbers.
+        new String('xy1234'),
+
+    ].forEach(function (arraylike) {
+        try {
+            buf = getFilledBuffer(32);         // [0,32[
+            v1 = new Int16Array(buf, 8, 8);    // [8,24[
+            v1.set(arraylike);
+            print(arraylike, printableBuffer(buf));
+        } catch (e) {
+            print(arraylike, e.name);
+        }
+    });
 }
 
 try {
-  print("slow copy test");
-  slowCopyTest();
+    print('slow copy test');
+    slowCopyTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -241,49 +242,49 @@ int8 to uint8clamped test
  */
 
 function int8ToUint8ClampedTest() {
-  var b1, b2;
-  var v1, v2;
+    var b1, b2;
+    var v1, v2;
 
-  // Simple case.
+    // Simple case.
 
-  b1 = new ArrayBuffer(5);
-  b2 = new ArrayBuffer(5);
-  v1 = new Uint8ClampedArray(b1);
-  v2 = new Int8Array(b2);
+    b1 = new ArrayBuffer(5);
+    b2 = new ArrayBuffer(5);
+    v1 = new Uint8ClampedArray(b1);
+    v2 = new Int8Array(b2);
 
-  v2.set([1, -40, 2, -128, 127]);
-  print(Duktape.enc("jx", b1), Duktape.enc("jx", b2));
-  v1.set(v2);
-  print(Duktape.enc("jx", b1), Duktape.enc("jx", b2));
+    v2.set([1, -40, 2, -128, 127]);
+    print(Duktape.enc('jx', b1), Duktape.enc('jx', b2));
+    v1.set(v2);
+    print(Duktape.enc('jx', b1), Duktape.enc('jx', b2));
 
-  // Overlap case 1
+    // Overlap case 1
 
-  b1 = new ArrayBuffer(7);
-  v1 = new Uint8ClampedArray(b1, 0, 5);
-  v2 = new Int8Array(b1, 2, 5);
+    b1 = new ArrayBuffer(7);
+    v1 = new Uint8ClampedArray(b1, 0, 5);
+    v2 = new Int8Array(b1, 2, 5);
 
-  v2.set([1, -40, 2, -128, 127]);
-  print(Duktape.enc("jx", b1));
-  v1.set(v2);
-  print(Duktape.enc("jx", b1));
+    v2.set([1, -40, 2, -128, 127]);
+    print(Duktape.enc('jx', b1));
+    v1.set(v2);
+    print(Duktape.enc('jx', b1));
 
-  // Overlap case 2
+    // Overlap case 2
 
-  b1 = new ArrayBuffer(7);
-  v1 = new Uint8ClampedArray(b1, 2, 5);
-  v2 = new Int8Array(b1, 0, 5);
+    b1 = new ArrayBuffer(7);
+    v1 = new Uint8ClampedArray(b1, 2, 5);
+    v2 = new Int8Array(b1, 0, 5);
 
-  v2.set([1, -40, 2, -128, 127]);
-  print(Duktape.enc("jx", b1));
-  v1.set(v2);
-  print(Duktape.enc("jx", b1));
+    v2.set([1, -40, 2, -128, 127]);
+    print(Duktape.enc('jx', b1));
+    v1.set(v2);
+    print(Duktape.enc('jx', b1));
 }
 
 try {
-  print("int8 to uint8clamped test");
-  int8ToUint8ClampedTest();
+    print('int8 to uint8clamped test');
+    int8ToUint8ClampedTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -308,65 +309,50 @@ offset test
 /* Offset argument is in -elements-, not bytes. */
 
 function offsetTest() {
-  var b1 = new ArrayBuffer(32);
-  var v1 = new Uint32Array(b1);
+    var b1 = new ArrayBuffer(32);
+    var v1 = new Uint32Array(b1);
 
-  var b2 = new ArrayBuffer(16);
-  var v2a = new Uint32Array(b2, 0, 4);
-  var v2b = new Int16Array(b2, 0, 4);
-  var v2c = new Uint8Array(b2, 0, 4);
+    var b2 = new ArrayBuffer(16);
+    var v2a = new Uint32Array(b2, 0, 4);
+    var v2b = new Int16Array(b2, 0, 4);
+    var v2c = new Uint8Array(b2, 0, 4);
 
-  function initBuffers() {
-    var i;
-    var v;
+    function initBuffers() {
+        var i;
+        var v;
 
-    // Ensure values include both positive/negative values
-    // for integer views.
-    v = new Uint8Array(b1);
-    for (i = 0; i < v.length; i++) {
-      v[i] = i * 0x11;
-    }
-    v = new Uint8Array(b2);
-    for (i = 0; i < v.length; i++) {
-      v[i] = (i + 5) * 0x13;
-    }
-  }
-
-  [v1].forEach(function(thisValue, idx1) {
-    [v2a, v2b, v2c].forEach(function(argValue, idx2) {
-      [0, 1, 2, 3, 4].forEach(function(offset, idx3) {
-        try {
-          initBuffers();
-          thisValue.set(argValue, offset);
-          print(
-            idx1,
-            idx2,
-            idx3,
-            offset,
-            printableBuffer(b1),
-            printableBuffer(b2)
-          );
-        } catch (e) {
-          print(
-            idx1,
-            idx2,
-            idx3,
-            offset,
-            e.name,
-            printableBuffer(b1),
-            printableBuffer(b2)
-          );
+        // Ensure values include both positive/negative values
+        // for integer views.
+        v = new Uint8Array(b1);
+        for (i = 0; i < v.length; i++) {
+            v[i] = i * 0x11;
         }
-      });
+        v = new Uint8Array(b2);
+        for (i = 0; i < v.length; i++) {
+            v[i] = (i + 5) * 0x13;
+        }
+    }
+
+    [ v1 ].forEach(function (thisValue, idx1) {
+        [ v2a, v2b, v2c ].forEach(function (argValue, idx2) {
+            [ 0, 1, 2, 3, 4 ].forEach(function (offset, idx3) {
+                try {
+                    initBuffers();
+                    thisValue.set(argValue, offset);
+                    print(idx1, idx2, idx3, offset, printableBuffer(b1), printableBuffer(b2));
+                } catch (e) {
+                    print(idx1, idx2, idx3, offset, e.name, printableBuffer(b1), printableBuffer(b2));
+                }
+            });
+        });
     });
-  });
 }
 
 try {
-  print("offset test");
-  offsetTest();
+    print('offset test');
+    offsetTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -426,136 +412,138 @@ TypedArray set() bruteforce test
 ===*/
 
 function typedArraySetBruteForceTest() {
-  /*
-   *  For the brute force test, use a few buffers, and views that
-   *  will sometimes share a buffer and sometimes not.
-   *
-   *  The test output is megabytes long so we print only a digest.
-   *  If there's a test failure, enable the printouts manually.
-   */
+    /*
+     *  For the brute force test, use a few buffers, and views that
+     *  will sometimes share a buffer and sometimes not.
+     *
+     *  The test output is megabytes long so we print only a digest.
+     *  If there's a test failure, enable the printouts manually.
+     */
 
-  var b1 = new ArrayBuffer(11);
-  var b2 = new ArrayBuffer(24);
+    var b1 = new ArrayBuffer(11);
+    var b2 = new ArrayBuffer(24);
 
-  function initBuffers() {
-    var i;
-    var v;
+    function initBuffers() {
+        var i;
+        var v;
 
-    // Ensure values include both positive/negative values
-    // for integer views.
-    v = new Uint8Array(b1);
-    for (i = 0; i < v.length; i++) {
-      v[i] = i * 0x11;
-    }
-    v = new Uint8Array(b2);
-    for (i = 0; i < v.length; i++) {
-      v[i] = (i + 5) * 0x13;
-    }
-  }
-
-  var views = [
-    // 0
-    new Int8Array(b1),
-    new Int8Array(b1, 1, 8),
-    new Int8Array(b1, 2, 8),
-    new Int8Array(b1, 3, 8),
-    new Int8Array(b2),
-    new Int8Array(b2, 2, 8),
-    new Int8Array(b2, 4, 12),
-
-    // 7
-    new Uint8Array(b1),
-    new Uint8Array(b1, 1, 8),
-    new Uint8Array(b1, 2, 8),
-    new Uint8Array(b1, 3, 8),
-    new Uint8Array(b2),
-    new Uint8Array(b2, 2, 8),
-    new Uint8Array(b2, 4, 12),
-
-    // 14
-    new Uint8ClampedArray(b1),
-    new Uint8ClampedArray(b1, 1, 8),
-    new Uint8ClampedArray(b1, 2, 8),
-    new Uint8ClampedArray(b1, 3, 8),
-    new Uint8ClampedArray(b2),
-    new Uint8ClampedArray(b2, 2, 8),
-    new Uint8ClampedArray(b2, 4, 12),
-
-    // 21
-    new Int16Array(b1, 0, 5), // can't map 11 bytes
-    new Int16Array(b1, 0, 4),
-    new Int16Array(b1, 2, 4),
-    new Int16Array(b2),
-    new Int16Array(b2, 2, 4),
-    new Int16Array(b2, 4, 6),
-
-    // 27
-    new Uint16Array(b1, 0, 5), // can't map 11 bytes
-    new Uint16Array(b1, 0, 4),
-    new Uint16Array(b1, 2, 4),
-    new Uint16Array(b2),
-    new Uint16Array(b2, 2, 4),
-    new Uint16Array(b2, 4, 6),
-
-    new Int32Array(b1, 0, 2), // can't map 11 bytes
-    new Int32Array(b1, 4, 1),
-    new Int32Array(b2),
-    new Int32Array(b2, 4, 2),
-    new Int32Array(b2, 8, 3),
-
-    new Uint32Array(b1, 0, 2), // can't map 11 bytes
-    new Uint32Array(b1, 4, 1),
-    new Uint32Array(b2),
-    new Uint32Array(b2, 4, 2),
-    new Uint32Array(b2, 8, 3),
-
-    new Float32Array(b1, 0, 2), // can't map 11 bytes
-    new Float32Array(b1, 4, 1),
-    new Float32Array(b2),
-    new Float32Array(b2, 4, 2),
-    new Float32Array(b2, 8, 3),
-
-    new Float64Array(b1, 0, 1), // can't map 11 bytes
-    new Float64Array(b2),
-    new Float64Array(b2, 8, 2),
-    new Float64Array(b2, 16, 1)
-  ];
-
-  var offsets = ["NONE", -1, 0, 1, 2, 4, 8];
-
-  views.forEach(function(thisValue, idx1) {
-    var tmp = [];
-    views.forEach(function(argValue, idx2) {
-      offsets.forEach(function(offset, idx3) {
-        try {
-          initBuffers();
-          if (offset === "NONE") {
-            thisValue.set(argValue);
-          } else {
-            thisValue.set(argValue, offset);
-          }
-          tmp.push("success");
-          tmp.push(printableBuffer(b1));
-          tmp.push(printableBuffer(b2));
-
-          //print(idx1, idx2, idx3, printableBuffer(b1), printableBuffer(b2));
-        } catch (e) {
-          tmp.push(e.name);
-          tmp.push(printableBuffer(b1));
-          tmp.push(printableBuffer(b2));
-          //print(idx1, idx2, idx3, e.name, printableBuffer(b1), printableBuffer(b2));
+        // Ensure values include both positive/negative values
+        // for integer views.
+        v = new Uint8Array(b1);
+        for (i = 0; i < v.length; i++) {
+            v[i] = i * 0x11;
         }
-      });
+        v = new Uint8Array(b2);
+        for (i = 0; i < v.length; i++) {
+            v[i] = (i + 5) * 0x13;
+        }
+    }
+
+    var views = [
+        // 0
+        new Int8Array(b1),
+        new Int8Array(b1, 1, 8),
+        new Int8Array(b1, 2, 8),
+        new Int8Array(b1, 3, 8),
+        new Int8Array(b2),
+        new Int8Array(b2, 2, 8),
+        new Int8Array(b2, 4, 12),
+
+        // 7
+        new Uint8Array(b1),
+        new Uint8Array(b1, 1, 8),
+        new Uint8Array(b1, 2, 8),
+        new Uint8Array(b1, 3, 8),
+        new Uint8Array(b2),
+        new Uint8Array(b2, 2, 8),
+        new Uint8Array(b2, 4, 12),
+
+        // 14
+        new Uint8ClampedArray(b1),
+        new Uint8ClampedArray(b1, 1, 8),
+        new Uint8ClampedArray(b1, 2, 8),
+        new Uint8ClampedArray(b1, 3, 8),
+        new Uint8ClampedArray(b2),
+        new Uint8ClampedArray(b2, 2, 8),
+        new Uint8ClampedArray(b2, 4, 12),
+
+        // 21
+        new Int16Array(b1, 0, 5),  // can't map 11 bytes
+        new Int16Array(b1, 0, 4),
+        new Int16Array(b1, 2, 4),
+        new Int16Array(b2),
+        new Int16Array(b2, 2, 4),
+        new Int16Array(b2, 4, 6),
+
+        // 27
+        new Uint16Array(b1, 0, 5),  // can't map 11 bytes
+        new Uint16Array(b1, 0, 4),
+        new Uint16Array(b1, 2, 4),
+        new Uint16Array(b2),
+        new Uint16Array(b2, 2, 4),
+        new Uint16Array(b2, 4, 6),
+
+        new Int32Array(b1, 0, 2),  // can't map 11 bytes
+        new Int32Array(b1, 4, 1),
+        new Int32Array(b2),
+        new Int32Array(b2, 4, 2),
+        new Int32Array(b2, 8, 3),
+
+        new Uint32Array(b1, 0, 2),  // can't map 11 bytes
+        new Uint32Array(b1, 4, 1),
+        new Uint32Array(b2),
+        new Uint32Array(b2, 4, 2),
+        new Uint32Array(b2, 8, 3),
+
+        new Float32Array(b1, 0, 2),  // can't map 11 bytes
+        new Float32Array(b1, 4, 1),
+        new Float32Array(b2),
+        new Float32Array(b2, 4, 2),
+        new Float32Array(b2, 8, 3),
+
+        new Float64Array(b1, 0, 1),  // can't map 11 bytes
+        new Float64Array(b2),
+        new Float64Array(b2, 8, 2),
+        new Float64Array(b2, 16, 1),
+    ];
+
+    var offsets = [
+        'NONE', -1, 0, 1, 2, 4, 8
+    ];
+
+    views.forEach(function (thisValue, idx1) {
+        var tmp = [];
+        views.forEach(function (argValue, idx2) {
+            offsets.forEach(function (offset, idx3) {
+                try {
+                    initBuffers();
+                    if (offset === 'NONE') {
+                        thisValue.set(argValue);
+                    } else {
+                        thisValue.set(argValue, offset);
+                    }
+                    tmp.push('success');
+                    tmp.push(printableBuffer(b1));
+                    tmp.push(printableBuffer(b2));
+
+                    //print(idx1, idx2, idx3, printableBuffer(b1), printableBuffer(b2));
+                } catch (e) {
+                    tmp.push(e.name);
+                    tmp.push(printableBuffer(b1));
+                    tmp.push(printableBuffer(b2));
+                    //print(idx1, idx2, idx3, e.name, printableBuffer(b1), printableBuffer(b2));
+                }
+            });
+        });
+        print(idx1, checksumString(tmp.join('\n')));
     });
-    print(idx1, checksumString(tmp.join("\n")));
-  });
 }
 
 try {
-  print("TypedArray set() bruteforce test");
-  typedArraySetBruteForceTest();
+    print('TypedArray set() bruteforce test');
+    typedArraySetBruteForceTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -564,16 +552,16 @@ undefined undefined
 ===*/
 
 function typedArraySetRetvalTest() {
-  // Khronos spec says "void" return, so undefined.
+    // Khronos spec says "void" return, so undefined.
 
-  var v = new Uint8Array(16);
-  var ret = v.set([1, 2, 3]);
-  print(typeof ret, ret);
+    var v = new Uint8Array(16);
+    var ret = v.set([ 1, 2, 3 ]);
+    print(typeof ret, ret);
 }
 
 try {
-  print("TypedArray set() retval test");
-  typedArraySetRetvalTest();
+    print('TypedArray set() retval test');
+    typedArraySetRetvalTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

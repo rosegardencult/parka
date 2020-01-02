@@ -13,28 +13,28 @@ true
 ===*/
 
 function test() {
-  var pd, g;
+    var pd, g;
 
-  // Standard trick to access global object.
-  g = new Function("return this")();
+    // Standard trick to access global object.
+    g = new Function('return this')();
 
-  // proposal-global provides 'globalThis' for cleaner standard access.
-  print(typeof globalThis);
-  print(g === globalThis);
+    // proposal-global provides 'globalThis' for cleaner standard access.
+    print(typeof globalThis);
+    print(g === globalThis);
 
-  // Attributes in current proposal.
-  pd = Object.getOwnPropertyDescriptor(g, "globalThis");
-  print(typeof pd);
-  if (pd) {
-    print(pd.value === g);
-    print(pd.writable);
-    print(pd.enumerable);
-    print(pd.configurable);
-  }
+    // Attributes in current proposal.
+    pd = Object.getOwnPropertyDescriptor(g, 'globalThis');
+    print(typeof pd);
+    if (pd) {
+        print(pd.value === g);
+        print(pd.writable);
+        print(pd.enumerable);
+        print(pd.configurable);
+    }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

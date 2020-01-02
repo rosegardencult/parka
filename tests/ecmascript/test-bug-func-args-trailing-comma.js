@@ -3,7 +3,7 @@ SyntaxError
 ===*/
 
 try {
-  eval("print(1,2,)");
+    eval("print(1,2,)");
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

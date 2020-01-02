@@ -16,37 +16,37 @@ TypeError
 ===*/
 
 function test() {
-  var s;
+    var s;
 
-  // A symbol is coerced into it's descriptive string.  The forms below
-  // result in the same descriptive string, although an undefined symbol
-  // description and an empty string symbol description are internally
-  // separate cases.
-  print(String(Symbol()));
-  print(String(Symbol(void 0)));
-  print(String(Symbol("")));
+    // A symbol is coerced into it's descriptive string.  The forms below
+    // result in the same descriptive string, although an undefined symbol
+    // description and an empty string symbol description are internally
+    // separate cases.
+    print(String(Symbol()));
+    print(String(Symbol(void 0)));
+    print(String(Symbol('')));
 
-  // Global symbols (Symbol.for('foo')) and local symbols (Symbol('foo'))
-  // have the same descriptive string.
-  print(String(Symbol("foo")));
-  print(String(Symbol.for("foo")));
+    // Global symbols (Symbol.for('foo')) and local symbols (Symbol('foo'))
+    // have the same descriptive string.
+    print(String(Symbol('foo')));
+    print(String(Symbol.for('foo')));
 
-  // Well-known symbols have well-known descriptions.
-  print(String(Symbol.toPrimitive));
+    // Well-known symbols have well-known descriptions.
+    print(String(Symbol.toPrimitive));
 
-  // The symbol-to-descriptive-string behavior only applies to a
-  // non-constructor call.  Constructor calls will invoke ToString(),
-  // which ultimately causes a TypeError for symbols.
-  try {
-    print(new String(Symbol()));
-  } catch (e) {
-    print(e.name);
-    //print(e.stack || e);
-  }
+    // The symbol-to-descriptive-string behavior only applies to a
+    // non-constructor call.  Constructor calls will invoke ToString(),
+    // which ultimately causes a TypeError for symbols.
+    try {
+        print(new String(Symbol()));
+    } catch (e) {
+        print(e.name);
+        //print(e.stack || e);
+    }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

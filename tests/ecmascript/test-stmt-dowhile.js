@@ -32,21 +32,21 @@ final i: -1
 /* Basic loop test with printing and side effect in control flow predicate. */
 
 function basicTest() {
-  var count = 0;
-  var i = 10;
+    var count = 0;
+    var i = 10;
 
-  do {
-    print("body, i:", i, "count:", count);
-  } while ((print("while"), count++, i-- > 0));
+    do {
+        print('body, i:', i, 'count:', count);
+    } while(print('while'), count++, i-- > 0);
 
-  print("final i:", i);
+    print('final i:', i);
 }
 
-print("basic");
+print('basic');
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -75,27 +75,27 @@ final i: 4
 ===*/
 
 function breakTest() {
-  var count = 0;
-  var i = 10;
+    var count = 0;
+    var i = 10;
 
-  do {
-    print("body, i:", i, "count:", count);
-    if (i == 4) {
-      print("break when i=4");
-      break;
-    }
-    print("before while");
-  } while ((print("while"), count++, i-- > 0));
+    do {
+        print('body, i:', i, 'count:', count);
+        if (i == 4) {
+            print('break when i=4');
+            break;
+        }
+        print('before while');
+    } while(print('while'), count++, i-- > 0);
 
-  print("final i:", i);
+    print('final i:', i);
 }
 
-print("break");
+print('break');
 
 try {
-  breakTest();
+    breakTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -137,25 +137,25 @@ final i: -1
 ===*/
 
 function continueTest() {
-  var count = 0;
-  var i = 10;
+    var count = 0;
+    var i = 10;
 
-  do {
-    print("body, i:", i, "count:", count);
-    if (i == 4) {
-      print("continue when i=4");
-      continue;
-    }
-    print("before while");
-  } while ((print("while"), count++, i-- > 0));
+    do {
+        print('body, i:', i, 'count:', count);
+        if (i == 4) {
+            print('continue when i=4');
+            continue;
+        }
+        print('before while');
+    } while(print('while'), count++, i-- > 0);
 
-  print("final i:", i);
+    print('final i:', i);
 }
 
-print("continue");
+print('continue');
 
 try {
-  continueTest();
+    continueTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

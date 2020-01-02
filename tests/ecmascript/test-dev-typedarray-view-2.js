@@ -77,75 +77,59 @@ v2 3 4294967168
 ===*/
 
 function test() {
-  var b1 = new ArrayBuffer(16);
-  var v1 = new Uint32Array(b1);
-  var b2 = new ArrayBuffer(4);
-  var v2 = new Int8Array(b2);
-  var i;
+    var b1 = new ArrayBuffer(16);
+    var v1 = new Uint32Array(b1);
+    var b2 = new ArrayBuffer(4);
+    var v2 = new Int8Array(b2);
+    var i;
 
-  v2[0] = 1;
-  v2[1] = 0xff;
-  v2[2] = 0x7f;
-  v2[3] = 0x1234;
+    v2[0] = 1;
+    v2[1] = 0xff;
+    v2[2] = 0x7f;
+    v2[3] = 0x1234;
 
-  // Byte values in v2 get expanded to 32-bit values in v1.
-  v1.set(v2);
+    // Byte values in v2 get expanded to 32-bit values in v1.
+    v1.set(v2);
 
-  for (i = 0; i < v1.length; i++) {
-    print("v1", i, v1[i]);
-  }
-  for (i = 0; i < v2.length; i++) {
-    print("v2", i, v2[i]);
-  }
-  //    print(Duktape.enc('jx', v1));
-  //    print(Duktape.enc('jx', v2));
+    for (i = 0; i < v1.length; i++) { print('v1', i, v1[i]); }
+    for (i = 0; i < v2.length; i++) { print('v2', i, v2[i]); }
+//    print(Duktape.enc('jx', v1));
+//    print(Duktape.enc('jx', v2));
 
-  // NOTE: "Same underlying buffer" case cannot be handled as a memmove-like
-  // situation because e.g. 4 bytes in the middle of a buffer may expand to
-  // (up to) 32 bytes in the conversion.  That 32 bytes is both "before" and
-  // "after" the source:
-  //
-  // |              ABCD              |   4 bytes, source
-  // |aaaaaaaabbbbbbbbccccccccdddddddd|   32 bytes, target
-  //
-  // The only easy solution in this case is to make an actual copy.
+    // NOTE: "Same underlying buffer" case cannot be handled as a memmove-like
+    // situation because e.g. 4 bytes in the middle of a buffer may expand to
+    // (up to) 32 bytes in the conversion.  That 32 bytes is both "before" and
+    // "after" the source:
+    //
+    // |              ABCD              |   4 bytes, source
+    // |aaaaaaaabbbbbbbbccccccccdddddddd|   32 bytes, target
+    //
+    // The only easy solution in this case is to make an actual copy.
 
-  b1 = new ArrayBuffer(16);
-  for (i = 0; i < b1.byteLength; i++) {
-    new Uint8Array(b1)[i] = 0x11;
-  }
-  for (i = 0; i < b1.byteLength; i++) {
-    print("b1", i, new Uint8Array(b1)[i]);
-  }
-  v1 = new Int8Array(b1, 7, 4); // source: bytes [7,11[
-  v2 = new Uint32Array(b1); // target: bytes [0,16[
-  v1[0] = -1;
-  v1[1] = 1;
-  v1[2] = 0x7f;
-  v1[3] = -0x80;
-  for (i = 0; i < b1.byteLength; i++) {
-    print("b1", i, new Uint8Array(b1)[i]);
-  }
-  v2.set(v1);
-  for (i = 0; i < b1.byteLength; i++) {
-    print("b1", i, new Uint8Array(b1)[i]);
-  }
+    b1 = new ArrayBuffer(16);
+    for (i = 0; i < b1.byteLength; i++) { new Uint8Array(b1)[i] = 0x11; }
+    for (i = 0; i < b1.byteLength; i++) { print('b1', i, new Uint8Array(b1)[i]); }
+    v1 = new Int8Array(b1, 7, 4);    // source: bytes [7,11[
+    v2 = new Uint32Array(b1);        // target: bytes [0,16[
+    v1[0] = -1;
+    v1[1] = 1;
+    v1[2] = 0x7f;
+    v1[3] = -0x80;
+    for (i = 0; i < b1.byteLength; i++) { print('b1', i, new Uint8Array(b1)[i]); }
+    v2.set(v1);
+    for (i = 0; i < b1.byteLength; i++) { print('b1', i, new Uint8Array(b1)[i]); }
 
-  // b1:
-  // 11111111 11111111 11111111 11111111     initial state
-  // 11111111 111111ff 017f8011 11111111     after writing to v1
-  // ffffffff 01000000 7f000000 80ffffff     after set()
+    // b1:
+    // 11111111 11111111 11111111 11111111     initial state
+    // 11111111 111111ff 017f8011 11111111     after writing to v1
+    // ffffffff 01000000 7f000000 80ffffff     after set()
 
-  for (i = 0; i < v1.length; i++) {
-    print("v1", i, v1[i]);
-  }
-  for (i = 0; i < v2.length; i++) {
-    print("v2", i, v2[i]);
-  }
+    for (i = 0; i < v1.length; i++) { print('v1', i, v1[i]); }
+    for (i = 0; i < v2.length; i++) { print('v2', i, v2[i]); }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

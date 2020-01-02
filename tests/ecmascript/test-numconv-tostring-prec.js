@@ -29,48 +29,48 @@
 ===*/
 
 function precisionTest() {
-  function test(x, n) {
-    print(new Number(x).toPrecision(n));
-  }
+    function test(x, n) {
+        print(new Number(x).toPrecision(n));
+    }
 
-  test(0, 3);
-  test(1, 3);
+    test(0, 3);
+    test(1, 3);
 
-  test(0.9999, 3);
-  test(0.9999, 4);
-  test(0.9999, 5);
+    test(0.9999, 3);
+    test(0.9999, 4);
+    test(0.9999, 5);
 
-  test(12345678, 6); // rounds up
-  test(12345678, 7); // rounds up
-  test(12345678, 8);
-  test(12345678, 9);
+    test(12345678, 6);  // rounds up
+    test(12345678, 7);  // rounds up
+    test(12345678, 8);
+    test(12345678, 9);
 
-  test(87654321, 6); // rounds down
-  test(87654321, 7); // rounds down
-  test(87654321, 8);
-  test(87654321, 9);
+    test(87654321, 6);  // rounds down
+    test(87654321, 7);  // rounds down
+    test(87654321, 8);
+    test(87654321, 9);
 
-  test(55555, 4); // rounds up
-  test(55555, 5);
-  test(44444, 4); // rounds down
-  test(44444, 5);
+    test(55555, 4);  // rounds up
+    test(55555, 5);
+    test(44444, 4);  // rounds down
+    test(44444, 5);
 
-  test(99999, 4); // rounds up, carries
-  test(99999, 5);
+    test(99999, 4);  // rounds up, carries
+    test(99999, 5);
 
-  // NB: precision=0 is a RangeError
-  test(+0, undefined); // -> ToString()
-  test(+0, 1);
-  test(+0, 2);
-  test(+0, 3);
-  test(-0, undefined); // -> ToString()
-  test(-0, 1);
-  test(-0, 2);
-  test(-0, 3);
+    // NB: precision=0 is a RangeError
+    test(+0, undefined);  // -> ToString()
+    test(+0, 1);
+    test(+0, 2);
+    test(+0, 3);
+    test(-0, undefined);  // -> ToString()
+    test(-0, 1);
+    test(-0, 2);
+    test(-0, 3);
 }
 
 try {
-  precisionTest();
+    precisionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

@@ -1006,39 +1006,35 @@
 ===*/
 
 function fact(n) {
-  var res = [];
-  var i;
+    var res = [];
+    var i;
 
-  if (Math.floor(n) !== n) {
-    throw new Error("must be whole");
-  }
-  if (n <= 2) {
-    return [n];
-  }
+    if (Math.floor(n) !== n) { throw new Error('must be whole'); }
+    if (n <= 2) { return [ n ]; }
 
-  while (n >= 2) {
-    for (i = 2; i <= n; i++) {
-      if (n % i === 0) {
-        n = Math.floor(n / i);
-        res.push(i);
-        break;
-      }
+    while (n >= 2) {
+        for (i = 2; i <= n; i++) {
+            if ((n % i) === 0) {
+                n = Math.floor(n / i);
+                res.push(i);
+                break;
+            }
+        }
     }
-  }
 
-  return res;
+    return res;
 }
 
 function test() {
-  var i, f;
-  for (i = 0; i < 1000; i++) {
-    f = fact(i);
-    print(i, "-->", fact(i).join("x") + (f.length === 1 ? " (prime)" : ""));
-  }
+    var i, f;
+    for (i = 0; i < 1000; i++) {
+        f = fact(i);
+        print(i, '-->', fact(i).join('x') + (f.length === 1 ? ' (prime)' : ''));
+    }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

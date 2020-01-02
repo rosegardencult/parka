@@ -6,42 +6,12 @@
  *  caused by ToNumber coercion have a chance to be evaluated.
  */
 
-var pig = {
-  valueOf: function() {
-    print("pig");
-    return 812;
-  }
-};
-var cow = {
-  valueOf: function() {
-    print("cow");
-    return 1208;
-  }
-};
-var ape = {
-  valueOf: function() {
-    print("ape");
-    return -128;
-  }
-};
-var goku = {
-  valueOf: function() {
-    print("goku");
-    return 9001.5;
-  }
-};
-var badger = {
-  valueOf: function() {
-    print("badger");
-    return 8;
-  }
-};
-var munch = {
-  valueOf: function() {
-    print("*munch*");
-    return NaN;
-  }
-};
+var pig = { valueOf: function() { print("pig"); return 812; } };
+var cow = { valueOf: function() { print("cow"); return 1208; } };
+var ape = { valueOf: function() { print("ape"); return -128; } };
+var goku = { valueOf: function() { print("goku"); return 9001.5; } };
+var badger = { valueOf: function() { print("badger"); return 8; } };
+var munch = { valueOf: function() { print("*munch*"); return NaN; } };
 
 /*===
 pig

@@ -29,21 +29,21 @@ final i: -1
 ===*/
 
 function basicTest() {
-  var count = 0;
-  var i = 10;
+    var count = 0;
+    var i = 10;
 
-  while ((print("while"), count++, i-- > 0)) {
-    print("body, i:", i, "count:", count);
-  }
-  print("final i:", i);
+    while (print('while'), count++, i-- > 0) {
+        print('body, i:', i, 'count:', count);
+    }
+    print('final i:', i);
 }
 
-print("basic");
+print('basic');
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -70,30 +70,31 @@ final i: 4
 ===*/
 
 function breakContinueTest() {
-  var count = 0;
-  var i = 10;
+    var count = 0;
+    var i = 10;
 
-  while ((print("while"), count++, i-- > 0)) {
-    print("body, i:", i, "count:", count);
-    if (i == 8 || i == 6) {
-      print("continue at 6 and 8");
-      continue;
+    while (print('while'), count++, i-- > 0) {
+        print('body, i:', i, 'count:', count);
+        if (i == 8 || i == 6) {
+            print('continue at 6 and 8');
+            continue;
+        }
+        if (i == 4) {
+            print('break at 4');
+            break;
+        }
+        print('end body');
     }
-    if (i == 4) {
-      print("break at 4");
-      break;
-    }
-    print("end body");
-  }
-  print("final i:", i);
+    print('final i:', i);
 }
 
-print("break and continue");
+
+print('break and continue');
 
 try {
-  breakContinueTest();
+    breakContinueTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -131,50 +132,46 @@ final -1
 ===*/
 
 function whileTest() {
-  var i;
+    var i;
 
-  i = 5;
-  while (i--) {
-    print(i);
-  }
-  print("final", i);
-
-  i = 0;
-  while (i--) {
-    print(i);
-  }
-  print("final", i);
-
-  i = 5;
-  while (i--) {
-    print(i);
-    continue;
-  }
-  print("final", i);
-
-  i = 5;
-  while (i--) {
-    print(i);
-    if (i >= 4) {
-      continue;
+    i = 5;
+    while (i--) {
+        print(i);
     }
-    if (i == 1) {
-      break;
-    }
-  }
-  print("final", i);
+    print('final', i);
 
-  i = 5;
-  while ((print("in while"), i--)) {
-    print(i);
-  }
-  print("final", i);
+    i = 0;
+    while (i--) {
+        print(i);
+    }
+    print('final', i);
+
+    i = 5;
+    while (i--) {
+        print(i);
+        continue;
+    }
+    print('final', i);
+
+    i = 5;
+    while (i--) {
+        print(i);
+        if (i >= 4) { continue; }
+        if (i == 1) { break; }
+    }
+    print('final', i);
+
+    i = 5;
+    while (print('in while'), i--) {
+        print(i);
+    }
+    print('final', i);
 }
 
-print("misc");
+print('misc');
 
 try {
-  whileTest();
+    whileTest();
 } catch (e) {
-  print(e);
+    print(e);
 }

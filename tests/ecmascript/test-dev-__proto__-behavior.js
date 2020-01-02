@@ -12,24 +12,24 @@ true
 ===*/
 
 function test() {
-  var obj;
+    var obj;
 
-  obj = {};
-  print("__proto__" in obj);
-  print(Object.getOwnPropertyNames(obj).indexOf("__proto__") >= 0); // not own property
-  print(Object.getOwnPropertyNames(Object.prototype).indexOf("__proto__") >= 0); // inherited accessor
-  print(Object.getOwnPropertyDescriptor(Object.prototype, "__proto__"));
+    obj = {};
+    print('__proto__' in obj);
+    print(Object.getOwnPropertyNames(obj).indexOf('__proto__') >= 0);  // not own property
+    print(Object.getOwnPropertyNames(Object.prototype).indexOf('__proto__') >= 0);  // inherited accessor
+    print(Object.getOwnPropertyDescriptor(Object.prototype, '__proto__'));
 
-  obj = Object.create(null);
-  obj.__proto__ = []; // no magic __proto__, becomes own property
-  print(obj instanceof Array); // no, not inherited
-  print(Object.getOwnPropertyNames(Object.prototype).indexOf("__proto__") >= 0); // own property
+    obj = Object.create(null);
+    obj.__proto__ = [];  // no magic __proto__, becomes own property
+    print(obj instanceof Array);  // no, not inherited
+    print(Object.getOwnPropertyNames(Object.prototype).indexOf('__proto__') >= 0);  // own property
 
-  // XXX: no __proto__ literals (yet)
+    // XXX: no __proto__ literals (yet)
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e);
+    print(e);
 }

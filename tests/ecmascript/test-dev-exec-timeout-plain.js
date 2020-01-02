@@ -9,11 +9,11 @@
 ---*/
 
 function test() {
-  for (;;);
+    for (;;) ;
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

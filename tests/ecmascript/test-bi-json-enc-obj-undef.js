@@ -6,32 +6,25 @@
 ===*/
 
 function objectUndefinedTest() {
-  var obj;
+    var obj;
 
-  obj = {};
-  print(JSON.stringify(obj));
+    obj = {}
+    print(JSON.stringify(obj));
 
-  obj = { foo: undefined };
-  print(JSON.stringify(obj));
+    obj = { foo: undefined };
+    print(JSON.stringify(obj));
 
-  obj = { foo: undefined, bar: 2, quux: undefined };
-  print(JSON.stringify(obj));
+    obj = { foo: undefined, bar: 2, quux: undefined };
+    print(JSON.stringify(obj));
 
-  // all values become undefined after the replacer
-  obj = { foo: 1, bar: 2, quux: 3, baz: 4 };
-  print(
-    JSON.stringify(obj, function repl(k, v) {
-      if (k !== "") {
-        return;
-      } else {
-        return v;
-      }
-    })
-  );
+    // all values become undefined after the replacer
+    obj = { foo: 1, bar: 2, quux: 3, baz: 4 };
+    print(JSON.stringify(obj, function repl(k,v) { if (k !== '') { return; } else { return v; } }));
+
 }
 
 try {
-  objectUndefinedTest();
+    objectUndefinedTest();
 } catch (e) {
-  print(e.name);
+    print(e.name);
 }

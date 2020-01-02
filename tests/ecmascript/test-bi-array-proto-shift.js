@@ -1,58 +1,58 @@
 // XXX: util
 
 function dumpValue(v) {
-  var i, n;
-  var clipped;
-  var tmp = [];
+    var i, n;
+    var clipped;
+    var tmp = [];
 
-  if (v === undefined) {
-    return "undefined";
-  } else if (v === null) {
-    return "null";
-  } else if (v.length === undefined) {
-    return typeof v + " " + "nolength";
-  }
-
-  n = Math.floor(v.length);
-  if (n > 1000) {
-    n = 1000;
-    clipped = true;
-  }
-  for (i = 0; i < n; i++) {
-    if (v.hasOwnProperty(i)) {
-      tmp.push(String(v[i]));
-    } else {
-      tmp.push("nonexistent");
+    if (v === undefined) {
+        return 'undefined';
+    } else if (v === null) {
+        return 'null';
+    } else if (v.length === undefined) {
+        return typeof v + ' ' + 'nolength';
     }
-  }
-  if (clipped) {
-    tmp.push("...");
-  }
-  return typeof v + " " + v.length + " " + tmp.join(",");
+
+    n = Math.floor(v.length);
+    if (n > 1000) {
+        n = 1000;
+        clipped = true;
+    }
+    for (i = 0; i < n; i++) {
+        if (v.hasOwnProperty(i)) {
+            tmp.push(String(v[i]));
+        } else {
+            tmp.push('nonexistent');
+        }
+    }
+    if (clipped) {
+        tmp.push('...');
+    }
+    return typeof v + ' ' + v.length + ' ' + tmp.join(',');
 }
 
 function test(this_value, loop_count, no_pre_post) {
-  var t;
-  var i;
+    var t;
+    var i;
 
-  if (loop_count === undefined) {
-    loop_count = 1;
-  }
+    if (loop_count === undefined) {
+        loop_count = 1;
+    }
 
-  for (i = 0; i < loop_count; i++) {
-    if (!no_pre_post) {
-      print(i, loop_count, "pre", dumpValue(this_value));
+    for (i = 0; i < loop_count; i++) {
+        if (!no_pre_post) {
+            print(i, loop_count, 'pre', dumpValue(this_value));
+        }
+        try {
+            t = Array.prototype.shift.call(this_value);
+            print(i, loop_count, typeof t, t);
+        } catch (e) {
+            print(i, loop_count, e.name);
+        }
+        if (!no_pre_post) {
+            print(i, loop_count, 'post', dumpValue(this_value));
+        }
     }
-    try {
-      t = Array.prototype.shift.call(this_value);
-      print(i, loop_count, typeof t, t);
-    } catch (e) {
-      print(i, loop_count, e.name);
-    }
-    if (!no_pre_post) {
-      print(i, loop_count, "post", dumpValue(this_value));
-    }
-  }
 }
 
 /*===
@@ -489,141 +489,96 @@ length getter 0
 3 undefined
 ===*/
 
-print("basic");
+print('basic');
 
 function basicTest() {
-  var obj;
-  var i;
+    var obj;
+    var i;
 
-  // dense
+    // dense
 
-  test([]);
-  test([1, 2, 3], 4);
+    test([]);
+    test([1,2,3], 4);
 
-  // sparse
+    // sparse
 
-  obj = [1];
-  obj[100] = 3;
-  obj[50] = 2;
-  test(obj, 102);
+    obj = [1];
+    obj[100] = 3;
+    obj[50] = 2;
+    test(obj, 102);
 
-  // non-array
+    // non-array
 
-  obj = {
-    "0": "foo",
-    "1": "bar",
-    "4": "quux",
-    "7": "baz",
-    "10": "quuux",
-    length: 8
-  }; // 'quuux' not within length, omitted
-  test(obj, 11);
+    obj = { '0': 'foo', '1': 'bar', '4': 'quux', '7': 'baz', '10': 'quuux', length: 8 };  // 'quuux' not within length, omitted
+    test(obj, 11);
 
-  // even if length is zero, it is written back and normalized to a number
+    // even if length is zero, it is written back and normalized to a number
 
-  obj = { length: "0" };
-  test(obj);
+    obj = { length: '0' };
+    test(obj);
 
-  // pretty comprehensive side effect test; on the first shift() call:
-  //   - [[Get]] "length", coerce ToUint32()
-  //   - [[Get]] "0"
-  //   - [[HasProperty]] "1"
-  //   - [[Get]] "1"
-  //   - [[Put]] "0"
-  //   - [[HasProperty]] "2"
-  //   - [[Get]] "2"
-  //   - [[Put]] "1"
-  //   - [[Delete]] "2"
-  //   - [[Put]] "length"
+    // pretty comprehensive side effect test; on the first shift() call:
+    //   - [[Get]] "length", coerce ToUint32()
+    //   - [[Get]] "0"
+    //   - [[HasProperty]] "1"
+    //   - [[Get]] "1"
+    //   - [[Put]] "0"
+    //   - [[HasProperty]] "2"
+    //   - [[Get]] "2"
+    //   - [[Put]] "1"
+    //   - [[Delete]] "2"
+    //   - [[Put]] "length"
 
-  obj = Object.create(Object.prototype, {
-    "0": {
-      get: function() {
-        print("0 getter", this.my0);
-        return this.my0;
-      },
-      set: function(v) {
-        print("0 setter", v);
-        this.my0 = v;
-      },
-      enumerable: true,
-      configurable: true
-    },
-    "1": {
-      get: function() {
-        print("1 getter", this.my1);
-        return this.my1;
-      },
-      set: function(v) {
-        print("1 setter", v);
-        this.my1 = v;
-      },
-      enumerable: true,
-      configurable: true
-    },
-    "2": {
-      get: function() {
-        print("2 getter", this.my2);
-        return this.my2;
-      },
-      set: function(v) {
-        print("2 setter", v);
-        this.my2 = v;
-      },
-      enumerable: true,
-      configurable: true
-    },
-    length: {
-      get: function() {
-        print("length getter", this.mylen);
-        return this.mylen;
-      },
-      set: function(v) {
-        print("length setter", v);
-        this.mylen = v;
-      },
-      enumerable: true,
-      configurable: true
+    obj = Object.create(Object.prototype, {
+        '0': {
+            get: function() { print('0 getter', this.my0); return this.my0; },
+            set: function(v) { print('0 setter', v); this.my0 = v; },
+            enumerable: true, configurable: true
+        },
+        '1': {
+            get: function() { print('1 getter', this.my1); return this.my1; },
+            set: function(v) { print('1 setter', v); this.my1 = v; },
+            enumerable: true, configurable: true
+        },
+        '2': {
+            get: function() { print('2 getter', this.my2); return this.my2; },
+            set: function(v) { print('2 setter', v); this.my2 = v; },
+            enumerable: true, configurable: true
+        },
+        'length': {
+            get: function() { print('length getter', this.mylen); return this.mylen; },
+            set: function(v) { print('length setter', v); this.mylen = v; },
+            enumerable: true, configurable: true
+        }
+    });
+    obj.my0 = 'foo';
+    obj.my1 = 'bar';
+    obj.my2 = 'quux';
+    obj.mylen = 3;
+    test(obj, 4);
+
+    // property attributes of array elements are NOT copied, only values are
+
+    obj = Object.create(Object.prototype, {
+        '0': { value: 'foo', writable: true, enumerable: true, configurable: true },
+        '1': { value: 'bar', writable: true, enumerable: false, configurable: true },
+        '2': { value: 'quux', writable: true, enumerable: true, configurable: true },
+        '3': { value: 'baz', writable: true, enumerable: false, configurable: true },
+    });
+    obj.length = 4;
+    for (i = 0; i < 4; i++) {
+        print(i, JSON.stringify(Object.getOwnPropertyDescriptor(obj, i)));
     }
-  });
-  obj.my0 = "foo";
-  obj.my1 = "bar";
-  obj.my2 = "quux";
-  obj.mylen = 3;
-  test(obj, 4);
-
-  // property attributes of array elements are NOT copied, only values are
-
-  obj = Object.create(Object.prototype, {
-    "0": { value: "foo", writable: true, enumerable: true, configurable: true },
-    "1": {
-      value: "bar",
-      writable: true,
-      enumerable: false,
-      configurable: true
-    },
-    "2": {
-      value: "quux",
-      writable: true,
-      enumerable: true,
-      configurable: true
-    },
-    "3": { value: "baz", writable: true, enumerable: false, configurable: true }
-  });
-  obj.length = 4;
-  for (i = 0; i < 4; i++) {
-    print(i, JSON.stringify(Object.getOwnPropertyDescriptor(obj, i)));
-  }
-  test(obj, 1);
-  for (i = 0; i < 4; i++) {
-    print(i, JSON.stringify(Object.getOwnPropertyDescriptor(obj, i)));
-  }
+    test(obj, 1);
+    for (i = 0; i < 4; i++) {
+        print(i, JSON.stringify(Object.getOwnPropertyDescriptor(obj, i)));
+    }
 }
 
 try {
-  basicTest();
+    basicTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -659,47 +614,47 @@ quux
 0 3
 ===*/
 
-print("inherited");
+print('inherited');
 
 function inheritedTest() {
-  var obj, proto;
+    var obj, proto;
 
-  // Here '2' is inherited, and '3' exists, so the value of '3' will first be
-  // written to '2' (using [[Put]] which will NOT modify the prototype).  On
-  // the second call, '2' is an own property and '3' doesn't exist; '2' will
-  // be [[Delete]]'d.  Since [[Delete]] only affects own properties, the prototype
-  // '2':'quux' will remain showing through.
+    // Here '2' is inherited, and '3' exists, so the value of '3' will first be
+    // written to '2' (using [[Put]] which will NOT modify the prototype).  On
+    // the second call, '2' is an own property and '3' doesn't exist; '2' will
+    // be [[Delete]]'d.  Since [[Delete]] only affects own properties, the prototype
+    // '2':'quux' will remain showing through.
 
-  proto = {
-    "2": "quux"
-  };
-  obj = Object.create(proto);
-  obj[0] = "foo";
-  obj[1] = "bar";
-  obj[3] = "baz";
-  obj.length = 4;
-  test(obj, 5);
-  print(proto[2]);
+    proto = {
+        '2': 'quux'
+    };
+    obj = Object.create(proto);
+    obj[0] = 'foo';
+    obj[1] = 'bar';
+    obj[3] = 'baz';
+    obj.length = 4;
+    test(obj, 5);
+    print(proto[2]);
 
-  // Here 'length' is initially inherited, but an own copy is created by the first
-  // 'length' [[Put]].
+    // Here 'length' is initially inherited, but an own copy is created by the first
+    // 'length' [[Put]].
 
-  proto = {
-    length: 3
-  };
-  obj = Object.create(proto);
-  obj[0] = "foo";
-  obj[1] = "bar";
-  obj[2] = "quux";
-  test(obj, 4);
+    proto = {
+        length: 3
+    };
+    obj = Object.create(proto);
+    obj[0] = 'foo';
+    obj[1] = 'bar';
+    obj[2] = 'quux';
+    test(obj, 4);
 
-  print(obj.length, proto.length);
+    print(obj.length, proto.length);
 }
 
 try {
-  inheritedTest();
+    inheritedTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -719,87 +674,57 @@ mutated-bar mutated-quux mutated-quux 2
  * e.g. adding back elements or manipulating length.
  */
 
-print("mutation");
+print('mutation');
 
 function mutationTest() {
-  var obj;
+    var obj;
 
-  // On the first shift() call:
-  //   - [[Get]] "length", coerce ToUint32()
-  //   - [[Get]] "0"
-  //   - [[HasProperty]] "1"
-  //   - [[Get]] "1"
-  //   - [[Put]] "0"
-  //   - [[HasProperty]] "2"
-  //   - [[Get]] "2"
-  //   - [[Put]] "1"
-  //   - [[Delete]] "2"
-  //   - [[Put]] "length"
+    // On the first shift() call:
+    //   - [[Get]] "length", coerce ToUint32()
+    //   - [[Get]] "0"
+    //   - [[HasProperty]] "1"
+    //   - [[Get]] "1"
+    //   - [[Put]] "0"
+    //   - [[HasProperty]] "2"
+    //   - [[Get]] "2"
+    //   - [[Put]] "1"
+    //   - [[Delete]] "2"
+    //   - [[Put]] "length"
 
-  obj = Object.create(Object.prototype, {
-    "0": {
-      get: function() {
-        print("0 getter", this.my0);
-        this.my1 = "mutated-bar";
-        return this.my0;
-      },
-      set: function(v) {
-        print("0 setter", v);
-        this.my0 = v;
-      },
-      enumerable: true,
-      configurable: true
-    },
-    "1": {
-      get: function() {
-        print("1 getter", this.my1);
-        this.my2 = "mutated-quux";
-        return this.my1;
-      },
-      set: function(v) {
-        print("1 setter", v);
-        this.my1 = v;
-      },
-      enumerable: true,
-      configurable: true
-    },
-    "2": {
-      get: function() {
-        print("2 getter", this.my2);
-        return this.my2;
-      },
-      set: function(v) {
-        print("2 setter", v);
-        this.my2 = v;
-      },
-      enumerable: true,
-      configurable: true
-    },
-    length: {
-      get: function() {
-        print("length getter", this.mylen);
-        return this.mylen;
-      },
-      set: function(v) {
-        print("length setter", v);
-        this.mylen = v;
-      },
-      enumerable: true,
-      configurable: true
-    }
-  });
-  obj.my0 = "foo";
-  obj.my1 = "bar";
-  obj.my2 = "quux";
-  obj.mylen = 3;
-  test(obj, 1, true); // avoid pre/post dumping because it has side effects
-  print(obj.my0, obj.my1, obj.my2, obj.mylen);
+    obj = Object.create(Object.prototype, {
+        '0': {
+            get: function() { print('0 getter', this.my0); this.my1 = 'mutated-bar'; return this.my0; },
+            set: function(v) { print('0 setter', v); this.my0 = v; },
+            enumerable: true, configurable: true
+        },
+        '1': {
+            get: function() { print('1 getter', this.my1); this.my2 = 'mutated-quux'; return this.my1; },
+            set: function(v) { print('1 setter', v); this.my1 = v; },
+            enumerable: true, configurable: true
+        },
+        '2': {
+            get: function() { print('2 getter', this.my2); return this.my2; },
+            set: function(v) { print('2 setter', v); this.my2 = v; },
+            enumerable: true, configurable: true
+        },
+        'length': {
+            get: function() { print('length getter', this.mylen); return this.mylen; },
+            set: function(v) { print('length setter', v); this.mylen = v; },
+            enumerable: true, configurable: true
+        }
+    });
+    obj.my0 = 'foo';
+    obj.my1 = 'bar';
+    obj.my2 = 'quux';
+    obj.mylen = 3;
+    test(obj, 1, true);  // avoid pre/post dumping because it has side effects
+    print(obj.my0, obj.my1, obj.my2, obj.mylen);
 }
 
 try {
-  mutationTest();
+    mutationTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -822,77 +747,62 @@ protected
 3 bar bar undefined
 ===*/
 
-print("protected");
+print('protected');
 
 function protectedTest() {
-  var obj;
+    var obj;
 
-  // protect length against writing: E5.1 Section 15.4.4.9 step 9 should
-  // TypeError but elements should be updated
+    // protect length against writing: E5.1 Section 15.4.4.9 step 9 should
+    // TypeError but elements should be updated
 
-  obj = { "0": "foo", "1": "bar", "2": "quux" };
-  Object.defineProperties(obj, {
-    length: { value: 3, writable: false, enumerable: true, configurable: true }
-  });
-  test(obj);
-  print(obj.length, obj[0], obj[1], obj[2]);
+    obj = { '0': 'foo', '1': 'bar', '2': 'quux' };
+    Object.defineProperties(obj, {
+        length: { value: 3, writable: false, enumerable: true, configurable: true }
+    });
+    test(obj);
+    print(obj.length, obj[0], obj[1], obj[2]);
 
-  // protect last element from deletion (step 8); length won't be updated at all
-  // '0' and '1' will be updated
+    // protect last element from deletion (step 8); length won't be updated at all
+     // '0' and '1' will be updated
 
-  obj = { "0": "foo", "1": "bar", length: 3 };
-  Object.defineProperties(obj, {
-    "2": {
-      value: "quux",
-      writable: true,
-      enumerable: true,
-      configurable: false
-    }
-  });
-  test(obj);
-  print(obj.length, obj[0], obj[1], obj[2]);
+    obj = { '0': 'foo', '1': 'bar', length: 3 };
+    Object.defineProperties(obj, {
+        '2': { value: 'quux', writable: true, enumerable: true, configurable: false }
+    });
+    test(obj);
+    print(obj.length, obj[0], obj[1], obj[2]);
 
-  // protect intermediate element from writing
-  // '0' gets written with 'bar', '1' does not; length won't be updated at all
+    // protect intermediate element from writing
+    // '0' gets written with 'bar', '1' does not; length won't be updated at all
 
-  obj = {};
-  Object.defineProperties(obj, {
-    "0": { value: "foo", writable: true, enumerable: true, configurable: true },
-    "1": {
-      value: "bar",
-      writable: false,
-      enumerable: true,
-      configurable: true
-    },
-    "2": { value: "quux", writable: true, enumerable: true, configurable: true }
-  });
-  obj.length = 3;
-  test(obj);
-  print(obj.length, obj[0], obj[1], obj[2]);
+    obj = {};
+    Object.defineProperties(obj, {
+        '0': { value: 'foo', writable: true, enumerable: true, configurable: true },
+        '1': { value: 'bar', writable: false, enumerable: true, configurable: true },
+        '2': { value: 'quux', writable: true, enumerable: true, configurable: true }
+    });
+    obj.length = 3;
+    test(obj);
+    print(obj.length, obj[0], obj[1], obj[2]);
 
-  // protect intermediate element from deletion
-  // '0' gets written with 'bar', '1' does not get deleted; length won't be updated at all
+    // protect intermediate element from deletion
+    // '0' gets written with 'bar', '1' does not get deleted; length won't be updated at all
 
-  obj = {};
-  Object.defineProperties(obj, {
-    "0": { value: "foo", writable: true, enumerable: true, configurable: true },
-    "1": {
-      value: "bar",
-      writable: false,
-      enumerable: true,
-      configurable: false
-    }
-    // '2' does not exist
-  });
-  obj.length = 3;
-  test(obj);
-  print(obj.length, obj[0], obj[1], obj[2]);
+    obj = {};
+    Object.defineProperties(obj, {
+        '0': { value: 'foo', writable: true, enumerable: true, configurable: true },
+        '1': { value: 'bar', writable: false, enumerable: true, configurable: false }
+        // '2' does not exist
+    });
+    obj.length = 3;
+    test(obj);
+    print(obj.length, obj[0], obj[1], obj[2]);
 }
 
 try {
-  protectedTest();
+    protectedTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /*===
@@ -950,65 +860,53 @@ coercion
 0 undefined undefined undefined undefined
 ===*/
 
-print("coercion");
+print('coercion');
 
 function coercionTest() {
-  var obj;
+    var obj;
 
-  // this coercion
+    // this coercion
 
-  test(undefined);
-  test(null);
-  test(true);
-  test(false);
-  test(123);
-  test("foo"); // this should throw TypeError because Array.prototype.shift calls
-  // [[Put]] with Throw=true, and string characters and 'length' are
-  // not writable, causing [[CanPut]] to be false -> throws; Rhino and
-  // V8 silently ignore this (and in fact return 'f').
-  test([1, 2]);
-  test({ foo: 1, bar: 2 });
+    test(undefined);
+    test(null);
+    test(true);
+    test(false);
+    test(123);
+    test('foo');  // this should throw TypeError because Array.prototype.shift calls
+                  // [[Put]] with Throw=true, and string characters and 'length' are
+                  // not writable, causing [[CanPut]] to be false -> throws; Rhino and
+                  // V8 silently ignore this (and in fact return 'f').
+    test([1,2]);
+    test({ foo: 1, bar: 2 });
 
-  // length coercion
+    // length coercion
 
-  obj = { "0": "foo", "1": "bar", "2": "quux", "3": "baz", "4": "quuux" };
-  obj.length = "3.9";
-  test(obj, 5);
+    obj = { '0': 'foo', '1': 'bar', '2': 'quux', '3': 'baz', '4': 'quuux' };
+    obj.length = '3.9';
+    test(obj, 5);
 
-  obj = { "0": "foo", "1": "bar", "2": "quux", "3": "baz", "4": "quuux" };
-  obj.length = 256 * 256 * 256 * 256 + 3.9;
-  test(obj, 5, true);
-  print(obj.length, obj["0"], obj["1"], obj["2"], obj["3"]);
+    obj = { '0': 'foo', '1': 'bar', '2': 'quux', '3': 'baz', '4': 'quuux' };
+    obj.length = 256*256*256*256 + 3.9;
+    test(obj, 5, true);
+    print(obj.length, obj['0'], obj['1'], obj['2'], obj['3']);
 
-  obj = { "0": "foo", "1": "bar", "2": "quux", "3": "baz", "4": "quuux" };
-  obj.length = -256 * 256 * 256 * 256 + 3.9;
-  test(obj, 5, true);
-  print(obj.length, obj["0"], obj["1"], obj["2"], obj["3"]);
+    obj = { '0': 'foo', '1': 'bar', '2': 'quux', '3': 'baz', '4': 'quuux' };
+    obj.length = -256*256*256*256 + 3.9;
+    test(obj, 5, true);
+    print(obj.length, obj['0'], obj['1'], obj['2'], obj['3']);
 
-  // side effects
+    // side effects
 
-  obj = {
-    "0": "foo",
-    "1": "bar",
-    "2": "quux",
-    "3": "baz",
-    length: {
-      toString: function() {
-        print("length toString");
-        return 4;
-      },
-      valueOf: function() {
-        print("valueOf toString");
-        return 3;
-      }
-    }
-  };
+    obj = { '0': 'foo', '1': 'bar', '2': 'quux', '3': 'baz', length: {
+        toString: function() { print('length toString'); return 4; },
+        valueOf: function() { print('valueOf toString'); return 3; }
+    }};
 }
 
 try {
-  coercionTest();
+    coercionTest();
 } catch (e) {
-  print(e);
+    print(e);
 }
 
 /* XXX: enumeration order effects, when sparse: deleting and adding properties

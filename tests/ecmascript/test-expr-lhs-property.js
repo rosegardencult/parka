@@ -15,23 +15,23 @@ x = {};
 x.foo = 1;
 print(x.foo);
 
-x["bar"] = 2;
+x['bar'] = 2;
 print(x.bar);
 
 function test() {
-  var x = {};
+    var x = {};
 
-  x.foo = 123;
-  print(x.foo);
+    x.foo = 123;
+    print(x.foo);
 
-  x["bar"] = 234;
-  print(x.bar);
+    x['bar'] = 234;
+    print(x.bar);
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /* XXX: more tests */

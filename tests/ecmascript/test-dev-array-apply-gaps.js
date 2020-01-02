@@ -29,51 +29,37 @@ true
 ===*/
 
 function test() {
-  var arr;
+    var arr;
 
-  print("sparse array");
-  arr = new Array(3);
-  print(arr);
-  print(arr.length);
-  print(arr[0]);
-  print("0" in arr);
-  arr.forEach(function(v, i) {
-    print(i, v);
-  });
+    print('sparse array');
+    arr = new Array(3);
+    print(arr);
+    print(arr.length);
+    print(arr[0]);
+    print('0' in arr);
+    arr.forEach(function (v, i) { print(i, v); });
 
-  print("dense array trick");
-  arr = Array.apply(null, Array(3));
-  print(arr);
-  print(arr.length);
-  print(arr[0]);
-  print("0" in arr);
-  arr.forEach(function(v, i) {
-    print(i, v);
-  });
-  print(
-    arr.map(function(v, i) {
-      return i;
-    })
-  );
+    print('dense array trick');
+    arr = Array.apply(null, Array(3));
+    print(arr);
+    print(arr.length);
+    print(arr[0]);
+    print('0' in arr);
+    arr.forEach(function (v, i) { print(i, v); });
+    print(arr.map(function (v, i) { return i; }));
 
-  print("apply trick");
-  arr = Array.apply(null, Array(3)).map(Function.prototype.call.bind(Number));
-  print(arr);
-  print(arr.length);
-  print(arr[0]);
-  print("0" in arr);
-  arr.forEach(function(v, i) {
-    print(i, v);
-  });
-  print(
-    arr.map(function(v, i) {
-      return i;
-    })
-  );
+    print('apply trick');
+    arr = Array.apply(null, Array(3)).map(Function.prototype.call.bind(Number));
+    print(arr);
+    print(arr.length);
+    print(arr[0]);
+    print('0' in arr);
+    arr.forEach(function (v, i) { print(i, v); });
+    print(arr.map(function (v, i) { return i; }));
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

@@ -36,87 +36,74 @@ var POS_ZERO = 0;
 var NEG_ZERO = -1 / (1 / 0);
 
 var TEST_VALUES = [
-  -0xffffffffffffffff,
-  -0x8000000000000000,
-  -0x7fffffffffffffff,
-  -0x0000800000000001,
-  -0x0000800000000000, // smallest fastint
-  +0x00007fffffffffff, // largest fastint
-  +0x0000800000000000,
-  +0x7fffffffffffffff,
-  +0x8000000000000000,
-  +0xffffffffffffffff,
+    -0xffffffffffffffff,
+    -0x8000000000000000,
+    -0x7fffffffffffffff,
+    -0x0000800000000001,
+    -0x0000800000000000,  // smallest fastint
+    +0x00007fffffffffff,  // largest fastint
+    +0x0000800000000000,
+    +0x7fffffffffffffff,
+    +0x8000000000000000,
+    +0xffffffffffffffff,
 
-  -0xffffffff,
-  -0x80000001,
-  -0x80000000,
-  -0x7fffffff,
-  +0x7fffffff,
-  +0x80000000,
-  +0x80000001,
-  +0xffffffff,
+    -0xffffffff,
+    -0x80000001,
+    -0x80000000,
+    -0x7fffffff,
+    +0x7fffffff,
+    +0x80000000,
+    +0x80000001,
+    +0xffffffff,
 
-  -3,
-  -2,
-  -1,
-  NEG_ZERO,
-  POS_ZERO,
-  1,
-  2,
-  3
+    -3, -2, -1, NEG_ZERO, POS_ZERO, 1, 2, 3
 ];
 
 function printFixed() {
-  var res = [];
-  var i, t;
+    var res = [];
+    var i, t;
 
-  for (i = 0; i < arguments.length; i++) {
-    t = arguments[i];
-    if (t === 0) {
-      if (1 / t > 0) {
-        res.push("+0");
-      } else {
-        res.push("-0");
-      }
-    } else {
-      res.push(String(t));
+    for (i = 0; i < arguments.length; i++) {
+        t = arguments[i];
+        if (t === 0) {
+            if (1 / t > 0) { res.push('+0'); }
+            else { res.push('-0'); }
+        } else {
+            res.push(String(t));
+        }
     }
-  }
 
-  print(res.join(" "));
+    print(res.join(' '));
 }
 
 function printFastint(v) {
-  var prefix = "";
-  var isfast = "";
+    var prefix = '';
+    var isfast = '';
 
-  if (v === 0) {
-    if (1 / v > 0) {
-      prefix = "+";
+    if (v === 0) {
+        if (1 / v > 0) { prefix = '+'; }
+        else { prefix = '-'; }
+    }
+
+    // The internal type tag depends on the duk_tval unpacked/packed layout.
+    // XXX: add to util.
+    if (typeof Duktape !== 'object') {
+        isfast = ' NOT-DUKTAPE';
+    } else if (getValueInternalTag(true) >= 0xfff0) {
+        // packed duk_tval
+        if (getValueInternalTag(v) === 0xfff1) {
+            isfast = ' fastint';
+        }
+    } else if (getValueInternalTag(true) === 4) {
+        // non-packed duk_tval
+        if (getValueInternalTag(v) === 1) {
+            isfast = ' fastint';
+        }
     } else {
-      prefix = "-";
+        isfast = ' CANNOT-DETERMINE';
     }
-  }
 
-  // The internal type tag depends on the duk_tval unpacked/packed layout.
-  // XXX: add to util.
-  if (typeof Duktape !== "object") {
-    isfast = " NOT-DUKTAPE";
-  } else if (getValueInternalTag(true) >= 0xfff0) {
-    // packed duk_tval
-    if (getValueInternalTag(v) === 0xfff1) {
-      isfast = " fastint";
-    }
-  } else if (getValueInternalTag(true) === 4) {
-    // non-packed duk_tval
-    if (getValueInternalTag(v) === 1) {
-      isfast = " fastint";
-    }
-  } else {
-    isfast = " CANNOT-DETERMINE";
-  }
-
-  print(prefix + v, v.toString(16) + isfast);
+    print(prefix + v, v.toString(16) + isfast);
 }
 
 /*===
@@ -162,101 +149,44 @@ NaN NaN
 ===*/
 
 function binaryArithmeticTest() {
-  var x, y, z;
+    var x, y, z;
 
-  print("binary arith in range");
+    print('binary arith in range');
 
-  x = MIN_FASTINT;
-  y = 1;
-  z = x + y;
-  printFastint(z);
-  x = MAX_FASTINT - 1;
-  y = 1;
-  z = x + y;
-  printFastint(z);
+    x = MIN_FASTINT; y = 1; z = x + y; printFastint(z);
+    x = MAX_FASTINT - 1; y = 1; z = x + y; printFastint(z);
 
-  x = MAX_FASTINT;
-  y = 1;
-  z = x - y;
-  printFastint(z);
-  x = MIN_FASTINT + 1;
-  y = 1;
-  z = x - y;
-  printFastint(z);
+    x = MAX_FASTINT; y = 1; z = x - y; printFastint(z);
+    x = MIN_FASTINT + 1; y = 1; z = x - y; printFastint(z);
 
-  // multiplication is restricted to both inputs having signed 32-bit values
-  // (and range in 48-bit signed range of course)
-  x = 0x7fffffff;
-  y = 0x10000;
-  z = x * y;
-  printFastint(z);
-  x = -0x7fffffff;
-  y = 0x10000;
-  z = x * y;
-  printFastint(z);
+    // multiplication is restricted to both inputs having signed 32-bit values
+    // (and range in 48-bit signed range of course)
+    x = 0x7fffffff; y = 0x10000; z = x * y; printFastint(z);
+    x = -0x7fffffff; y = 0x10000; z = x * y; printFastint(z);
 
-  // division is restricted to non-fractional results
-  x = MAX_FASTINT_EVEN;
-  y = 2;
-  z = x / y;
-  printFastint(z);
-  x = MIN_FASTINT;
-  y = 2;
-  z = x / y;
-  printFastint(z);
-  x = 100;
-  y = 25;
-  z = x / y;
-  printFastint(z);
+    // division is restricted to non-fractional results
+    x = MAX_FASTINT_EVEN; y = 2; z = x / y; printFastint(z);
+    x = MIN_FASTINT; y = 2; z = x / y; printFastint(z);
+    x = 100; y = 25; z = x / y; printFastint(z);
 
-  // modulus is restricted to both arguments being >= 1
-  x = MAX_FASTINT;
-  y = 3;
-  z = x % y;
-  printFastint(z);
+    // modulus is restricted to both arguments being >= 1
+    x = MAX_FASTINT; y = 3; z = x % y; printFastint(z);
 
-  print("binary arith out of range"); // out of range or fractional
+    print('binary arith out of range');  // out of range or fractional
 
-  x = MAX_FASTINT;
-  y = 1;
-  z = x + y;
-  printFastint(z);
+    x = MAX_FASTINT; y = 1; z = x + y; printFastint(z);
 
-  x = MIN_FASTINT;
-  y = 1;
-  z = x - y;
-  printFastint(z);
+    x = MIN_FASTINT; y = 1; z = x - y; printFastint(z);
 
-  x = 0x7fffffff;
-  y = 0x10001;
-  z = x * y;
-  printFastint(z);
-  x = -0x7fffffff;
-  y = 0x10001;
-  z = x * y;
-  printFastint(z);
+    x = 0x7fffffff; y = 0x10001; z = x * y; printFastint(z);
+    x = -0x7fffffff; y = 0x10001; z = x * y; printFastint(z);
 
-  x = MAX_FASTINT;
-  y = 2;
-  z = x / y;
-  printFastint(z); // fractional
-  x = 100;
-  y = 3;
-  z = x / y;
-  printFastint(z);
-  x = 100;
-  y = 0;
-  z = x / y;
-  printFastint(z);
+    x = MAX_FASTINT; y = 2; z = x / y; printFastint(z);  // fractional
+    x = 100; y = 3; z = x / y; printFastint(z);
+    x = 100; y = 0; z = x / y; printFastint(z);
 
-  x = MAX_FASTINT;
-  y = -3;
-  z = x % y;
-  printFastint(z);
-  x = MAX_FASTINT;
-  y = 0;
-  z = x % y;
-  printFastint(z);
+    x = MAX_FASTINT; y = -3; z = x % y; printFastint(z);
+    x = MAX_FASTINT; y = 0; z = x % y; printFastint(z);
 }
 
 /*===
@@ -940,15 +870,15 @@ binary brute force
 ===*/
 
 function binaryArithmeticBrute() {
-  var vals = TEST_VALUES;
+    var vals = TEST_VALUES;
 
-  print("binary brute force");
+    print('binary brute force');
 
-  vals.forEach(function(x) {
-    vals.forEach(function(y) {
-      printFixed(x, y, x + y, x - y, x * y, x / y, x % y);
+    vals.forEach(function (x) {
+        vals.forEach(function (y) {
+            printFixed(x, y, x + y, x - y, x * y, x / y, x % y);
+        });
     });
-  });
 }
 
 /*===
@@ -1632,15 +1562,15 @@ binary bitops brute force
 ===*/
 
 function binaryBitopsBrute() {
-  var vals = TEST_VALUES;
+    var vals = TEST_VALUES;
 
-  print("binary bitops brute force");
+    print('binary bitops brute force');
 
-  vals.forEach(function(x) {
-    vals.forEach(function(y) {
-      printFixed(x, y, x & y, x | y, x ^ y, x << y, x >> y, x >>> y);
+    vals.forEach(function (x) {
+        vals.forEach(function (y) {
+            printFixed(x, y, x & y, x | y, x ^ y, x << y, x >> y, x >>> y);
+        });
     });
-  });
 }
 
 /*===
@@ -1657,35 +1587,19 @@ unary out of range
 ===*/
 
 function unaryArithmeticTest() {
-  var x, y;
+    var x, y;
 
-  print("unary arith in range");
-  x = MIN_FASTINT_PLUS1;
-  y = -x;
-  printFastint(y);
-  x = MIN_FASTINT;
-  y = +x;
-  printFastint(y);
-  x = MAX_FASTINT;
-  y = -x;
-  printFastint(y);
-  x = MAX_FASTINT;
-  y = +x;
-  printFastint(y);
-  x = POS_ZERO;
-  y = +x;
-  printFastint(y);
-  x = NEG_ZERO;
-  y = +x;
-  printFastint(y);
+    print('unary arith in range');
+    x = MIN_FASTINT_PLUS1; y = -x; printFastint(y);
+    x = MIN_FASTINT; y = +x; printFastint(y);
+    x = MAX_FASTINT; y = -x; printFastint(y);
+    x = MAX_FASTINT; y = +x; printFastint(y);
+    x = POS_ZERO; y = +x; printFastint(y);
+    x = NEG_ZERO; y = +x; printFastint(y);
 
-  print("unary out of range");
-  x = POS_ZERO;
-  y = -x;
-  printFastint(y);
-  x = NEG_ZERO;
-  y = -x;
-  printFastint(y);
+    print('unary out of range');
+    x = POS_ZERO; y = -x; printFastint(y);
+    x = NEG_ZERO; y = -x; printFastint(y);
 }
 
 /*===
@@ -1719,13 +1633,13 @@ unary brute force
 ===*/
 
 function unaryArithmeticBrute() {
-  var vals = TEST_VALUES;
+    var vals = TEST_VALUES;
 
-  print("unary brute force");
+    print('unary brute force');
 
-  vals.forEach(function(x) {
-    printFixed(x, +x, -x, !x);
-  });
+    vals.forEach(function (x) {
+        printFixed(x, +x, -x, !x);
+    });
 }
 
 /*===
@@ -1759,13 +1673,13 @@ unary bitops brute force
 ===*/
 
 function unaryBitopsBrute() {
-  var vals = TEST_VALUES;
+    var vals = TEST_VALUES;
 
-  print("unary bitops brute force");
+    print('unary bitops brute force');
 
-  vals.forEach(function(x) {
-    printFixed(x, ~x);
-  });
+    vals.forEach(function (x) {
+        printFixed(x, ~x);
+    });
 }
 
 /*===
@@ -1776,17 +1690,17 @@ negative zero
 ===*/
 
 function negativeZeroTest() {
-  print("negative zero");
+    print('negative zero');
 
-  x = NEG_ZERO;
-  printFastint(x);
+    x = NEG_ZERO;
+    printFastint(x);
 
-  x = NEG_ZERO;
-  y = 0;
-  z = x + y;
-  printFastint(z); // not yet fastint
-  z = +z;
-  printFastint(z);
+    x = NEG_ZERO;
+    y = 0;
+    z = x + y;
+    printFastint(z);  // not yet fastint
+    z = +z;
+    printFastint(z);
 }
 
 /*===
@@ -1797,19 +1711,19 @@ return value downgrade test
 ===*/
 
 function retvalDowngradeTest() {
-  // All function return values (both ECMAScript and C) are automatically
-  // double-to-fastint downgraded.
+    // All function return values (both ECMAScript and C) are automatically
+    // double-to-fastint downgraded.
 
-  function myfunc() {
-    var x = 123.0;
-    x += 0.5;
-    return x - 0.5;
-  }
+    function myfunc() {
+        var x = 123.0;
+        x += 0.5;
+        return x - 0.5;
+    }
 
-  print("return value downgrade test");
-  printFastint(Math.floor(123.1));
-  printFastint("foo".charCodeAt(1));
-  printFastint(myfunc());
+    print('return value downgrade test');
+    printFastint(Math.floor(123.1));
+    printFastint('foo'.charCodeAt(1));
+    printFastint(myfunc());
 }
 
 /*===
@@ -1825,36 +1739,34 @@ yield value
 ===*/
 
 function yieldResumeDowngradeTest() {
-  // All yielded values are automatically double-to-fastint downgraded.
-  // All resume values are automatically double-to-fastint downgraded.
+    // All yielded values are automatically double-to-fastint downgraded.
+    // All resume values are automatically double-to-fastint downgraded.
 
-  print("yield/resume value downgrade test");
+    print('yield/resume value downgrade test');
 
-  function myThread(arg) {
-    print("arg in thread");
-    printFastint(arg);
+    function myThread(arg) {
+        print('arg in thread');
+        printFastint(arg);
+
+        var x = 123.0;
+        x += 0.5; x -= 0.5;
+        print('x before initial yield');
+        printFastint(x);
+        var resumeValue = Duktape.Thread.yield(x);
+
+        print('resume value');
+        printFastint(resumeValue);
+    }
+
+    var t = new Duktape.Thread(myThread);
 
     var x = 123.0;
-    x += 0.5;
-    x -= 0.5;
-    print("x before initial yield");
+    x += 0.5; x -= 0.5;
+    print('x before initial resume');
     printFastint(x);
-    var resumeValue = Duktape.Thread.yield(x);
-
-    print("resume value");
-    printFastint(resumeValue);
-  }
-
-  var t = new Duktape.Thread(myThread);
-
-  var x = 123.0;
-  x += 0.5;
-  x -= 0.5;
-  print("x before initial resume");
-  printFastint(x);
-  var yieldValue = Duktape.Thread.resume(t, x);
-  print("yield value");
-  printFastint(yieldValue);
+    var yieldValue = Duktape.Thread.resume(t, x);
+    print('yield value');
+    printFastint(yieldValue);
 }
 
 /*===
@@ -1867,23 +1779,23 @@ unary plus downgrade test
 ===*/
 
 function unaryPlusDowngradeTest() {
-  var x;
+     var x;
 
-  print("unary plus downgrade test");
+     print('unary plus downgrade test');
 
-  x = 123;
-  printFastint(x);
-  x += 0.1;
-  printFastint(x);
-  x -= 0.1; // fastint compatible but not auto-downgraded
-  printFastint(x);
-  x = +x; // downgraded by unary plus
-  printFastint(x);
+     x = 123;
+     printFastint(x);
+     x += 0.1;
+     printFastint(x);
+     x -= 0.1;  // fastint compatible but not auto-downgraded
+     printFastint(x);
+     x = +x;    // downgraded by unary plus
+     printFastint(x);
 
-  // This gets constant folded and downgraded as a compiler constant.
+     // This gets constant folded and downgraded as a compiler constant.
 
-  x = 123 + 0.1 - 0.1;
-  printFastint(x);
+     x = 123 + 0.1 - 0.1;
+     printFastint(x);
 }
 
 /*===
@@ -3161,73 +3073,68 @@ NaN NaN
 ===*/
 
 function downgradeSanityTest() {
-  /* The double-to-fastint downgrade check is manually written IEEE double
-   * inspection and conversion, so exercise all relevant exponents.
-   */
+    /* The double-to-fastint downgrade check is manually written IEEE double
+     * inspection and conversion, so exercise all relevant exponents.
+     */
 
-  var vals = [];
-  var i, x, y;
+    var vals = [];
+    var i, x, y;
 
-  function twopower(n) {
-    var ret = 1;
-    while (n != 0) {
-      if (n > 0) {
-        ret *= 2;
-        n--;
-      } else {
-        ret /= 2;
-        n++;
-      }
+    function twopower(n) {
+        var ret = 1;
+        while (n != 0) {
+            if (n > 0) { ret *= 2; n--; }
+            else { ret /= 2; n++; }
+        }
+        return ret;
     }
-    return ret;
-  }
 
-  print("downgrade sanity");
+    print('downgrade sanity');
 
-  for (i = -52; i <= 52; i++) {
-    vals.push(-twopower(i) - 1);
-    vals.push(-twopower(i));
-    vals.push(-twopower(i) + 1);
-    vals.push(twopower(i) - 1);
-    vals.push(twopower(i));
-    vals.push(twopower(i) + 1);
-  }
-  vals.push(Number.NEGATIVE_INFINITY);
-  vals.push(Number.POSITIVE_INFINITY);
-  vals.push(Number.NaN);
+    for (i = -52; i <= 52; i++) {
+        vals.push(-twopower(i) - 1);
+        vals.push(-twopower(i));
+        vals.push(-twopower(i) + 1);
+        vals.push(twopower(i) - 1);
+        vals.push(twopower(i));
+        vals.push(twopower(i) + 1);
+    }
+    vals.push(Number.NEGATIVE_INFINITY);
+    vals.push(Number.POSITIVE_INFINITY);
+    vals.push(Number.NaN);
 
-  // zero testing special case
-  x = 1 / Number.POSITIVE_INFINITY;
-  printFastint(x);
-  x = +x;
-  printFastint(x);
-  x = -1 / Number.POSITIVE_INFINITY;
-  printFastint(x);
-  x = +x;
-  printFastint(x);
-
-  for (i = 0; i < vals.length; i++) {
-    x = vals[i];
-    x += 0.5; // force non-fastint
-    x -= 0.5; // stays non-fastint
-    y = +x; // force fastint
+    // zero testing special case
+    x = 1 / Number.POSITIVE_INFINITY;
     printFastint(x);
-    printFastint(y);
-  }
+    x = +x;
+    printFastint(x);
+    x = -1 / Number.POSITIVE_INFINITY;
+    printFastint(x);
+    x = +x;
+    printFastint(x);
+
+    for (i = 0; i < vals.length; i++) {
+        x = vals[i];
+        x += 0.5;  // force non-fastint
+        x -= 0.5;  // stays non-fastint
+        y = +x;    // force fastint
+        printFastint(x);
+        printFastint(y);
+    }
 }
 
 try {
-  binaryArithmeticTest();
-  binaryArithmeticBrute();
-  binaryBitopsBrute();
-  unaryArithmeticTest();
-  unaryArithmeticBrute();
-  unaryBitopsBrute();
-  negativeZeroTest();
-  retvalDowngradeTest();
-  yieldResumeDowngradeTest();
-  unaryPlusDowngradeTest();
-  downgradeSanityTest();
+    binaryArithmeticTest();
+    binaryArithmeticBrute();
+    binaryBitopsBrute();
+    unaryArithmeticTest();
+    unaryArithmeticBrute();
+    unaryBitopsBrute();
+    negativeZeroTest();
+    retvalDowngradeTest();
+    yieldResumeDowngradeTest();
+    unaryPlusDowngradeTest();
+    downgradeSanityTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

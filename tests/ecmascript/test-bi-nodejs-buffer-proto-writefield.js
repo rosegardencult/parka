@@ -64,111 +64,41 @@ write field test
 /* Write field (fixed size) tests. */
 
 function writeFieldTest() {
-  // noAssert coercions tested separately.
+    // noAssert coercions tested separately.
 
-  [false].forEach(function(noAssert, idx1) {
-    [
-      -0x123456789,
-      -0xffffffff,
-      -0xdeadbeef,
-      -0x80000001,
-      -0x80000000,
-      -0x7fffffff,
-      -0x10000,
-      -0xffff,
-      -0x8001,
-      -0x8000,
-      -0x7fff,
-      -0x100,
-      -0xff,
-      -0x81,
-      -0x80,
-      -0x7f,
-      -0,
-      0,
-      0x7f,
-      0x80,
-      0x81,
-      0xff,
-      0x100,
-      0x7fff,
-      0x8000,
-      0x8001,
-      0xffff,
-      0x10000,
-      0x7fffffff,
-      0x80000000,
-      0x80000001,
-      0xdeadbeef,
-      0xffffffff,
-      0x123456789,
-      1 / 0 /* inf */,
-      -1 / 0 /* -inf */,
-
-      // Leave NaN intentionally out because the result is platform and
-      // engine specific.
-
-      123.9 /* fraction */,
-      "foo" /* string */,
-      "100.1" /* number-like string */,
-      {
-        valueOf: function() {
-          return 65;
-        }
-      } /* coercable object */
-    ].forEach(function(value, idx2) {
-      var tmp = [];
-
-      [
-        -100,
-        -10,
-        -9,
-        -8,
-        -7,
-        -6,
-        -5,
-        -4,
-        -3,
-        -2,
-        -1,
-        0,
-        1,
-        2,
-        3,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        100
-      ].forEach(function(offset, idx3) {
+    [ false ].forEach(function (noAssert, idx1) {
         [
-          "writeUInt8",
-          "writeUInt16LE",
-          "writeUInt16BE",
-          "writeUInt32LE",
-          "writeUInt32BE",
-          "writeInt8",
-          "writeInt16LE",
-          "writeInt16BE",
-          "writeInt32LE",
-          "writeInt32BE",
-          "writeFloatLE",
-          "writeFloatBE",
-          "writeDoubleLE",
-          "writeDoubleBE"
-        ].forEach(function(funcname, idx4) {
-          var b = new Buffer(16);
-          b.fill(0x11);
+            -0x123456789, -0xffffffff, -0xdeadbeef, -0x80000001, -0x80000000, -0x7fffffff,
+            -0x10000, -0xffff, -0x8001, -0x8000, -0x7fff,
+            -0x100, -0xff, -0x81, -0x80, -0x7f, -0, 0,
+            0x7f, 0x80, 0x81, 0xff, 0x100,
+            0x7fff, 0x8000, 0x8001, 0xffff, 0x10000,
+            0x7fffffff, 0x80000000, 0x80000001, 0xdeadbeef, 0xffffffff, 0x123456789,
+            1 / 0,   /* inf */
+            -1 / 0,  /* -inf */
 
-          var writeValue = value;
+            // Leave NaN intentionally out because the result is platform and
+            // engine specific.
 
-          // Simulate lenient coercion to get expect output
-          /*
+            123.9,   /* fraction */
+            'foo',   /* string */
+            '100.1', /* number-like string */
+            { valueOf: function () { return 65; } }  /* coercable object */
+        ].forEach(function (value, idx2) {
+            var tmp = [];
+
+            [ -100, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3,
+              8, 9, 10, 11, 12, 13, 14, 15, 16, 100 ].forEach(function (offset, idx3) {
+                [ 'writeUInt8', 'writeUInt16LE', 'writeUInt16BE', 'writeUInt32LE', 'writeUInt32BE',
+                  'writeInt8', 'writeInt16LE', 'writeInt16BE', 'writeInt32LE', 'writeInt32BE',
+                  'writeFloatLE', 'writeFloatBE', 'writeDoubleLE', 'writeDoubleBE' ].forEach(function (funcname, idx4) {
+                    var b = new Buffer(16);
+                    b.fill(0x11);
+
+                    var writeValue = value;
+
+// Simulate lenient coercion to get expect output
+/*
 if (typeof process !== 'undefined' && typeof value === 'number') {
     if (funcname.indexOf('UInt8') >= 0) { writeValue = value & 0xff; }
     else if (funcname.indexOf('Int8') >= 0) { writeValue = ((value & 0xff) << 24) >> 24; }
@@ -181,53 +111,33 @@ if (typeof process !== 'undefined' && typeof value === 'number') {
 }
 */
 
-          try {
-            b[funcname](writeValue, offset, noAssert);
-            tmp.push(
-              noAssert +
-                " " +
-                offset +
-                " " +
-                value +
-                " " +
-                funcname +
-                " " +
-                printableNodejsBuffer(b)
-            );
-          } catch (e) {
-            // Hackery to get expect string
-            /*
+                    try {
+                        b[funcname](writeValue, offset, noAssert);
+                        tmp.push(noAssert + ' ' + offset + ' ' + value + ' ' +
+                                 funcname + ' ' + printableNodejsBuffer(b));
+                    } catch (e) {
+// Hackery to get expect string
+/*
 if (typeof process !== 'undefined' && String(e) === 'TypeError: value is out of bounds') {
     e = new RangeError('dummy');
 }
 */
-            tmp.push(
-              noAssert +
-                " " +
-                offset +
-                " " +
-                value +
-                " " +
-                funcname +
-                " " +
-                e.name +
-                " " +
-                printableNodejsBuffer(b)
-            );
-          }
-        });
-      });
+                        tmp.push(noAssert + ' ' + offset + ' ' + value + ' ' +
+                                 funcname + ' ' + e.name + ' ' + printableNodejsBuffer(b));
+                    }
+                });
+            });
 
-      print(idx1, idx2, checksumString(tmp.join("\n")));
+            print(idx1, idx2, checksumString(tmp.join('\n')));
+        });
     });
-  });
 }
 
 try {
-  print("write field test");
-  writeFieldTest();
+    print('write field test');
+    writeFieldTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -258,25 +168,22 @@ writefield noAssert coercion test
  */
 
 function writeFieldNoAssertCoercionTest() {
-  [undefined, null, true, false, 123, 0, "foo", ""].forEach(function(
-    noAssert,
-    idx
-  ) {
-    var buf = new Buffer("ABCDEFGH");
-    try {
-      print(idx, buf.writeUInt32BE(0x61626364, 6, noAssert));
-    } catch (e) {
-      print(idx, e.name);
-    }
-    printNodejsBuffer(buf);
-  });
+    [ undefined, null, true, false, 123, 0, 'foo', '' ].forEach(function (noAssert, idx) {
+        var buf = new Buffer('ABCDEFGH');
+        try {
+            print(idx, buf.writeUInt32BE(0x61626364, 6, noAssert));
+        } catch (e) {
+            print(idx, e.name);
+        }
+        printNodejsBuffer(buf);
+    });
 }
 
 try {
-  print("writefield noAssert coercion test");
-  writeFieldNoAssertCoercionTest();
+    print('writefield noAssert coercion test');
+    writeFieldNoAssertCoercionTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }
 
 /*===
@@ -317,70 +224,70 @@ AAAAAAAdcbaAAAAAAAAAAAAAAAAAAAAA 41414141414141646362614141414141414141414141414
  */
 
 function writeFieldRetvalTest() {
-  var buf = new Buffer(32);
+    var buf = new Buffer(32);
 
-  buf.fill(0x41);
-  print(buf.writeUInt8(0x61, 7));
-  print(String(buf), printableNodejsBuffer(buf));
+    buf.fill(0x41);
+    print(buf.writeUInt8(0x61, 7));
+    print(String(buf), printableNodejsBuffer(buf));
 
-  buf.fill(0x41);
-  print(buf.writeInt8(0x61, 7));
-  print(String(buf), printableNodejsBuffer(buf));
+    buf.fill(0x41);
+    print(buf.writeInt8(0x61, 7));
+    print(String(buf), printableNodejsBuffer(buf));
 
-  buf.fill(0x41);
-  print(buf.writeUInt16BE(0x6162, 7));
-  print(String(buf), printableNodejsBuffer(buf));
+    buf.fill(0x41);
+    print(buf.writeUInt16BE(0x6162, 7));
+    print(String(buf), printableNodejsBuffer(buf));
 
-  buf.fill(0x41);
-  print(buf.writeUInt16LE(0x6162, 7));
-  print(String(buf), printableNodejsBuffer(buf));
+    buf.fill(0x41);
+    print(buf.writeUInt16LE(0x6162, 7));
+    print(String(buf), printableNodejsBuffer(buf));
 
-  buf.fill(0x41);
-  print(buf.writeInt16BE(0x6162, 7));
-  print(String(buf), printableNodejsBuffer(buf));
+    buf.fill(0x41);
+    print(buf.writeInt16BE(0x6162, 7));
+    print(String(buf), printableNodejsBuffer(buf));
 
-  buf.fill(0x41);
-  print(buf.writeInt16LE(0x6162, 7));
-  print(String(buf), printableNodejsBuffer(buf));
+    buf.fill(0x41);
+    print(buf.writeInt16LE(0x6162, 7));
+    print(String(buf), printableNodejsBuffer(buf));
 
-  buf.fill(0x41);
-  print(buf.writeUInt32BE(0x61626364, 7));
-  print(String(buf), printableNodejsBuffer(buf));
+    buf.fill(0x41);
+    print(buf.writeUInt32BE(0x61626364, 7));
+    print(String(buf), printableNodejsBuffer(buf));
 
-  buf.fill(0x41);
-  print(buf.writeUInt32LE(0x61626364, 7));
-  print(String(buf), printableNodejsBuffer(buf));
+    buf.fill(0x41);
+    print(buf.writeUInt32LE(0x61626364, 7));
+    print(String(buf), printableNodejsBuffer(buf));
 
-  buf.fill(0x41);
-  print(buf.writeInt32BE(0x61626364, 7));
-  print(String(buf), printableNodejsBuffer(buf));
+    buf.fill(0x41);
+    print(buf.writeInt32BE(0x61626364, 7));
+    print(String(buf), printableNodejsBuffer(buf));
 
-  buf.fill(0x41);
-  print(buf.writeInt32LE(0x61626364, 7));
-  print(String(buf), printableNodejsBuffer(buf));
+    buf.fill(0x41);
+    print(buf.writeInt32LE(0x61626364, 7));
+    print(String(buf), printableNodejsBuffer(buf));
 
-  // Avoid printing binary
+    // Avoid printing binary
 
-  buf.fill(0x41);
-  print(buf.writeFloatBE(Math.PI, 7));
-  print(printableNodejsBuffer(buf));
+    buf.fill(0x41);
+    print(buf.writeFloatBE(Math.PI, 7));
+    print(printableNodejsBuffer(buf));
 
-  buf.fill(0x41);
-  print(buf.writeFloatLE(Math.PI, 7));
-  print(printableNodejsBuffer(buf));
+    buf.fill(0x41);
+    print(buf.writeFloatLE(Math.PI, 7));
+    print(printableNodejsBuffer(buf));
 
-  buf.fill(0x41);
-  print(buf.writeDoubleBE(Math.PI, 7));
-  print(printableNodejsBuffer(buf));
+    buf.fill(0x41);
+    print(buf.writeDoubleBE(Math.PI, 7));
+    print(printableNodejsBuffer(buf));
 
-  buf.fill(0x41);
-  print(buf.writeDoubleLE(Math.PI, 7));
-  print(printableNodejsBuffer(buf));
+    buf.fill(0x41);
+    print(buf.writeDoubleLE(Math.PI, 7));
+    print(printableNodejsBuffer(buf));
 }
 
 try {
-  print("writefield retval test");
-  writeFieldRetvalTest();
+    print('writefield retval test');
+    writeFieldRetvalTest();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

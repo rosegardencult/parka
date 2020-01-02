@@ -142,71 +142,71 @@ object this-0
 ===*/
 
 function test() {
-  var func;
-  var F, G, H, I;
+    var func;
+    var F, G, H, I;
 
-  // Final function is an ECMAScript function.
+    // Final function is an ECMAScript function.
 
-  func = function foo(a, b, c, d) {
-    print(typeof this, this);
-    print(typeof a, a);
-    print(typeof b, b);
-    print(typeof c, c);
-    print(typeof d, d);
-  };
-  F = func.bind("this-F", "foo");
-  G = F.bind("this-G", "bar", "quux");
-  H = G.bind("this-H", "baz", "quuux");
-  I = G.bind("this-I", 123, 234); // both H and I bind via G
+    func = function foo(a, b, c, d) {
+        print(typeof this, this);
+        print(typeof a, a);
+        print(typeof b, b);
+        print(typeof c, c);
+        print(typeof d, d);
+    };
+    F = func.bind('this-F', 'foo');
+    G = F.bind('this-G', 'bar', 'quux');
+    H = G.bind('this-H', 'baz', 'quuux');
+    I = G.bind('this-I', 123, 234);  // both H and I bind via G
 
-  print("F()", F.name);
-  F();
-  print("G()", G.name);
-  G();
-  print("H()", H.name);
-  H();
-  print("I()", I.name);
-  I();
+    print('F()', F.name);
+    F();
+    print('G()', G.name);
+    G();
+    print('H()', H.name);
+    H();
+    print('I()', I.name);
+    I();
 
-  // Final function is a native function.
+    // Final function is a native function.
 
-  func = Math.max;
-  F = func.bind(null);
-  G = F.bind(null, 3);
-  H = G.bind(null, 4);
-  I = H.bind(null, 5);
+    func = Math.max;
+    F = func.bind(null);
+    G = F.bind(null, 3);
+    H = G.bind(null, 4);
+    I = H.bind(null, 5);
 
-  print("F()", F.name);
-  print(F());
-  print("G()", G.name);
-  print(G());
-  print("H()", H.name);
-  print(H());
-  print("I()", I.name);
-  print(I());
+    print('F()', F.name);
+    print(F());
+    print('G()', G.name);
+    print(G());
+    print('H()', H.name);
+    print(H());
+    print('I()', I.name);
+    print(I());
 
-  // Lightfunc final target needs testing too; it is covered by Math.max()
-  // if DUK_USE_LIGHTFUNC_BUILTINS is enabled.
+    // Lightfunc final target needs testing too; it is covered by Math.max()
+    // if DUK_USE_LIGHTFUNC_BUILTINS is enabled.
 
-  // Long chain.
+    // Long chain.
 
-  func = function foo() {
-    print(typeof this, this);
-    print(arguments.length);
-    for (var i = 0; i < arguments.length; i++) {
-      print(i, typeof arguments[i], arguments[i]);
+    func = function foo() {
+        print(typeof this, this);
+        print(arguments.length);
+        for (var i = 0; i < arguments.length; i++) {
+            print(i, typeof arguments[i], arguments[i]);
+        }
+    };
+
+    for (var i = 0; i < 100; i++) {
+        func = func.bind('this-' + i, 'arg-' + i);
     }
-  };
-
-  for (var i = 0; i < 100; i++) {
-    func = func.bind("this-" + i, "arg-" + i);
-  }
-  print(func.name);
-  func();
+    print(func.name);
+    func();
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

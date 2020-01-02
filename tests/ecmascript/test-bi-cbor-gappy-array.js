@@ -31,36 +31,36 @@
 ===*/
 
 function test() {
-  var i;
+    var i;
 
-  var arr = new Array(10);
-  arr[3] = "foo";
-  arr[8] = "bar";
+    var arr = new Array(10);
+    arr[3] = 'foo';
+    arr[8] = 'bar';
 
-  print(String(arr));
-  print(arr.length);
-  for (i = 0; i < 12; i++) {
-    print(i + ": " + (i in arr));
-  }
+    print(String(arr));
+    print(arr.length);
+    for (i = 0; i < 12; i++) {
+        print(i + ': ' + (i in arr));
+    }
 
-  // CBOR does not distinguish between an 'undefined' and a missing
-  // value (gap).  So the gaps get encoded as 'undefined' up to the
-  // array length (10).  When decoded, the arrays comes out with length
-  // 10 and gaps replaced with 'undefined'.
+    // CBOR does not distinguish between an 'undefined' and a missing
+    // value (gap).  So the gaps get encoded as 'undefined' up to the
+    // array length (10).  When decoded, the arrays comes out with length
+    // 10 and gaps replaced with 'undefined'.
 
-  var enc = CBOR.encode(arr);
-  print(Duktape.enc("hex", enc));
-  arr = CBOR.decode(enc);
+    var enc = CBOR.encode(arr);
+    print(Duktape.enc('hex', enc));
+    arr = CBOR.decode(enc);
 
-  print(String(arr));
-  print(arr.length);
-  for (i = 0; i < 12; i++) {
-    print(i + ": " + (i in arr));
-  }
+    print(String(arr));
+    print(arr.length);
+    for (i = 0; i < 12; i++) {
+        print(i + ': ' + (i in arr));
+    }
 }
 
 try {
-  test();
+    test();
 } catch (e) {
-  print(e.stack || e);
+    print(e.stack || e);
 }

@@ -6,4 +6,4 @@
 Hello Hulda!
 ===*/
 
-print("Hello Hulda!");
+print('Hello Hulda!');
