@@ -76,11 +76,11 @@ test_dependencies:
 
 .PHONY: test_api
 test_api: test_dependencies libduktape.$(SO_REALNAME_SUFFIX)
-	node tests/runtests.js $(TEST_OPTS) --num-threads 4 --log-file=build/test_api.log tests/api/
+	node tests/runtests.js $(TEST_OPTS) --num-threads 4 --log-file=build/test_api.json tests/api/
 
 .PHONY: test_ecma
 test_ecma: test_dependencies examples
-	node tests/runtests.js $(TEST_OPTS) --run-duk --cmd-duk=$(shell pwd)/examples/cmdline/build/duk --num-threads 4 --log-file=build/test_ecma.log tests/ecmascript/
+	node tests/runtests.js $(TEST_OPTS) --run-duk --cmd-duk=$(shell pwd)/examples/cmdline/build/duk --num-threads 4 --log-file=build/test_ecma.json tests/ecmascript/
 
 .PHONY: examples
 examples:

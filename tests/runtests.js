@@ -313,7 +313,6 @@ function executeTest(options, callback) {
       "-I./src/duk/",
       "./src/duk/*.c",
       tempSource,
-      // "-lduktape",
       "-lm"
     ];
     if (options.testcase.meta.pthread) {
@@ -470,20 +469,6 @@ function findTestCasesSync(argList) {
   });
 
   return testcases;
-}
-
-function adornString(x) {
-  var stars =
-    "********************************************************************************";
-  return (
-    stars.substring(0, x.length + 8) +
-    "\n" +
-    "*** " +
-    x +
-    " ***" +
-    "\n" +
-    stars.substring(0, x.length + 8)
-  );
 }
 
 function prettyJson(x) {
@@ -805,38 +790,15 @@ function testRunnerMain() {
   }
 
   function createLogFile(logFile) {
-    var lines = [];
+    var lines = {};
 
     iterateResults(function logResult(tn, en, res) {
-      var desc = tn + "/" + en;
-      lines.push(adornString(tn + " " + en));
-      lines.push("");
-      lines.push(prettyJson(res));
-      lines.push("");
-      lines.push(prettySnippet(res.stdout, "stdout of " + desc));
-      lines.push("");
-      lines.push(prettySnippet(res.stderr, "stderr of " + desc));
-      lines.push("");
-      lines.push(prettySnippet(res.testcase.expect, "expect of " + desc));
-      lines.push("");
-      if (res.diff_expect) {
-        lines.push(prettySnippet(res.diff_expect, "diff_expect of " + desc));
-        lines.push("");
-      }
-      if (res.diff_other) {
-        for (other_name in res.diff_other) {
-          lines.push(
-            prettySnippet(
-              res.diff_other[other_name],
-              "diff_other " + other_name + " of " + desc
-            )
-          );
-          lines.push("");
-        }
+      if (res.status === "fail") {
+        lines[tn] = res;
       }
     });
 
-    fs.writeFileSync(logFile, lines.join("\n") + "\n");
+    fs.writeFileSync(logFile, prettyJson(lines) + "\n");
   }
 
   if (argv["prep-test-path"]) {
