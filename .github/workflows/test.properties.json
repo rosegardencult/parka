@@ -1,0 +1,6 @@
+{
+  "name": "ECMA and API tests",
+  "description": "Run the ECMA and API test suites in /tests/ecmascript and /tests/api",
+  "iconName": "test",
+  "categories": "test"
+}

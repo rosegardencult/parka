@@ -1,0 +1,25 @@
+name: tests
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10'
+    - name: api
+      env:
+        CC: clang
+      run: make test_api
+    - name: ecma
+      env:
+        CC: clang
+      run: make test_ecma
