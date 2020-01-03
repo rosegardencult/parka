@@ -3,12 +3,22 @@ name: tests
 on: [pull_request]
 
 jobs:
-  build:
+  macos:
+    runs-on: macos-latest
 
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macos-latest, ubuntu-latest]
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10'
+    - name: api
+      run: make test_api
+    - name: ecma
+      run: make test_ecma
+
+
+  ubuntu:
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v1
