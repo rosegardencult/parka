@@ -76,7 +76,7 @@ test_dependencies:
 
 .PHONY: test_api
 test_api: test_dependencies libduktape.$(SO_REALNAME_SUFFIX)
-	node tests/runtests.js $(TEST_OPTS) --num-threads 1 --log-file=build/test_api.log tests/api/
+	node tests/runtests.js $(TEST_OPTS) --num-threads 4 --log-file=build/test_api.log tests/api/
 
 .PHONY: test_ecma
 test_ecma: test_dependencies examples

@@ -299,31 +299,21 @@ function executeTest(options, callback) {
 
     // FIXME: listing specific options here is awkward, must match Makefile
     cmd = [
-      "gcc",
+      "clang",
       "-o",
       tempExe,
-      "-L.",
-      "-Iprep/nondebug", // this particularly is awkward
-      "-Wl,-rpath,.",
+      "-Os",
       "-pedantic",
-      "-ansi",
       "-std=c99",
       "-Wall",
-      "-Wdeclaration-after-statement",
       "-fstrict-aliasing",
-      "-D_POSIX_C_SOURCE=200809L",
-      "-D_GNU_SOURCE",
-      "-D_XOPEN_SOURCE",
-      "-Os",
       "-fomit-frame-pointer",
-      "-g",
-      "-ggdb",
-      //'-Werror',  // Would be nice but GCC differences break tests too easily
-      //'-m32',
       "tests/api_testcase_main.c",
+      "-I./",
+      "-I./src/duk/",
+      "./src/duk/*.c",
       tempSource,
-      "-lduktape",
-      //'-lduktaped',
+      // "-lduktape",
       "-lm"
     ];
     if (options.testcase.meta.pthread) {
@@ -338,7 +328,7 @@ function executeTest(options, callback) {
       killSignal: "SIGKILL"
     };
 
-    console.log(options.testPath, cmdline);
+    console.log(options.testPath, cmdline, process.cwd());
     child = child_process.exec(cmdline, execopts, compileDone);
   }
 
