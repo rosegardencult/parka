@@ -3,16 +3,20 @@ name: build
 on: [pull_request]
 
 jobs:
-  build:
-
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macos-latest, ubuntu-latest]
+  macos:
+    runs-on: macos-latest
 
     steps:
     - uses: actions/checkout@v1
-    - name: build
+    - name: 'build macos'
+      run: make all
+
+  ubuntu:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: 'build ubuntu'
       env:
         CC: clang
       run: make all
