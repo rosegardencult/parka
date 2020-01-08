@@ -10,10 +10,15 @@
 
 DUKTAPE_SOURCES = ../../src/duk/*.c
 
-CC = clang
+ifeq ($(OS),Windows_NT)
+	CC := "C:\Program Files\LLVM\bin\clang.exe"
+else
+	CC := clang
+	CCLIBS = -lm
+endif
+
 CCOPTS = -Os -pedantic -std=c99 -Wall -fstrict-aliasing -fomit-frame-pointer
 CCOPTS += -I./../../src/duk
-CCLIBS = -lm
 DEFINES =
 
 OBJDIR = build

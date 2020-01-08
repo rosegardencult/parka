@@ -297,9 +297,15 @@ function executeTest(options, callback) {
     }
     tempExe = mkTempName();
 
+    if (process.platform === "win32") {
+      cc = "C:Program FilesLLVM\\bin\\clang.exe";
+    } else {
+      cc = "clang";
+    }
+
     // FIXME: listing specific options here is awkward, must match Makefile
     cmd = [
-      "clang",
+      cc,
       "-o",
       tempExe,
       "-Os",

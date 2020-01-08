@@ -4,7 +4,12 @@
 
 DUKTAPE_SOURCES = ../../src/duk/*.c
 
-CC = clang
+ifeq ($(OS),Windows_NT)
+	CC := "C:\Program Files\LLVM\bin\clang.exe"
+else
+	CC := clang
+	CCLIBS = -lm
+endif
 
 OBJDIR = build
 
@@ -14,4 +19,4 @@ $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
 sandbox:
-	$(CC) -o $(OBJDIR)/$@ -std=c99 -O2 -Wall -Wextra -I../../src/duk/ $(DUKTAPE_SOURCES) sandbox.c -lm
+	$(CC) -o $(OBJDIR)/$@ -std=c99 -O2 -Wall -Wextra -I../../src/duk/ $(DUKTAPE_SOURCES) sandbox.c $(CCLIBS)

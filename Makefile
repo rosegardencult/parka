@@ -7,33 +7,31 @@ DUK_VERSION = 20500
 SONAME_VERSION = 205
 REAL_VERSION = $(SONAME_VERSION).$(DUK_VERSION)
 
+OPTS = -Wall -Wextra -Os
 TEST_OPTS = --prep-test-path tests/prep_test.py --minify-uglifyjs2 tests/node_modules/.bin/uglifyjs --util-include-path tests/ecmascript --known-issues tests/known_issues.yaml
 
-# Mac has an unusual .so naming convention
 ifeq ($(OS),Windows_NT)
-    DETECTED_OS := Windows
-else
-    DETECTED_OS := $(shell uname -s)
+	CC := "C:\Program Files\LLVM\bin\clang.exe"
+	LIB_TYPE = dll
 endif
 
-ifeq ($(DETECTED_OS),Darwin)
-    LD_SONAME_ARG=-install_name
-    SO_SONAME_SUFFIX=$(SONAME_VERSION).so
-    SO_REALNAME_SUFFIX=$(REAL_VERSION).so
-else
-    LD_SONAME_ARG=-soname
-    SO_SONAME_SUFFIX=so.$(SONAME_VERSION)
-    SO_REALNAME_SUFFIX=so.$(REAL_VERSION)
+ifeq ($(shell uname -s),Darwin)
+	CC := clang
+	LIB_TYPE = dylib
+endif
+
+ifeq ($(shell uname -s),Linux)
+	CC := clang
+	OPTS += -fPIC
+	LIB_TYPE = so
 endif
 
 DUKTAPE_SOURCES = src/duk/*.c
 
-CC = clang
-
 OBJDIR = build
 
 .PHONY: all
-all: libduktape.$(SO_REALNAME_SUFFIX) libduktaped.$(SO_REALNAME_SUFFIX) examples
+all: libduktape libduktaped examples
 
 .PHONY: $(OBJDIR)
 $(OBJDIR):
@@ -75,7 +73,7 @@ test_dependencies:
 	cd tests && npm install
 
 .PHONY: test_api
-test_api: test_dependencies libduktape.$(SO_REALNAME_SUFFIX)
+test_api: test_dependencies libduktape
 	node tests/runtests.js $(TEST_OPTS) --num-threads 4 --log-file=build/test_api.json tests/api/
 
 .PHONY: test_ecma
@@ -88,8 +86,8 @@ examples:
 	make -C examples/sandbox
 	make -C examples/cmdline
 
-libduktape.$(SO_REALNAME_SUFFIX): $(OBJDIR)
-	$(CC) -shared -fPIC -Wall -Wextra -Os -Wl,$(LD_SONAME_ARG),libduktape.$(SO_SONAME_SUFFIX) -o $(OBJDIR)/$@ $(DUKTAPE_SOURCES)
+libduktape: $(OBJDIR)
+	$(CC) -shared $(OPTS) -o $(OBJDIR)/$@.$(LIB_TYPE) $(DUKTAPE_SOURCES)
 
-libduktaped.$(SO_REALNAME_SUFFIX): $(OBJDIR)
-	$(CC) -shared -fPIC -g -Wall -Wextra -Os -Wl,$(LD_SONAME_ARG),libduktaped.$(SO_SONAME_SUFFIX) -o $(OBJDIR)/$@ $(DUKTAPE_SOURCES)
+libduktaped: $(OBJDIR)
+	$(CC) -shared -g $(OPTS) -o $(OBJDIR)/$@.$(LIB_TYPE) $(DUKTAPE_SOURCES)

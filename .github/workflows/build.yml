@@ -9,7 +9,8 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: 'build macos'
-      run: make all
+      run: |
+        make all
 
 
   ubuntu:
@@ -20,4 +21,18 @@ jobs:
     - name: 'build ubuntu'
       env:
         CC: clang
-      run: make all
+      run: |
+        sudo apt update && sudo apt upgrade
+        make all
+
+
+  windows:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: 'build windows'
+      run: |
+        choco install llvm
+        make all
+      shell: bash

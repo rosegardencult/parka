@@ -7,10 +7,15 @@ DUKTAPE_SOURCES = ../../src/duk/*.c
 
 CMDLINE_SOURCES = duk_cmdline.c
 
-CC = clang
+ifeq ($(OS),Windows_NT)
+	CC := "C:\Program Files\LLVM\bin\clang.exe"
+else
+	CC := clang
+	CCLIBS = -lm
+endif
+
 CCOPTS = -Os -pedantic -std=c99 -Wall -fstrict-aliasing -fomit-frame-pointer
 CCOPTS += -I./ -I./../../src/duk/
-CCLIBS = -lm
 
 # Enable console object (console.log() etc) for command line.
 CCOPTS += -DDUK_CMDLINE_CONSOLE_SUPPORT -I./console
