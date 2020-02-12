@@ -21,41 +21,41 @@ index 17: value 123
 index 18: value 123
 ===*/
 
-void test(duk_context* ctx) {
-  duk_idx_t i, n;
+void test(duk_context *ctx) {
+	duk_idx_t i, n;
 
-  duk_push_undefined(ctx);
-  duk_push_null(ctx);
-  duk_push_true(ctx);
-  duk_push_false(ctx);
-  duk_push_string(ctx, "foo");
-  duk_push_string(ctx, "123");
-  duk_push_number(ctx, -INFINITY);
-  duk_push_number(ctx, ((duk_double_t)DUK_INT_MIN) * 2.0);
-  duk_push_number(ctx, -3.9);
-  duk_push_number(ctx, -0.0);
-  duk_push_number(ctx, +0.0);
-  duk_push_number(ctx, +3.9);
-  duk_push_number(ctx, +123456789.0);
-  duk_push_number(ctx, ((duk_double_t)DUK_INT_MAX) * 2.0);
-  duk_push_number(ctx, ((duk_double_t)DUK_UINT_MAX) * 2.0);
-  duk_push_number(ctx, +INFINITY);
-  duk_push_nan(ctx);
-  duk_push_object(ctx);
+	duk_push_undefined(ctx);
+	duk_push_null(ctx);
+	duk_push_true(ctx);
+	duk_push_false(ctx);
+	duk_push_string(ctx, "foo");
+	duk_push_string(ctx, "123");
+	duk_push_number(ctx, -INFINITY);
+	duk_push_number(ctx, ((duk_double_t) DUK_INT_MIN) * 2.0);
+	duk_push_number(ctx, -3.9);
+	duk_push_number(ctx, -0.0);
+	duk_push_number(ctx, +0.0);
+	duk_push_number(ctx, +3.9);
+	duk_push_number(ctx, +123456789.0);
+	duk_push_number(ctx, ((duk_double_t) DUK_INT_MAX) * 2.0);
+	duk_push_number(ctx, ((duk_double_t) DUK_UINT_MAX) * 2.0);
+	duk_push_number(ctx, +INFINITY);
+	duk_push_nan(ctx);
+	duk_push_object(ctx);
 
-  n = duk_get_top(ctx);
-  printf("top: %ld\n", (long)n);
-  for (i = 0; i <= n; i++) {
-    duk_uint_t v;
+	n = duk_get_top(ctx);
+	printf("top: %ld\n", (long) n);
+	for (i = 0; i <= n; i++) {
+		duk_uint_t v;
 
-    v = duk_get_uint_default(ctx, i, 123);
+		v = duk_get_uint_default(ctx, i, 123);
 
-    printf("index %ld: value ", (long)i);
-    if (v == DUK_UINT_MAX) {
-      printf("DUK_UINT_MAX");
-    } else {
-      printf("%lu", (unsigned long)v);
-    }
-    printf("\n");
-  }
+		printf("index %ld: value ", (long) i);
+		if (v == DUK_UINT_MAX) {
+			printf("DUK_UINT_MAX");
+		} else {
+			printf("%lu", (unsigned long) v);
+		}
+		printf("\n");
+	}
 }

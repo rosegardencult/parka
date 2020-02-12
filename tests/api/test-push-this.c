@@ -17,37 +17,36 @@ this binding: type=8, value='0xdeadbeef'
  * happens.
  */
 
-static duk_ret_t func(duk_context* ctx) {
-  duk_int_t t;
-  duk_push_this(ctx);
-  t = duk_get_type(ctx, -1);
-  printf("this binding: type=%ld, value='%s'\n", (long)t,
-         duk_to_string(ctx, -1));
-  return 0;
+static duk_ret_t func(duk_context *ctx) {
+	duk_int_t t;
+	duk_push_this(ctx);
+	t = duk_get_type(ctx, -1);
+	printf("this binding: type=%ld, value='%s'\n", (long) t, duk_to_string(ctx, -1));
+	return 0;
 }
 
-void test(duk_context* ctx) {
-  duk_idx_t i, n;
+void test(duk_context *ctx) {
+	duk_idx_t i, n;
 
-  duk_push_c_function(ctx, func, 0);
+	duk_push_c_function(ctx, func, 0);
 
-  duk_push_undefined(ctx);
-  duk_push_null(ctx);
-  duk_push_true(ctx);
-  duk_push_false(ctx);
-  duk_push_number(ctx, 123.456);
-  duk_push_string(ctx, "foo");
-  duk_push_object(ctx);
-  duk_push_array(ctx);
-  duk_push_fixed_buffer(ctx, 16);
-  duk_push_pointer(ctx, (void*)0xdeadbeefUL);
+	duk_push_undefined(ctx);
+	duk_push_null(ctx);
+	duk_push_true(ctx);
+	duk_push_false(ctx);
+	duk_push_number(ctx, 123.456);
+	duk_push_string(ctx, "foo");
+	duk_push_object(ctx);
+	duk_push_array(ctx);
+	duk_push_fixed_buffer(ctx, 16);
+	duk_push_pointer(ctx, (void *) 0xdeadbeefUL);
 
-  n = duk_get_top(ctx);
-  printf("top: %ld\n", (long)n);
-  for (i = 1; i < n; i++) {
-    duk_dup(ctx, 0);
-    duk_dup(ctx, i);
-    duk_call_method(ctx, 0); /* [ ... func this ] -> [ ret ] */
-    duk_pop(ctx);
-  }
+	n = duk_get_top(ctx);
+	printf("top: %ld\n", (long) n);
+	for (i = 1; i < n; i++) {
+		duk_dup(ctx, 0);
+		duk_dup(ctx, i);
+		duk_call_method(ctx, 0);  /* [ ... func this ] -> [ ret ] */
+		duk_pop(ctx);
+	}
 }

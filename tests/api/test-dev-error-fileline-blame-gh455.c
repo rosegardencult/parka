@@ -183,171 +183,165 @@ final top: 1
 static duk_c_function target_func_hack;
 static int depth_hack;
 
-static duk_ret_t my_thrower_1(duk_context* ctx) {
-  /* When an error is thrown during compilation, the source file/line
-   * is always blamed.
-   */
-  duk_push_string(ctx, "\n\n\nfoo=");
-  duk_push_string(ctx, "dummy_source.js");
-  duk_compile(ctx, DUK_COMPILE_EVAL);
-  duk_call(ctx, 0);
-  return 0;
+static duk_ret_t my_thrower_1(duk_context *ctx) {
+	/* When an error is thrown during compilation, the source file/line
+	 * is always blamed.
+	 */
+	duk_push_string(ctx, "\n\n\nfoo=");
+	duk_push_string(ctx, "dummy_source.js");
+	duk_compile(ctx, DUK_COMPILE_EVAL);
+	duk_call(ctx, 0);
+	return 0;
 }
-static duk_ret_t my_thrower_1_safecall(duk_context* ctx, void* udata) {
-  (void)udata;
-  return my_thrower_1(ctx);
+static duk_ret_t my_thrower_1_safecall(duk_context *ctx, void *udata) {
+	(void) udata;
+	return my_thrower_1(ctx);
 }
 
-static duk_ret_t my_thrower_2(duk_context* ctx) {
-  /* When an error is thrown using duk_error(), the __FILE__ and __LINE__
-   * of the throw site gets blamed for the error w.r.t. to .fileName and
-   * .lineNumber.
-   */
+static duk_ret_t my_thrower_2(duk_context *ctx) {
+	/* When an error is thrown using duk_error(), the __FILE__ and __LINE__
+	 * of the throw site gets blamed for the error w.r.t. to .fileName and
+	 * .lineNumber.
+	 */
 #line 1234 "dummy.c"
-  duk_error(ctx, DUK_ERR_RANGE_ERROR, "user error");
-  return 0;
+	duk_error(ctx, DUK_ERR_RANGE_ERROR, "user error");
+	return 0;
 }
-static duk_ret_t my_thrower_2_safecall(duk_context* ctx, void* udata) {
-  (void)udata;
-  return my_thrower_2(ctx);
+static duk_ret_t my_thrower_2_safecall(duk_context *ctx, void *udata) {
+	(void) udata;
+	return my_thrower_2(ctx);
 }
 
-static duk_ret_t my_thrower_3(duk_context* ctx) {
-  /* When an error is constructed using duk_push_error_object() and then
-   * thrown, the same thing happens as with duk_error().
-   */
+static duk_ret_t my_thrower_3(duk_context *ctx) {
+	/* When an error is constructed using duk_push_error_object() and then
+	 * thrown, the same thing happens as with duk_error().
+	 */
 #line 2345 "dummy.c"
-  duk_push_error_object(ctx, DUK_ERR_RANGE_ERROR, "user error");
-  duk_throw(ctx);
-  return 0;
+	duk_push_error_object(ctx, DUK_ERR_RANGE_ERROR, "user error");
+	duk_throw(ctx);
+	return 0;
 }
-static duk_ret_t my_thrower_3_safecall(duk_context* ctx, void* udata) {
-  (void)udata;
-  return my_thrower_3(ctx);
+static duk_ret_t my_thrower_3_safecall(duk_context *ctx, void *udata) {
+	(void) udata;
+	return my_thrower_3(ctx);
 }
 
-static duk_ret_t my_thrower_4(duk_context* ctx) {
-  /* When an error is thrown from inside Duktape (which is always
-   * considered "infrastructure code") the __FILE__ and __LINE__
-   * are recorded in the traceback but not blamed as file/line.
-   */
-  duk_push_undefined(ctx);
-  duk_require_string(ctx, -1);
-  return 0;
+static duk_ret_t my_thrower_4(duk_context *ctx) {
+	/* When an error is thrown from inside Duktape (which is always
+	 * considered "infrastructure code") the __FILE__ and __LINE__
+	 * are recorded in the traceback but not blamed as file/line.
+	 */
+	duk_push_undefined(ctx);
+	duk_require_string(ctx, -1);
+	return 0;
 }
-static duk_ret_t my_thrower_4_safecall(duk_context* ctx, void* udata) {
-  (void)udata;
-  return my_thrower_4(ctx);
+static duk_ret_t my_thrower_4_safecall(duk_context *ctx, void *udata) {
+	(void) udata;
+	return my_thrower_4(ctx);
 }
 
 /*
  *  Empty callstack
  */
 
-static duk_ret_t empty_helper(duk_context* ctx,
-                              duk_safe_call_function target_func) {
-  duk_int_t rc;
+static duk_ret_t empty_helper(duk_context *ctx, duk_safe_call_function target_func) {
+	duk_int_t rc;
 
-  rc = duk_safe_call(ctx, target_func, NULL, 0, 1);
-  (void)rc;
+	rc = duk_safe_call(ctx, target_func, NULL, 0, 1);
+	(void) rc;
 
-  duk_eval_string(ctx,
-                  "(function (e) { print(e.fileName, e.lineNumber); if "
-                  "(PRINT_STACK) { print(e.stack); } })");
-  duk_dup(ctx, -2);
-  duk_call(ctx, 1);
-  duk_pop(ctx);
+	duk_eval_string(ctx, "(function (e) { print(e.fileName, e.lineNumber); if (PRINT_STACK) { print(e.stack); } })");
+	duk_dup(ctx, -2);
+	duk_call(ctx, 1);
+	duk_pop(ctx);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
-static duk_ret_t test_empty_1(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_empty_1(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return empty_helper(ctx, my_thrower_1_safecall);
+	return empty_helper(ctx, my_thrower_1_safecall);
 }
 
-static duk_ret_t test_empty_2(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_empty_2(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return empty_helper(ctx, my_thrower_2_safecall);
+	return empty_helper(ctx, my_thrower_2_safecall);
 }
 
-static duk_ret_t test_empty_3(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_empty_3(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return empty_helper(ctx, my_thrower_3_safecall);
+	return empty_helper(ctx, my_thrower_3_safecall);
 }
 
-static duk_ret_t test_empty_4(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_empty_4(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return empty_helper(ctx, my_thrower_4_safecall);
+	return empty_helper(ctx, my_thrower_4_safecall);
 }
 
 /*
  *  Callstack has entries but nothing with a .fileName.
  */
 
-static duk_ret_t nofile_helper_2(duk_context* ctx) {
-  duk_push_string(ctx,
-                  "(function () {\n"
-                  "    var fn = function noFileName(v) { v(); return 123; };\n"
-                  "    print('delete: ' + delete fn.fileName);\n"
-                  "    return fn;\n"
-                  "})()");
-  duk_push_string(ctx, "dummy_filename.js");
-  duk_compile(ctx, DUK_COMPILE_EVAL);
-  duk_call(ctx, 0);
+static duk_ret_t nofile_helper_2(duk_context *ctx) {
+	duk_push_string(ctx,
+		"(function () {\n"
+		"    var fn = function noFileName(v) { v(); return 123; };\n"
+		"    print('delete: ' + delete fn.fileName);\n"
+		"    return fn;\n"
+		"})()");
+	duk_push_string(ctx, "dummy_filename.js");
+	duk_compile(ctx, DUK_COMPILE_EVAL);
+	duk_call(ctx, 0);
 
-  duk_push_c_function(ctx, target_func_hack, 0);
-  duk_call(ctx, 1);
-  return 0;
+	duk_push_c_function(ctx, target_func_hack, 0);
+	duk_call(ctx, 1);
+	return 0;
 }
 
-static duk_ret_t nofile_helper(duk_context* ctx, duk_c_function target_func) {
-  duk_int_t rc;
+static duk_ret_t nofile_helper(duk_context *ctx, duk_c_function target_func) {
+	duk_int_t rc;
 
-  target_func_hack = target_func;
-  duk_push_c_function(ctx, nofile_helper_2,
-                      0); /* Duktape/C func with no .fileName */
-  duk_pcall(ctx, 0);
-  (void)rc;
+	target_func_hack = target_func;
+	duk_push_c_function(ctx, nofile_helper_2, 0);  /* Duktape/C func with no .fileName */
+	duk_pcall(ctx, 0);
+	(void) rc;
 
-  duk_eval_string(ctx,
-                  "(function (e) { print(e.fileName, e.lineNumber); if "
-                  "(PRINT_STACK) { print(e.stack); } })");
-  duk_dup(ctx, -2);
-  duk_call(ctx, 1);
-  duk_pop(ctx);
+	duk_eval_string(ctx, "(function (e) { print(e.fileName, e.lineNumber); if (PRINT_STACK) { print(e.stack); } })");
+	duk_dup(ctx, -2);
+	duk_call(ctx, 1);
+	duk_pop(ctx);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
-static duk_ret_t test_nofile_1(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_nofile_1(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return nofile_helper(ctx, my_thrower_1);
+	return nofile_helper(ctx, my_thrower_1);
 }
 
-static duk_ret_t test_nofile_2(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_nofile_2(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return nofile_helper(ctx, my_thrower_2);
+	return nofile_helper(ctx, my_thrower_2);
 }
 
-static duk_ret_t test_nofile_3(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_nofile_3(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return nofile_helper(ctx, my_thrower_3);
+	return nofile_helper(ctx, my_thrower_3);
 }
 
-static duk_ret_t test_nofile_4(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_nofile_4(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return nofile_helper(ctx, my_thrower_4);
+	return nofile_helper(ctx, my_thrower_4);
 }
 
 /*
@@ -355,65 +349,60 @@ static duk_ret_t test_nofile_4(duk_context* ctx, void* udata) {
  *  does not have a filename.
  */
 
-static duk_ret_t havefile1_helper_2(duk_context* ctx) {
-  duk_push_string(
-      ctx,
-      "(function () {\n"
-      "    var fn = function haveFileName(v) { v(); return 123; };\n"
-      "    return fn;\n"
-      "})()");
-  duk_push_string(ctx, "dummy_filename.js");
-  duk_compile(ctx, DUK_COMPILE_EVAL);
-  duk_call(ctx, 0);
+static duk_ret_t havefile1_helper_2(duk_context *ctx) {
+	duk_push_string(ctx,
+		"(function () {\n"
+		"    var fn = function haveFileName(v) { v(); return 123; };\n"
+		"    return fn;\n"
+		"})()");
+	duk_push_string(ctx, "dummy_filename.js");
+	duk_compile(ctx, DUK_COMPILE_EVAL);
+	duk_call(ctx, 0);
 
-  duk_push_c_function(ctx, target_func_hack, 0);
-  duk_call(ctx, 1);
-  return 0;
+	duk_push_c_function(ctx, target_func_hack, 0);
+	duk_call(ctx, 1);
+	return 0;
 }
 
-static duk_ret_t havefile1_helper(duk_context* ctx,
-                                  duk_c_function target_func) {
-  duk_int_t rc;
+static duk_ret_t havefile1_helper(duk_context *ctx, duk_c_function target_func) {
+	duk_int_t rc;
 
-  target_func_hack = target_func;
-  duk_push_c_function(ctx, havefile1_helper_2,
-                      0); /* Duktape/C func with no .fileName */
-  duk_pcall(ctx, 0);
-  (void)rc;
+	target_func_hack = target_func;
+	duk_push_c_function(ctx, havefile1_helper_2, 0);  /* Duktape/C func with no .fileName */
+	duk_pcall(ctx, 0);
+	(void) rc;
 
-  duk_eval_string(ctx,
-                  "(function (e) { print(e.fileName, e.lineNumber); if "
-                  "(PRINT_STACK) { print(e.stack); } })");
-  duk_dup(ctx, -2);
-  duk_call(ctx, 1);
-  duk_pop(ctx);
+	duk_eval_string(ctx, "(function (e) { print(e.fileName, e.lineNumber); if (PRINT_STACK) { print(e.stack); } })");
+	duk_dup(ctx, -2);
+	duk_call(ctx, 1);
+	duk_pop(ctx);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
-static duk_ret_t test_havefile1_1(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_havefile1_1(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return havefile1_helper(ctx, my_thrower_1);
+	return havefile1_helper(ctx, my_thrower_1);
 }
 
-static duk_ret_t test_havefile1_2(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_havefile1_2(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return havefile1_helper(ctx, my_thrower_2);
+	return havefile1_helper(ctx, my_thrower_2);
 }
 
-static duk_ret_t test_havefile1_3(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_havefile1_3(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return havefile1_helper(ctx, my_thrower_3);
+	return havefile1_helper(ctx, my_thrower_3);
 }
 
-static duk_ret_t test_havefile1_4(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_havefile1_4(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return havefile1_helper(ctx, my_thrower_4);
+	return havefile1_helper(ctx, my_thrower_4);
 }
 
 /*
@@ -421,70 +410,64 @@ static duk_ret_t test_havefile1_4(duk_context* ctx, void* udata) {
  *  also has a filename.
  */
 
-static duk_ret_t havefile2_helper_2(duk_context* ctx) {
-  duk_push_string(ctx,
-                  "(function () {\n"
-                  "    var fn = function noFileName(v) { v(); return 123; };\n"
-                  "    print('delete: ' + delete fn.fileName);\n"
-                  "    return fn;\n"
-                  "})()");
-  duk_push_string(ctx, "dummy_filename.js");
-  duk_compile(ctx, DUK_COMPILE_EVAL);
-  duk_call(ctx, 0);
+static duk_ret_t havefile2_helper_2(duk_context *ctx) {
+	duk_push_string(ctx,
+		"(function () {\n"
+		"    var fn = function noFileName(v) { v(); return 123; };\n"
+		"    print('delete: ' + delete fn.fileName);\n"
+		"    return fn;\n"
+		"})()");
+	duk_push_string(ctx, "dummy_filename.js");
+	duk_compile(ctx, DUK_COMPILE_EVAL);
+	duk_call(ctx, 0);
 
-  duk_push_c_function(ctx, target_func_hack, 0);
-  duk_push_string(ctx, "fileName");
-  duk_push_string(ctx, "dummy_filename.c");
-  duk_def_prop(ctx, -3,
-               DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_SET_WRITABLE |
-                   DUK_DEFPROP_SET_CONFIGURABLE);
-  duk_call(ctx, 1);
-  return 0;
+	duk_push_c_function(ctx, target_func_hack, 0);
+	duk_push_string(ctx, "fileName");
+	duk_push_string(ctx, "dummy_filename.c");
+	duk_def_prop(ctx, -3, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_SET_WRITABLE | DUK_DEFPROP_SET_CONFIGURABLE);
+	duk_call(ctx, 1);
+	return 0;
 }
 
-static duk_ret_t havefile2_helper(duk_context* ctx,
-                                  duk_c_function target_func) {
-  duk_int_t rc;
+static duk_ret_t havefile2_helper(duk_context *ctx, duk_c_function target_func) {
+	duk_int_t rc;
 
-  target_func_hack = target_func;
-  duk_push_c_function(ctx, havefile2_helper_2,
-                      0); /* Duktape/C func with no .fileName */
-  duk_pcall(ctx, 0);
-  (void)rc;
+	target_func_hack = target_func;
+	duk_push_c_function(ctx, havefile2_helper_2, 0);  /* Duktape/C func with no .fileName */
+	duk_pcall(ctx, 0);
+	(void) rc;
 
-  duk_eval_string(ctx,
-                  "(function (e) { print(e.fileName, e.lineNumber); if "
-                  "(PRINT_STACK) { print(e.stack); } })");
-  duk_dup(ctx, -2);
-  duk_call(ctx, 1);
-  duk_pop(ctx);
+	duk_eval_string(ctx, "(function (e) { print(e.fileName, e.lineNumber); if (PRINT_STACK) { print(e.stack); } })");
+	duk_dup(ctx, -2);
+	duk_call(ctx, 1);
+	duk_pop(ctx);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
-static duk_ret_t test_havefile2_1(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_havefile2_1(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return havefile2_helper(ctx, my_thrower_1);
+	return havefile2_helper(ctx, my_thrower_1);
 }
 
-static duk_ret_t test_havefile2_2(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_havefile2_2(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return havefile2_helper(ctx, my_thrower_2);
+	return havefile2_helper(ctx, my_thrower_2);
 }
 
-static duk_ret_t test_havefile2_3(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_havefile2_3(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return havefile2_helper(ctx, my_thrower_3);
+	return havefile2_helper(ctx, my_thrower_3);
 }
 
-static duk_ret_t test_havefile2_4(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_havefile2_4(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return havefile2_helper(ctx, my_thrower_4);
+	return havefile2_helper(ctx, my_thrower_4);
 }
 
 /*
@@ -495,136 +478,127 @@ static duk_ret_t test_havefile2_4(duk_context* ctx, void* udata) {
  *  and a much deeper 50.
  */
 
-static duk_ret_t deep_helper_2(duk_context* ctx) {
-  duk_push_string(ctx,
-                  "(function () {\n"
-                  "    var fn = function noFileName(n, v) { if (n > 0) { "
-                  "noFileName(n - 1, v); } else { v(); } return 123; };\n"
-                  "    print('delete: ' + delete fn.fileName);\n"
-                  "    return fn;\n"
-                  "})()");
-  duk_push_string(ctx, "dummy_filename.js");
-  duk_compile(ctx, DUK_COMPILE_EVAL);
-  duk_call(ctx, 0);
+static duk_ret_t deep_helper_2(duk_context *ctx) {
+	duk_push_string(ctx,
+		"(function () {\n"
+		"    var fn = function noFileName(n, v) { if (n > 0) { noFileName(n - 1, v); } else { v(); } return 123; };\n"
+		"    print('delete: ' + delete fn.fileName);\n"
+		"    return fn;\n"
+		"})()");
+	duk_push_string(ctx, "dummy_filename.js");
+	duk_compile(ctx, DUK_COMPILE_EVAL);
+	duk_call(ctx, 0);
 
-  printf("target depth: %d\n", (int)depth_hack);
-  duk_push_int(
-      ctx, depth_hack - 3); /* account for: one func already in callstack; first
-                               call into the helper; final call to target */
-  duk_push_c_function(ctx, target_func_hack, 0);
-  duk_call(ctx, 2);
-  return 0;
+	printf("target depth: %d\n", (int) depth_hack);
+	duk_push_int(ctx, depth_hack - 3);  /* account for: one func already in callstack; first call into the helper; final call to target */
+	duk_push_c_function(ctx, target_func_hack, 0);
+	duk_call(ctx, 2);
+	return 0;
 }
 
-static duk_ret_t deep_helper(duk_context* ctx, duk_c_function target_func,
-                             int depth) {
-  duk_int_t rc;
+static duk_ret_t deep_helper(duk_context *ctx, duk_c_function target_func, int depth) {
+	duk_int_t rc;
 
-  target_func_hack = target_func;
-  depth_hack = depth;
-  duk_push_c_function(ctx, deep_helper_2,
-                      0); /* Duktape/C func with .fileName */
-  duk_push_string(ctx, "fileName");
-  duk_push_string(ctx, "outer_limits.c");
-  duk_def_prop(ctx, -3,
-               DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_SET_WRITABLE |
-                   DUK_DEFPROP_SET_CONFIGURABLE);
-  duk_pcall(ctx, 0);
-  (void)rc;
+	target_func_hack = target_func;
+	depth_hack = depth;
+	duk_push_c_function(ctx, deep_helper_2, 0);  /* Duktape/C func with .fileName */
+	duk_push_string(ctx, "fileName");
+	duk_push_string(ctx, "outer_limits.c");
+	duk_def_prop(ctx, -3, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_SET_WRITABLE | DUK_DEFPROP_SET_CONFIGURABLE);
+	duk_pcall(ctx, 0);
+	(void) rc;
 
-  duk_eval_string(ctx,
-                  "(function (e) { print(e.fileName, e.lineNumber); if "
-                  "(PRINT_STACK) { print(e.stack); } })");
-  duk_dup(ctx, -2);
-  duk_call(ctx, 1);
-  duk_pop(ctx);
+	duk_eval_string(ctx, "(function (e) { print(e.fileName, e.lineNumber); if (PRINT_STACK) { print(e.stack); } })");
+	duk_dup(ctx, -2);
+	duk_call(ctx, 1);
+	duk_pop(ctx);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
-static duk_ret_t test_deep_1a(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_deep_1a(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return deep_helper(ctx, my_thrower_1, 9);
+	return deep_helper(ctx, my_thrower_1, 9);
 }
-static duk_ret_t test_deep_1b(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_deep_1b(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return deep_helper(ctx, my_thrower_1, 10);
+	return deep_helper(ctx, my_thrower_1, 10);
 }
-static duk_ret_t test_deep_1c(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_deep_1c(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return deep_helper(ctx, my_thrower_1, 11);
+	return deep_helper(ctx, my_thrower_1, 11);
 }
-static duk_ret_t test_deep_1d(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_deep_1d(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return deep_helper(ctx, my_thrower_1, 50);
-}
-
-static duk_ret_t test_deep_2a(duk_context* ctx, void* udata) {
-  (void)udata;
-
-  return deep_helper(ctx, my_thrower_2, 9);
-}
-static duk_ret_t test_deep_2b(duk_context* ctx, void* udata) {
-  (void)udata;
-
-  return deep_helper(ctx, my_thrower_2, 10);
-}
-static duk_ret_t test_deep_2c(duk_context* ctx, void* udata) {
-  (void)udata;
-
-  return deep_helper(ctx, my_thrower_2, 11);
-}
-static duk_ret_t test_deep_2d(duk_context* ctx, void* udata) {
-  (void)udata;
-
-  return deep_helper(ctx, my_thrower_2, 50);
+	return deep_helper(ctx, my_thrower_1, 50);
 }
 
-static duk_ret_t test_deep_3a(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_deep_2a(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return deep_helper(ctx, my_thrower_3, 9);
+	return deep_helper(ctx, my_thrower_2, 9);
 }
-static duk_ret_t test_deep_3b(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_deep_2b(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return deep_helper(ctx, my_thrower_3, 10);
+	return deep_helper(ctx, my_thrower_2, 10);
 }
-static duk_ret_t test_deep_3c(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_deep_2c(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return deep_helper(ctx, my_thrower_3, 11);
+	return deep_helper(ctx, my_thrower_2, 11);
 }
-static duk_ret_t test_deep_3d(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_deep_2d(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return deep_helper(ctx, my_thrower_3, 50);
+	return deep_helper(ctx, my_thrower_2, 50);
 }
 
-static duk_ret_t test_deep_4a(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_deep_3a(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return deep_helper(ctx, my_thrower_4, 9);
+	return deep_helper(ctx, my_thrower_3, 9);
 }
-static duk_ret_t test_deep_4b(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_deep_3b(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return deep_helper(ctx, my_thrower_4, 10);
+	return deep_helper(ctx, my_thrower_3, 10);
 }
-static duk_ret_t test_deep_4c(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_deep_3c(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return deep_helper(ctx, my_thrower_4, 11);
+	return deep_helper(ctx, my_thrower_3, 11);
 }
-static duk_ret_t test_deep_4d(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_deep_3d(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  return deep_helper(ctx, my_thrower_4, 50);
+	return deep_helper(ctx, my_thrower_3, 50);
+}
+
+static duk_ret_t test_deep_4a(duk_context *ctx, void *udata) {
+	(void) udata;
+
+	return deep_helper(ctx, my_thrower_4, 9);
+}
+static duk_ret_t test_deep_4b(duk_context *ctx, void *udata) {
+	(void) udata;
+
+	return deep_helper(ctx, my_thrower_4, 10);
+}
+static duk_ret_t test_deep_4c(duk_context *ctx, void *udata) {
+	(void) udata;
+
+	return deep_helper(ctx, my_thrower_4, 11);
+}
+static duk_ret_t test_deep_4d(duk_context *ctx, void *udata) {
+	(void) udata;
+
+	return deep_helper(ctx, my_thrower_4, 50);
 }
 
 /*
@@ -632,48 +606,48 @@ static duk_ret_t test_deep_4d(duk_context* ctx, void* udata) {
  *  object to avoid this default blaming.
  */
 
-void test(duk_context* ctx) {
-  /* For manual testing: */
+void test(duk_context *ctx) {
+	/* For manual testing: */
 #if 0
 	duk_eval_string_noresult(ctx, "this.PRINT_STACK = true;");
 #else
-  duk_eval_string_noresult(ctx, "this.PRINT_STACK = false;");
+	duk_eval_string_noresult(ctx, "this.PRINT_STACK = false;");
 #endif
 
-  TEST_SAFE_CALL(test_empty_1);
-  TEST_SAFE_CALL(test_empty_2);
-  TEST_SAFE_CALL(test_empty_3);
-  TEST_SAFE_CALL(test_empty_4);
+	TEST_SAFE_CALL(test_empty_1);
+	TEST_SAFE_CALL(test_empty_2);
+	TEST_SAFE_CALL(test_empty_3);
+	TEST_SAFE_CALL(test_empty_4);
 
-  TEST_SAFE_CALL(test_nofile_1);
-  TEST_SAFE_CALL(test_nofile_2);
-  TEST_SAFE_CALL(test_nofile_3);
-  TEST_SAFE_CALL(test_nofile_4);
+	TEST_SAFE_CALL(test_nofile_1);
+	TEST_SAFE_CALL(test_nofile_2);
+	TEST_SAFE_CALL(test_nofile_3);
+	TEST_SAFE_CALL(test_nofile_4);
 
-  TEST_SAFE_CALL(test_havefile1_1);
-  TEST_SAFE_CALL(test_havefile1_2);
-  TEST_SAFE_CALL(test_havefile1_3);
-  TEST_SAFE_CALL(test_havefile1_4);
+	TEST_SAFE_CALL(test_havefile1_1);
+	TEST_SAFE_CALL(test_havefile1_2);
+	TEST_SAFE_CALL(test_havefile1_3);
+	TEST_SAFE_CALL(test_havefile1_4);
 
-  TEST_SAFE_CALL(test_havefile2_1);
-  TEST_SAFE_CALL(test_havefile2_2);
-  TEST_SAFE_CALL(test_havefile2_3);
-  TEST_SAFE_CALL(test_havefile2_4);
+	TEST_SAFE_CALL(test_havefile2_1);
+	TEST_SAFE_CALL(test_havefile2_2);
+	TEST_SAFE_CALL(test_havefile2_3);
+	TEST_SAFE_CALL(test_havefile2_4);
 
-  TEST_SAFE_CALL(test_deep_1a);
-  TEST_SAFE_CALL(test_deep_1b);
-  TEST_SAFE_CALL(test_deep_1c);
-  TEST_SAFE_CALL(test_deep_1d);
-  TEST_SAFE_CALL(test_deep_2a);
-  TEST_SAFE_CALL(test_deep_2b);
-  TEST_SAFE_CALL(test_deep_2c);
-  TEST_SAFE_CALL(test_deep_2d);
-  TEST_SAFE_CALL(test_deep_3a);
-  TEST_SAFE_CALL(test_deep_3b);
-  TEST_SAFE_CALL(test_deep_3c);
-  TEST_SAFE_CALL(test_deep_3d);
-  TEST_SAFE_CALL(test_deep_4a);
-  TEST_SAFE_CALL(test_deep_4b);
-  TEST_SAFE_CALL(test_deep_4c);
-  TEST_SAFE_CALL(test_deep_4d);
+	TEST_SAFE_CALL(test_deep_1a);
+	TEST_SAFE_CALL(test_deep_1b);
+	TEST_SAFE_CALL(test_deep_1c);
+	TEST_SAFE_CALL(test_deep_1d);
+	TEST_SAFE_CALL(test_deep_2a);
+	TEST_SAFE_CALL(test_deep_2b);
+	TEST_SAFE_CALL(test_deep_2c);
+	TEST_SAFE_CALL(test_deep_2d);
+	TEST_SAFE_CALL(test_deep_3a);
+	TEST_SAFE_CALL(test_deep_3b);
+	TEST_SAFE_CALL(test_deep_3c);
+	TEST_SAFE_CALL(test_deep_3d);
+	TEST_SAFE_CALL(test_deep_4a);
+	TEST_SAFE_CALL(test_deep_4b);
+	TEST_SAFE_CALL(test_deep_4c);
+	TEST_SAFE_CALL(test_deep_4d);
 }

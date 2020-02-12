@@ -3,12 +3,12 @@
  *  rescued the object.
  */
 
-static duk_ret_t my_print(duk_context* ctx) {
-  duk_push_string(ctx, " ");
-  duk_insert(ctx, 0);
-  duk_join(ctx, duk_get_top(ctx) - 1);
-  printf("%s\n", duk_safe_to_string(ctx, -1));
-  return 0;
+static duk_ret_t my_print(duk_context *ctx) {
+	duk_push_string(ctx, " ");
+	duk_insert(ctx, 0);
+	duk_join(ctx, duk_get_top(ctx) - 1);
+	printf("%s\n", duk_safe_to_string(ctx, -1));
+	return 0;
 }
 
 /*===
@@ -25,48 +25,42 @@ heap destroyed
  * Object has been finalized but not yet rescued, and should not be
  * finalized again on destruction.
  */
-static duk_ret_t test_heap_destruction(duk_context* ignored_ctx, void* udata) {
-  duk_context* my_ctx;
+static duk_ret_t test_heap_destruction(duk_context *ignored_ctx, void *udata) {
+	duk_context *my_ctx;
 
-  (void)udata;
+	(void) udata;
 
-  printf("creating heap\n");
-  fflush(stdout);
-  my_ctx = duk_create_heap_default();
-  if (!my_ctx) {
-    printf("failed to create heap\n");
-    fflush(stdout);
-    return 0;
-  }
-  printf("heap created\n");
-  fflush(stdout);
+	printf("creating heap\n"); fflush(stdout);
+	my_ctx = duk_create_heap_default();
+	if (!my_ctx) {
+		printf("failed to create heap\n"); fflush(stdout);
+		return 0;
+	}
+	printf("heap created\n"); fflush(stdout);
 
-  /* Dummy print() binding. */
-  duk_push_c_function(my_ctx, my_print, 1);
-  duk_put_global_string(my_ctx, "print");
+	/* Dummy print() binding. */
+	duk_push_c_function(my_ctx, my_print, 1);
+	duk_put_global_string(my_ctx, "print");
 
-  duk_eval_string_noresult(my_ctx,
-                           "(function () {\n"
-                           "    var obj1 = {}; var obj2 = {};\n"
-                           "    obj1.ref = obj2; obj2.ref = obj1;\n"
-                           "    Duktape.fin(obj1, function obj1fin() { "
-                           "print('object 1 finalizer'); });\n"
-                           "    obj1 = obj2 = null;\n"
-                           "    Duktape.gc();\n"
-                           "})()");
+	duk_eval_string_noresult(my_ctx,
+		"(function () {\n"
+		"    var obj1 = {}; var obj2 = {};\n"
+		"    obj1.ref = obj2; obj2.ref = obj1;\n"
+		"    Duktape.fin(obj1, function obj1fin() { print('object 1 finalizer'); });\n"
+		"    obj1 = obj2 = null;\n"
+		"    Duktape.gc();\n"
+		"})()");
 
-  printf("destroying heap\n");
-  fflush(stdout);
-  duk_destroy_heap(my_ctx);
-  printf("heap destroyed\n");
-  fflush(stdout);
+	printf("destroying heap\n"); fflush(stdout);
+	duk_destroy_heap(my_ctx);
+	printf("heap destroyed\n"); fflush(stdout);
 
-  return 0;
+	return 0;
 }
 
-#if 0  /* Disabled: this is too fragile because it relies on dangling           \
-        * references;  unfortunately the potential re-run scenario is difficult \
-        * to confirm  otherwise.                                                \
+#if 0  /* Disabled: this is too fragile because it relies on dangling references;
+        * unfortunately the potential re-run scenario is difficult to confirm
+        * otherwise.
         */
 /* Create a circular reference with a finalizer, force a GC run which runs the
  * finalizer.  Use a dangling (!) C heaphdr reference to break the loop so that
@@ -121,10 +115,10 @@ static duk_ret_t test_markandsweep_finalize_then_refzero(duk_context *ignored_ct
 
 	return 0;
 }
-#endif /* 0 */
+#endif  /* 0 */
 
-void test(duk_context* ctx) {
-  TEST_SAFE_CALL(test_heap_destruction);
+void test(duk_context *ctx) {
+	TEST_SAFE_CALL(test_heap_destruction);
 #if 0
 	TEST_SAFE_CALL(test_markandsweep_finalize_then_refzero);
 #endif

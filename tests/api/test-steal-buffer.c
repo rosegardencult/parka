@@ -23,55 +23,57 @@ buf[15] = 65
 ==> rc=0, result='undefined'
 ===*/
 
-static void dump_buffer(duk_context* ctx) {
-  unsigned char* p;
-  duk_size_t i, sz;
+static void dump_buffer(duk_context *ctx) {
+	unsigned char *p;
+	duk_size_t i, sz;
 
-  p = (unsigned char*)duk_require_buffer(ctx, -1, &sz);
-  printf("%ld bytes:", (long)sz);
-  for (i = 0; i < sz; i++) {
-    printf(" %d", (int)p[i]);
-  }
-  printf("\n");
+	p = (unsigned char *) duk_require_buffer(ctx, -1, &sz);
+	printf("%ld bytes:", (long) sz);
+	for (i = 0; i < sz; i++) {
+		printf(" %d", (int) p[i]);
+	}
+	printf("\n");
 }
 
-static duk_ret_t test_1(duk_context* ctx, void* udata) {
-  unsigned char* p;
-  unsigned char* buf;
-  duk_size_t sz;
-  int i;
+static duk_ret_t test_1(duk_context *ctx, void *udata) {
+	unsigned char *p;
+	unsigned char *buf;
+	duk_size_t sz;
+	int i;
 
-  (void)udata;
+	(void) udata;
 
-  duk_push_dynamic_buffer(ctx, 0);
-  dump_buffer(ctx);
+	duk_push_dynamic_buffer(ctx, 0);
+	dump_buffer(ctx);
 
-  duk_resize_buffer(ctx, -1, 16);
-  p = (unsigned char*)duk_require_buffer(ctx, -1, NULL);
-  p[5] = (unsigned char)123;
-  p[15] = (unsigned char)65;
-  dump_buffer(ctx);
+	duk_resize_buffer(ctx, -1, 16);
+	p = (unsigned char *) duk_require_buffer(ctx, -1, NULL);
+	p[5] = (unsigned char) 123;
+	p[15] = (unsigned char) 65;
+	dump_buffer(ctx);
 
-  buf = duk_steal_buffer(ctx, -1, &sz);
-  printf("Stole buffer: buf-is-NULL=%d, sz=%d\n", (int)(buf == NULL ? 1 : 0),
-         (int)sz);
+	buf = duk_steal_buffer(ctx, -1, &sz);
+	printf("Stole buffer: buf-is-NULL=%d, sz=%d\n",
+	       (int) (buf == NULL ? 1 : 0), (int) sz);
 
-  /* Buffer is now zero length and could be reused. */
-  dump_buffer(ctx);
+	/* Buffer is now zero length and could be reused. */
+	dump_buffer(ctx);
 
-  /* No effect on allocation returned by duk_steal_buffer(). */
-  duk_set_top(ctx, 0);
+	/* No effect on allocation returned by duk_steal_buffer(). */
+	duk_set_top(ctx, 0);
 
-  for (i = 0; i < (int)sz; i++) {
-    printf("buf[%d] = %d\n", i, (int)buf[i]);
-  }
+	for (i = 0; i < (int) sz; i++) {
+		printf("buf[%d] = %d\n", i, (int) buf[i]);
+	}
 
-  /* Caller must free. */
-#if 1 /* If disabled, valgrind detects a leak. */
-  duk_free(ctx, (void*)buf);
+	/* Caller must free. */
+#if 1  /* If disabled, valgrind detects a leak. */
+	duk_free(ctx, (void *) buf);
 #endif
 
-  return 0;
+	return 0;
 }
 
-void test(duk_context* ctx) { TEST_SAFE_CALL(test_1); }
+void test(duk_context *ctx) {
+	TEST_SAFE_CALL(test_1);
+}

@@ -41,7 +41,6 @@ function mkTempName(ext) {
     prefix: "tmp-runtests-",
     postfix: typeof ext === "undefined" ? "" : "" + ext
   });
-  //console.log('mkTempName -> ' + fn);
   return fn;
 }
 
@@ -308,17 +307,27 @@ function executeTest(options, callback) {
       cc,
       "-o",
       tempExe,
-      "-Os",
+      "-L./build",
+      "-I./src/duk/",
+      "-Wl,-rpath,.",
       "-pedantic",
+      "-ansi",
       "-std=c99",
       "-Wall",
+      "-Wdeclaration-after-statement",
       "-fstrict-aliasing",
+      "-D_POSIX_C_SOURCE=200809L",
+      "-D_GNU_SOURCE",
+      "-D_XOPEN_SOURCE",
+      "-Os",
       "-fomit-frame-pointer",
+      "-g",
+      "-ggdb",
+      //'-Werror',  // Would be nice but GCC differences break tests too easily
+      //'-m32',
       "tests/api_testcase_main.c",
-      "-I./",
-      "-I./src/duk/",
-      "./src/duk/*.c",
       tempSource,
+      "-lduktape",
       "-lm"
     ];
     if (options.testcase.meta.pthread) {
@@ -796,15 +805,16 @@ function testRunnerMain() {
   }
 
   function createLogFile(logFile) {
-    var lines = {};
+    var test_failures = {};
 
     iterateResults(function logResult(tn, en, res) {
-      if (res.status === "fail") {
-        lines[tn] = res;
+      if (res.status === "fail" && !res.testcase.meta.knownissue) {
+        res.diff_expect = res.diff_expect.split("\n");
+        test_failures[tn] = res;
       }
     });
 
-    fs.writeFileSync(logFile, prettyJson(lines) + "\n");
+    fs.writeFileSync(logFile, prettyJson(test_failures) + "\n");
   }
 
   if (argv["prep-test-path"]) {

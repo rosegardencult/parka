@@ -12,22 +12,21 @@ rc=0
 final top: 0
 ===*/
 
-void test(duk_context* ctx) {
-  duk_ret_t rc;
+void test(duk_context *ctx) {
+	duk_ret_t rc;
 
-  duk_eval_string(
-      ctx, "this.testFunc = eval.bind(this, 'print(\\'hello from eval\\')');");
-  duk_pop(ctx);
+        duk_eval_string(ctx, "this.testFunc = eval.bind(this, 'print(\\'hello from eval\\')');");
+	duk_pop(ctx);
 
-  duk_push_global_object(ctx);
-  duk_get_prop_string(ctx, -1, "testFunc");
-  rc = duk_pcall(ctx, 0);
-  printf("rc=%d\n", (int)rc);
-  if (rc != 0) {
-    /* unexpected error */
-    printf("error=%s\n", duk_safe_to_string(ctx, -1));
-  }
-  duk_pop_2(ctx);
+	duk_push_global_object(ctx);
+	duk_get_prop_string(ctx, -1, "testFunc");
+	rc = duk_pcall(ctx, 0);
+	printf("rc=%d\n", (int) rc);
+	if (rc != 0) {
+		/* unexpected error */
+		printf("error=%s\n", duk_safe_to_string(ctx, -1));
+	}
+	duk_pop_2(ctx);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
+        printf("final top: %ld\n", (long) duk_get_top(ctx));
 }

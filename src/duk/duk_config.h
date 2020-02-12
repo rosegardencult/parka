@@ -3057,7 +3057,7 @@ typedef struct duk_hthread duk_context;
 #  undef DUK_USE_EXPLICIT_NULL_INIT
 #  undef DUK_USE_EXTSTR_FREE
 #  undef DUK_USE_EXTSTR_INTERN_CHECK
-#  undef DUK_USE_FASTINT
+#  define DUK_USE_FASTINT
 #  define DUK_USE_FAST_REFCOUNT_DEFAULT
 #  undef DUK_USE_FATAL_HANDLER
 #  define DUK_USE_FATAL_MAXLEN 128

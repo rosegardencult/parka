@@ -46,7 +46,7 @@ clean:
 
 .PHONY: lint
 lint:
-	clang-format --verbose -i {src,tests}/**/*.c src/**/*.h
+	clang-format --verbose -i src/**/*.c src/**/*.h
 
 .PHONY: database
 database:
@@ -73,12 +73,12 @@ test_dependencies:
 	cd tests && npm install
 
 .PHONY: test_api
-test_api: test_dependencies libduktape
-	node tests/runtests.js $(TEST_OPTS) --num-threads 4 --log-file=build/test_api.json tests/api/
+test_api: test_dependencies
+	node tests/runtests.js $(TEST_OPTS) --num-threads 8 --log-file=build/test_api.json tests/api/
 
 .PHONY: test_ecma
 test_ecma: test_dependencies examples
-	node tests/runtests.js $(TEST_OPTS) --run-duk --cmd-duk=$(shell pwd)/examples/cmdline/build/duk --num-threads 4 --log-file=build/test_ecma.json tests/ecmascript/
+	node tests/runtests.js $(TEST_OPTS) --run-duk --cmd-duk=$(shell pwd)/examples/cmdline/build/duk --num-threads 8 --log-file=build/test_ecma.json tests/ecmascript/
 
 .PHONY: examples
 examples:

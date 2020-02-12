@@ -5,36 +5,37 @@
  *  data etc.
  */
 
-#define MANDELBROT                                                       \
-  ("function mandel() {\n"                                               \
-   "    var w = 76, h = 28, iter = 100;\n"                               \
-   "    var i, j, k, c;\n"                                               \
-   "    var x0, y0, xx, yy, xx2, yy2;\n"                                 \
-   "    var line;\n"                                                     \
-   "    for (i = 0; i < h; i++) {\n"                                     \
-   "        y0 = (i / h) * 2.5 - 1.25;\n"                                \
-   "        for (j = 0, line = []; j < w; j++) {\n"                      \
-   "            x0 = (j / w) * 3.0 - 2.0;\n"                             \
-   "            for (k = 0, xx = 0, yy = 0, c = '#'; k < iter; k++) {\n" \
-   "                xx2 = xx*xx; yy2 = yy*yy;\n"                         \
-   "\n"                                                                  \
-   "                if (xx2 + yy2 < 4.0) {\n"                            \
-   "                    yy = 2*xx*yy + y0;\n"                            \
-   "                    xx = xx2 - yy2 + x0;\n"                          \
-   "                } else {\n"                                          \
-   "                    /* xx^2 + yy^2 >= 4.0 */\n"                      \
-   "                    if (k < 3) { c = '.'; }\n"                       \
-   "                    else if (k < 5) { c = ','; }\n"                  \
-   "                    else if (k < 10) { c = '-'; }\n"                 \
-   "                    else { c = '='; }\n"                             \
-   "                    break;\n"                                        \
-   "                }\n"                                                 \
-   "            }\n"                                                     \
-   "            line.push(c);\n"                                         \
-   "        }\n"                                                         \
-   "        print(line.join(''));\n"                                     \
-   "    }\n"                                                             \
-   "}\n")
+#define MANDELBROT ( \
+	"function mandel() {\n" \
+	"    var w = 76, h = 28, iter = 100;\n" \
+	"    var i, j, k, c;\n" \
+	"    var x0, y0, xx, yy, xx2, yy2;\n" \
+	"    var line;\n" \
+	"    for (i = 0; i < h; i++) {\n" \
+	"        y0 = (i / h) * 2.5 - 1.25;\n" \
+	"        for (j = 0, line = []; j < w; j++) {\n" \
+	"            x0 = (j / w) * 3.0 - 2.0;\n" \
+	"            for (k = 0, xx = 0, yy = 0, c = '#'; k < iter; k++) {\n" \
+	"                xx2 = xx*xx; yy2 = yy*yy;\n" \
+	"\n" \
+	"                if (xx2 + yy2 < 4.0) {\n" \
+	"                    yy = 2*xx*yy + y0;\n" \
+	"                    xx = xx2 - yy2 + x0;\n" \
+	"                } else {\n" \
+	"                    /* xx^2 + yy^2 >= 4.0 */\n" \
+	"                    if (k < 3) { c = '.'; }\n" \
+	"                    else if (k < 5) { c = ','; }\n" \
+	"                    else if (k < 10) { c = '-'; }\n" \
+	"                    else { c = '='; }\n" \
+	"                    break;\n" \
+	"                }\n" \
+	"            }\n" \
+	"            line.push(c);\n" \
+	"        }\n" \
+	"        print(line.join(''));\n" \
+	"    }\n" \
+	"}\n" \
+	)
 
 /*===
 *** test_basic (duk_safe_call)
@@ -52,43 +53,41 @@ final top: 1
  * function.  Hex dumping the bytecode provides an exact test case dependency
  * to the dump format so that any accidental changes break the test.
  */
-static duk_ret_t test_basic(duk_context* ctx, void* udata) {
-  unsigned char* p;
-  duk_size_t i, sz;
+static duk_ret_t test_basic(duk_context *ctx, void *udata) {
+	unsigned char *p;
+	duk_size_t i, sz;
 
-  (void)udata;
+	(void) udata;
 
-  /* Integer constants generate LDINT now so also use a fractional
-   * constant to exercise number constants.
-   *
-   * Compiled as a program; force source filename.
-   */
-  duk_push_string(
-      ctx,
-      "print('hello', (function adder(x,y) { return x+y; })(1, 2), 3.14);");
-  duk_push_string(ctx, "fakeFilename.js");
-  duk_compile(ctx, 0);
-  duk_dump_function(ctx);
-  printf("dump result type: %d\n", (int)duk_get_type(ctx, -1));
-  fflush(stdout);
-  p = (unsigned char*)duk_get_buffer(ctx, -1, &sz);
-  for (i = 0; i < sz; i++) {
-    printf("%02x", (int)p[i]);
-  }
-  printf("\n");
-  fflush(stdout);
+	/* Integer constants generate LDINT now so also use a fractional
+	 * constant to exercise number constants.
+	 *
+	 * Compiled as a program; force source filename.
+	 */
+	duk_push_string(ctx, "print('hello', (function adder(x,y) { return x+y; })(1, 2), 3.14);");
+	duk_push_string(ctx, "fakeFilename.js");
+	duk_compile(ctx, 0);
+	duk_dump_function(ctx);
+	printf("dump result type: %d\n", (int) duk_get_type(ctx, -1));
+	fflush(stdout);
+	p = (unsigned char *) duk_get_buffer(ctx, -1, &sz);
+	for (i = 0; i < sz; i++) {
+		printf("%02x", (int) p[i]);
+	}
+	printf("\n");
+	fflush(stdout);
 
-  /* Load test function from dump and execute it. */
-  duk_load_function(ctx);
-  printf("load result type: %d\n", (int)duk_get_type(ctx, -1));
-  fflush(stdout);
-  duk_call(ctx, 0);
-  printf("call result type: %d\n", (int)duk_get_type(ctx, -1));
-  fflush(stdout);
-  printf("call result: %s\n", duk_safe_to_string(ctx, -1));
+	/* Load test function from dump and execute it. */
+	duk_load_function(ctx);
+	printf("load result type: %d\n", (int) duk_get_type(ctx, -1));
+	fflush(stdout);
+	duk_call(ctx, 0);
+	printf("call result type: %d\n", (int) duk_get_type(ctx, -1));
+	fflush(stdout);
+	printf("call result: %s\n", duk_safe_to_string(ctx, -1));
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -129,34 +128,34 @@ final top: 1
 ===*/
 
 /* Dump/load mandelbrot.  No inner functions but a bit more code. */
-static duk_ret_t test_mandel(duk_context* ctx, void* udata) {
-  unsigned char* p;
-  duk_size_t i, sz;
+static duk_ret_t test_mandel(duk_context *ctx, void *udata) {
+	unsigned char *p;
+	duk_size_t i, sz;
 
-  (void)udata;
+	(void) udata;
 
-  printf("Mandelbrot source length: %ld\n", (long)strlen(MANDELBROT));
+	printf("Mandelbrot source length: %ld\n", (long) strlen(MANDELBROT));
 
-  /* Compiled as a function; force source filename. */
+	/* Compiled as a function; force source filename. */
 
-  duk_push_string(ctx, MANDELBROT);
-  duk_push_string(ctx, "mandel.js");
-  duk_compile(ctx, DUK_COMPILE_FUNCTION);
-  duk_dump_function(ctx);
-  p = (unsigned char*)duk_get_buffer(ctx, -1, &sz);
-  for (i = 0; i < sz; i++) {
-    printf("%02x", (int)p[i]);
-  }
-  printf("\n");
-  fflush(stdout);
+	duk_push_string(ctx, MANDELBROT);
+	duk_push_string(ctx, "mandel.js");
+	duk_compile(ctx, DUK_COMPILE_FUNCTION);
+	duk_dump_function(ctx);
+	p = (unsigned char *) duk_get_buffer(ctx, -1, &sz);
+	for (i = 0; i < sz; i++) {
+		printf("%02x", (int) p[i]);
+	}
+	printf("\n");
+	fflush(stdout);
 
-  /* Load test function from dump and execute it. */
-  duk_load_function(ctx);
-  duk_call(ctx, 0);
-  printf("call result: %s\n", duk_safe_to_string(ctx, -1));
+	/* Load test function from dump and execute it. */
+	duk_load_function(ctx);
+	duk_call(ctx, 0);
+	printf("call result: %s\n", duk_safe_to_string(ctx, -1));
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -168,112 +167,94 @@ final top: 1
 ===*/
 
 /* Test dumping of a large function to exercise buffer resizes. */
-static duk_ret_t test_large_func(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_large_func(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_eval_string(ctx,
-                  "(function () {\n"
-                  "    var res = [];\n"
-                  "    res.push('(function myFunc() {');\n"
-                  "    var i;\n"
-                  "    for (i = 0; i < 5e4; i++) {\n"
-                  "        res.push('var test' + i + ' = ' + i + ';');\n"
-                  "    }\n"
-                  "    res.push('print(test9999);')\n"
-                  "    res.push('})');\n"
-                  "    return eval(res.join('\\n'));\n"
-                  "})()");
-  duk_dump_function(ctx);
-  duk_load_function(ctx);
-  duk_call(ctx, 0);
-  printf("call result: %s\n", duk_safe_to_string(ctx, -1));
+	duk_eval_string(ctx,
+		"(function () {\n"
+		"    var res = [];\n"
+		"    res.push('(function myFunc() {');\n"
+		"    var i;\n"
+		"    for (i = 0; i < 5e4; i++) {\n"
+		"        res.push('var test' + i + ' = ' + i + ';');\n"
+		"    }\n"
+		"    res.push('print(test9999);')\n"
+		"    res.push('})');\n"
+		"    return eval(res.join('\\n'));\n"
+		"})()");
+	duk_dump_function(ctx);
+	duk_load_function(ctx);
+	duk_call(ctx, 0);
+	printf("call result: %s\n", duk_safe_to_string(ctx, -1));
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
 *** test_properties (duk_safe_call)
 .length: {"value":3,"writable":false,"enumerable":false,"configurable":true}
 .name: {"value":"test","writable":false,"enumerable":false,"configurable":true}
-.fileName:
-{"value":"fakeFilename.js","writable":false,"enumerable":false,"configurable":true}
+.fileName: {"value":"fakeFilename.js","writable":false,"enumerable":false,"configurable":true}
 .prototype: {"value":{},"writable":true,"enumerable":false,"configurable":false}
 0: {value:["a","b","c"],writable:false,enumerable:false,configurable:false}
 1: {value:{a:0,b:1,c:2,x:3},writable:false,enumerable:false,configurable:false}
-2:
-{value:|04000000020000000c00000000|,writable:true,enumerable:false,configurable:true}
+2: {value:|04000000020000000c00000000|,writable:true,enumerable:false,configurable:true}
 typeof .prototype: object
 typeof .prototype.constructor: function
 .prototype.constructor === func: true
-descriptor of .prototype:
-{"value":{},"writable":true,"enumerable":false,"configurable":false} descriptor
-of .prototype.constructor:
-{"writable":true,"enumerable":false,"configurable":true} final top: 0
+descriptor of .prototype: {"value":{},"writable":true,"enumerable":false,"configurable":false}
+descriptor of .prototype.constructor: {"writable":true,"enumerable":false,"configurable":true}
+final top: 0
 ==> rc=0, result='undefined'
 ===*/
 
 /* Properties and property attributes of a loaded function. */
-static duk_ret_t test_properties(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_properties(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  /* Compile explicitly to force fileName. */
-  duk_push_string(
-      ctx,
-      "(function () {\n"
-      "    var f = function test(a, b, c) { var x = 123; y = 234; };\n"
-      "    return f;\n"
-      "})()");
-  duk_push_string(ctx, "fakeFilename.js");
-  duk_compile(ctx, DUK_COMPILE_EVAL);
-  duk_call(ctx, 0);
+	/* Compile explicitly to force fileName. */
+	duk_push_string(ctx,
+		"(function () {\n"
+		"    var f = function test(a, b, c) { var x = 123; y = 234; };\n"
+		"    return f;\n"
+		"})()");
+	duk_push_string(ctx, "fakeFilename.js");
+	duk_compile(ctx, DUK_COMPILE_EVAL);
+	duk_call(ctx, 0);
 
-  duk_dump_function(ctx);
-  duk_load_function(ctx);
+	duk_dump_function(ctx);
+	duk_load_function(ctx);
 
-  /* Create the internal keys (hidden symbols) from C code. */
+	/* Create the internal keys (hidden symbols) from C code. */
 
-  duk_eval_string(
-      ctx,
-      "(function (v, k1, k2, k3) {\n"
-      "    [ 'length', 'name', 'fileName', 'prototype' ].forEach(function (k) "
-      "{\n"
-      "        print('.' + k + ': ' + "
-      "JSON.stringify(Object.getOwnPropertyDescriptor(v, k)));\n"
-      "    });\n"
-      "    // internal properties; print with JX to print buffer\n"
-      "    [ k1, k2, k3 ].forEach(function (k, i) {\n"
-      "        print(i + ': ' + Duktape.enc('jx', "
-      "Object.getOwnPropertyDescriptor(v, k)));\n"
-      "    });\n"
-      "    // .prototype\n"
-      "    print('typeof .prototype: ' + typeof v.prototype);\n"
-      "    print('typeof .prototype.constructor: ' + typeof "
-      "v.prototype.constructor);\n"
-      "    print('.prototype.constructor === func: ' + (v === "
-      "v.prototype.constructor));\n"
-      "    print('descriptor of .prototype: ' + "
-      "JSON.stringify(Object.getOwnPropertyDescriptor(v, 'prototype')));\n"
-      "    print('descriptor of .prototype.constructor: ' + "
-      "JSON.stringify(Object.getOwnPropertyDescriptor(v.prototype, "
-      "'constructor')));\n"
-      "})");
-  duk_dup(ctx, -2), duk_push_string(ctx,
-                                    "\x82"
-                                    "Formals");
-  duk_push_string(ctx,
-                  "\x82"
-                  "Varmap");
-  duk_push_string(ctx,
-                  "\x82"
-                  "Pc2line");
-  duk_call(ctx, 4);
-  duk_pop(ctx);
+	duk_eval_string(ctx,
+		"(function (v, k1, k2, k3) {\n"
+		"    [ 'length', 'name', 'fileName', 'prototype' ].forEach(function (k) {\n"
+		"        print('.' + k + ': ' + JSON.stringify(Object.getOwnPropertyDescriptor(v, k)));\n"
+		"    });\n"
+		"    // internal properties; print with JX to print buffer\n"
+		"    [ k1, k2, k3 ].forEach(function (k, i) {\n"
+		"        print(i + ': ' + Duktape.enc('jx', Object.getOwnPropertyDescriptor(v, k)));\n"
+		"    });\n"
+		"    // .prototype\n"
+		"    print('typeof .prototype: ' + typeof v.prototype);\n"
+		"    print('typeof .prototype.constructor: ' + typeof v.prototype.constructor);\n"
+		"    print('.prototype.constructor === func: ' + (v === v.prototype.constructor));\n"
+		"    print('descriptor of .prototype: ' + JSON.stringify(Object.getOwnPropertyDescriptor(v, 'prototype')));\n"
+		"    print('descriptor of .prototype.constructor: ' + JSON.stringify(Object.getOwnPropertyDescriptor(v.prototype, 'constructor')));\n"
+		"})");
+	duk_dup(ctx, -2),
+	duk_push_string(ctx, "\x82" "Formals");
+	duk_push_string(ctx, "\x82" "Varmap");
+	duk_push_string(ctx, "\x82" "Pc2line");
+	duk_call(ctx, 4);
+	duk_pop(ctx);
 
-  duk_pop(ctx);
+	duk_pop(ctx);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -289,29 +270,33 @@ final top: 0
  * - Bindings established via Eval code are not configurable
  *   (E5 Section 10.5 step 2).
  */
-static duk_ret_t test_program_code(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_program_code(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  /* Demonstrate behavior without dump/load. */
-  duk_compile_string(ctx, 0, "var testProgram1 = 123;");
-  duk_call(ctx, 0);
-  duk_pop(ctx);
-  duk_eval_string_noresult(ctx,
-                           "print(JSON.stringify(Object."
-                           "getOwnPropertyDescriptor(this, 'testProgram1')));");
+	/* Demonstrate behavior without dump/load. */
+	duk_compile_string(ctx, 0,
+		"var testProgram1 = 123;"
+	);
+	duk_call(ctx, 0);
+	duk_pop(ctx);
+	duk_eval_string_noresult(ctx,
+		"print(JSON.stringify(Object.getOwnPropertyDescriptor(this, 'testProgram1')));"
+	);
 
-  /* Same with dump/load. */
-  duk_compile_string(ctx, 0, "var testProgram2 = 234;");
-  duk_dump_function(ctx);
-  duk_load_function(ctx);
-  duk_call(ctx, 0);
-  duk_pop(ctx);
-  duk_eval_string_noresult(ctx,
-                           "print(JSON.stringify(Object."
-                           "getOwnPropertyDescriptor(this, 'testProgram2')));");
+	/* Same with dump/load. */
+	duk_compile_string(ctx, 0,
+		"var testProgram2 = 234;"
+	);
+	duk_dump_function(ctx);
+	duk_load_function(ctx);
+	duk_call(ctx, 0);
+	duk_pop(ctx);
+	duk_eval_string_noresult(ctx,
+		"print(JSON.stringify(Object.getOwnPropertyDescriptor(this, 'testProgram2')));"
+	);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -331,29 +316,33 @@ final top: 0
  * Here we bytecode dump an eval function that is then loaded and executed
  * in the global scope.
  */
-static duk_ret_t test_eval_code(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_eval_code(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  /* Demonstrate behavior without dump/load. */
-  duk_compile_string(ctx, DUK_COMPILE_EVAL, "var testEval1 = 123;");
-  duk_call(ctx, 0);
-  duk_pop(ctx);
-  duk_eval_string_noresult(ctx,
-                           "print(JSON.stringify(Object."
-                           "getOwnPropertyDescriptor(this, 'testEval1')));");
+	/* Demonstrate behavior without dump/load. */
+	duk_compile_string(ctx, DUK_COMPILE_EVAL,
+		"var testEval1 = 123;"
+	);
+	duk_call(ctx, 0);
+	duk_pop(ctx);
+	duk_eval_string_noresult(ctx,
+		"print(JSON.stringify(Object.getOwnPropertyDescriptor(this, 'testEval1')));"
+	);
 
-  /* Same with dump/load. */
-  duk_compile_string(ctx, DUK_COMPILE_EVAL, "var testEval2 = 234;");
-  duk_dump_function(ctx);
-  duk_load_function(ctx);
-  duk_call(ctx, 0);
-  duk_pop(ctx);
-  duk_eval_string_noresult(ctx,
-                           "print(JSON.stringify(Object."
-                           "getOwnPropertyDescriptor(this, 'testEval2')));");
+	/* Same with dump/load. */
+	duk_compile_string(ctx, DUK_COMPILE_EVAL,
+		"var testEval2 = 234;"
+	);
+	duk_dump_function(ctx);
+	duk_load_function(ctx);
+	duk_call(ctx, 0);
+	duk_pop(ctx);
+	duk_eval_string_noresult(ctx,
+		"print(JSON.stringify(Object.getOwnPropertyDescriptor(this, 'testEval2')));"
+	);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -365,32 +354,32 @@ final top: 0
 ===*/
 
 /* Strictness status is preserved. */
-static duk_ret_t test_strict(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_strict(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_compile_string(ctx, DUK_COMPILE_FUNCTION,
-                     "function () {\n"
-                     "    var strict = (function () { return !this; })();\n"
-                     "    print('strict: ' + strict);\n"
-                     "}");
-  duk_dump_function(ctx);
-  duk_load_function(ctx);
-  duk_call(ctx, 0);
-  duk_pop(ctx);
+	duk_compile_string(ctx, DUK_COMPILE_FUNCTION,
+		"function () {\n"
+		"    var strict = (function () { return !this; })();\n"
+		"    print('strict: ' + strict);\n"
+		"}");
+	duk_dump_function(ctx);
+	duk_load_function(ctx);
+	duk_call(ctx, 0);
+	duk_pop(ctx);
 
-  duk_compile_string(ctx, DUK_COMPILE_FUNCTION,
-                     "function () {\n"
-                     "    'use strict';\n"
-                     "    var strict = (function () { return !this; })();\n"
-                     "    print('strict: ' + strict);\n"
-                     "}");
-  duk_dump_function(ctx);
-  duk_load_function(ctx);
-  duk_call(ctx, 0);
-  duk_pop(ctx);
+	duk_compile_string(ctx, DUK_COMPILE_FUNCTION,
+		"function () {\n"
+		"    'use strict';\n"
+		"    var strict = (function () { return !this; })();\n"
+		"    print('strict: ' + strict);\n"
+		"}");
+	duk_dump_function(ctx);
+	duk_load_function(ctx);
+	duk_call(ctx, 0);
+	duk_pop(ctx);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -402,38 +391,38 @@ final top: 0
 ===*/
 
 /* _Varmap is preserved if function needs it. */
-static duk_ret_t test_varmap(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_varmap(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  /* Get access to _Varmap by creating a function that provides
-   * an 'eval service' in a function scope.
-   */
-  duk_compile_string(ctx, DUK_COMPILE_FUNCTION,
-                     "function (code) {\n"
-                     "    var foo = 123;\n"
-                     "    eval(code);\n"
-                     "}");
-  duk_dump_function(ctx);
-  duk_load_function(ctx);
+	/* Get access to _Varmap by creating a function that provides
+	 * an 'eval service' in a function scope.
+	 */
+	duk_compile_string(ctx, DUK_COMPILE_FUNCTION,
+		"function (code) {\n"
+		"    var foo = 123;\n"
+		"    eval(code);\n"
+		"}");
+	duk_dump_function(ctx);
+	duk_load_function(ctx);
 
-  duk_dup(ctx, -1);
-  duk_push_string(ctx, "print('hello world');");
-  duk_call(ctx, 1);
-  duk_pop(ctx);
+	duk_dup(ctx, -1);
+	duk_push_string(ctx, "print('hello world');");
+	duk_call(ctx, 1);
+	duk_pop(ctx);
 
-  /* Eval code will use GETVAR to read 'foo', and _Varmap is
-   * needed for that.
-   */
+	/* Eval code will use GETVAR to read 'foo', and _Varmap is
+	 * needed for that.
+	 */
 
-  duk_dup(ctx, -1);
-  duk_push_string(ctx, "print(foo);");
-  duk_call(ctx, 1);
-  duk_pop(ctx);
+	duk_dup(ctx, -1);
+	duk_push_string(ctx, "print(foo);");
+	duk_call(ctx, 1);
+	duk_pop(ctx);
 
-  duk_pop(ctx);
+	duk_pop(ctx);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -449,34 +438,33 @@ final top: 0
 ===*/
 
 /* Arguments object still works after dump/load, relies on e.g. _Formals. */
-static duk_ret_t test_arguments_object(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_arguments_object(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_eval_string(ctx,
-                  "(function () {\n"
-                  "    var f = function test(x,y) {\n"
-                  "        print(typeof arguments, "
-                  "Object.prototype.toString.call(arguments));\n"
-                  "        print(arguments[0], arguments[1]);\n"
-                  "        arguments[0] = 123;\n"
-                  "        print(x, y);\n"
-                  "    };\n"
-                  "    return f;\n"
-                  "})()");
-  duk_dup_top(ctx);
-  duk_push_string(ctx, "foo");
-  duk_push_string(ctx, "bar");
-  duk_call(ctx, 2);
-  duk_pop(ctx);
-  duk_dump_function(ctx);
-  duk_load_function(ctx);
-  duk_push_string(ctx, "foo");
-  duk_push_string(ctx, "bar");
-  duk_call(ctx, 2);
-  duk_pop(ctx);
+	duk_eval_string(ctx,
+		"(function () {\n"
+		"    var f = function test(x,y) {\n"
+		"        print(typeof arguments, Object.prototype.toString.call(arguments));\n"
+		"        print(arguments[0], arguments[1]);\n"
+		"        arguments[0] = 123;\n"
+		"        print(x, y);\n"
+		"    };\n"
+		"    return f;\n"
+		"})()");
+	duk_dup_top(ctx);
+	duk_push_string(ctx, "foo");
+	duk_push_string(ctx, "bar");
+	duk_call(ctx, 2);
+	duk_pop(ctx);
+	duk_dump_function(ctx);
+	duk_load_function(ctx);
+	duk_push_string(ctx, "foo");
+	duk_push_string(ctx, "bar");
+	duk_call(ctx, 2);
+	duk_pop(ctx);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -490,30 +478,30 @@ final top: 0
 ===*/
 
 /* _Pc2line is preserved, check by traceback line numbers. */
-static duk_ret_t test_pc2line(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_pc2line(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_eval_string(ctx,
-                  "(function () {\n"
-                  "    var f = function test() {\n"
-                  "        print('hello world');\n"
-                  "        try {\n"
-                  "            throw new Error('aiee');\n"
-                  "        } catch (e) {\n"
-                  "            print(e, e.lineNumber);\n"
-                  "        }\n"
-                  "    };\n"
-                  "    return f;\n"
-                  "})()");
-  duk_dup_top(ctx);
-  duk_call(ctx, 0); /* undumped */
-  duk_pop(ctx);
-  duk_dump_function(ctx);
-  duk_load_function(ctx);
-  duk_call(ctx, 0); /* dump/load */
-  duk_pop(ctx);
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	duk_eval_string(ctx,
+		"(function () {\n"
+		"    var f = function test() {\n"
+		"        print('hello world');\n"
+		"        try {\n"
+		"            throw new Error('aiee');\n"
+		"        } catch (e) {\n"
+		"            print(e, e.lineNumber);\n"
+		"        }\n"
+		"    };\n"
+		"    return f;\n"
+		"})()");
+	duk_dup_top(ctx);
+	duk_call(ctx, 0);  /* undumped */
+	duk_pop(ctx);
+	duk_dump_function(ctx);
+	duk_load_function(ctx);
+	duk_call(ctx, 0);  /* dump/load */
+	duk_pop(ctx);
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -541,41 +529,39 @@ final top: 0
 /* Name binding for function expressions is preserved, it is important
  * for recursive functions.
  */
-static duk_ret_t test_name_binding_funcexpr(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_name_binding_funcexpr(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_eval_string(
-      ctx,
-      "(function () {\n"
-      "    var f = function test() { print('i am a ' + typeof test); };\n"
-      "    return f;\n"
-      "})()");
-  duk_dup_top(ctx);
-  duk_call(ctx, 0); /* undumped */
-  duk_pop(ctx);
-  duk_dump_function(ctx);
-  duk_load_function(ctx);
-  duk_call(ctx, 0); /* dump/load */
-  duk_pop(ctx);
+	duk_eval_string(ctx,
+		"(function () {\n"
+		"    var f = function test() { print('i am a ' + typeof test); };\n"
+		"    return f;\n"
+		"})()");
+	duk_dup_top(ctx);
+	duk_call(ctx, 0);  /* undumped */
+	duk_pop(ctx);
+	duk_dump_function(ctx);
+	duk_load_function(ctx);
+	duk_call(ctx, 0);  /* dump/load */
+	duk_pop(ctx);
 
-  duk_eval_string(ctx,
-                  "(function () {\n"
-                  "    var f = function test(n) { print(n); if (n > 0) { "
-                  "test(n - 1); } };\n"
-                  "    return f;\n"
-                  "})()");
-  duk_dup_top(ctx);
-  duk_push_int(ctx, 5);
-  duk_call(ctx, 1); /* undumped */
-  duk_pop(ctx);
-  duk_dump_function(ctx);
-  duk_load_function(ctx);
-  duk_push_int(ctx, 7);
-  duk_call(ctx, 1); /* dump/load */
-  duk_pop(ctx);
+	duk_eval_string(ctx,
+		"(function () {\n"
+		"    var f = function test(n) { print(n); if (n > 0) { test(n - 1); } };\n"
+		"    return f;\n"
+		"})()");
+	duk_dup_top(ctx);
+	duk_push_int(ctx, 5);
+	duk_call(ctx, 1);  /* undumped */
+	duk_pop(ctx);
+	duk_dump_function(ctx);
+	duk_load_function(ctx);
+	duk_push_int(ctx, 7);
+	duk_call(ctx, 1);  /* dump/load */
+	duk_pop(ctx);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -592,60 +578,59 @@ final top: 1
  * we dump/load the function, only the function object is resurrected while the
  * global binding is not.
  */
-static duk_ret_t test_name_binding_funcdecl(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_name_binding_funcdecl(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_compile_string(ctx, 0 /*flags: program*/,
-                     "function declaredTest() {\n"
-                     "    print('i am a ' + typeof declaredTest);\n"
-                     "}");
-  duk_call(ctx, 0);
-  duk_pop(ctx);
+	duk_compile_string(ctx, 0 /*flags: program*/,
+		"function declaredTest() {\n"
+		"    print('i am a ' + typeof declaredTest);\n"
+		"}");
+	duk_call(ctx, 0);
+	duk_pop(ctx);
 
-  duk_get_global_string(ctx, "declaredTest");
-  duk_dump_function(ctx);
-  duk_eval_string_noresult(ctx, "declaredTest = 123;"); /* lose original */
-  duk_load_function(ctx);
-  duk_call(ctx, 0);
+	duk_get_global_string(ctx, "declaredTest");
+	duk_dump_function(ctx);
+	duk_eval_string_noresult(ctx, "declaredTest = 123;");  /* lose original */
+	duk_load_function(ctx);
+	duk_call(ctx, 0);
 
-  /* Because the declaredTest binding itself is not resurrected (only
-   * the function itself is), the "typeof declaredTest" will refer to
-   * the fake "declaredTest = 123" value, i.e. a number.
-   */
+	/* Because the declaredTest binding itself is not resurrected (only
+	 * the function itself is), the "typeof declaredTest" will refer to
+	 * the fake "declaredTest = 123" value, i.e. a number.
+	 */
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
 *** test_bound_rejected (duk_safe_call)
 dummythis x-arg y-arg
-==> rc=1, result='TypeError: compiledfunction required, found [object Function]
-(stack index -1)'
+==> rc=1, result='TypeError: compiledfunction required, found [object Function] (stack index -1)'
 ===*/
 
 /* Bound functions are rejected with TypeError. */
-static duk_ret_t test_bound_rejected(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_bound_rejected(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  /* XXX: Perhaps rework bound function support so that the final non-bound
-   * function is serialized instead?
-   */
-  duk_eval_string(ctx,
-                  "(function () {\n"
-                  "    var f = function test(x,y) { print(this, x, y); };\n"
-                  "    return f.bind('dummythis', 'x-arg', 'y-arg');\n"
-                  "})()");
-  duk_dup_top(ctx);
-  duk_call(ctx, 0);
-  duk_pop(ctx);
-  duk_dump_function(ctx);
-  duk_load_function(ctx);
-  duk_call(ctx, 0);
-  duk_pop(ctx);
+	/* XXX: Perhaps rework bound function support so that the final non-bound
+	 * function is serialized instead?
+	 */
+	duk_eval_string(ctx,
+		"(function () {\n"
+		"    var f = function test(x,y) { print(this, x, y); };\n"
+		"    return f.bind('dummythis', 'x-arg', 'y-arg');\n"
+		"})()");
+	duk_dup_top(ctx);
+	duk_call(ctx, 0);
+	duk_pop(ctx);
+	duk_dump_function(ctx);
+	duk_load_function(ctx);
+	duk_call(ctx, 0);
+	duk_pop(ctx);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -660,40 +645,37 @@ final top: 0
 ===*/
 
 /* Custom external prototype is lost during a dump/load. */
-static duk_ret_t test_external_prototype_lost(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_external_prototype_lost(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_eval_string(ctx,
-                  "(function () {\n"
-                  "    var f = function test() {};\n"
-                  "    var proto = { myProperty: 'myValue' };\n"
-                  "    f.prototype = proto;\n"
-                  "    var inst = new f();\n"
-                  "    print('inst prototype is Function.prototype: ' + "
-                  "(Object.getPrototypeOf(inst) === Function.prototype));\n"
-                  "    print('inst prototype is custom prototype: ' + "
-                  "(Object.getPrototypeOf(inst) === proto));\n"
-                  "    print(inst.myProperty);\n"
-                  "    return f;\n"
-                  "})()");
-  duk_dump_function(ctx);
-  duk_load_function(ctx);
+	duk_eval_string(ctx,
+		"(function () {\n"
+		"    var f = function test() {};\n"
+		"    var proto = { myProperty: 'myValue' };\n"
+		"    f.prototype = proto;\n"
+		"    var inst = new f();\n"
+		"    print('inst prototype is Function.prototype: ' + (Object.getPrototypeOf(inst) === Function.prototype));\n"
+		"    print('inst prototype is custom prototype: ' + (Object.getPrototypeOf(inst) === proto));\n"
+		"    print(inst.myProperty);\n"
+		"    return f;\n"
+		"})()");
+	duk_dump_function(ctx);
+	duk_load_function(ctx);
 
-  duk_get_prototype(ctx, -1);
-  duk_eval_string(ctx, "Function.prototype");
-  printf("f prototype is Function.prototype: %d\n",
-         (int)duk_strict_equals(ctx, -1, -2));
-  duk_pop_2(ctx);
+	duk_get_prototype(ctx, -1);
+	duk_eval_string(ctx, "Function.prototype");
+	printf("f prototype is Function.prototype: %d\n", (int) duk_strict_equals(ctx, -1, -2));
+	duk_pop_2(ctx);
 
-  duk_new(ctx, 0);
-  duk_get_prop_string(ctx, -1, "myProperty");
-  printf("myProperty: %s\n", duk_safe_to_string(ctx, -1));
-  duk_pop(ctx);
+	duk_new(ctx, 0);
+	duk_get_prop_string(ctx, -1, "myProperty");
+	printf("myProperty: %s\n", duk_safe_to_string(ctx, -1));
+	duk_pop(ctx);
 
-  duk_pop(ctx);
+	duk_pop(ctx);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -706,33 +688,32 @@ final top: 0
 ===*/
 
 /* Custom internal prototype is lost during a dump/load. */
-static duk_ret_t test_internal_prototype_lost(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_internal_prototype_lost(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_eval_string(ctx,
-                  "(function () {\n"
-                  "    var f = function test() {};\n"
-                  "    Object.setPrototypeOf(f, { myProperty: 'myValue' });\n"
-                  "    print(f.myProperty);\n"
-                  "    return f;\n"
-                  "})()");
-  duk_dump_function(ctx);
-  duk_load_function(ctx);
+	duk_eval_string(ctx,
+		"(function () {\n"
+		"    var f = function test() {};\n"
+		"    Object.setPrototypeOf(f, { myProperty: 'myValue' });\n"
+		"    print(f.myProperty);\n"
+		"    return f;\n"
+		"})()");
+	duk_dump_function(ctx);
+	duk_load_function(ctx);
 
-  duk_get_prop_string(ctx, -1, "myProperty");
-  printf("myProperty: %s\n", duk_safe_to_string(ctx, -1));
-  duk_pop(ctx);
+	duk_get_prop_string(ctx, -1, "myProperty");
+	printf("myProperty: %s\n", duk_safe_to_string(ctx, -1));
+	duk_pop(ctx);
 
-  duk_get_prototype(ctx, -1);
-  duk_eval_string(ctx, "Function.prototype");
-  printf("f prototype is Function.prototype: %d\n",
-         (int)duk_strict_equals(ctx, -1, -2));
-  duk_pop_2(ctx);
+	duk_get_prototype(ctx, -1);
+	duk_eval_string(ctx, "Function.prototype");
+	printf("f prototype is Function.prototype: %d\n", (int) duk_strict_equals(ctx, -1, -2));
+	duk_pop_2(ctx);
 
-  duk_pop(ctx);
+	duk_pop(ctx);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -760,68 +741,61 @@ final top: 0
  * .prototype is reset.  The .prototype is NOT recreated for non-constructable
  * functions, e.g. ES2015 object literal getters.
  */
-static duk_ret_t test_constructor_call(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_constructor_call(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  /* Basic constructable case. */
+	/* Basic constructable case. */
 
-  duk_eval_string(
-      ctx,
-      "(function () {\n"
-      "    var f = function test() { print('test called'); return 'retval' };\n"
-      "    f.prototype.foo = 'bar';\n"
-      "    return f;\n"
-      "})()");
-  duk_dump_function(ctx);
-  duk_load_function(ctx);
+	duk_eval_string(ctx,
+		"(function () {\n"
+		"    var f = function test() { print('test called'); return 'retval' };\n"
+		"    f.prototype.foo = 'bar';\n"
+		"    return f;\n"
+		"})()");
+	duk_dump_function(ctx);
+	duk_load_function(ctx);
 
-  duk_eval_string(ctx,
-                  "(function (f) {\n"
-                  "    print(typeof f);\n"
-                  "    print(typeof f.prototype);\n"
-                  "    print(typeof f.prototype.foo, f.prototype.foo);\n"
-                  "    try { print(f()); print('still here'); } catch (e) { "
-                  "print(e.name); }\n"
-                  "    try { print(typeof new f()); print('still here'); } "
-                  "catch (e) { print(e.name); }\n"
-                  "})");
-  duk_dup(ctx, -2);
-  duk_call(ctx, 1);
-  duk_pop(ctx);
+	duk_eval_string(ctx,
+		"(function (f) {\n"
+		"    print(typeof f);\n"
+		"    print(typeof f.prototype);\n"
+		"    print(typeof f.prototype.foo, f.prototype.foo);\n"
+		"    try { print(f()); print('still here'); } catch (e) { print(e.name); }\n"
+		"    try { print(typeof new f()); print('still here'); } catch (e) { print(e.name); }\n"
+		"})");
+	duk_dup(ctx, -2);
+	duk_call(ctx, 1);
+	duk_pop(ctx);
 
-  duk_pop(ctx);
+	duk_pop(ctx);
 
-  /* In ES2015 a getter shorthand in object literal is not constructable
-   * and has no .prototype property.
-   */
+	/* In ES2015 a getter shorthand in object literal is not constructable
+	 * and has no .prototype property.
+	 */
 
-  duk_eval_string(
-      ctx,
-      "(function () {\n"
-      "    var obj = { get foo() { print('foo getter called'); return "
-      "'retval'; } };\n"
-      "    return Object.getOwnPropertyDescriptor(obj, 'foo').get;\n"
-      "})()");
-  duk_dump_function(ctx);
-  duk_load_function(ctx);
+	duk_eval_string(ctx,
+		"(function () {\n"
+		"    var obj = { get foo() { print('foo getter called'); return 'retval'; } };\n"
+		"    return Object.getOwnPropertyDescriptor(obj, 'foo').get;\n"
+		"})()");
+	duk_dump_function(ctx);
+	duk_load_function(ctx);
 
-  duk_eval_string(ctx,
-                  "(function (f) {\n"
-                  "    print(typeof f);\n"
-                  "    print(typeof f.prototype);\n"
-                  "    try { print(f()); print('still here'); } catch (e) { "
-                  "print(e.name); }\n"
-                  "    try { print(typeof new f()); print('still here'); } "
-                  "catch (e) { print(e.name); }\n"
-                  "})");
-  duk_dup(ctx, -2);
-  duk_call(ctx, 1);
-  duk_pop(ctx);
+	duk_eval_string(ctx,
+		"(function (f) {\n"
+		"    print(typeof f);\n"
+		"    print(typeof f.prototype);\n"
+		"    try { print(f()); print('still here'); } catch (e) { print(e.name); }\n"
+		"    try { print(typeof new f()); print('still here'); } catch (e) { print(e.name); }\n"
+		"})");
+	duk_dup(ctx, -2);
+	duk_call(ctx, 1);
+	duk_pop(ctx);
 
-  duk_pop(ctx);
+	duk_pop(ctx);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -838,77 +812,77 @@ static duk_ret_t test_constructor_call(duk_context* ctx, void* udata) {
 /* There's no bytecode validation, but test loading bytecode with an invalid
  * initial byte.
  */
-static duk_ret_t test_load_invalid_format1(duk_context* ctx, void* udata) {
-  unsigned char* data;
+static duk_ret_t test_load_invalid_format1(duk_context *ctx, void *udata) {
+	unsigned char *data;
 
-  data = (unsigned char*)duk_push_fixed_buffer(ctx, 5);
-  data[0] = 0xff;
-  data[1] = 0x30;
-  data[2] = 0x31;
-  data[3] = 0x32;
-  data[4] = 0x33;
-  duk_load_function(ctx);
+	data = (unsigned char *) duk_push_fixed_buffer(ctx, 5);
+	data[0] = 0xff;
+	data[1] = 0x30;
+	data[2] = 0x31;
+	data[3] = 0x32;
+	data[4] = 0x33;
+	duk_load_function(ctx);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
-static duk_ret_t test_load_invalid_format2(duk_context* ctx, void* udata) {
-  unsigned char* data;
+static duk_ret_t test_load_invalid_format2(duk_context *ctx, void *udata) {
+	unsigned char *data;
 
-  data = (unsigned char*)duk_push_fixed_buffer(ctx, 5);
-  data[0] = 0x41;
-  data[1] = 0x30;
-  data[2] = 0x31;
-  data[3] = 0x32;
-  data[4] = 0x33;
-  duk_load_function(ctx);
+	data = (unsigned char *) duk_push_fixed_buffer(ctx, 5);
+	data[0] = 0x41;
+	data[1] = 0x30;
+	data[2] = 0x31;
+	data[3] = 0x32;
+	data[4] = 0x33;
+	duk_load_function(ctx);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
-static duk_ret_t test_load_invalid_format3(duk_context* ctx, void* udata) {
-  unsigned char* data;
+static duk_ret_t test_load_invalid_format3(duk_context *ctx, void *udata) {
+	unsigned char *data;
 
-  data = (unsigned char*)duk_push_fixed_buffer(ctx, 1);
-  data[0] = 0x41;
-  duk_load_function(ctx);
+	data = (unsigned char *) duk_push_fixed_buffer(ctx, 1);
+	data[0] = 0x41;
+	duk_load_function(ctx);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
-static duk_ret_t test_load_invalid_format4(duk_context* ctx, void* udata) {
-  unsigned char* data;
+static duk_ret_t test_load_invalid_format4(duk_context *ctx, void *udata) {
+	unsigned char *data;
 
-  data = (unsigned char*)duk_push_fixed_buffer(ctx, 0);
-  (void)data;
-  duk_load_function(ctx);
+	data = (unsigned char *) duk_push_fixed_buffer(ctx, 0);
+	(void) data;
+	duk_load_function(ctx);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
-void test(duk_context* ctx) {
-  TEST_SAFE_CALL(test_basic);
-  TEST_SAFE_CALL(test_mandel);
-  TEST_SAFE_CALL(test_large_func);
+void test(duk_context *ctx) {
+	TEST_SAFE_CALL(test_basic);
+	TEST_SAFE_CALL(test_mandel);
+	TEST_SAFE_CALL(test_large_func);
 
-  TEST_SAFE_CALL(test_properties);
-  TEST_SAFE_CALL(test_program_code);
-  TEST_SAFE_CALL(test_eval_code);
-  TEST_SAFE_CALL(test_strict);
-  TEST_SAFE_CALL(test_varmap);
-  TEST_SAFE_CALL(test_arguments_object);
-  TEST_SAFE_CALL(test_pc2line);
-  TEST_SAFE_CALL(test_name_binding_funcexpr);
-  TEST_SAFE_CALL(test_name_binding_funcdecl);
-  TEST_SAFE_CALL(test_bound_rejected);
-  TEST_SAFE_CALL(test_external_prototype_lost);
-  TEST_SAFE_CALL(test_internal_prototype_lost);
+	TEST_SAFE_CALL(test_properties);
+	TEST_SAFE_CALL(test_program_code);
+	TEST_SAFE_CALL(test_eval_code);
+	TEST_SAFE_CALL(test_strict);
+	TEST_SAFE_CALL(test_varmap);
+	TEST_SAFE_CALL(test_arguments_object);
+	TEST_SAFE_CALL(test_pc2line);
+	TEST_SAFE_CALL(test_name_binding_funcexpr);
+	TEST_SAFE_CALL(test_name_binding_funcdecl);
+	TEST_SAFE_CALL(test_bound_rejected);
+	TEST_SAFE_CALL(test_external_prototype_lost);
+	TEST_SAFE_CALL(test_internal_prototype_lost);
 
-  TEST_SAFE_CALL(test_constructor_call);
+	TEST_SAFE_CALL(test_constructor_call);
 
-  TEST_SAFE_CALL(test_load_invalid_format1);
-  TEST_SAFE_CALL(test_load_invalid_format2);
-  TEST_SAFE_CALL(test_load_invalid_format3);
-  TEST_SAFE_CALL(test_load_invalid_format4);
+	TEST_SAFE_CALL(test_load_invalid_format1);
+	TEST_SAFE_CALL(test_load_invalid_format2);
+	TEST_SAFE_CALL(test_load_invalid_format3);
+	TEST_SAFE_CALL(test_load_invalid_format4);
 }

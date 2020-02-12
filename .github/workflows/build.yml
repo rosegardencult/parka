@@ -22,7 +22,7 @@ jobs:
       env:
         CC: clang
       run: |
-        sudo apt update && sudo apt upgrade
+        sudo apt update -y && sudo apt install -y clang
         make all
 
 

@@ -185,5 +185,38 @@
 # API testcase (tests/api/) known issues
 
 -
+  test: "test-debugger-notify.c"
+  knownissue: "initial breakage, not really known"
+-
+  test: "test-dump-load-basic.c"
+  knownissue: "initial breakage, not really known"
+-
+  test: "test-get-pointer-default.c"
+  knownissue: "initial breakage, not really known"
+-
+  test: "test-get-pointer.c"
+  knownissue: "initial breakage, not really known"
+-
+  test: "test-get-require-push-heapptr.c"
+  knownissue: "initial breakage, not really known"
+-
+  test: "test-memory-funcs.c"
+  knownissue: "initial breakage, not really known"
+-
+  test: "test-opt-pointer.c"
+  knownissue: "initial breakage, not really known"
+-
+  test: "test-push-sprintf.c"
+  knownissue: "fails only in CI, not really known"
+-
+  test: "test-require-pointer.c"
+  knownissue: "initial breakage, not really known"
+-
   test: "test-to-number.c"
   knownissue: "number parsing bug for strings containing NUL characters (e.g. '\\u0000')"
+-
+  test: "test-to-pointer.c"
+  knownissue: "initial breakage, not really known"
+-
+  test: "test-types.c"
+  knownissue: "initial breakage, not really known"

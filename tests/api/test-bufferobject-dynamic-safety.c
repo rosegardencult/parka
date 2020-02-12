@@ -19,65 +19,59 @@
  *  Helpers
  */
 
-static void setup_nodejs_buffer(duk_context* ctx, duk_idx_t idx) {
-  duk_size_t sz;
+static void setup_nodejs_buffer(duk_context *ctx, duk_idx_t idx) {
+	duk_size_t sz;
 
-  idx = duk_require_normalize_index(ctx, idx);
-  (void)duk_require_buffer(ctx, idx, &sz);
-  duk_push_buffer_object(ctx, idx, 0, sz, DUK_BUFOBJ_NODEJS_BUFFER);
+	idx = duk_require_normalize_index(ctx, idx);
+	(void) duk_require_buffer(ctx, idx, &sz);
+	duk_push_buffer_object(ctx, idx, 0, sz, DUK_BUFOBJ_NODEJS_BUFFER);
 }
 
-static void setup_nodejs_buffer_slice(duk_context* ctx, duk_idx_t idx,
-                                      duk_int_t start, duk_int_t end) {
-  duk_size_t sz;
+static void setup_nodejs_buffer_slice(duk_context *ctx, duk_idx_t idx, duk_int_t start, duk_int_t end) {
+	duk_size_t sz;
 
-  idx = duk_require_normalize_index(ctx, idx);
-  (void)duk_require_buffer(ctx, idx, &sz);
-  duk_eval_string(ctx,
-                  "(function (buf, start, end) {\n"
-                  "    return buf.slice(start, end);\n"
-                  "})\n");
-  duk_push_buffer_object(ctx, idx, 0, sz, DUK_BUFOBJ_NODEJS_BUFFER);
-  duk_push_int(ctx, start);
-  duk_push_int(ctx, end);
-  duk_call(ctx, 3);
+	idx = duk_require_normalize_index(ctx, idx);
+	(void) duk_require_buffer(ctx, idx, &sz);
+	duk_eval_string(ctx,
+		"(function (buf, start, end) {\n"
+		"    return buf.slice(start, end);\n"
+		"})\n");
+	duk_push_buffer_object(ctx, idx, 0, sz, DUK_BUFOBJ_NODEJS_BUFFER);
+	duk_push_int(ctx, start);
+	duk_push_int(ctx, end);
+	duk_call(ctx, 3);
 }
 
-static void setup_arraybuffer(duk_context* ctx, duk_idx_t idx) {
-  duk_size_t sz;
+static void setup_arraybuffer(duk_context *ctx, duk_idx_t idx) {
+	duk_size_t sz;
 
-  idx = duk_require_normalize_index(ctx, idx);
-  (void)duk_require_buffer(ctx, idx, &sz);
-  duk_push_buffer_object(ctx, idx, 0, sz, DUK_BUFOBJ_ARRAYBUFFER);
+	idx = duk_require_normalize_index(ctx, idx);
+	(void) duk_require_buffer(ctx, idx, &sz);
+	duk_push_buffer_object(ctx, idx, 0, sz, DUK_BUFOBJ_ARRAYBUFFER);
 }
 
-static void setup_typedarray(duk_context* ctx, duk_idx_t idx,
-                             const char* name) {
-  idx = duk_require_normalize_index(ctx, idx);
-  duk_push_sprintf(ctx,
-                   "(function (plain_buffer) {\n"
-                   "    return new %s(plain_buffer.buffer);\n"
-                   "})\n",
-                   name);
-  duk_eval(ctx);
-  duk_dup(ctx, idx);
-  duk_call(ctx, 1);
+static void setup_typedarray(duk_context *ctx, duk_idx_t idx, const char *name) {
+	idx = duk_require_normalize_index(ctx, idx);
+	duk_push_sprintf(ctx,
+		"(function (plain_buffer) {\n"
+		"    return new %s(plain_buffer.buffer);\n"
+		"})\n", name);
+	duk_eval(ctx);
+	duk_dup(ctx, idx);
+	duk_call(ctx, 1);
 }
 
-static void setup_typedarray_slice(duk_context* ctx, duk_idx_t idx,
-                                   const char* name, duk_int_t start,
-                                   duk_int_t end) {
-  idx = duk_require_normalize_index(ctx, idx);
-  duk_push_sprintf(ctx,
-                   "(function (plain_buffer, start, length) {\n"
-                   "    return new %s(plain_buffer.buffer, start, length);\n"
-                   "})\n",
-                   name);
-  duk_eval(ctx);
-  duk_dup(ctx, idx);
-  duk_push_int(ctx, start);
-  duk_push_int(ctx, end);
-  duk_call(ctx, 3);
+static void setup_typedarray_slice(duk_context *ctx, duk_idx_t idx, const char *name, duk_int_t start, duk_int_t end) {
+	idx = duk_require_normalize_index(ctx, idx);
+	duk_push_sprintf(ctx,
+		"(function (plain_buffer, start, length) {\n"
+		"    return new %s(plain_buffer.buffer, start, length);\n"
+		"})\n", name);
+	duk_eval(ctx);
+	duk_dup(ctx, idx);
+	duk_push_int(ctx, start);
+	duk_push_int(ctx, end);
+	duk_call(ctx, 3);
 }
 
 /*
@@ -360,212 +354,206 @@ final top: 2
 ==> rc=0, result='undefined'
 ===*/
 
-static void shared_read_write_index(duk_context* ctx, duk_size_t resize_to) {
-  /* [ plain_buffer buffer ] */
+static void shared_read_write_index(duk_context *ctx, duk_size_t resize_to) {
+	/* [ plain_buffer buffer ] */
 
-  duk_eval_string(
-      ctx,
-      "(function (buf) {\n"
-      "    print('length', buf.length);\n"
-      "    print(buf[0] = 1);\n"
-      "    print(buf[99] = 2);\n"
-      "    print(buf[100] = 3);\n"  /* outside 'limit', not virtual -> becomes
-                                       concrete property */
-      "    print(0, buf[0]);\n"     /* in buffer */
-      "    print(99, buf[99]);\n"   /* in buffer */
-      "    print(100, buf[100]);\n" /* outside duk_hbufferobject 'limit', not
-                                       virtual */
-      "})\n");
-  duk_dup(ctx, 1);
-  duk_call(ctx, 1);
-  duk_pop(ctx);
+	duk_eval_string(ctx,
+		"(function (buf) {\n"
+		"    print('length', buf.length);\n"
+		"    print(buf[0] = 1);\n"
+		"    print(buf[99] = 2);\n"
+		"    print(buf[100] = 3);\n"   /* outside 'limit', not virtual -> becomes concrete property */
+		"    print(0, buf[0]);\n"      /* in buffer */
+		"    print(99, buf[99]);\n"    /* in buffer */
+		"    print(100, buf[100]);\n"  /* outside duk_hbufferobject 'limit', not virtual */
+		"})\n");
+	duk_dup(ctx, 1);
+	duk_call(ctx, 1);
+	duk_pop(ctx);
 
-  /* Resize to fewer number of bytes. */
+	/* Resize to fewer number of bytes. */
 
-  duk_resize_buffer(ctx, 0, resize_to);
+	duk_resize_buffer(ctx, 0, resize_to);
 
-  /* Reads inside the duk_hbufferobject limit but outside the underlying
-   * buffer return zero; writes are ignored.
-   */
+	/* Reads inside the duk_hbufferobject limit but outside the underlying
+	 * buffer return zero; writes are ignored.
+	 */
 
-  duk_eval_string(ctx,
-                  "(function (buf) {\n"
-                  "    print('length', buf.length);\n"
-                  "    print(buf[0] = 10);\n"
-                  "    print(buf[94] = 11);\n"
-                  "    print(buf[95] = 12);\n"
-                  "    print(buf[99] = 13);\n"
-                  "    print(buf[100] = 14);\n"
-                  "    print(0, buf[0]);\n"     /* in buffer */
-                  "    print(94, buf[94]);\n"   /* in buffer */
-                  "    print(95, buf[95]);\n"   /* inside duk_hbufferobject
-                                                   'limit', but outside buffer */
-                  "    print(99, buf[99]);\n"   /* inside duk_hbufferobject
-                                                   'limit', but outside buffer */
-                  "    print(100, buf[100]);\n" /* outside duk_hbufferobject
-                                                   'limit', not virtual */
-                  "})\n");
-  duk_dup(ctx, 1);
-  duk_call(ctx, 1);
-  duk_pop(ctx);
+	duk_eval_string(ctx,
+		"(function (buf) {\n"
+		"    print('length', buf.length);\n"
+		"    print(buf[0] = 10);\n"
+		"    print(buf[94] = 11);\n"
+		"    print(buf[95] = 12);\n"
+		"    print(buf[99] = 13);\n"
+		"    print(buf[100] = 14);\n"
+		"    print(0, buf[0]);\n"     /* in buffer */
+		"    print(94, buf[94]);\n"   /* in buffer */
+		"    print(95, buf[95]);\n"   /* inside duk_hbufferobject 'limit', but outside buffer */
+		"    print(99, buf[99]);\n"   /* inside duk_hbufferobject 'limit', but outside buffer */
+		"    print(100, buf[100]);\n"  /* outside duk_hbufferobject 'limit', not virtual */
+		"})\n");
+	duk_dup(ctx, 1);
+	duk_call(ctx, 1);
+	duk_pop(ctx);
 }
 
 /* Node.js Buffer, "full slice" */
-static duk_ret_t test_nodejs_buffer_indexed_1a(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_nodejs_buffer_indexed_1a(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_push_dynamic_buffer(ctx, 100);
-  setup_nodejs_buffer(ctx, -1);
-  shared_read_write_index(ctx, 95);
+	duk_push_dynamic_buffer(ctx, 100);
+	setup_nodejs_buffer(ctx, -1);
+	shared_read_write_index(ctx, 95);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /* Node.js Buffer, "partial slice" */
-static duk_ret_t test_nodejs_buffer_indexed_1b(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_nodejs_buffer_indexed_1b(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_push_dynamic_buffer(ctx, 150);
-  setup_nodejs_buffer_slice(ctx, -1, 30, 130);
-  shared_read_write_index(ctx, 30 + 95);
+	duk_push_dynamic_buffer(ctx, 150);
+	setup_nodejs_buffer_slice(ctx, -1, 30, 130);
+	shared_read_write_index(ctx, 30 + 95);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /* ArrayBuffer, "full slice" */
-static duk_ret_t test_arraybuffer_indexed_1a(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_arraybuffer_indexed_1a(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_push_dynamic_buffer(ctx, 100);
-  setup_arraybuffer(ctx, -1);
-  shared_read_write_index(ctx, 95);
+	duk_push_dynamic_buffer(ctx, 100);
+	setup_arraybuffer(ctx, -1);
+	shared_read_write_index(ctx, 95);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /* Can't create slices for ArrayBuffer directly. */
 
 /* Uint8Array, "full slice" */
-static duk_ret_t test_uint8array_indexed_1a(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_uint8array_indexed_1a(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_push_dynamic_buffer(ctx, 100);
-  setup_typedarray(ctx, -1, "Uint8Array");
-  shared_read_write_index(ctx, 95);
+	duk_push_dynamic_buffer(ctx, 100);
+	setup_typedarray(ctx, -1, "Uint8Array");
+	shared_read_write_index(ctx, 95);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /* Uint8Array, "partial slice" */
-static duk_ret_t test_uint8array_indexed_1b(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_uint8array_indexed_1b(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_push_dynamic_buffer(ctx, 150);
-  setup_typedarray_slice(ctx, -1, "Uint8Array", 30, 100);
-  shared_read_write_index(ctx, 30 + 95);
+	duk_push_dynamic_buffer(ctx, 150);
+	setup_typedarray_slice(ctx, -1, "Uint8Array", 30, 100);
+	shared_read_write_index(ctx, 30 + 95);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /* Uint16Array, "full slice" */
-static duk_ret_t test_uint16array_indexed_1a(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_uint16array_indexed_1a(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_push_dynamic_buffer(ctx, 200);
-  setup_typedarray(ctx, -1, "Uint16Array");
-  shared_read_write_index(ctx, 95 * 2);
+	duk_push_dynamic_buffer(ctx, 200);
+	setup_typedarray(ctx, -1, "Uint16Array");
+	shared_read_write_index(ctx, 95 * 2);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /* Uint16Array, "partial slice" */
-static duk_ret_t test_uint16array_indexed_1b(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_uint16array_indexed_1b(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_push_dynamic_buffer(ctx, 300);
-  setup_typedarray_slice(ctx, -1, "Uint16Array", 60, 100);
-  shared_read_write_index(ctx, 60 + 95 * 2);
+	duk_push_dynamic_buffer(ctx, 300);
+	setup_typedarray_slice(ctx, -1, "Uint16Array", 60, 100);
+	shared_read_write_index(ctx, 60 + 95 * 2);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /* Uint32Array, "full slice" */
-static duk_ret_t test_uint32array_indexed_1a(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_uint32array_indexed_1a(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_push_dynamic_buffer(ctx, 400);
-  setup_typedarray(ctx, -1, "Uint32Array");
-  shared_read_write_index(ctx, 95 * 4);
+	duk_push_dynamic_buffer(ctx, 400);
+	setup_typedarray(ctx, -1, "Uint32Array");
+	shared_read_write_index(ctx, 95 * 4);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /* Uint32Array, "partial slice" */
-static duk_ret_t test_uint32array_indexed_1b(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_uint32array_indexed_1b(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_push_dynamic_buffer(ctx, 600);
-  setup_typedarray_slice(ctx, -1, "Uint32Array", 120, 100);
-  shared_read_write_index(ctx, 120 + 95 * 4);
+	duk_push_dynamic_buffer(ctx, 600);
+	setup_typedarray_slice(ctx, -1, "Uint32Array", 120, 100);
+	shared_read_write_index(ctx, 120 + 95 * 4);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /* Float32Array, "full slice" */
-static duk_ret_t test_float32array_indexed_1a(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_float32array_indexed_1a(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_push_dynamic_buffer(ctx, 400);
-  setup_typedarray(ctx, -1, "Float32Array");
-  shared_read_write_index(ctx, 95 * 4);
+	duk_push_dynamic_buffer(ctx, 400);
+	setup_typedarray(ctx, -1, "Float32Array");
+	shared_read_write_index(ctx, 95 * 4);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /* Float32Array, "partial slice" */
-static duk_ret_t test_float32array_indexed_1b(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_float32array_indexed_1b(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_push_dynamic_buffer(ctx, 600);
-  setup_typedarray_slice(ctx, -1, "Float32Array", 120, 100);
-  shared_read_write_index(ctx, 120 + 95 * 4);
+	duk_push_dynamic_buffer(ctx, 600);
+	setup_typedarray_slice(ctx, -1, "Float32Array", 120, 100);
+	shared_read_write_index(ctx, 120 + 95 * 4);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /* Float64Array, "full slice" */
-static duk_ret_t test_float64array_indexed_1a(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_float64array_indexed_1a(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_push_dynamic_buffer(ctx, 800);
-  setup_typedarray(ctx, -1, "Float64Array");
-  shared_read_write_index(ctx, 95 * 8);
+	duk_push_dynamic_buffer(ctx, 800);
+	setup_typedarray(ctx, -1, "Float64Array");
+	shared_read_write_index(ctx, 95 * 8);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /* Float64Array, "partial slice" */
-static duk_ret_t test_float64array_indexed_1b(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_float64array_indexed_1b(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_push_dynamic_buffer(ctx, 1200);
-  setup_typedarray_slice(ctx, -1, "Float64Array", 240, 100);
-  shared_read_write_index(ctx, 240 + 95 * 8);
+	duk_push_dynamic_buffer(ctx, 1200);
+	setup_typedarray_slice(ctx, -1, "Float64Array", 240, 100);
+	shared_read_write_index(ctx, 240 + 95 * 8);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -637,52 +625,52 @@ final top: 2
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t test_json_serialize_1(duk_context* ctx, void* udata) {
-  unsigned char* data;
-  int i;
-  duk_uarridx_t arridx = 0;
+static duk_ret_t test_json_serialize_1(duk_context *ctx, void *udata) {
+	unsigned char *data;
+	int i;
+	duk_uarridx_t arridx = 0;
 
-  (void)udata;
+	(void) udata;
 
-  data = (unsigned char*)duk_push_dynamic_buffer(ctx, 20);
-  for (i = 0; i < 20; i++) {
-    data[i] = 0x40 + i;
-  }
+	data = (unsigned char *) duk_push_dynamic_buffer(ctx, 20);
+	for (i = 0; i < 20; i++) {
+		data[i] = 0x40 + i;
+	}
 
-  duk_push_array(ctx); /* index 1 */
-  setup_nodejs_buffer(ctx, 0);
-  duk_put_prop_index(ctx, 1, arridx++);
-  setup_nodejs_buffer_slice(ctx, 0, 3, 5);
-  duk_put_prop_index(ctx, 1, arridx++);
-  setup_arraybuffer(ctx, 0);
-  duk_put_prop_index(ctx, 1, arridx++);
-  setup_typedarray(ctx, 0, "Uint8Array");
-  duk_put_prop_index(ctx, 1, arridx++);
-  setup_typedarray_slice(ctx, 0, "Uint8Array", 2, 6);
-  duk_put_prop_index(ctx, 1, arridx++);
-  setup_typedarray(ctx, 0, "Uint32Array");
-  duk_put_prop_index(ctx, 1, arridx++);
-  setup_typedarray_slice(ctx, 0, "Uint32Array", 4, 1);
-  duk_put_prop_index(ctx, 1, arridx++);
+	duk_push_array(ctx);  /* index 1 */
+	setup_nodejs_buffer(ctx, 0);
+	duk_put_prop_index(ctx, 1, arridx++);
+	setup_nodejs_buffer_slice(ctx, 0, 3, 5);
+	duk_put_prop_index(ctx, 1, arridx++);
+	setup_arraybuffer(ctx, 0);
+	duk_put_prop_index(ctx, 1, arridx++);
+	setup_typedarray(ctx, 0, "Uint8Array");
+	duk_put_prop_index(ctx, 1, arridx++);
+	setup_typedarray_slice(ctx, 0, "Uint8Array", 2, 6);
+	duk_put_prop_index(ctx, 1, arridx++);
+	setup_typedarray(ctx, 0, "Uint32Array");
+	duk_put_prop_index(ctx, 1, arridx++);
+	setup_typedarray_slice(ctx, 0, "Uint32Array", 4, 1);
+	duk_put_prop_index(ctx, 1, arridx++);
 
-  /* Serialize with a full backing buffer first. */
+	/* Serialize with a full backing buffer first. */
 
-  for (i = 20; i >= 0; i--) {
-    printf("resize to %d\n", i);
-    duk_resize_buffer(ctx, 0, i);
+	for (i = 20; i >= 0; i--) {
+		printf("resize to %d\n", i);
+		duk_resize_buffer(ctx, 0, i);
 
-    duk_dup(ctx, 1);
-    duk_json_encode(ctx, -1);
-    printf("%s\n", duk_to_string(ctx, -1));
-    duk_pop(ctx);
-    duk_eval_string(ctx, "(function (v) { print(Duktape.enc('jx', v)); })");
-    duk_dup(ctx, 1);
-    duk_call(ctx, 1);
-    duk_pop(ctx);
-  }
+		duk_dup(ctx, 1);
+		duk_json_encode(ctx, -1);
+		printf("%s\n", duk_to_string(ctx, -1));
+		duk_pop(ctx);
+		duk_eval_string(ctx, "(function (v) { print(Duktape.enc('jx', v)); })");
+		duk_dup(ctx, 1);
+		duk_call(ctx, 1);
+		duk_pop(ctx);
+	}
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -713,48 +701,47 @@ final top: 2
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t test_typedarray_constructor_copy_1(duk_context* ctx,
-                                                    void* udata) {
-  int i;
-  unsigned char* data;
+static duk_ret_t test_typedarray_constructor_copy_1(duk_context *ctx, void *udata) {
+	int i;
+	unsigned char *data;
 
-  (void)udata;
+	(void) udata;
 
-  data = (unsigned char*)duk_push_dynamic_buffer(ctx, 10); /* index 0 */
-  for (i = 0; i < 10; i++) {
-    data[i] = 0x40 + i;
-  }
+	data = (unsigned char *) duk_push_dynamic_buffer(ctx, 10);  /* index 0 */
+	for (i = 0; i < 10; i++) {
+		data[i] = 0x40 + i;
+	}
 
-  setup_typedarray(ctx, 0, "Uint8Array"); /* index 1 */
+	setup_typedarray(ctx, 0, "Uint8Array");  /* index 1 */
 
-  for (i = 10; i >= 0; i--) {
-    duk_resize_buffer(ctx, 0, i);
+	for (i = 10; i >= 0; i--) {
+		duk_resize_buffer(ctx, 0, i);
 
-    /* Compatible copy, uses byte copy when buffer is covered. */
-    duk_eval_string(ctx,
-                    "(function (src) {\n"
-                    "    var buf = new Uint8Array(src);\n"
-                    "    print(Duktape.enc('jx', buf));\n"
-                    "})\n");
-    duk_dup(ctx, 1);
-    duk_call(ctx, 1);
-    duk_pop(ctx);
+		/* Compatible copy, uses byte copy when buffer is covered. */
+		duk_eval_string(ctx,
+			"(function (src) {\n"
+			"    var buf = new Uint8Array(src);\n"
+			"    print(Duktape.enc('jx', buf));\n"
+			"})\n");
+		duk_dup(ctx, 1);
+		duk_call(ctx, 1);
+		duk_pop(ctx);
 
-    /* Incompatible copy, uses "fast copy" when buffer is covered.
-     * Endian specific output.
-     */
-    duk_eval_string(ctx,
-                    "(function (src) {\n"
-                    "    var buf = new Uint16Array(src);\n"
-                    "    print(Duktape.enc('jx', buf));\n"
-                    "})\n");
-    duk_dup(ctx, 1);
-    duk_call(ctx, 1);
-    duk_pop(ctx);
-  }
+		/* Incompatible copy, uses "fast copy" when buffer is covered.
+		 * Endian specific output.
+		 */
+		duk_eval_string(ctx,
+			"(function (src) {\n"
+			"    var buf = new Uint16Array(src);\n"
+			"    print(Duktape.enc('jx', buf));\n"
+			"})\n");
+		duk_dup(ctx, 1);
+		duk_call(ctx, 1);
+		duk_pop(ctx);
+	}
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -1049,56 +1036,55 @@ final top: 6
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t test_typedarray_set_1(duk_context* ctx, void* udata) {
-  int i, dst, src;
-  unsigned char* data;
+static duk_ret_t test_typedarray_set_1(duk_context *ctx, void *udata) {
+	int i, dst, src;
+	unsigned char *data;
 
-  (void)udata;
+	(void) udata;
 
-  data = (unsigned char*)duk_push_dynamic_buffer(ctx, 10); /* index 0 */
-  for (i = 0; i < 10; i++) {
-    data[i] = 0x40 + i;
-  }
+	data = (unsigned char *) duk_push_dynamic_buffer(ctx, 10);  /* index 0 */
+	for (i = 0; i < 10; i++) {
+		data[i] = 0x40 + i;
+	}
 
-  /* Some combinations are not set() compatible and cause a RangeError
-   * (source longer than target).  But this set should exercise byte copy,
-   * fast copy, and slow copy code paths.
-   */
+	/* Some combinations are not set() compatible and cause a RangeError
+	 * (source longer than target).  But this set should exercise byte copy,
+	 * fast copy, and slow copy code paths.
+	 */
 
-  setup_typedarray(ctx, 0, "Uint8Array");              /* index 1, length 10 */
-  setup_typedarray_slice(ctx, 0, "Uint8Array", 2, 5);  /* index 2, length 5 */
-  setup_typedarray(ctx, 0, "Uint16Array");             /* index 3, length 5 */
-  setup_typedarray_slice(ctx, 0, "Uint16Array", 2, 3); /* index 4, length 3 */
-  duk_eval_string(ctx, "[ 1, 2, 3, 4, 5 ]");           /* index 5, length 5 */
+	setup_typedarray(ctx, 0, "Uint8Array");               /* index 1, length 10 */
+	setup_typedarray_slice(ctx, 0, "Uint8Array", 2, 5);   /* index 2, length 5 */
+	setup_typedarray(ctx, 0, "Uint16Array");              /* index 3, length 5 */
+	setup_typedarray_slice(ctx, 0, "Uint16Array", 2, 3);  /* index 4, length 3 */
+	duk_eval_string(ctx, "[ 1, 2, 3, 4, 5 ]");            /* index 5, length 5 */
 
-  for (i = 10; i >= 0; i--) {
-    duk_resize_buffer(ctx, 0, i);
+	for (i = 10; i >= 0; i--) {
+		duk_resize_buffer(ctx, 0, i);
 
-    /* Various copy combinations.  Resulting buffer is omitted;
-     * when both dst and src are typedarrays they share the same
-     * underlying buffer. so the results are a bit confusing (and
-     * not important to memory safety).
-     */
+		/* Various copy combinations.  Resulting buffer is omitted;
+		 * when both dst and src are typedarrays they share the same
+		 * underlying buffer. so the results are a bit confusing (and
+		 * not important to memory safety).
+		 */
 
-    for (dst = 1; dst <= 4; dst++) {
-      for (src = 1; src <= 5; src++) {
-        printf("%d %d %d\n", i, dst, src);
-        duk_eval_string(
-            ctx,
-            "(function (dst, src) {\n"
-            "    for (var i = 0; i < dst.length; i++) { dst[i] = 0x11; }\n"
-            "    try { dst.set(src); } catch (e) { print(e.name); }\n"
-            "})\n");
-        duk_dup(ctx, dst);
-        duk_dup(ctx, src);
-        duk_call(ctx, 2);
-        duk_pop(ctx);
-      }
-    }
-  }
+		for (dst = 1; dst <= 4; dst++) {
+			for (src = 1; src <= 5; src++) {
+				printf("%d %d %d\n", i, dst, src);
+				duk_eval_string(ctx,
+					"(function (dst, src) {\n"
+					"    for (var i = 0; i < dst.length; i++) { dst[i] = 0x11; }\n"
+					"    try { dst.set(src); } catch (e) { print(e.name); }\n"
+					"})\n");
+				duk_dup(ctx, dst);
+				duk_dup(ctx, src);
+				duk_call(ctx, 2);
+				duk_pop(ctx);
+			}
+		}
+	}
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -1459,46 +1445,44 @@ final top: 5
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t test_nodejs_buffer_compare_1(duk_context* ctx, void* udata) {
-  int i, dst, src;
-  unsigned char* data;
+static duk_ret_t test_nodejs_buffer_compare_1(duk_context *ctx, void *udata) {
+	int i, dst, src;
+	unsigned char *data;
 
-  (void)udata;
+	(void) udata;
 
-  /* There are two relevant methods: Buffer.compare and
-   * Buffer.prototype.compare() */
+	/* There are two relevant methods: Buffer.compare and Buffer.prototype.compare() */
 
-  data = (unsigned char*)duk_push_dynamic_buffer(ctx, 10); /* index 0 */
-  for (i = 0; i < 10; i++) {
-    data[i] = 0x40 + i;
-  }
+	data = (unsigned char *) duk_push_dynamic_buffer(ctx, 10);  /* index 0 */
+	for (i = 0; i < 10; i++) {
+		data[i] = 0x40 + i;
+	}
 
-  setup_nodejs_buffer(ctx, 0);
-  setup_nodejs_buffer_slice(ctx, 0, 1, 4);
-  setup_nodejs_buffer_slice(ctx, 0, 3, 7);
-  setup_nodejs_buffer_slice(ctx, 0, 6, 9);
+	setup_nodejs_buffer(ctx, 0);
+	setup_nodejs_buffer_slice(ctx, 0, 1, 4);
+	setup_nodejs_buffer_slice(ctx, 0, 3, 7);
+	setup_nodejs_buffer_slice(ctx, 0, 6, 9);
 
-  for (i = 10; i >= 0; i--) {
-    duk_resize_buffer(ctx, 0, i);
+	for (i = 10; i >= 0; i--) {
+		duk_resize_buffer(ctx, 0, i);
 
-    for (dst = 1; dst <= 4; dst++) {
-      for (src = 1; src <= 4; src++) {
-        printf("%d %d %d\n", i, dst, src);
-        duk_eval_string(
-            ctx,
-            "(function (dst, src) {\n"
-            "    print(Buffer.compare(dst, src), dst.compare(src));\n"
-            "})");
-        duk_dup(ctx, dst);
-        duk_dup(ctx, src);
-        duk_call(ctx, 2);
-        duk_pop(ctx);
-      }
-    }
-  }
+		for (dst = 1; dst <= 4; dst++) {
+			for (src = 1; src <= 4; src++) {
+				printf("%d %d %d\n", i, dst, src);
+				duk_eval_string(ctx,
+					"(function (dst, src) {\n"
+					"    print(Buffer.compare(dst, src), dst.compare(src));\n"
+					"})");
+				duk_dup(ctx, dst);
+				duk_dup(ctx, src);
+				duk_call(ctx, 2);
+				duk_pop(ctx);
+			}
+		}
+	}
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -1683,55 +1667,54 @@ final top: 9
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t test_nodejs_buffer_write_1(duk_context* ctx, void* udata) {
-  int i, dst, src;
-  unsigned char* data;
+static duk_ret_t test_nodejs_buffer_write_1(duk_context *ctx, void *udata) {
+	int i, dst, src;
+	unsigned char *data;
 
-  (void)udata;
+	(void) udata;
 
-  data = (unsigned char*)duk_push_dynamic_buffer(ctx, 10); /* index 0 */
-  for (i = 0; i < 10; i++) {
-    data[i] = 0x40 + i;
-  }
+	data = (unsigned char *) duk_push_dynamic_buffer(ctx, 10);  /* index 0 */
+	for (i = 0; i < 10; i++) {
+		data[i] = 0x40 + i;
+	}
 
-  setup_nodejs_buffer(ctx, 0);             /* index 1 */
-  setup_nodejs_buffer_slice(ctx, 0, 1, 4); /* index 2 */
-  setup_nodejs_buffer_slice(ctx, 0, 3, 7); /* index 3 */
-  setup_nodejs_buffer_slice(ctx, 0, 6, 9); /* index 4 */
-  duk_push_string(ctx, "");                /* index 5 */
-  duk_push_string(ctx, "fo");              /* index 6 */
-  duk_push_string(ctx, "bar");             /* index 7 */
-  duk_push_string(ctx, "quux");            /* index 8 */
+	setup_nodejs_buffer(ctx, 0);              /* index 1 */
+	setup_nodejs_buffer_slice(ctx, 0, 1, 4);  /* index 2 */
+	setup_nodejs_buffer_slice(ctx, 0, 3, 7);  /* index 3 */
+	setup_nodejs_buffer_slice(ctx, 0, 6, 9);  /* index 4 */
+	duk_push_string(ctx, "");                 /* index 5 */
+	duk_push_string(ctx, "fo");               /* index 6 */
+	duk_push_string(ctx, "bar");              /* index 7 */
+	duk_push_string(ctx, "quux");             /* index 8 */
 
-  for (i = 10; i >= 0; i--) {
-    duk_resize_buffer(ctx, 0, i);
+	for (i = 10; i >= 0; i--) {
+		duk_resize_buffer(ctx, 0, i);
 
-    /* The resulting buffers are not printed here; they're not very
-     * intuitive because both the source and the destination share
-     * the same underlying buffer.
-     */
+		/* The resulting buffers are not printed here; they're not very
+		 * intuitive because both the source and the destination share
+		 * the same underlying buffer.
+		 */
 
-    for (dst = 1; dst <= 4; dst++) {
-      for (src = 5; src <= 8; src++) {
-        printf("%d %d %d\n", i, dst, src);
-        duk_eval_string(
-            ctx,
-            "(function (dst, src) {\n"
-            "    for (var i = 0; i < dst.length; i++) { dst[i] = 0x11; }\n"
-            "    dst.write(src);\n"
-            "    for (var i = 0; i < dst.length; i++) { dst[i] = 0x11; }\n"
-            "    dst.write(src, 1);\n"
-            "})");
-        duk_dup(ctx, dst);
-        duk_dup(ctx, src);
-        duk_call(ctx, 2);
-        duk_pop(ctx);
-      }
-    }
-  }
+		for (dst = 1; dst <= 4; dst++) {
+			for (src = 5; src <= 8; src++) {
+				printf("%d %d %d\n", i, dst, src);
+				duk_eval_string(ctx,
+					"(function (dst, src) {\n"
+					"    for (var i = 0; i < dst.length; i++) { dst[i] = 0x11; }\n"
+					"    dst.write(src);\n"
+					"    for (var i = 0; i < dst.length; i++) { dst[i] = 0x11; }\n"
+					"    dst.write(src, 1);\n"
+					"})");
+				duk_dup(ctx, dst);
+				duk_dup(ctx, src);
+				duk_call(ctx, 2);
+				duk_pop(ctx);
+			}
+		}
+	}
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -1916,53 +1899,52 @@ final top: 5
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t test_nodejs_buffer_copy_1(duk_context* ctx, void* udata) {
-  int i, dst, src;
-  unsigned char* data;
+static duk_ret_t test_nodejs_buffer_copy_1(duk_context *ctx, void *udata) {
+	int i, dst, src;
+	unsigned char *data;
 
-  (void)udata;
+	(void) udata;
 
-  data = (unsigned char*)duk_push_dynamic_buffer(ctx, 10); /* index 0 */
-  for (i = 0; i < 10; i++) {
-    data[i] = 0x40 + i;
-  }
+	data = (unsigned char *) duk_push_dynamic_buffer(ctx, 10);  /* index 0 */
+	for (i = 0; i < 10; i++) {
+		data[i] = 0x40 + i;
+	}
 
-  setup_nodejs_buffer(ctx, 0);
-  setup_nodejs_buffer_slice(ctx, 0, 1, 4);
-  setup_nodejs_buffer_slice(ctx, 0, 3, 7);
-  setup_nodejs_buffer_slice(ctx, 0, 6, 9);
+	setup_nodejs_buffer(ctx, 0);
+	setup_nodejs_buffer_slice(ctx, 0, 1, 4);
+	setup_nodejs_buffer_slice(ctx, 0, 3, 7);
+	setup_nodejs_buffer_slice(ctx, 0, 6, 9);
 
-  for (i = 10; i >= 0; i--) {
-    duk_resize_buffer(ctx, 0, i);
+	for (i = 10; i >= 0; i--) {
+		duk_resize_buffer(ctx, 0, i);
 
-    /* The resulting buffers are not printed here; they're not very
-     * intuitive because both the source and the destination share
-     * the same underlying buffer.
-     */
+		/* The resulting buffers are not printed here; they're not very
+		 * intuitive because both the source and the destination share
+		 * the same underlying buffer.
+		 */
 
-    for (dst = 1; dst <= 4; dst++) {
-      for (src = 1; src <= 4; src++) {
-        printf("%d %d %d\n", i, dst, src);
-        duk_eval_string(
-            ctx,
-            "(function (dst, src) {\n"
-            "    for (var i = 0; i < dst.length; i++) { dst[i] = 0x11; }\n"
-            "    for (var i = 0; i < src.length; i++) { src[i] = 0x22; }\n"
-            "    src.copy(dst);\n"
-            "    for (var i = 0; i < dst.length; i++) { dst[i] = 0x11; }\n"
-            "    for (var i = 0; i < src.length; i++) { src[i] = 0x22; }\n"
-            "    src.copy(dst, 4, 1);\n"
-            "})");
-        duk_dup(ctx, dst);
-        duk_dup(ctx, src);
-        duk_call(ctx, 2);
-        duk_pop(ctx);
-      }
-    }
-  }
+		for (dst = 1; dst <= 4; dst++) {
+			for (src = 1; src <= 4; src++) {
+				printf("%d %d %d\n", i, dst, src);
+				duk_eval_string(ctx,
+					"(function (dst, src) {\n"
+					"    for (var i = 0; i < dst.length; i++) { dst[i] = 0x11; }\n"
+					"    for (var i = 0; i < src.length; i++) { src[i] = 0x22; }\n"
+					"    src.copy(dst);\n"
+					"    for (var i = 0; i < dst.length; i++) { dst[i] = 0x11; }\n"
+					"    for (var i = 0; i < src.length; i++) { src[i] = 0x22; }\n"
+					"    src.copy(dst, 4, 1);\n"
+					"})");
+				duk_dup(ctx, dst);
+				duk_dup(ctx, src);
+				duk_call(ctx, 2);
+				duk_pop(ctx);
+			}
+		}
+	}
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -1993,80 +1975,79 @@ final top: 6
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t test_nodejs_buffer_concat_1(duk_context* ctx, void* udata) {
-  int i;
-  unsigned char* data;
+static duk_ret_t test_nodejs_buffer_concat_1(duk_context *ctx, void *udata) {
+	int i;
+	unsigned char *data;
 
-  (void)udata;
+	(void) udata;
 
-  data = (unsigned char*)duk_push_dynamic_buffer(ctx, 10); /* index 0 */
-  for (i = 0; i < 10; i++) {
-    data[i] = 0x40 + i;
-  }
+	data = (unsigned char *) duk_push_dynamic_buffer(ctx, 10);  /* index 0 */
+	for (i = 0; i < 10; i++) {
+		data[i] = 0x40 + i;
+	}
 
-  setup_nodejs_buffer(ctx, 0);
-  setup_nodejs_buffer_slice(ctx, 0, 1, 6);
-  setup_nodejs_buffer_slice(ctx, 0, 3, 7);
-  setup_nodejs_buffer_slice(ctx, 0, 6, 9);
-  setup_nodejs_buffer_slice(ctx, 0, 1, 8);
+	setup_nodejs_buffer(ctx, 0);
+	setup_nodejs_buffer_slice(ctx, 0, 1, 6);
+	setup_nodejs_buffer_slice(ctx, 0, 3, 7);
+	setup_nodejs_buffer_slice(ctx, 0, 6, 9);
+	setup_nodejs_buffer_slice(ctx, 0, 1, 8);
 
-  for (i = 10; i >= 0; i--) {
-    duk_resize_buffer(ctx, 0, i);
+	for (i = 10; i >= 0; i--) {
+		duk_resize_buffer(ctx, 0, i);
 
-    printf("%d\n", i);
-    duk_eval_string(
-        ctx,
-        "(function (arg1, arg2, arg3, arg4, arg5) {\n"
-        "    var res = Buffer.concat([ arg1, arg2, arg3, arg4, arg5 ]);\n"
-        "    print(Duktape.enc('jx', res));\n"
-        "})");
-    duk_dup(ctx, 1);
-    duk_dup(ctx, 2);
-    duk_dup(ctx, 3);
-    duk_dup(ctx, 4);
-    duk_dup(ctx, 5);
-    duk_call(ctx, 5);
-    duk_pop(ctx);
-  }
+		printf("%d\n", i);
+		duk_eval_string(ctx,
+			"(function (arg1, arg2, arg3, arg4, arg5) {\n"
+			"    var res = Buffer.concat([ arg1, arg2, arg3, arg4, arg5 ]);\n"
+			"    print(Duktape.enc('jx', res));\n"
+			"})");
+		duk_dup(ctx, 1);
+		duk_dup(ctx, 2);
+		duk_dup(ctx, 3);
+		duk_dup(ctx, 4);
+		duk_dup(ctx, 5);
+		duk_call(ctx, 5);
+		duk_pop(ctx);
+	}
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
-void test(duk_context* ctx) {
-  /* Indexed read/write */
-  TEST_SAFE_CALL(test_nodejs_buffer_indexed_1a);
-  TEST_SAFE_CALL(test_nodejs_buffer_indexed_1b);
-  TEST_SAFE_CALL(test_arraybuffer_indexed_1a);
-  TEST_SAFE_CALL(test_uint8array_indexed_1a);
-  TEST_SAFE_CALL(test_uint8array_indexed_1b);
-  TEST_SAFE_CALL(test_uint16array_indexed_1a);
-  TEST_SAFE_CALL(test_uint16array_indexed_1b);
-  TEST_SAFE_CALL(test_uint32array_indexed_1a);
-  TEST_SAFE_CALL(test_uint32array_indexed_1b);
-  TEST_SAFE_CALL(test_float32array_indexed_1a);
-  TEST_SAFE_CALL(test_float32array_indexed_1b);
-  TEST_SAFE_CALL(test_float64array_indexed_1a);
-  TEST_SAFE_CALL(test_float64array_indexed_1b);
+void test(duk_context *ctx) {
+	/* Indexed read/write */
+	TEST_SAFE_CALL(test_nodejs_buffer_indexed_1a);
+	TEST_SAFE_CALL(test_nodejs_buffer_indexed_1b);
+	TEST_SAFE_CALL(test_arraybuffer_indexed_1a);
+	TEST_SAFE_CALL(test_uint8array_indexed_1a);
+	TEST_SAFE_CALL(test_uint8array_indexed_1b);
+	TEST_SAFE_CALL(test_uint16array_indexed_1a);
+	TEST_SAFE_CALL(test_uint16array_indexed_1b);
+	TEST_SAFE_CALL(test_uint32array_indexed_1a);
+	TEST_SAFE_CALL(test_uint32array_indexed_1b);
+	TEST_SAFE_CALL(test_float32array_indexed_1a);
+	TEST_SAFE_CALL(test_float32array_indexed_1b);
+	TEST_SAFE_CALL(test_float64array_indexed_1a);
+	TEST_SAFE_CALL(test_float64array_indexed_1b);
 
-  /* JSON.serialize */
-  TEST_SAFE_CALL(test_json_serialize_1);
+	/* JSON.serialize */
+	TEST_SAFE_CALL(test_json_serialize_1);
 
-  /* TypedArray constructor byte copy and fast copy */
-  TEST_SAFE_CALL(test_typedarray_constructor_copy_1);
+	/* TypedArray constructor byte copy and fast copy */
+	TEST_SAFE_CALL(test_typedarray_constructor_copy_1);
 
-  /* TypedArray.prototype.set() */
-  TEST_SAFE_CALL(test_typedarray_set_1);
+	/* TypedArray.prototype.set() */
+	TEST_SAFE_CALL(test_typedarray_set_1);
 
-  /* Node.js Buffer compare() */
-  TEST_SAFE_CALL(test_nodejs_buffer_compare_1);
+	/* Node.js Buffer compare() */
+	TEST_SAFE_CALL(test_nodejs_buffer_compare_1);
 
-  /* Node.js Buffer write() */
-  TEST_SAFE_CALL(test_nodejs_buffer_write_1);
+	/* Node.js Buffer write() */
+	TEST_SAFE_CALL(test_nodejs_buffer_write_1);
 
-  /* Node.js Buffer copy() */
-  TEST_SAFE_CALL(test_nodejs_buffer_copy_1);
+	/* Node.js Buffer copy() */
+	TEST_SAFE_CALL(test_nodejs_buffer_copy_1);
 
-  /* Node.js Buffer concat() */
-  TEST_SAFE_CALL(test_nodejs_buffer_concat_1);
+	/* Node.js Buffer concat() */
+	TEST_SAFE_CALL(test_nodejs_buffer_concat_1);
 }

@@ -23,6 +23,9 @@ compile_commands.json
 # Output directory
 build/
 
+# VSCode directory
+.vscode/
+
 # Rust
 /target
 **/*.rs.bk

@@ -79,112 +79,112 @@ final top: 10
 ==> rc=1, result='RangeError: invalid stack index 0'
 ===*/
 
-static void prep(duk_context* ctx) {
-  duk_set_top(ctx, 0);
-  duk_push_int(ctx, 123);
-  duk_push_int(ctx, 234);
-  duk_push_int(ctx, 345);      /* -> [ 123 234 345 ] */
-  duk_push_string(ctx, "foo"); /* -> [ 123 234 345 "foo" ] */
+static void prep(duk_context *ctx) {
+	duk_set_top(ctx, 0);
+	duk_push_int(ctx, 123);
+	duk_push_int(ctx, 234);
+	duk_push_int(ctx, 345);       /* -> [ 123 234 345 ] */
+	duk_push_string(ctx, "foo");  /* -> [ 123 234 345 "foo" ] */
 }
 
-static void dump_stack(duk_context* ctx) {
-  duk_idx_t i, n;
+static void dump_stack(duk_context *ctx) {
+	duk_idx_t i, n;
 
-  n = duk_get_top(ctx);
-  for (i = 0; i < n; i++) {
-    printf("%ld: %s\n", (long)i, duk_to_string(ctx, i));
-  }
+	n = duk_get_top(ctx);
+	for (i = 0; i < n; i++) {
+		printf("%ld: %s\n", (long) i, duk_to_string(ctx, i));
+	}
 }
 
-static duk_ret_t test_1(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_1(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  prep(ctx);
-  duk_pull(ctx, -3); /* -> [ 123 345 "foo" 234 ] */
+	prep(ctx);
+	duk_pull(ctx, -3);            /* -> [ 123 345 "foo" 234 ] */
 
-  dump_stack(ctx);
+	dump_stack(ctx);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
-static duk_ret_t test_2(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_2(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  prep(ctx);
-  duk_pull(ctx, 3); /* -> [ 123 234 345 "foo" ]  (legal, keep top) */
-  printf("pull at 3 ok\n");
-  dump_stack(ctx);
-  duk_pull(ctx, -1); /* -> [ 123 234 345 "foo" ]  (legal, keep top) */
-  printf("pull at -1 ok\n");
-  dump_stack(ctx);
-  duk_pull(ctx, 4); /* (illegal: index too high) */
-  printf("pull at 4 ok\n");
-  dump_stack(ctx);
-  return 0;
+	prep(ctx);
+	duk_pull(ctx, 3);             /* -> [ 123 234 345 "foo" ]  (legal, keep top) */
+	printf("pull at 3 ok\n");
+	dump_stack(ctx);
+	duk_pull(ctx, -1);            /* -> [ 123 234 345 "foo" ]  (legal, keep top) */
+	printf("pull at -1 ok\n");
+	dump_stack(ctx);
+	duk_pull(ctx, 4);             /* (illegal: index too high) */
+	printf("pull at 4 ok\n");
+	dump_stack(ctx);
+	return 0;
 }
 
-static duk_ret_t test_3(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_3(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  prep(ctx);
-  duk_pull(ctx, 0); /* -> [ 234 345 "foo" 123 ]  (legal) */
-  printf("pull at 0 ok\n");
-  dump_stack(ctx);
-  duk_pull(ctx, -4); /* -> [ 345 "foo" 123 234 ]  (legal) */
-  printf("pull at -4 ok\n");
-  dump_stack(ctx);
-  duk_pull(ctx, -5); /* (illegal: index too low) */
-  printf("pull at -5 ok\n");
-  dump_stack(ctx);
-  return 0;
+	prep(ctx);
+	duk_pull(ctx, 0);             /* -> [ 234 345 "foo" 123 ]  (legal) */
+	printf("pull at 0 ok\n");
+	dump_stack(ctx);
+	duk_pull(ctx, -4);            /* -> [ 345 "foo" 123 234 ]  (legal) */
+	printf("pull at -4 ok\n");
+	dump_stack(ctx);
+	duk_pull(ctx, -5);            /* (illegal: index too low) */
+	printf("pull at -5 ok\n");
+	dump_stack(ctx);
+	return 0;
 }
 
-static duk_ret_t test_4(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_4(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  prep(ctx);
-  duk_pull(ctx, DUK_INVALID_INDEX); /* (illegal: invalid index) */
-  printf("pull at DUK_INVALID_INDEX ok\n");
-  dump_stack(ctx);
-  return 0;
+	prep(ctx);
+	duk_pull(ctx, DUK_INVALID_INDEX);  /* (illegal: invalid index) */
+	printf("pull at DUK_INVALID_INDEX ok\n");
+	dump_stack(ctx);
+	return 0;
 }
 
-static duk_ret_t test_5(duk_context* ctx, void* udata) {
-  duk_idx_t i;
+static duk_ret_t test_5(duk_context *ctx, void *udata) {
+	duk_idx_t i;
 
-  (void)udata;
+	(void) udata;
 
-  for (i = 0; i < 10; i++) {
-    duk_push_sprintf(ctx, "val-%d", (int)i);
-  }
-  dump_stack(ctx);
-  duk_pull(ctx, 0);
-  dump_stack(ctx);
-  duk_pull(ctx, 3);
-  dump_stack(ctx);
-  duk_pull(ctx, -4);
-  dump_stack(ctx);
+	for (i = 0; i < 10; i++) {
+		duk_push_sprintf(ctx, "val-%d", (int) i);
+	}
+	dump_stack(ctx);
+	duk_pull(ctx, 0);
+	dump_stack(ctx);
+	duk_pull(ctx, 3);
+	dump_stack(ctx);
+	duk_pull(ctx, -4);
+	dump_stack(ctx);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
 
-  return 0;
+	return 0;
 }
 
-static duk_ret_t test_6(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_6(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_set_top(ctx, 0);
-  duk_pull(ctx, 0);
-  printf("pull on empty stack\n");
-  dump_stack(ctx);
-  return 0;
+	duk_set_top(ctx, 0);
+	duk_pull(ctx, 0);
+	printf("pull on empty stack\n");
+	dump_stack(ctx);
+	return 0;
 }
-void test(duk_context* ctx) {
-  TEST_SAFE_CALL(test_1);
-  TEST_SAFE_CALL(test_2);
-  TEST_SAFE_CALL(test_3);
-  TEST_SAFE_CALL(test_4);
-  TEST_SAFE_CALL(test_5);
-  TEST_SAFE_CALL(test_6);
+void test(duk_context *ctx) {
+	TEST_SAFE_CALL(test_1);
+	TEST_SAFE_CALL(test_2);
+	TEST_SAFE_CALL(test_3);
+	TEST_SAFE_CALL(test_4);
+	TEST_SAFE_CALL(test_5);
+	TEST_SAFE_CALL(test_6);
 }

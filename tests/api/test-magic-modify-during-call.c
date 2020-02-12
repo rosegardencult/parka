@@ -16,29 +16,31 @@ final top: 1
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t my_func(duk_context* ctx) {
-  printf("current magic (on entry): %ld\n", (long)duk_get_current_magic(ctx));
+static duk_ret_t my_func(duk_context *ctx) {
+	printf("current magic (on entry): %ld\n", (long) duk_get_current_magic(ctx));
 
-  duk_push_current_function(ctx);
-  duk_set_magic(ctx, -1, 456);
+	duk_push_current_function(ctx);
+	duk_set_magic(ctx, -1, 456);
 
-  printf("current magic (after set): %ld\n", (long)duk_get_current_magic(ctx));
+	printf("current magic (after set): %ld\n", (long) duk_get_current_magic(ctx));
 
-  return 0;
+	return 0;
 }
 
-static duk_ret_t test_1(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_1(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_push_c_function(ctx, my_func, 2 /*nargs*/);
-  duk_set_magic(ctx, -1, 345);
+	duk_push_c_function(ctx, my_func, 2 /*nargs*/);
+	duk_set_magic(ctx, -1, 345);
 
-  duk_push_int(ctx, 123);
-  duk_push_int(ctx, 234);
-  duk_call(ctx, 2);
+	duk_push_int(ctx, 123);
+	duk_push_int(ctx, 234);
+	duk_call(ctx, 2);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
-void test(duk_context* ctx) { TEST_SAFE_CALL(test_1); }
+void test(duk_context *ctx) {
+	TEST_SAFE_CALL(test_1);
+}

@@ -28,32 +28,34 @@ final top: 0
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t my_func(duk_context* ctx) {
-  (void)ctx;
-  return 0;
+static duk_ret_t my_func(duk_context *ctx) {
+	(void) ctx;
+	return 0;
 }
 
-static duk_ret_t test_1(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_1(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  /* Check that Function.prototype.name is writable. */
-  duk_eval_string_noresult(
-      ctx,
-      "var pd = Object.getOwnPropertyDescriptor(Function.prototype, 'name');\n"
-      "print('writable:', pd.writable);\n"
-      "print('enumerable:', pd.enumerable);\n"
-      "print('configurable:', pd.configurable);\n");
+	/* Check that Function.prototype.name is writable. */
+	duk_eval_string_noresult(ctx,
+		"var pd = Object.getOwnPropertyDescriptor(Function.prototype, 'name');\n"
+		"print('writable:', pd.writable);\n"
+		"print('enumerable:', pd.enumerable);\n"
+		"print('configurable:', pd.configurable);\n");
 
-  duk_push_c_function(ctx, my_func, 0);
-  duk_push_string(ctx, "name");
-  duk_push_string(ctx, "my_func_name");
-  duk_def_prop(ctx, -3, DUK_DEFPROP_HAVE_VALUE);
-  duk_put_global_string(ctx, "MyFunc");
+	duk_push_c_function(ctx, my_func, 0);
+	duk_push_string(ctx, "name");
+	duk_push_string(ctx, "my_func_name");
+	duk_def_prop(ctx, -3, DUK_DEFPROP_HAVE_VALUE);
+	duk_put_global_string(ctx, "MyFunc");
 
-  duk_eval_string_noresult(ctx, "print('MyFunc.name:', MyFunc.name);\n");
+	duk_eval_string_noresult(ctx,
+		"print('MyFunc.name:', MyFunc.name);\n");
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
-void test(duk_context* ctx) { TEST_SAFE_CALL(test_1); }
+void test(duk_context *ctx) {
+	TEST_SAFE_CALL(test_1);
+}

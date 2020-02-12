@@ -25,77 +25,73 @@ final top: 1
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t test_obj_is_key(duk_context* ctx, void* udata) {
-  duk_int_t rc;
+static duk_ret_t test_obj_is_key(duk_context *ctx, void *udata) {
+	duk_int_t rc;
 
-  (void)udata;
+	(void) udata;
 
-  duk_eval_string(
-      ctx,
-      "({\n"
-      "    toString: function () { print('toString() called'); return 'myProp' "
-      "},\n"
-      "    myProp: function (a, b) { print('myProp called'); print(a, b); }\n"
-      "})\n");
+	duk_eval_string(ctx,
+		"({\n"
+		"    toString: function () { print('toString() called'); return 'myProp' },\n"
+		"    myProp: function (a, b) { print('myProp called'); print(a, b); }\n"
+		"})\n");
 
-  duk_push_string(ctx, "foo");
-  duk_push_string(ctx, "bar");
-  duk_push_string(ctx, "quux");
+	duk_push_string(ctx, "foo");
+	duk_push_string(ctx, "bar");
+	duk_push_string(ctx, "quux");
 
-  /* [ obj 'foo' 'bar' 'quux' ]
-   *
-   *  <key> <--- args ------>
-   *
-   *   ^
-   *   `-- obj_idx
-   */
+	/* [ obj 'foo' 'bar' 'quux' ]
+	 *
+	 *  <key> <--- args ------>
+	 *
+	 *   ^
+	 *   `-- obj_idx
+	 */
 
-  printf("top before: %ld\n", (long)duk_get_top(ctx));
+	printf("top before: %ld\n", (long) duk_get_top(ctx));
 
-  rc = duk_pcall_prop(ctx, -4, 3 /*nargs */);
-  printf("duk_pcall_prop() rc: %ld\n", (long)rc);
+	rc = duk_pcall_prop(ctx, -4, 3 /*nargs */);
+	printf("duk_pcall_prop() rc: %ld\n", (long) rc);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
-static duk_ret_t test_obj_is_arg(duk_context* ctx, void* udata) {
-  duk_int_t rc;
+static duk_ret_t test_obj_is_arg(duk_context *ctx, void *udata) {
+	duk_int_t rc;
 
-  (void)udata;
+	(void) udata;
 
-  duk_push_string(ctx, "myProp");
+	duk_push_string(ctx, "myProp");
 
-  duk_eval_string(
-      ctx,
-      "({\n"
-      "    toString: function () { print('toString() called'); return 'myProp' "
-      "},\n"
-      "    myProp: function (a, b) { print('myProp called'); print(a, b); }\n"
-      "})\n");
+	duk_eval_string(ctx,
+		"({\n"
+		"    toString: function () { print('toString() called'); return 'myProp' },\n"
+		"    myProp: function (a, b) { print('myProp called'); print(a, b); }\n"
+		"})\n");
 
-  duk_push_string(ctx, "foo");
-  duk_push_string(ctx, "bar");
-  duk_push_string(ctx, "quux");
+	duk_push_string(ctx, "foo");
+	duk_push_string(ctx, "bar");
+	duk_push_string(ctx, "quux");
 
-  /* [ 'myProp' obj 'foo' 'bar' 'quux' ]
-   *
-   *    <key>   <------- args ------>
-   *
-   *             ^
-   *             `-- obj_idx
-   */
+	/* [ 'myProp' obj 'foo' 'bar' 'quux' ]
+	 *
+	 *    <key>   <------- args ------>
+	 *
+	 *             ^
+	 *             `-- obj_idx
+	 */
 
-  printf("top before: %ld\n", (long)duk_get_top(ctx));
+	printf("top before: %ld\n", (long) duk_get_top(ctx));
 
-  rc = duk_pcall_prop(ctx, -4, 4 /*nargs */);
-  printf("duk_pcall_prop() rc: %ld\n", (long)rc);
+	rc = duk_pcall_prop(ctx, -4, 4 /*nargs */);
+	printf("duk_pcall_prop() rc: %ld\n", (long) rc);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
-void test(duk_context* ctx) {
-  TEST_SAFE_CALL(test_obj_is_key);
-  TEST_SAFE_CALL(test_obj_is_arg);
+void test(duk_context *ctx) {
+	TEST_SAFE_CALL(test_obj_is_key);
+	TEST_SAFE_CALL(test_obj_is_arg);
 }

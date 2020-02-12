@@ -62,44 +62,44 @@ final top: 0
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t test_basic_overlap(duk_context* ctx, void* udata) {
-  unsigned char buf[16];
-  int offset;
-  int i;
+static duk_ret_t test_basic_overlap(duk_context *ctx, void *udata) {
+	unsigned char buf[16];
+	int offset;
+	int i;
 
-  (void)udata;
+	(void) udata;
 
-  for (offset = 0; offset <= 8; offset++) {
-    printf("offset: %d\n", offset);
+	for (offset = 0; offset <= 8; offset++) {
+		printf("offset: %d\n", offset);
 
-    /* 001122334455...ff */
-    for (i = 0; i < sizeof(buf); i++) {
-      buf[i] = (unsigned char)(0x11 * i);
-    }
+		/* 001122334455...ff */
+		for (i = 0; i < sizeof(buf); i++) {
+			buf[i] = (unsigned char) (0x11 * i);
+		}
 
-    /* Create two separate external buffer values that point to
-     * the same underlying C array with some overlap.
-     */
-    duk_eval_string(ctx,
-                    "(function (plain1, plain2) {\n"
-                    "    var b1 = new Uint8Array(plain1.buffer);\n"
-                    "    var b2 = new Uint8Array(plain2.buffer);\n"
-                    "    print(Duktape.enc('jx', b1));\n"
-                    "    print(Duktape.enc('jx', b2));\n"
-                    "    b1.set(b2, 4);\n"
-                    "    print(Duktape.enc('jx', b1));\n"
-                    "    print(Duktape.enc('jx', b2));\n"
-                    "})");
-    duk_push_external_buffer(ctx);
-    duk_config_buffer(ctx, -1, (void*)buf, 16); /* [0,16[ */
-    duk_push_external_buffer(ctx);
-    duk_config_buffer(ctx, -1, (void*)(buf + offset), 8);
-    duk_call(ctx, 2 /*nargs*/);
-    duk_pop(ctx);
-  }
+		/* Create two separate external buffer values that point to
+		 * the same underlying C array with some overlap.
+		 */
+		duk_eval_string(ctx,
+			"(function (plain1, plain2) {\n"
+			"    var b1 = new Uint8Array(plain1.buffer);\n"
+			"    var b2 = new Uint8Array(plain2.buffer);\n"
+			"    print(Duktape.enc('jx', b1));\n"
+			"    print(Duktape.enc('jx', b2));\n"
+			"    b1.set(b2, 4);\n"
+			"    print(Duktape.enc('jx', b1));\n"
+			"    print(Duktape.enc('jx', b2));\n"
+			"})");
+		duk_push_external_buffer(ctx);
+		duk_config_buffer(ctx, -1, (void *) buf, 16);  /* [0,16[ */
+		duk_push_external_buffer(ctx);
+		duk_config_buffer(ctx, -1, (void *) (buf + offset), 8);
+		duk_call(ctx, 2 /*nargs*/);
+		duk_pop(ctx);
+	}
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -206,7 +206,7 @@ final top: 0
 
 /* Test the case where source is a Uint8Array which is .set() to a Uint32Array
  * which means that every byte in the input is expanded to 4 bytes in the
- * output.  In this case it's possible for the output to overlap the input
+* output.  In this case it's possible for the output to overlap the input
  * in a way that neither forward or backward copying directive is not enough
  * but a genuine temporary is needed.  Illustration:
  *
@@ -226,53 +226,53 @@ final top: 0
  *  check in the implementation.
  */
 
-static duk_ret_t test_expand_overlap(duk_context* ctx, void* udata) {
-  unsigned char buf[48];
-  int offset;
-  int i;
+static duk_ret_t test_expand_overlap(duk_context *ctx, void *udata) {
+	unsigned char buf[48];
+	int offset;
+	int i;
 
-  (void)udata;
+	(void) udata;
 
-  for (offset = 0; offset < 16; offset++) { /* dst offset */
-    printf("offset: %d\n", offset);
+	for (offset = 0; offset < 16; offset++) {  /* dst offset */
+		printf("offset: %d\n", offset);
 
-    for (i = 0; i < 48; i++) {
-      buf[i] = (unsigned char)i;
-    }
+		for (i = 0; i < 48; i++) {
+			buf[i] = (unsigned char) i;
+		}
 
-    duk_push_external_buffer(ctx);                   /* src */
-    duk_config_buffer(ctx, -1, (void*)(buf + 4), 4); /* |04050607| */
+		duk_push_external_buffer(ctx);  /* src */
+		duk_config_buffer(ctx, -1, (void *) (buf + 4), 4);  /* |04050607| */
 
-    duk_push_external_buffer(ctx); /* dst */
-    duk_config_buffer(ctx, -1, (void*)(buf + offset), 32);
+		duk_push_external_buffer(ctx);  /* dst */
+		duk_config_buffer(ctx, -1, (void *) (buf + offset), 32);
 
-    duk_eval_string(ctx,
-                    "(function (plain_src, plain_dst) {\n"
-                    "    var bsrc = new Uint8Array(plain_src.buffer);\n"
-                    "    var bdst = new Uint32Array(plain_dst.buffer);\n"
-                    "    print(Duktape.enc('jx', bsrc));\n"
-                    "    print(Duktape.enc('jx', bdst));\n"
-                    "    bdst.set(bsrc, 1);\n"
-                    "    print(Duktape.enc('jx', bsrc));\n"
-                    "    print(Duktape.enc('jx', bdst));\n"
-                    "})");
-    duk_dup(ctx, 0);
-    duk_dup(ctx, 1);
-    duk_call(ctx, 2);
-    duk_pop_n(ctx, 3);
+		duk_eval_string(ctx,
+			"(function (plain_src, plain_dst) {\n"
+			"    var bsrc = new Uint8Array(plain_src.buffer);\n"
+			"    var bdst = new Uint32Array(plain_dst.buffer);\n"
+			"    print(Duktape.enc('jx', bsrc));\n"
+			"    print(Duktape.enc('jx', bdst));\n"
+			"    bdst.set(bsrc, 1);\n"
+			"    print(Duktape.enc('jx', bsrc));\n"
+			"    print(Duktape.enc('jx', bdst));\n"
+			"})");
+		duk_dup(ctx, 0);
+		duk_dup(ctx, 1);
+		duk_call(ctx, 2);
+		duk_pop_n(ctx, 3);
 
-    for (i = 0; i < 48; i++) {
-      printf("%02x", (unsigned int)buf[i]);
-    }
-    printf("\n");
-  }
+		for (i = 0; i < 48; i++) {
+			printf("%02x", (unsigned int) buf[i]);
+		}
+		printf("\n");
+	}
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
-void test(duk_context* ctx) {
-  TEST_SAFE_CALL(test_basic_overlap);
-  TEST_SAFE_CALL(test_expand_overlap);
-  (void)ctx;
+void test(duk_context *ctx) {
+	TEST_SAFE_CALL(test_basic_overlap);
+	TEST_SAFE_CALL(test_expand_overlap);
+	(void) ctx;
 }

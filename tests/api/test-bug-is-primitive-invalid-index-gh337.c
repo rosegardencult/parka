@@ -21,38 +21,38 @@ final top: 1
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t test_1(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_1(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  printf("%ld\n", (long)duk_is_primitive(ctx, -1));
+	printf("%ld\n", (long) duk_is_primitive(ctx, -1));
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
-static duk_ret_t test_2(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_2(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  printf("%ld\n", (long)duk_is_primitive(ctx, DUK_INVALID_INDEX));
+	printf("%ld\n", (long) duk_is_primitive(ctx, DUK_INVALID_INDEX));
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
-static duk_ret_t test_3(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_3(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_push_null(ctx);
+	duk_push_null(ctx);
 
-  printf("%ld\n", (long)duk_is_primitive(ctx, 0)); /* valid */
-  printf("%ld\n", (long)duk_is_primitive(ctx, 1)); /* invalid */
+	printf("%ld\n", (long) duk_is_primitive(ctx, 0));  /* valid */
+	printf("%ld\n", (long) duk_is_primitive(ctx, 1));  /* invalid */
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
-void test(duk_context* ctx) {
-  TEST_SAFE_CALL(test_1);
-  TEST_SAFE_CALL(test_2);
-  TEST_SAFE_CALL(test_3);
+void test(duk_context *ctx) {
+	TEST_SAFE_CALL(test_1);
+	TEST_SAFE_CALL(test_2);
+	TEST_SAFE_CALL(test_3);
 }

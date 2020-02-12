@@ -13,6 +13,7 @@ jobs:
         node-version: '10'
     - name: api
       run: |
+        make
         make test_api
     - name: ecma
       run: |
@@ -31,13 +32,14 @@ jobs:
       env:
         CC: clang
       run: |
-        sudo apt update && sudo apt upgrade
+        sudo apt update -y && sudo apt install -y clang
+        make
         make test_api
     - name: ecma
       env:
         CC: clang
       run: |
-        sudo apt update && sudo apt upgrade
+        sudo apt update -y && sudo apt install -y clang
         make test_ecma
 
 
@@ -54,6 +56,7 @@ jobs:
         CC: '/c/Program\ Files/LLVM/bin/clang.exe'
       run: |
         choco install llvm
+        make
         make test_api
       shell: bash
     - name: ecma

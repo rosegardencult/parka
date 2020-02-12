@@ -2,8 +2,7 @@
  *  In Duktape 0.10.0 the following assert would fail in some cases (reported
  *  by Andreas Oman):
  *
- *    assertion failed: (act->flags & DUK_ACT_FLAG_PREVENT_YIELD) == 0
- * (duk_js_call.c:1914)
+ *    assertion failed: (act->flags & DUK_ACT_FLAG_PREVENT_YIELD) == 0 (duk_js_call.c:1914)
  *
  *  This happened when:
  *
@@ -42,19 +41,20 @@ result: 123
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t test_1(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_1(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  /* This test would trigger the assertion failure in Duktape 0.10.0. */
+	/* This test would trigger the assertion failure in Duktape 0.10.0. */
 
-  duk_eval_string(ctx,
-                  "function g() { print('g'); return 123; };\n"
-                  "function f() { print('f'); return g(); };\n"
-                  "f;");
-  duk_call(ctx, 0);
-  printf("result: %s\n", duk_safe_to_string(ctx, -1));
-  duk_pop(ctx);
-  return 0;
+	duk_eval_string(ctx, "function g() { print('g'); return 123; };\n"
+	                     "function f() { print('f'); return g(); };\n"
+	                     "f;");
+	duk_call(ctx, 0);
+	printf("result: %s\n", duk_safe_to_string(ctx, -1));
+	duk_pop(ctx);
+	return 0;
 }
 
-void test(duk_context* ctx) { TEST_SAFE_CALL(test_1); }
+void test(duk_context *ctx) {
+	TEST_SAFE_CALL(test_1);
+}

@@ -14,24 +14,24 @@ index 10: boolean 0
 index 11: boolean 0
 ===*/
 
-void test(duk_context* ctx) {
-  duk_idx_t i, n;
+void test(duk_context *ctx) {
+	duk_idx_t i, n;
 
-  duk_push_undefined(ctx);
-  duk_push_null(ctx);
-  duk_push_true(ctx);
-  duk_push_false(ctx);
-  duk_push_string(ctx, "");
-  duk_push_string(ctx, "foo");
-  duk_push_string(ctx, "true");
-  duk_push_string(ctx, "false");
-  duk_push_int(ctx, 0);
-  duk_push_int(ctx, 123);
-  duk_push_object(ctx);
+	duk_push_undefined(ctx);
+	duk_push_null(ctx);
+	duk_push_true(ctx);
+	duk_push_false(ctx);
+	duk_push_string(ctx, "");
+	duk_push_string(ctx, "foo");
+	duk_push_string(ctx, "true");
+	duk_push_string(ctx, "false");
+	duk_push_int(ctx, 0);
+	duk_push_int(ctx, 123);
+	duk_push_object(ctx);
 
-  n = duk_get_top(ctx);
-  printf("top: %ld\n", (long)n);
-  for (i = 0; i <= n; i++) { /* End out-of-bounds on purpose. */
-    printf("index %ld: boolean %d\n", (long)i, (int)duk_get_boolean(ctx, i));
-  }
+	n = duk_get_top(ctx);
+	printf("top: %ld\n", (long) n);
+	for (i = 0; i <= n; i++) {  /* End out-of-bounds on purpose. */
+		printf("index %ld: boolean %d\n", (long) i, (int) duk_get_boolean(ctx, i));
+	}
 }

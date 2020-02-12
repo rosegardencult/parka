@@ -4,26 +4,26 @@
  *  Also documents the detailed behavior and limitations of lightfuncs.
  */
 
-static duk_ret_t my_addtwo_lfunc(duk_context* ctx) {
-  printf("addtwo entry top: %ld\n", (long)duk_get_top(ctx));
+static duk_ret_t my_addtwo_lfunc(duk_context *ctx) {
+	printf("addtwo entry top: %ld\n", (long) duk_get_top(ctx));
 
-  duk_push_current_function(ctx);
-  duk_get_prop_string(ctx, -1, "length");
-  printf("addtwo 'length' property: %s\n", duk_safe_to_string(ctx, -1));
-  duk_pop(ctx);
-  printf("addtwo duk_get_length: %ld\n", (long)duk_get_length(ctx, -1));
-  printf("addtwo magic: %ld\n", (long)duk_get_magic(ctx, -1));
-  printf("current magic: %ld\n", (long)duk_get_current_magic(ctx));
-  duk_pop(ctx);
+	duk_push_current_function(ctx);
+	duk_get_prop_string(ctx, -1, "length");
+	printf("addtwo 'length' property: %s\n", duk_safe_to_string(ctx, -1));
+	duk_pop(ctx);
+	printf("addtwo duk_get_length: %ld\n", (long) duk_get_length(ctx, -1));
+	printf("addtwo magic: %ld\n", (long) duk_get_magic(ctx, -1));
+	printf("current magic: %ld\n", (long) duk_get_current_magic(ctx));
+	duk_pop(ctx);
 
-  duk_push_number(ctx, duk_require_number(ctx, 0) + duk_require_number(ctx, 1));
-  printf("addtwo final top: %ld\n", (long)duk_get_top(ctx));
-  return 1;
+	duk_push_number(ctx, duk_require_number(ctx, 0) + duk_require_number(ctx, 1));
+	printf("addtwo final top: %ld\n", (long) duk_get_top(ctx));
+	return 1;
 }
 
-static duk_ret_t my_dummy_func(duk_context* ctx) {
-  (void)ctx;
-  return DUK_RET_ERROR;
+static duk_ret_t my_dummy_func(duk_context *ctx) {
+	(void) ctx;
+	return DUK_RET_ERROR;
 }
 
 /*===
@@ -36,24 +36,24 @@ static duk_ret_t my_dummy_func(duk_context* ctx) {
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t test_is_lightfunc(duk_context* ctx, void* udata) {
-  duk_idx_t i, n;
+static duk_ret_t test_is_lightfunc(duk_context *ctx, void *udata) {
+	duk_idx_t i, n;
 
-  (void)udata;
+	(void) udata;
 
-  /* Just a few spot checks. */
+	/* Just a few spot checks. */
 
-  duk_push_undefined(ctx);
-  duk_push_null(ctx);
-  duk_push_object(ctx);
-  duk_push_c_function(ctx, my_dummy_func, 0);
-  duk_push_c_lightfunc(ctx, my_dummy_func, 0, 0, 0);
+	duk_push_undefined(ctx);
+	duk_push_null(ctx);
+	duk_push_object(ctx);
+	duk_push_c_function(ctx, my_dummy_func, 0);
+	duk_push_c_lightfunc(ctx, my_dummy_func, 0, 0, 0);
 
-  for (i = 0, n = duk_get_top(ctx); i < n; i++) {
-    printf("%ld: is_lightfunc: %ld\n", (long)i, (long)duk_is_lightfunc(ctx, i));
-  }
+	for (i = 0, n = duk_get_top(ctx); i < n; i++) {
+		printf("%ld: is_lightfunc: %ld\n", (long) i, (long) duk_is_lightfunc(ctx, i));
+	}
 
-  return 0;
+	return 0;
 }
 
 /*===
@@ -74,33 +74,31 @@ final top: 3
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t test_simple_push(duk_context* ctx, void* udata) {
-  duk_idx_t ret;
+static duk_ret_t test_simple_push(duk_context *ctx, void *udata) {
+	duk_idx_t ret;
 
-  (void)udata;
+	(void) udata;
 
-  duk_set_top(ctx, 0);
-  duk_push_undefined(ctx); /* dummy padding */
-  duk_push_undefined(ctx);
+	duk_set_top(ctx, 0);
+	duk_push_undefined(ctx);  /* dummy padding */
+	duk_push_undefined(ctx);
 
-  printf("top before lfunc push: %ld\n", (long)duk_get_top(ctx));
-  ret = duk_push_c_lightfunc(ctx, my_addtwo_lfunc, 2 /*nargs*/, 3 /*length*/,
-                             -0x42 /*magic*/);
-  printf("push retval: %ld\n", (long)ret);
-  printf("top after lfunc push: %ld\n", (long)duk_get_top(ctx));
-  printf("type at top: %ld\n", (long)duk_get_type(ctx, -1));
-  printf("typemask at top: 0x%04lx\n", (long)duk_get_type_mask(ctx, -1));
+	printf("top before lfunc push: %ld\n", (long) duk_get_top(ctx));
+	ret = duk_push_c_lightfunc(ctx, my_addtwo_lfunc, 2 /*nargs*/, 3 /*length*/, -0x42 /*magic*/);
+	printf("push retval: %ld\n", (long) ret);
+	printf("top after lfunc push: %ld\n", (long) duk_get_top(ctx));
+	printf("type at top: %ld\n", (long) duk_get_type(ctx, -1));
+	printf("typemask at top: 0x%04lx\n", (long) duk_get_type_mask(ctx, -1));
 
-  duk_push_string(ctx, "dummy this");
-  duk_push_int(ctx, 123);
-  duk_push_int(ctx, 234);
-  duk_push_int(ctx, 345);
-  duk_call_method(
-      ctx, 3 /*nargs*/); /* [ ... lfunc this 123 234 345 ] -> [ ... retval ] */
-  printf("result: %s\n", duk_safe_to_string(ctx, -1));
+	duk_push_string(ctx, "dummy this");
+	duk_push_int(ctx, 123);
+	duk_push_int(ctx, 234);
+	duk_push_int(ctx, 345);
+	duk_call_method(ctx, 3 /*nargs*/);  /* [ ... lfunc this 123 234 345 ] -> [ ... retval ] */
+	printf("result: %s\n", duk_safe_to_string(ctx, -1));
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -621,30 +619,29 @@ i=256, res=TypeError: invalid args
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t test_magic_raw(duk_context* ctx, void* udata) {
-  int i = duk_require_int(ctx, -1);
-  duk_idx_t ret;
+static duk_ret_t test_magic_raw(duk_context *ctx, void *udata) {
+	int i = duk_require_int(ctx, -1);
+	duk_idx_t ret;
 
-  (void)udata;
+	(void) udata;
 
-  ret = duk_push_c_lightfunc(ctx, my_addtwo_lfunc, 2 /*nargs*/, 3 /*length*/,
-                             i /*magic*/);
-  duk_push_int(ctx, (duk_int_t)ret);
-  return 1;
+	ret = duk_push_c_lightfunc(ctx, my_addtwo_lfunc, 2 /*nargs*/, 3 /*length*/, i /*magic*/);
+	duk_push_int(ctx, (duk_int_t) ret);
+	return 1;
 }
 
-static duk_ret_t test_magic(duk_context* ctx, void* udata) {
-  int i;
+static duk_ret_t test_magic(duk_context *ctx, void *udata) {
+	int i;
 
-  (void)udata;
+	(void) udata;
 
-  for (i = -256; i <= 256; i++) {
-    duk_push_int(ctx, i);
-    duk_safe_call(ctx, test_magic_raw, NULL, 1, 1);
-    printf("i=%ld, res=%s\n", (long)i, duk_safe_to_string(ctx, -1));
-    duk_pop(ctx);
-  }
-  return 0;
+	for (i = -256; i <= 256; i++) {
+		duk_push_int(ctx, i);
+		duk_safe_call(ctx, test_magic_raw, NULL, 1, 1);
+		printf("i=%ld, res=%s\n", (long) i, duk_safe_to_string(ctx, -1));
+		duk_pop(ctx);
+	}
+	return 0;
 }
 
 /*===
@@ -685,31 +682,30 @@ i=16, res=TypeError: invalid args
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t test_length_raw(duk_context* ctx, void* udata) {
-  int i = duk_require_int(ctx, -1);
-  duk_idx_t ret;
+static duk_ret_t test_length_raw(duk_context *ctx, void *udata) {
+	int i = duk_require_int(ctx, -1);
+	duk_idx_t ret;
 
-  (void)udata;
+	(void) udata;
 
-  ret = duk_push_c_lightfunc(ctx, my_addtwo_lfunc, 2 /*nargs*/, i /*length*/,
-                             0x42 /*magic*/);
-  duk_push_int(ctx, (duk_int_t)ret);
-  return 1;
+	ret = duk_push_c_lightfunc(ctx, my_addtwo_lfunc, 2 /*nargs*/, i /*length*/, 0x42 /*magic*/);
+	duk_push_int(ctx, (duk_int_t) ret);
+	return 1;
 }
 
-static duk_ret_t test_length_values(duk_context* ctx, void* udata) {
-  int i;
+static duk_ret_t test_length_values(duk_context *ctx, void *udata) {
+	int i;
 
-  (void)udata;
+	(void) udata;
 
-  for (i = -16; i <= 16; i++) {
-    duk_push_int(ctx, i);
-    duk_safe_call(ctx, test_length_raw, NULL, 1, 1);
-    printf("i=%ld, res=%s\n", (long)i, duk_safe_to_string(ctx, -1));
-    duk_pop(ctx);
-  }
+	for (i = -16; i <= 16; i++) {
+		duk_push_int(ctx, i);
+		duk_safe_call(ctx, test_length_raw, NULL, 1, 1);
+		printf("i=%ld, res=%s\n", (long) i, duk_safe_to_string(ctx, -1));
+		duk_pop(ctx);
+	}
 
-  return 0;
+	return 0;
 }
 
 /*===
@@ -752,40 +748,40 @@ i=18, nargs=18, res=TypeError: invalid args
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t test_nargs_raw(duk_context* ctx, void* udata) {
-  int i = duk_require_int(ctx, -1);
-  duk_idx_t ret;
+static duk_ret_t test_nargs_raw(duk_context *ctx, void *udata) {
+	int i = duk_require_int(ctx, -1);
+	duk_idx_t ret;
 
-  (void)udata;
+	(void) udata;
 
-  ret = duk_push_c_lightfunc(ctx, my_addtwo_lfunc, i /*nargs*/, 2 /*length*/,
-                             0x42 /*magic*/);
-  duk_push_int(ctx, (duk_int_t)ret);
-  return 1;
+	ret = duk_push_c_lightfunc(ctx, my_addtwo_lfunc, i /*nargs*/, 2 /*length*/, 0x42 /*magic*/);
+	duk_push_int(ctx, (duk_int_t) ret);
+	return 1;
 }
 
-static duk_ret_t test_nargs_values(duk_context* ctx, void* udata) {
-  int i;
-  int nargs;
-  int is_vararg;
+static duk_ret_t test_nargs_values(duk_context *ctx, void *udata) {
+	int i;
+	int nargs;
+	int is_vararg;
 
-  (void)udata;
+	(void) udata;
 
-  for (i = -16; i <= 18; i++) {
-    if (i == 17) {
-      duk_push_int(ctx, DUK_VARARGS);
-    } else {
-      duk_push_int(ctx, i);
-    }
-    nargs = duk_get_int(ctx, -1);
-    is_vararg = (nargs == DUK_VARARGS);
-    duk_safe_call(ctx, test_nargs_raw, NULL, 1, 1);
-    printf("i=%ld, nargs=%ld%s, res=%s\n", (long)i, (long)nargs,
-           (is_vararg ? " (varargs)" : ""), duk_safe_to_string(ctx, -1));
-    duk_pop(ctx);
-  }
+	for (i = -16; i <= 18; i++) {
+		if (i == 17) {
+			duk_push_int(ctx, DUK_VARARGS);
+		} else {
+			duk_push_int(ctx, i);
+		}
+		nargs = duk_get_int(ctx, -1);
+		is_vararg =  (nargs == DUK_VARARGS);
+		duk_safe_call(ctx, test_nargs_raw, NULL, 1, 1);
+		printf("i=%ld, nargs=%ld%s, res=%s\n",
+		       (long) i, (long) nargs, (is_vararg ? " (varargs)" : ""),
+		       duk_safe_to_string(ctx, -1));
+		duk_pop(ctx);
+	}
 
-  return 0;
+	return 0;
 }
 
 /*===
@@ -820,50 +816,48 @@ top: 1
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t test_enum(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_enum(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  (void)duk_push_c_lightfunc(ctx, my_addtwo_lfunc, 2 /*nargs*/, 3 /*length*/,
-                             0x42 /*magic*/);
+	(void) duk_push_c_lightfunc(ctx, my_addtwo_lfunc, 2 /*nargs*/, 3 /*length*/, 0x42 /*magic*/);
 
-  printf("enum defaults\n");
-  duk_enum(ctx, -1, 0);
-  while (duk_next(ctx, -1, 0 /*get_value*/)) {
-    printf("key: %s\n", duk_to_string(ctx, -1));
-    duk_pop(ctx);
-  }
-  duk_pop(ctx);
-  printf("top: %ld\n", (long)duk_get_top(ctx));
+	printf("enum defaults\n");
+	duk_enum(ctx, -1, 0);
+	while (duk_next(ctx, -1, 0 /*get_value*/)) {
+		printf("key: %s\n", duk_to_string(ctx, -1));
+		duk_pop(ctx);
+	}
+	duk_pop(ctx);
+	printf("top: %ld\n", (long) duk_get_top(ctx));
 
-  printf("enum nonenumerable\n");
-  duk_enum(ctx, -1, DUK_ENUM_INCLUDE_NONENUMERABLE);
-  while (duk_next(ctx, -1, 0 /*get_value*/)) {
-    printf("key: %s\n", duk_to_string(ctx, -1));
-    duk_pop(ctx);
-  }
-  duk_pop(ctx);
-  printf("top: %ld\n", (long)duk_get_top(ctx));
+	printf("enum nonenumerable\n");
+	duk_enum(ctx, -1, DUK_ENUM_INCLUDE_NONENUMERABLE);
+	while (duk_next(ctx, -1, 0 /*get_value*/)) {
+		printf("key: %s\n", duk_to_string(ctx, -1));
+		duk_pop(ctx);
+	}
+	duk_pop(ctx);
+	printf("top: %ld\n", (long) duk_get_top(ctx));
 
-  printf("enum own\n");
-  duk_enum(ctx, -1, DUK_ENUM_OWN_PROPERTIES_ONLY);
-  while (duk_next(ctx, -1, 0 /*get_value*/)) {
-    printf("key: %s\n", duk_to_string(ctx, -1));
-    duk_pop(ctx);
-  }
-  duk_pop(ctx);
-  printf("top: %ld\n", (long)duk_get_top(ctx));
+	printf("enum own\n");
+	duk_enum(ctx, -1, DUK_ENUM_OWN_PROPERTIES_ONLY);
+	while (duk_next(ctx, -1, 0 /*get_value*/)) {
+		printf("key: %s\n", duk_to_string(ctx, -1));
+		duk_pop(ctx);
+	}
+	duk_pop(ctx);
+	printf("top: %ld\n", (long) duk_get_top(ctx));
 
-  printf("enum own non-enumerable\n");
-  duk_enum(ctx, -1,
-           DUK_ENUM_OWN_PROPERTIES_ONLY | DUK_ENUM_INCLUDE_NONENUMERABLE);
-  while (duk_next(ctx, -1, 0 /*get_value*/)) {
-    printf("key: %s\n", duk_to_string(ctx, -1));
-    duk_pop(ctx);
-  }
-  duk_pop(ctx);
-  printf("top: %ld\n", (long)duk_get_top(ctx));
+	printf("enum own non-enumerable\n");
+	duk_enum(ctx, -1, DUK_ENUM_OWN_PROPERTIES_ONLY | DUK_ENUM_INCLUDE_NONENUMERABLE);
+	while (duk_next(ctx, -1, 0 /*get_value*/)) {
+		printf("key: %s\n", duk_to_string(ctx, -1));
+		duk_pop(ctx);
+	}
+	duk_pop(ctx);
+	printf("top: %ld\n", (long) duk_get_top(ctx));
 
-  return 0;
+	return 0;
 }
 
 /*===
@@ -874,28 +868,27 @@ final top: 2
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t test_get_length(duk_context* ctx, void* udata) {
-  duk_size_t len;
+static duk_ret_t test_get_length(duk_context *ctx, void *udata) {
+	duk_size_t len;
 
-  (void)udata;
+	(void) udata;
 
-  /*
-   *  Lightfunc length is its virtual 'length' property, same as for
-   *  ordinary functions.
-   */
+	/*
+	 *  Lightfunc length is its virtual 'length' property, same as for
+	 *  ordinary functions.
+	 */
 
-  (void)duk_push_c_lightfunc(ctx, my_addtwo_lfunc, 2 /*nargs*/, 3 /*length*/,
-                             0x42 /*magic*/);
+	(void) duk_push_c_lightfunc(ctx, my_addtwo_lfunc, 2 /*nargs*/, 3 /*length*/, 0x42 /*magic*/);
 
-  len = duk_get_length(ctx, -1);
-  printf("lightFunc len: %ld\n", (long)len);
+	len = duk_get_length(ctx, -1);
+	printf("lightFunc len: %ld\n", (long) len);
 
-  duk_eval_string(ctx, "(function (a,b,c) {})");
-  len = duk_get_length(ctx, -1);
-  printf("ecmaFunc.len: %ld\n", (long)len);
+	duk_eval_string(ctx, "(function (a,b,c) {})");
+	len = duk_get_length(ctx, -1);
+	printf("ecmaFunc.len: %ld\n", (long) len);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -913,29 +906,28 @@ final top: 1
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t test_to_object(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_to_object(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  (void)duk_push_c_lightfunc(ctx, my_addtwo_lfunc, 2 /*nargs*/, 3 /*length*/,
-                             0x42 /*magic*/);
+	(void) duk_push_c_lightfunc(ctx, my_addtwo_lfunc, 2 /*nargs*/, 3 /*length*/, 0x42 /*magic*/);
 
-  printf("tag before: %ld\n", (long)duk_get_type(ctx, -1));
+	printf("tag before: %ld\n", (long) duk_get_type(ctx, -1));
 
-  duk_to_object(ctx, -1);
+	duk_to_object(ctx, -1);
 
-  printf("tag after: %ld\n", (long)duk_get_type(ctx, -1));
+	printf("tag after: %ld\n", (long) duk_get_type(ctx, -1));
 
-  /* The coerced function works as before */
+	/* The coerced function works as before */
 
-  duk_push_int(ctx, 123);
-  duk_push_int(ctx, 234);
-  duk_push_int(ctx, 345);
-  duk_call(ctx, 3);
+	duk_push_int(ctx, 123);
+	duk_push_int(ctx, 234);
+	duk_push_int(ctx, 345);
+	duk_call(ctx, 3);
 
-  printf("result: %s\n", duk_safe_to_string(ctx, -1));
+	printf("result: %s\n", duk_safe_to_string(ctx, -1));
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -945,49 +937,47 @@ final top: 1
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t test_to_buffer(duk_context* ctx, void* udata) {
-  duk_size_t sz;
-  unsigned char* p;
+static duk_ret_t test_to_buffer(duk_context *ctx, void *udata) {
+	duk_size_t sz;
+	unsigned char *p;
 
-  (void)udata;
+	(void) udata;
 
-  (void)duk_push_c_lightfunc(ctx, my_addtwo_lfunc, 2 /*nargs*/, 3 /*length*/,
-                             0x42 /*magic*/);
+	(void) duk_push_c_lightfunc(ctx, my_addtwo_lfunc, 2 /*nargs*/, 3 /*length*/, 0x42 /*magic*/);
 
-  /*
-   *  Lightfunc-to-buffer coercion currently produces a string: the
-   *  lightfunc gets coerced to a string like a normal function would.
-   *  The buffer is then filled with the bytes from this coercion.
-   *
-   *  The output must be sanitized because it is platform specific.
-   */
+	/*
+	 *  Lightfunc-to-buffer coercion currently produces a string: the
+	 *  lightfunc gets coerced to a string like a normal function would.
+	 *  The buffer is then filled with the bytes from this coercion.
+	 *
+	 *  The output must be sanitized because it is platform specific.
+	 */
 
-  p = (unsigned char*)duk_to_buffer(ctx, -1, &sz);
-  if (!p) {
-    printf("ptr is NULL\n");
-  } else {
-    /* Don't print length because it depends on pointer length
-     * and thus architecture.
-     */
+	p = (unsigned char *) duk_to_buffer(ctx, -1, &sz);
+	if (!p) {
+		printf("ptr is NULL\n");
+	} else {
+		/* Don't print length because it depends on pointer length
+		 * and thus architecture.
+		 */
 #if 0
 		printf("%ld: ", (long) sz);
 #endif
 
-    /* Sanitize with ECMAScript because it's easier... */
-    duk_eval_string(ctx,
-                    "(function (x) { return String(x)"
-                    ".replace(/\\/\\*/g, '(*').replace(/\\*\\//g, '*)')"
-                    ".replace(/light_[0-9a-fA-F]+_/g, 'light_PTR_'); })");
-    duk_dup(ctx, -2);
-    duk_buffer_to_string(ctx, -1);
-    duk_call(ctx, 1);
+		/* Sanitize with ECMAScript because it's easier... */
+		duk_eval_string(ctx, "(function (x) { return String(x)"
+		                     ".replace(/\\/\\*/g, '(*').replace(/\\*\\//g, '*)')"
+		                     ".replace(/light_[0-9a-fA-F]+_/g, 'light_PTR_'); })");
+		duk_dup(ctx, -2);
+		duk_buffer_to_string(ctx, -1);
+		duk_call(ctx, 1);
 
-    printf("%s\n", duk_to_string(ctx, -1));
-    duk_pop(ctx); /* pop temp */
-  }
+		printf("%s\n", duk_to_string(ctx, -1));
+		duk_pop(ctx);  /* pop temp */
+	}
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -997,26 +987,25 @@ final top: 1
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t test_to_pointer(duk_context* ctx, void* udata) {
-  void* p;
+static duk_ret_t test_to_pointer(duk_context *ctx, void *udata) {
+	void *p;
 
-  (void)udata;
+	(void) udata;
 
-  (void)duk_push_c_lightfunc(ctx, my_addtwo_lfunc, 2 /*nargs*/, 3 /*length*/,
-                             0x42 /*magic*/);
+	(void) duk_push_c_lightfunc(ctx, my_addtwo_lfunc, 2 /*nargs*/, 3 /*length*/, 0x42 /*magic*/);
 
-  /*
-   *  Lightfunc-to-pointer coercion currently produces a NULL: there is
-   *  no portable way to cast a function pointer to a data pointer, as
-   *  there may be segmentation etc involved.  This could be improved to
-   *  work on specific platforms.
-   */
+	/*
+	 *  Lightfunc-to-pointer coercion currently produces a NULL: there is
+	 *  no portable way to cast a function pointer to a data pointer, as
+	 *  there may be segmentation etc involved.  This could be improved to
+	 *  work on specific platforms.
+	 */
 
-  p = duk_to_pointer(ctx, -1);
-  printf("ptr is NULL: %d\n", (int)(p == NULL ? 1 : 0));
+	p = duk_to_pointer(ctx, -1);
+	printf("ptr is NULL: %d\n", (int) (p == NULL ? 1 : 0));
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -1031,14 +1020,14 @@ final top: 1
  * duk_to_primitive().  This was changed to match plain buffers in 2.x.
  */
 
-static duk_ret_t test_is_primitive(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_is_primitive(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_push_c_lightfunc(ctx, my_dummy_func, 0, 0, 0);
-  printf("is_primitive: %ld\n", (long)duk_is_primitive(ctx, -1));
+	duk_push_c_lightfunc(ctx, my_dummy_func, 0, 0, 0);
+	printf("is_primitive: %ld\n", (long) duk_is_primitive(ctx, -1));
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
@@ -1050,14 +1039,14 @@ final top: 1
 
 /* Lightfuncs are not objects (they're primitive). */
 
-static duk_ret_t test_is_object(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_is_object(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_push_c_lightfunc(ctx, my_dummy_func, 0, 0, 0);
-  printf("is_object: %ld\n", (long)duk_is_object(ctx, -1));
+	duk_push_c_lightfunc(ctx, my_dummy_func, 0, 0, 0);
+	printf("is_object: %ld\n", (long) duk_is_object(ctx, -1));
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 /*===
 *** test_is_object_coercible (duk_safe_call)
@@ -1068,38 +1057,38 @@ final top: 1
 
 /* Lightfuncs are object coercible. */
 
-static duk_ret_t test_is_object_coercible(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_is_object_coercible(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_push_c_lightfunc(ctx, my_dummy_func, 0, 0, 0);
-  printf("is_object_coercible: %ld\n", (long)duk_is_object_coercible(ctx, -1));
+	duk_push_c_lightfunc(ctx, my_dummy_func, 0, 0, 0);
+	printf("is_object_coercible: %ld\n", (long) duk_is_object_coercible(ctx, -1));
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
 /*===
 still here
 ===*/
 
-void test(duk_context* ctx) {
-  /* nargs / length limits, C api test, check what happens if you exceed */
-  /* Example of using lightfunc as a constructor, separate testcase, doc ref */
+void test(duk_context *ctx) {
+	/* nargs / length limits, C api test, check what happens if you exceed */
+	/* Example of using lightfunc as a constructor, separate testcase, doc ref */
 
-  TEST_SAFE_CALL(test_is_lightfunc);
-  TEST_SAFE_CALL(test_simple_push);
-  TEST_SAFE_CALL(test_magic);
-  TEST_SAFE_CALL(test_length_values);
-  TEST_SAFE_CALL(test_nargs_values);
-  TEST_SAFE_CALL(test_enum);
-  TEST_SAFE_CALL(test_get_length);
-  TEST_SAFE_CALL(test_to_object);
-  TEST_SAFE_CALL(test_to_buffer);
-  TEST_SAFE_CALL(test_to_pointer);
-  TEST_SAFE_CALL(test_is_primitive);
-  TEST_SAFE_CALL(test_is_object);
-  TEST_SAFE_CALL(test_is_object_coercible);
+	TEST_SAFE_CALL(test_is_lightfunc);
+	TEST_SAFE_CALL(test_simple_push);
+	TEST_SAFE_CALL(test_magic);
+	TEST_SAFE_CALL(test_length_values);
+	TEST_SAFE_CALL(test_nargs_values);
+	TEST_SAFE_CALL(test_enum);
+	TEST_SAFE_CALL(test_get_length);
+	TEST_SAFE_CALL(test_to_object);
+	TEST_SAFE_CALL(test_to_buffer);
+	TEST_SAFE_CALL(test_to_pointer);
+	TEST_SAFE_CALL(test_is_primitive);
+	TEST_SAFE_CALL(test_is_object);
+	TEST_SAFE_CALL(test_is_object_coercible);
 
-  printf("still here\n");
-  fflush(stdout);
+	printf("still here\n");
+	fflush(stdout);
 }

@@ -23,60 +23,62 @@ index 18: value 123
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t safe_helper(duk_context* ctx, void* udata) {
-  duk_idx_t idx = (duk_idx_t)udata & 0xffffffffUL;
-  duk_int_t v = duk_opt_int(ctx, idx, 123);
-  (void)udata;
+static duk_ret_t safe_helper(duk_context *ctx, void *udata) {
+	duk_idx_t idx = (duk_idx_t) udata & 0xffffffffUL;
+	duk_int_t v = duk_opt_int(ctx, idx, 123);
+	(void) udata;
 
-  printf("index %ld: value ", (long)idx);
-  if (v == DUK_INT_MIN) {
-    printf("DUK_INT_MIN");
-  } else if (v == DUK_INT_MAX) {
-    printf("DUK_INT_MAX");
-  } else {
-    printf("%ld", (long)v);
-  }
-  printf("\n");
+	printf("index %ld: value ", (long) idx);
+	if (v == DUK_INT_MIN) {
+		printf("DUK_INT_MIN");
+	} else if (v == DUK_INT_MAX) {
+		printf("DUK_INT_MAX");
+	} else {
+		printf("%ld", (long) v);
+	}
+	printf("\n");
 
-  return 0;
+	return 0;
 }
 
-static duk_ret_t test_basic(duk_context* ctx, void* udata) {
-  duk_idx_t i, n;
-  duk_int_t rc;
+static duk_ret_t test_basic(duk_context *ctx, void *udata) {
+	duk_idx_t i, n;
+	duk_int_t rc;
 
-  (void)udata;
+	(void) udata;
 
-  duk_push_undefined(ctx);
-  duk_push_null(ctx);
-  duk_push_true(ctx);
-  duk_push_false(ctx);
-  duk_push_string(ctx, "foo");
-  duk_push_string(ctx, "123");
-  duk_push_number(ctx, -INFINITY);
-  duk_push_number(ctx, ((duk_double_t)DUK_INT_MIN) * 2.0);
-  duk_push_number(ctx, -3.9);
-  duk_push_number(ctx, -0.0);
-  duk_push_number(ctx, +0.0);
-  duk_push_number(ctx, +3.9);
-  duk_push_number(ctx, +123456789.0);
-  duk_push_number(ctx, ((duk_double_t)DUK_INT_MAX) * 2.0);
-  duk_push_number(ctx, ((duk_double_t)DUK_UINT_MAX) * 2.0);
-  duk_push_number(ctx, +INFINITY);
-  duk_push_nan(ctx);
-  duk_push_object(ctx);
+	duk_push_undefined(ctx);
+	duk_push_null(ctx);
+	duk_push_true(ctx);
+	duk_push_false(ctx);
+	duk_push_string(ctx, "foo");
+	duk_push_string(ctx, "123");
+	duk_push_number(ctx, -INFINITY);
+	duk_push_number(ctx, ((duk_double_t) DUK_INT_MIN) * 2.0);
+	duk_push_number(ctx, -3.9);
+	duk_push_number(ctx, -0.0);
+	duk_push_number(ctx, +0.0);
+	duk_push_number(ctx, +3.9);
+	duk_push_number(ctx, +123456789.0);
+	duk_push_number(ctx, ((duk_double_t) DUK_INT_MAX) * 2.0);
+	duk_push_number(ctx, ((duk_double_t) DUK_UINT_MAX) * 2.0);
+	duk_push_number(ctx, +INFINITY);
+	duk_push_nan(ctx);
+	duk_push_object(ctx);
 
-  n = duk_get_top(ctx);
-  printf("top: %ld\n", (long)n);
-  for (i = 0; i <= n; i++) {
-    rc = duk_safe_call(ctx, safe_helper, (void*)i, 0, 1);
-    if (rc != DUK_EXEC_SUCCESS) {
-      printf("index %ld: %s\n", (long)i, duk_safe_to_string(ctx, -1));
-    }
-    duk_pop(ctx);
-  }
+	n = duk_get_top(ctx);
+	printf("top: %ld\n", (long) n);
+	for (i = 0; i <= n; i++) {
+		rc = duk_safe_call(ctx, safe_helper, (void *) i, 0, 1);
+		if (rc != DUK_EXEC_SUCCESS) {
+			printf("index %ld: %s\n", (long) i, duk_safe_to_string(ctx, -1));
+		}
+		duk_pop(ctx);
+	}
 
-  return 0;
+	return 0;
 }
 
-void test(duk_context* ctx) { TEST_SAFE_CALL(test_basic); }
+void test(duk_context *ctx) {
+	TEST_SAFE_CALL(test_basic);
+}

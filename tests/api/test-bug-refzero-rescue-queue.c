@@ -53,133 +53,135 @@ final top: 0
 * putting back badger2
 ===*/
 
-static void* create_badger(duk_context* ctx, const char* id);
-static void push_badger(duk_context* ctx);
-static duk_ret_t finalize_badger(duk_context* ctx);
-static duk_ret_t inspect_badger(duk_context* ctx);
+static void *create_badger(duk_context *ctx, const char *id);
+static void push_badger(duk_context *ctx);
+static duk_ret_t finalize_badger(duk_context *ctx);
+static duk_ret_t inspect_badger(duk_context *ctx);
 
-static void* cached_badger_1 = NULL;
-static void* cached_badger_2 = NULL;
+static void *cached_badger_1 = NULL;
+static void *cached_badger_2 = NULL;
 
-static duk_ret_t test_badgers(duk_context* ctx, void* udata) {
-  cached_badger_1 = create_badger(ctx, "badger1");
-  cached_badger_2 = create_badger(ctx, "badger2");
+static duk_ret_t test_badgers(duk_context *ctx, void *udata) {
+	cached_badger_1 = create_badger(ctx, "badger1");
+	cached_badger_2 = create_badger(ctx, "badger2");
 
-  (void)udata;
+	(void) udata;
 
-  printf("first call\n");
+	printf("first call\n");
 
-  duk_push_c_function(ctx, inspect_badger, 1);
-  duk_push_object(ctx);
-  push_badger(ctx);
-  duk_put_prop_string(ctx, -2, "animal");
+	duk_push_c_function(ctx, inspect_badger, 1);
+	duk_push_object(ctx);
+	push_badger(ctx);
+	duk_put_prop_string(ctx, -2, "animal");
 
-  duk_pcall(ctx, 1);
-  duk_pop(ctx);
+	duk_pcall(ctx, 1);
+	duk_pop(ctx);
 
-  printf("\nsecond call\n");
+	printf("\nsecond call\n");
 
-  duk_push_c_function(ctx, inspect_badger, 1);
+	duk_push_c_function(ctx, inspect_badger, 1);
 
-  duk_push_object(ctx);
-  push_badger(ctx);
-  duk_put_prop_string(ctx, -2, "animal");
+	duk_push_object(ctx);
+	push_badger(ctx);
+	duk_put_prop_string(ctx, -2, "animal");
 
-  duk_pcall(ctx, 1);
-  duk_pop(ctx);
+	duk_pcall(ctx, 1);
+	duk_pop(ctx);
 
-  printf("\ndone\n");
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("\ndone\n");
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
-static void* create_badger(duk_context* ctx, const char* id) {
-  void* result;
+static void *create_badger(duk_context *ctx, const char *id) {
+	void *result;
 
-  duk_push_object(ctx);
+	duk_push_object(ctx);
 
-  duk_push_string(ctx, id);
-  duk_put_prop_string(ctx, -2, "id");
+	duk_push_string(ctx, id);
+	duk_put_prop_string(ctx, -2, "id");
 
-  duk_push_c_function(ctx, finalize_badger, 2);
-  duk_set_finalizer(ctx, -2);
+	duk_push_c_function(ctx, finalize_badger, 2);
+	duk_set_finalizer(ctx, -2);
 
-  result = duk_get_heapptr(ctx, -1);
+	result = duk_get_heapptr(ctx, -1);
 
-  duk_push_global_stash(ctx);
-  duk_dup(ctx, -2);
-  duk_put_prop_string(ctx, -2, id);
+	duk_push_global_stash(ctx);
+	duk_dup(ctx, -2);
+	duk_put_prop_string(ctx, -2, id);
 
-  duk_pop_2(ctx);
+	duk_pop_2(ctx);
 
-  return result;
+	return result;
 }
 
-static void push_badger(duk_context* ctx) {
-  void** cached_badger;
+static void push_badger(duk_context *ctx) {
+	void **cached_badger;
 
-  cached_badger = &cached_badger_1;
-  if (*cached_badger != NULL) {
-    printf("* pushing badger1\n");
-  } else {
-    cached_badger = &cached_badger_2;
-    printf("* pushing badger2\n");
-  }
+	cached_badger = &cached_badger_1;
+	if (*cached_badger != NULL) {
+		printf("* pushing badger1\n");
+	} else {
+		cached_badger = &cached_badger_2;
+		printf("* pushing badger2\n");
+	}
 
-  if (*cached_badger != NULL) {
-    const char* id;
+	if (*cached_badger != NULL) {
+		const char *id;
 
-    duk_push_heapptr(ctx, *cached_badger);
-    *cached_badger = NULL;
+		duk_push_heapptr(ctx, *cached_badger);
+		*cached_badger = NULL;
 
-    duk_get_prop_string(ctx, -1, "id");
-    id = duk_get_string(ctx, -1);
+		duk_get_prop_string(ctx, -1, "id");
+		id = duk_get_string(ctx, -1);
 
-    duk_push_global_stash(ctx);
-    duk_del_prop_string(ctx, -1, id);
+		duk_push_global_stash(ctx);
+		duk_del_prop_string(ctx, -1, id);
 
-    duk_pop_2(ctx);
+		duk_pop_2(ctx);
 
-    return;
-  }
+		return;
+	}
 
-  printf("never here\n");
+	printf("never here\n");
 }
 
-static duk_ret_t finalize_badger(duk_context* ctx) {
-  const char* id;
+static duk_ret_t finalize_badger(duk_context *ctx) {
+	const char *id;
 
-  duk_get_prop_string(ctx, 0, "id");
-  id = duk_get_string(ctx, -1);
+	duk_get_prop_string(ctx, 0, "id");
+	id = duk_get_string(ctx, -1);
 
-  if (strcmp(id, "badger1") == 0) {
-    printf("* putting back badger1\n");
-    cached_badger_1 = duk_get_heapptr(ctx, 0);
-  } else if (strcmp(id, "badger2") == 0) {
-    printf("* putting back badger2\n");
-    cached_badger_2 = duk_get_heapptr(ctx, 0);
-  } else {
-    printf("never here\n");
-  }
+	if (strcmp(id, "badger1") == 0) {
+		printf("* putting back badger1\n");
+		cached_badger_1 = duk_get_heapptr(ctx, 0);
+	} else if (strcmp(id, "badger2") == 0) {
+		printf("* putting back badger2\n");
+		cached_badger_2 = duk_get_heapptr(ctx, 0);
+	} else {
+		printf("never here\n");
+	}
 
-  duk_push_global_stash(ctx);
-  duk_dup(ctx, 0);
-  duk_put_prop_string(ctx, -2, id);
+	duk_push_global_stash(ctx);
+	duk_dup(ctx, 0);
+	duk_put_prop_string(ctx, -2, id);
 
-  duk_pop_2(ctx);
+	duk_pop_2(ctx);
 
-  return 0;
+	return 0;
 }
 
-static duk_ret_t inspect_badger(duk_context* ctx) {
-  printf("> inspect_badger\n");
+static duk_ret_t inspect_badger(duk_context *ctx) {
+	printf("> inspect_badger\n");
 
-  push_badger(ctx);
-  duk_pop(ctx);
+	push_badger(ctx);
+	duk_pop(ctx);
 
-  printf("< inspect_badger\n");
+	printf("< inspect_badger\n");
 
-  return 0;
+	return 0;
 }
 
-void test(duk_context* ctx) { TEST_SAFE_CALL(test_badgers); }
+void test(duk_context *ctx) {
+	TEST_SAFE_CALL(test_badgers);
+}

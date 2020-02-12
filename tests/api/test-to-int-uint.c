@@ -78,49 +78,49 @@ index 32, uint: 1, number before: nan, number after: 1.000000
 ==> rc=1, result='RangeError: invalid stack index -2147483648'
 ===*/
 
-static duk_ret_t test_1(duk_context* ctx, void* udata) {
-  duk_idx_t i, n;
+static duk_ret_t test_1(duk_context *ctx, void *udata) {
+	duk_idx_t i, n;
 
-  (void)udata;
+	(void) udata;
 
-  duk_set_top(ctx, 0);
+	duk_set_top(ctx, 0);
 
-  duk_push_undefined(ctx);
-  duk_push_null(ctx);
-  duk_push_true(ctx);
-  duk_push_false(ctx);
-  duk_push_int(ctx, 0);
-  duk_push_int(ctx, 1);
-  duk_push_number(ctx, 123.456);
-  duk_push_number(ctx, -123.456);
-  duk_push_number(ctx, 123.999);
-  duk_push_number(ctx, -123.999);
+	duk_push_undefined(ctx);
+	duk_push_null(ctx);
+	duk_push_true(ctx);
+	duk_push_false(ctx);
+	duk_push_int(ctx, 0);
+	duk_push_int(ctx, 1);
+	duk_push_number(ctx, 123.456);
+	duk_push_number(ctx, -123.456);
+	duk_push_number(ctx, 123.999);
+	duk_push_number(ctx, -123.999);
 
-  duk_push_nan(ctx);
-  duk_push_number(ctx, INFINITY);
-  duk_push_string(ctx, "");
-  duk_push_string(ctx, "foo");
-  duk_push_string(ctx, "123");
-  duk_push_string(ctx, "123.456");
-  duk_push_string(ctx, "123.456e3");
-  duk_push_string(ctx, "  -123.456e+3  ");
-  duk_push_string(ctx, "NaN");
-  duk_push_string(ctx, "-Infinity");
+	duk_push_nan(ctx);
+	duk_push_number(ctx, INFINITY);
+	duk_push_string(ctx, "");
+	duk_push_string(ctx, "foo");
+	duk_push_string(ctx, "123");
+	duk_push_string(ctx, "123.456");
+	duk_push_string(ctx, "123.456e3");
+	duk_push_string(ctx, "  -123.456e+3  ");
+	duk_push_string(ctx, "NaN");
+	duk_push_string(ctx, "-Infinity");
 
-  duk_push_string(ctx, "+Infinity");
-  duk_push_string(ctx, "Infinity");
-  duk_push_string(ctx, "Infinityx");
-  duk_push_string(ctx, "xInfinity");
-  duk_push_string(ctx, "  Infinity  ");
-  duk_push_object(ctx);
-  duk_push_thread(ctx);
-  duk_push_fixed_buffer(ctx, 0);
-  duk_push_fixed_buffer(ctx, 1024);
-  duk_push_dynamic_buffer(ctx, 0);
+	duk_push_string(ctx, "+Infinity");
+	duk_push_string(ctx, "Infinity");
+	duk_push_string(ctx, "Infinityx");
+	duk_push_string(ctx, "xInfinity");
+	duk_push_string(ctx, "  Infinity  ");
+	duk_push_object(ctx);
+	duk_push_thread(ctx);
+	duk_push_fixed_buffer(ctx, 0);
+	duk_push_fixed_buffer(ctx, 1024);
+	duk_push_dynamic_buffer(ctx, 0);
 
-  duk_push_dynamic_buffer(ctx, 1024);
-  duk_push_pointer(ctx, (void*)NULL);
-  duk_push_pointer(ctx, (void*)0xdeadbeefUL);
+	duk_push_dynamic_buffer(ctx, 1024);
+	duk_push_pointer(ctx, (void *) NULL);
+	duk_push_pointer(ctx, (void *) 0xdeadbeefUL);
 
 #if 0
 	printf("%lld %lld %llu %llu\n",
@@ -130,90 +130,88 @@ static duk_ret_t test_1(duk_context* ctx, void* udata) {
 		(unsigned long long int) DUK_UINT_MAX);
 #endif
 
-  n = duk_get_top(ctx);
-  printf("top: %ld\n", (long)n);
-  for (i = 0; i < n; i++) {
-    duk_double_t dval_pre;
-    duk_double_t dval_post;
-    duk_int_t ival;
-    duk_uint_t uval;
+	n = duk_get_top(ctx);
+	printf("top: %ld\n", (long) n);
+	for (i = 0; i < n; i++) {
+		duk_double_t dval_pre;
+		duk_double_t dval_post;
+		duk_int_t ival;
+		duk_uint_t uval;
 
-    /* duk_to_int() */
-    duk_dup(ctx, i);
-    dval_pre = duk_get_number(ctx, -1); /* number before ToInteger() coercion */
-    ival = duk_to_int(ctx, -1);
-    dval_post = duk_get_number(ctx, -1); /* number after ToInteger() coercion */
-    printf("index %ld, ", (long)i);
-    if (ival == DUK_INT_MIN) {
-      printf("int: DUK_INT_MIN");
-    } else if (ival == DUK_INT_MAX) {
-      printf("int: DUK_INT_MAX");
-    } else {
-      printf("int: %ld", (long)ival);
-    }
-    printf(", number before: %lf, number after: %lf\n", (double)dval_pre,
-           (double)dval_post);
-    duk_pop(ctx);
+		/* duk_to_int() */
+		duk_dup(ctx, i);
+		dval_pre = duk_get_number(ctx, -1);    /* number before ToInteger() coercion */
+		ival = duk_to_int(ctx, -1);
+		dval_post = duk_get_number(ctx, -1);   /* number after ToInteger() coercion */
+		printf("index %ld, ", (long) i);
+		if (ival == DUK_INT_MIN) {
+			printf("int: DUK_INT_MIN");
+		} else if (ival == DUK_INT_MAX) {
+			printf("int: DUK_INT_MAX");
+		} else {
+			printf("int: %ld", (long) ival);
+		}
+		printf(", number before: %lf, number after: %lf\n", (double) dval_pre, (double) dval_post);
+		duk_pop(ctx);
 
-    /* duk_to_uint() */
-    duk_dup(ctx, i);
-    dval_pre = duk_get_number(ctx, -1); /* number before ToInteger() coercion */
-    uval = duk_to_uint(ctx, -1);
-    dval_post = duk_get_number(ctx, -1); /* number after ToInteger() coercion */
-    printf("index %ld, ", (long)i);
-    if (uval == DUK_UINT_MAX) {
-      printf("uint: DUK_UINT_MAX");
-    } else {
-      printf("uint: %lu", (unsigned long)uval);
-    }
-    printf(", number before: %lf, number after: %lf\n", (double)dval_pre,
-           (double)dval_post);
-    duk_pop(ctx);
-  }
+		/* duk_to_uint() */
+		duk_dup(ctx, i);
+		dval_pre = duk_get_number(ctx, -1);    /* number before ToInteger() coercion */
+		uval = duk_to_uint(ctx, -1);
+		dval_post = duk_get_number(ctx, -1);   /* number after ToInteger() coercion */
+		printf("index %ld, ", (long) i);
+		if (uval == DUK_UINT_MAX) {
+			printf("uint: DUK_UINT_MAX");
+		} else {
+			printf("uint: %lu", (unsigned long) uval);
+		}
+		printf(", number before: %lf, number after: %lf\n", (double) dval_pre, (double) dval_post);
+		duk_pop(ctx);
+	}
 
-  return 0;
+	return 0;
 }
 
-static duk_ret_t test_2a(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_2a(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_set_top(ctx, 0);
-  duk_to_int(ctx, 3);
-  printf("index 3 OK\n");
-  return 0;
+	duk_set_top(ctx, 0);
+	duk_to_int(ctx, 3);
+	printf("index 3 OK\n");
+	return 0;
 }
 
-static duk_ret_t test_2b(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_2b(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_set_top(ctx, 0);
-  duk_to_uint(ctx, 3);
-  printf("index 3 OK\n");
-  return 0;
+	duk_set_top(ctx, 0);
+	duk_to_uint(ctx, 3);
+	printf("index 3 OK\n");
+	return 0;
 }
 
-static duk_ret_t test_3a(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_3a(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_set_top(ctx, 0);
-  duk_to_int(ctx, DUK_INVALID_INDEX);
-  printf("index DUK_INVALID_INDEX OK\n");
-  return 0;
+	duk_set_top(ctx, 0);
+	duk_to_int(ctx, DUK_INVALID_INDEX);
+	printf("index DUK_INVALID_INDEX OK\n");
+	return 0;
 }
 
-static duk_ret_t test_3b(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_3b(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_set_top(ctx, 0);
-  duk_to_uint(ctx, DUK_INVALID_INDEX);
-  printf("index DUK_INVALID_INDEX OK\n");
-  return 0;
+	duk_set_top(ctx, 0);
+	duk_to_uint(ctx, DUK_INVALID_INDEX);
+	printf("index DUK_INVALID_INDEX OK\n");
+	return 0;
 }
 
-void test(duk_context* ctx) {
-  TEST_SAFE_CALL(test_1);
-  TEST_SAFE_CALL(test_2a);
-  TEST_SAFE_CALL(test_2b);
-  TEST_SAFE_CALL(test_3a);
-  TEST_SAFE_CALL(test_3b);
+void test(duk_context *ctx) {
+	TEST_SAFE_CALL(test_1);
+	TEST_SAFE_CALL(test_2a);
+	TEST_SAFE_CALL(test_2b);
+	TEST_SAFE_CALL(test_3a);
+	TEST_SAFE_CALL(test_3b);
 }

@@ -22,41 +22,41 @@ push string with maximum size_t - 8 (should fail)
  * explicitly.
  */
 
-const char dummy[4] = {'f', 'o', 'o', '\0'};
+const char dummy[4] = { 'f', 'o', 'o', '\0' };
 
-static duk_ret_t test_1a(duk_context* ctx, void* udata) {
-  const char* p;
+static duk_ret_t test_1a(duk_context *ctx, void *udata) {
+	const char *p;
 
-  (void)udata;
+	(void) udata;
 
-  duk_set_top(ctx, 0);
+	duk_set_top(ctx, 0);
 
-  printf("push string with maximum size_t (should fail)\n");
-  p = duk_push_lstring(ctx, dummy, DUK_SIZE_MAX);
-  printf("ptr is non-NULL: %d\n", (p != NULL ? 1 : 0));
+	printf("push string with maximum size_t (should fail)\n");
+	p = duk_push_lstring(ctx, dummy, DUK_SIZE_MAX);
+	printf("ptr is non-NULL: %d\n", (p != NULL ? 1 : 0));
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
-static duk_ret_t test_1b(duk_context* ctx, void* udata) {
-  const char* p;
+static duk_ret_t test_1b(duk_context *ctx, void *udata) {
+	const char *p;
 
-  (void)udata;
+	(void) udata;
 
-  duk_set_top(ctx, 0);
+	duk_set_top(ctx, 0);
 
-  printf("push string with maximum size_t - 8 (should fail)\n");
-  p = duk_push_lstring(ctx, dummy, DUK_SIZE_MAX - 8);
-  printf("ptr is non-NULL: %d\n", (p != NULL ? 1 : 0));
+	printf("push string with maximum size_t - 8 (should fail)\n");
+	p = duk_push_lstring(ctx, dummy, DUK_SIZE_MAX - 8);
+	printf("ptr is non-NULL: %d\n", (p != NULL ? 1 : 0));
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
-void test(duk_context* ctx) {
-  /*printf("DUK_SIZE_MAX=%lf\n", (double) DUK_SIZE_MAX);*/
+void test(duk_context *ctx) {
+	/*printf("DUK_SIZE_MAX=%lf\n", (double) DUK_SIZE_MAX);*/
 
-  TEST_SAFE_CALL(test_1a);
-  TEST_SAFE_CALL(test_1b);
+	TEST_SAFE_CALL(test_1a);
+	TEST_SAFE_CALL(test_1b);
 }

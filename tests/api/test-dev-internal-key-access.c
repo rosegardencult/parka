@@ -14,15 +14,17 @@ final top: 2
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t test_1(duk_context* ctx, void* udata) {
-  (void)udata;
+static duk_ret_t test_1(duk_context *ctx, void *udata) {
+	(void) udata;
 
-  duk_eval_string(ctx, "new Date(123456)");
-  duk_push_string(ctx, "\x82Value");
-  duk_get_prop(ctx, -2);
-  printf("Date._Value: %s\n", duk_safe_to_string(ctx, -1));
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	duk_eval_string(ctx, "new Date(123456)");
+	duk_push_string(ctx, "\x82Value");
+	duk_get_prop(ctx, -2);
+	printf("Date._Value: %s\n", duk_safe_to_string(ctx, -1));
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
-void test(duk_context* ctx) { TEST_SAFE_CALL(test_1); }
+void test(duk_context *ctx) {
+	TEST_SAFE_CALL(test_1);
+}

@@ -66,81 +66,75 @@ index 21 -> type 8, value '0xdeadbeef'
 21 vs. 21 -> equals=1, strict_equals=1
 ===*/
 
-void test(duk_context* ctx) {
-  char *buf1, *buf2, *buf3;
-  duk_idx_t i, j, n;
+void test(duk_context *ctx) {
+	char *buf1, *buf2, *buf3;
+	duk_idx_t i, j, n;
 
-  duk_push_undefined(ctx);
-  duk_push_null(ctx);
-  duk_push_true(ctx);
-  duk_push_false(ctx);
-  duk_push_number(ctx, -INFINITY);
-  duk_push_number(ctx, -123.0);
-  duk_push_number(ctx, -0.0);
-  duk_push_number(ctx, +0.0);
-  duk_push_number(ctx, +123.0);
-  duk_push_number(ctx, +INFINITY);
+	duk_push_undefined(ctx);
+	duk_push_null(ctx);
+	duk_push_true(ctx);
+	duk_push_false(ctx);
+	duk_push_number(ctx, -INFINITY);
+	duk_push_number(ctx, -123.0);
+	duk_push_number(ctx, -0.0);
+	duk_push_number(ctx, +0.0);
+	duk_push_number(ctx, +123.0);
+	duk_push_number(ctx, +INFINITY);
 
-  duk_push_number(ctx, NAN);
-  duk_push_string(ctx, "");
-  duk_push_string(ctx, "foo");
-  duk_push_string(ctx, "bar");
-  duk_push_object(ctx);
-  duk_push_array(ctx);
-  (void)duk_push_fixed_buffer(ctx, 0);
-  buf1 = (char*)duk_push_fixed_buffer(ctx, 3);
-  buf1[0] = 'f';
-  buf1[1] = 'o';
-  buf1[2] = 'o';
-  buf2 = (char*)duk_push_dynamic_buffer(ctx, 3);
-  buf2[0] = 'f';
-  buf2[1] = 'o';
-  buf2[2] = 'o';
-  buf3 = (char*)duk_push_dynamic_buffer(ctx, 3);
-  buf3[0] = 'b';
-  buf3[1] = 'a';
-  buf3[2] = 'r';
+	duk_push_number(ctx, NAN);
+	duk_push_string(ctx, "");
+	duk_push_string(ctx, "foo");
+	duk_push_string(ctx, "bar");
+	duk_push_object(ctx);
+	duk_push_array(ctx);
+	(void) duk_push_fixed_buffer(ctx, 0);
+	buf1 = (char *) duk_push_fixed_buffer(ctx, 3);
+	buf1[0] = 'f';  buf1[1] = 'o'; buf1[2] = 'o';
+	buf2 = (char *) duk_push_dynamic_buffer(ctx, 3);
+	buf2[0] = 'f';  buf2[1] = 'o'; buf2[2] = 'o';
+	buf3 = (char *) duk_push_dynamic_buffer(ctx, 3);
+	buf3[0] = 'b';  buf3[1] = 'a'; buf3[2] = 'r';
 
-  duk_push_pointer(ctx, NULL);
-  duk_push_pointer(ctx, (void*)0xdeadbeefUL);
+	duk_push_pointer(ctx, NULL);
+	duk_push_pointer(ctx, (void *) 0xdeadbeefUL);
 
-  n = duk_get_top(ctx);
-  for (i = 0; i < n; i++) {
-    duk_dup(ctx, i);
-    printf("index %ld -> type %d, value '%s'\n", (long)i,
-           (int)duk_get_type(ctx, i), duk_to_string(ctx, -1));
-    duk_pop(ctx);
-  }
+	n = duk_get_top(ctx);
+	for (i = 0; i < n; i++) {
+		duk_dup(ctx, i);
+		printf("index %ld -> type %d, value '%s'\n", (long) i,
+		       (int) duk_get_type(ctx, i), duk_to_string(ctx, -1));
+		duk_pop(ctx);
+	}
 
-  for (i = 0; i <= n + 1; i++) {
-    for (j = 0; j <= n + 1; j++) {
-      duk_idx_t idx1, idx2;
-      duk_bool_t eq, seq;
+	for (i = 0; i <= n + 1; i++) {
+		for (j = 0; j <= n + 1; j++) {
+			duk_idx_t idx1, idx2;
+			duk_bool_t eq, seq;
 
-      /* Note: i and j run up to 'n + 1' (invalid index) on purpose. */
-      idx1 = (i == n + 1 ? DUK_INVALID_INDEX : i);
-      idx2 = (j == n + 1 ? DUK_INVALID_INDEX : j);
+			/* Note: i and j run up to 'n + 1' (invalid index) on purpose. */
+			idx1 = (i == n + 1 ? DUK_INVALID_INDEX : i);
+			idx2 = (j == n + 1 ? DUK_INVALID_INDEX : j);
 
-      eq = duk_equals(ctx, i, j);
-      seq = duk_strict_equals(ctx, i, j);
+			eq = duk_equals(ctx, i, j);
+			seq = duk_strict_equals(ctx, i, j);
 
-      /* Print nothing if neither equality is true */
-      if (!eq && !seq) {
-        continue;
-      }
+			/* Print nothing if neither equality is true */
+			if (!eq && !seq) {
+				continue;
+			}
 
-      if (idx1 == DUK_INVALID_INDEX) {
-        printf("DUK_INVALID_INDEX");
-      } else {
-        printf("%ld", (long)idx1);
-      }
-      printf(" vs. ");
-      if (idx2 == DUK_INVALID_INDEX) {
-        printf("DUK_INVALID_INDEX");
-      } else {
-        printf("%ld", (long)idx2);
-      }
-      printf(" -> equals=%d, strict_equals=%d\n", (int)eq, (int)seq);
-    }
-  }
+			if (idx1 == DUK_INVALID_INDEX) {
+				printf("DUK_INVALID_INDEX");
+			} else {
+				printf("%ld", (long) idx1);
+			}
+			printf(" vs. ");
+			if (idx2 == DUK_INVALID_INDEX) {
+				printf("DUK_INVALID_INDEX");
+			} else {
+				printf("%ld", (long) idx2);
+			}
+			printf(" -> equals=%d, strict_equals=%d\n", (int) eq, (int) seq);
+		}
+	}
 }

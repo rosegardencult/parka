@@ -43,66 +43,62 @@ final top: 0
 ==> rc=0, result='undefined'
 ===*/
 
-static duk_ret_t test_1(duk_context* ctx, void* udata) {
-  const char* str;
+static duk_ret_t test_1(duk_context *ctx, void *udata) {
+	const char *str;
 
-  (void)udata;
+	(void) udata;
 
-  /* Eval happens outside of a Duktape/C activation.  The eval code was
-   * executed in non-strict mode also in Duktape 0.11.0 and prior.
-   */
+	/* Eval happens outside of a Duktape/C activation.  The eval code was
+	 * executed in non-strict mode also in Duktape 0.11.0 and prior.
+	 */
 
-  printf("context is strict: %d\n", duk_is_strict_call(ctx));
-  duk_eval_string_noresult(
-      ctx,
-      "print('test_1 evalcode, typeof Math:', typeof Math); var foo1 = 'bar';");
-  duk_push_global_object(ctx);
-  duk_get_prop_string(ctx, -1, "foo1");
-  str = duk_get_string(ctx, -1);
-  printf("global.foo1=%s\n", str ? str : "NULL");
-  duk_pop_2(ctx);
+	printf("context is strict: %d\n", duk_is_strict_call(ctx));
+	duk_eval_string_noresult(ctx, "print('test_1 evalcode, typeof Math:', typeof Math); var foo1 = 'bar';");
+	duk_push_global_object(ctx);
+	duk_get_prop_string(ctx, -1, "foo1");
+	str = duk_get_string(ctx, -1);
+	printf("global.foo1=%s\n", str ? str : "NULL");
+	duk_pop_2(ctx);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
-static duk_ret_t test_2_inner(duk_context* ctx) {
-  /* Eval happens inside a Duktape/C activation, so we're currently in
-   * in strict mode.  In Duktape 0.11.0 and prior, the 'foo2' declaration
-   * would go into a temporary lexical environment and would not be visible
-   * in the global object.  The code can still read (and write) properties
-   * of the global object.
-   */
+static duk_ret_t test_2_inner(duk_context *ctx) {
+	/* Eval happens inside a Duktape/C activation, so we're currently in
+	 * in strict mode.  In Duktape 0.11.0 and prior, the 'foo2' declaration
+	 * would go into a temporary lexical environment and would not be visible
+	 * in the global object.  The code can still read (and write) properties
+	 * of the global object.
+	 */
 
-  printf("context is strict: %d\n", duk_is_strict_call(ctx));
-  duk_eval_string_noresult(
-      ctx,
-      "print('test_2 evalcode, typeof Math:', typeof Math); var foo2 = 'bar';");
-  return 0;
+	printf("context is strict: %d\n", duk_is_strict_call(ctx));
+	duk_eval_string_noresult(ctx, "print('test_2 evalcode, typeof Math:', typeof Math); var foo2 = 'bar';");
+	return 0;
 }
 
-static duk_ret_t test_2(duk_context* ctx, void* udata) {
-  const char* str;
+static duk_ret_t test_2(duk_context *ctx, void *udata) {
+	const char *str;
 
-  (void)udata;
+	(void) udata;
 
-  printf("context is strict: %d\n", duk_is_strict_call(ctx));
+	printf("context is strict: %d\n", duk_is_strict_call(ctx));
 
-  duk_push_c_function(ctx, test_2_inner, 0);
-  duk_call(ctx, 0);
-  duk_pop(ctx);
+	duk_push_c_function(ctx, test_2_inner, 0);
+	duk_call(ctx, 0);
+	duk_pop(ctx);
 
-  duk_push_global_object(ctx);
-  duk_get_prop_string(ctx, -1, "foo2");
-  str = duk_get_string(ctx, -1);
-  printf("global.foo2=%s\n", str ? str : "NULL");
-  duk_pop_2(ctx);
+	duk_push_global_object(ctx);
+	duk_get_prop_string(ctx, -1, "foo2");
+	str = duk_get_string(ctx, -1);
+	printf("global.foo2=%s\n", str ? str : "NULL");
+	duk_pop_2(ctx);
 
-  printf("final top: %ld\n", (long)duk_get_top(ctx));
-  return 0;
+	printf("final top: %ld\n", (long) duk_get_top(ctx));
+	return 0;
 }
 
-void test(duk_context* ctx) {
-  TEST_SAFE_CALL(test_1);
-  TEST_SAFE_CALL(test_2);
+void test(duk_context *ctx) {
+	TEST_SAFE_CALL(test_1);
+	TEST_SAFE_CALL(test_2);
 }
