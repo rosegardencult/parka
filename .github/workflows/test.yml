@@ -20,49 +20,49 @@ jobs:
         make test_ecma
 
 
-  ubuntu:
-    runs-on: ubuntu-latest
+  # ubuntu:
+  #   runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '10'
-    - name: api
-      env:
-        CC: clang
-      run: |
-        sudo apt update -y && sudo apt install -y clang
-        make
-        make test_api
-    - name: ecma
-      env:
-        CC: clang
-      run: |
-        sudo apt update -y && sudo apt install -y clang
-        make test_ecma
+  #   steps:
+  #   - uses: actions/checkout@v1
+  #   - uses: actions/setup-node@v1
+  #     with:
+  #       node-version: '10'
+  #   - name: api
+  #     env:
+  #       CC: clang
+  #     run: |
+  #       sudo apt update -y && sudo apt install -y clang
+  #       make
+  #       make test_api
+  #   - name: ecma
+  #     env:
+  #       CC: clang
+  #     run: |
+  #       sudo apt update -y && sudo apt install -y clang
+  #       make test_ecma
 
 
-  windows:
-    runs-on: windows-latest
+  # windows:
+  #   runs-on: windows-latest
 
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '10'
-    - name: api
-      env:
-        CC: '/c/Program\ Files/LLVM/bin/clang.exe'
-      run: |
-        choco install llvm
-        make
-        make test_api
-      shell: bash
-    - name: ecma
-      env:
-        CC: '/c/Program\ Files/LLVM/bin/clang.exe'
-      run: |
-        choco install llvm
-        make test_ecma
-      shell: bash
+  #   steps:
+  #   - uses: actions/checkout@v1
+  #   - uses: actions/setup-node@v1
+  #     with:
+  #       node-version: '10'
+  #   - name: api
+  #     env:
+  #       CC: '/c/Program\ Files/LLVM/bin/clang.exe'
+  #     run: |
+  #       choco install llvm
+  #       make
+  #       make test_api
+  #     shell: bash
+  #   - name: ecma
+  #     env:
+  #       CC: '/c/Program\ Files/LLVM/bin/clang.exe'
+  #     run: |
+  #       choco install llvm
+  #       make test_ecma
+  #     shell: bash

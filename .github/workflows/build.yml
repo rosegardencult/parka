@@ -13,26 +13,26 @@ jobs:
         make all
 
 
-  ubuntu:
-    runs-on: ubuntu-latest
+  # ubuntu:
+  #   runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v1
-    - name: 'build ubuntu'
-      env:
-        CC: clang
-      run: |
-        sudo apt update -y && sudo apt install -y clang
-        make all
+  #   steps:
+  #   - uses: actions/checkout@v1
+  #   - name: 'build ubuntu'
+  #     env:
+  #       CC: clang
+  #     run: |
+  #       sudo apt update -y && sudo apt install -y clang
+  #       make all
 
 
-  windows:
-    runs-on: windows-latest
+  # windows:
+  #   runs-on: windows-latest
 
-    steps:
-    - uses: actions/checkout@v1
-    - name: 'build windows'
-      run: |
-        choco install llvm
-        make all
-      shell: bash
+  #   steps:
+  #   - uses: actions/checkout@v1
+  #   - name: 'build windows'
+  #     run: |
+  #       choco install llvm
+  #       make all
+  #     shell: bash
