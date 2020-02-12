@@ -86,8 +86,12 @@ examples:
 	make -C examples/sandbox
 	make -C examples/cmdline
 
-libduktape: $(OBJDIR)
+.PHONY: cargo
+cargo:
+	cargo build
+
+libduktape: $(OBJDIR) cargo
 	$(CC) -shared $(OPTS) -o $(OBJDIR)/$@.$(LIB_TYPE) $(DUKTAPE_SOURCES)
 
-libduktaped: $(OBJDIR)
+libduktaped: $(OBJDIR) cargo
 	$(CC) -shared -g $(OPTS) -o $(OBJDIR)/$@.$(LIB_TYPE) $(DUKTAPE_SOURCES)
