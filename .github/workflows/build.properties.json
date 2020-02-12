@@ -1,6 +1,6 @@
 {
   "name": "Build",
   "description": "Builds shared library in release and debug as well as examples",
-  "iconName": "icons/build.svg",
+  "iconName": ".github/workflows/icons/build.svg",
   "categories": "build"
 }
