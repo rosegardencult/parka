@@ -2,8 +2,17 @@
 name = "parka"
 version = "0.1.0"
 authors = ["juniper wilde <juniper.r.wilde@gmail.com>"]
+description = ""
+license = "MIT"
+keywords = ["javascript", "js", "runtime"]
+homepage = "https://github.com/rosegardencult/parka"
+repository = "https://github.com/rosegardencult/parka"
+readme = "README.md"
 edition = "2018"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+path = "src/lib.rs"
+crate-type = ["staticlib"]
 
 [dependencies]
+libc = "*"

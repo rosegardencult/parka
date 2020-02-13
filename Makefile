@@ -86,12 +86,16 @@ examples:
 	make -C examples/sandbox
 	make -C examples/cmdline
 
-.PHONY: cargo
-cargo:
-	cargo build
+.PHONY: target/debug/libparka.a
+target/debug/libparka.a:
+	cargo build --verbose
 
-libduktape: $(OBJDIR) cargo
-	$(CC) -shared $(OPTS) -o $(OBJDIR)/$@.$(LIB_TYPE) $(DUKTAPE_SOURCES)
+.PHONY: target/release/libparka.a
+target/release/libparka.a:
+	cargo build --verbose --release
 
-libduktaped: $(OBJDIR) cargo
-	$(CC) -shared -g $(OPTS) -o $(OBJDIR)/$@.$(LIB_TYPE) $(DUKTAPE_SOURCES)
+libduktape: $(OBJDIR) target/release/libparka.a
+	$(CC) -shared $(OPTS) -o $(OBJDIR)/$@.$(LIB_TYPE) $(DUKTAPE_SOURCES) target/release/libparka.a
+
+libduktaped: $(OBJDIR) target/debug/libparka.a
+	$(CC) -shared -g $(OPTS) -o $(OBJDIR)/$@.$(LIB_TYPE) $(DUKTAPE_SOURCES) target/debug/libparka.a
