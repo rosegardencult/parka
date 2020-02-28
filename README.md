@@ -9,7 +9,7 @@ with a focus on **portability** and **compact** footprint.
 
 Parka is a rewrite of Duktape (version 2.5, git hash [600188](https://github.com/svaarala/duktape/tree/6001888049cb42656f8649db020e804bcdeca6a7)) in Rust.
 
-My goal is to use various methods of rewriting C into Rust ([carols10cents'](https://github.com/carols10cents/rust-out-your-c-talk) rust out your c method, Citrus, C2Rust, etc.)
+My goal is to use various methods of rewriting C into Rust ([carols10cents'](https://github.com/carols10cents/rust-out-your-c-talk) rust out your c method, Citrus, C2Rust, etc.) and compare them, not to get a production level capable JavaScript runtime/engine.
 
 Development Tools
 ------------
